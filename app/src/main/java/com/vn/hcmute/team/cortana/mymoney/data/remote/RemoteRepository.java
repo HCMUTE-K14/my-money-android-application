@@ -2,6 +2,7 @@ package com.vn.hcmute.team.cortana.mymoney.data.remote;
 
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.UserService;
 import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
+import com.vn.hcmute.team.cortana.mymoney.exception.UserRegisterException;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import io.reactivex.Observable;
@@ -51,7 +52,12 @@ public class RemoteRepository implements RemoteTask {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          return stringJsonResponse.getMessage();
+                          if(stringJsonResponse.getStatus().equals("success")){
+                              return stringJsonResponse.getMessage();
+                          }else{
+                              throw new UserRegisterException(stringJsonResponse.getMessage());
+                          }
+                          
                       }
                   });
     }
