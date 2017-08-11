@@ -49,7 +49,7 @@ public class ServiceGenerator {
     
     
     private Cache createDefaultCache(Context context) {
-        File cacheDir = new File(context.getCacheDir().getAbsolutePath(), "/okhttp-lastfm/");
+        File cacheDir = new File(context.getCacheDir().getAbsolutePath(), "/my-money-cache/");
         if (cacheDir.mkdirs() || cacheDir.isDirectory()) {
             return new Cache(cacheDir, 1024 * 1024 * 10);
         }
