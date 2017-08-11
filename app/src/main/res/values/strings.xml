@@ -1,0 +1,5 @@
+<resources>
+  <string name="app_name">MyMoney</string>
+  <string name="message_validate_user_login">Username and password must be at least 4 character</string>
+  <string name="message_validate_user_register">Username,password and name must be at least 4 character</string>
+</resources>
