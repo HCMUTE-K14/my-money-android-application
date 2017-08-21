@@ -30,4 +30,5 @@ public abstract class UseCase<Q extends UseCase.RequestValue> {
         
     }
     
+    
 }

@@ -52,7 +52,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     public void login(UserCredential userCredential) {
         LoginRequest loginRequest = new LoginRequest(Action.ACTION_LOGIN_NORMAL, callBack,
                   userCredential);
-        MyLogger.d(userCredential, true);
         mLoginUseCase.subscribe(loginRequest);
     }
     

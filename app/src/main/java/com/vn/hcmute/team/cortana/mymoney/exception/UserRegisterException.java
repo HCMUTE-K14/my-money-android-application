@@ -5,7 +5,8 @@ package com.vn.hcmute.team.cortana.mymoney.exception;
  */
 
 public class UserRegisterException extends Exception {
-    public UserRegisterException(String message){
+    
+    public UserRegisterException(String message) {
         super(message);
     }
     

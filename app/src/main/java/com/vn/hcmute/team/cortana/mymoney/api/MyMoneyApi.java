@@ -12,4 +12,11 @@ public class MyMoneyApi {
     
     public static final String REGISTER_URL = "users/register";
     
+    public static final String UPLOAD_IMAGE_URL = "image/upload";
+    
+    public static final String REMOVE_IMAGE_URL = "image/remove";
+    
+    public static final String GET_IMAGE_URL = "image/get";
+   
+    
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -34,6 +35,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     
     @BindView(R.id.button)
     Button mButtonLogin;
+    
+    @BindView(R.id.iamgeView)
+    ImageView mImageView;
     
     @Inject
     LoginPresenter mLoginPresenter;
@@ -79,15 +83,16 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     public void initializeView() {
         mTextViewUsername.setText("USERNAME");
         mTextViewPassword.setText("PASSWORD");
+        
     }
     
     @OnClick(R.id.button)
     public void onClickLogin(View view) {
         UserCredential userCredential = new UserCredential();
-        
+    
         userCredential.setUsername(mTextViewUsername.getText().toString());
         userCredential.setPassword(mTextViewPassword.getText().toString());
-        
+    
         mLoginPresenter.login(userCredential);
     }
     

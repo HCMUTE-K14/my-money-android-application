@@ -15,19 +15,31 @@ public class User {
     @SerializedName("username")
     @Expose
     private String username;
+    @SerializedName("password")
+    @Expose
+    private String password;
     @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("token")
     @Expose
     private String token;
+    @SerializedName("email")
+    @Expose
+    private String email;
     @SerializedName("active")
     @Expose
-    private Boolean active;
+    private boolean active;
     
-    @SerializedName("password")
-    @Expose
-    private String password;
+    public User() {
+        this.userid = "";
+        this.username = "";
+        this.password = "";
+        this.name = "";
+        this.token = "";
+        this.email = "";
+        this.active = false;
+    }
     
     public String getUserid() {
         return userid;
@@ -43,6 +55,14 @@ public class User {
     
     public void setUsername(String username) {
         this.username = username;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
     }
     
     public String getName() {
@@ -61,6 +81,14 @@ public class User {
         this.token = token;
     }
     
+    public String getEmail() {
+        return email;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
     public Boolean getActive() {
         return active;
     }
@@ -69,23 +97,13 @@ public class User {
         this.active = active;
     }
     
-    public String getPassword() {
-        return password;
-    }
-    
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
     @Override
     public String toString() {
         return "User{" +
-               "userid='" + userid + '\'' +
-               ", username='" + username + '\'' +
+               "username='" + username + '\'' +
                ", name='" + name + '\'' +
-               ", token='" + token + '\'' +
+               ", email='" + email + '\'' +
                ", active=" + active +
-               ", password='" + password + '\'' +
                '}';
     }
 }

@@ -27,7 +27,6 @@ import javax.inject.Inject;
 
 public class LoginUseCase extends UseCase<LoginRequest> {
     
-    
     public static final String TAG = LoginUseCase.class.getSimpleName();
     
     private DataRepository mDataRepository;
@@ -66,6 +65,7 @@ public class LoginUseCase extends UseCase<LoginRequest> {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
+                mDataRepository.putLoginState((User) user);
                 callBack.onSuccess((User) user);
             }
             
@@ -89,6 +89,7 @@ public class LoginUseCase extends UseCase<LoginRequest> {
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
+            
         }
     }
     

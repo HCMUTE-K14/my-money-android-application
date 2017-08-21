@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 public class LocalRepository {
     
+    
     @Inject
     public LocalRepository() {
         

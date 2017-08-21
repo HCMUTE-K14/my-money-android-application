@@ -8,7 +8,7 @@ public class ObjectUtil {
     
     public static Object requireNotNull(Object object) {
         if (isNull(object)) {
-            throw new NullPointerException("Object is null");
+            throw new RuntimeException("Object is null");
         }
         
         return object;
