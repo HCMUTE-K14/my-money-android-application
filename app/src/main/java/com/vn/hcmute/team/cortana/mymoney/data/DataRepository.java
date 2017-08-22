@@ -9,6 +9,8 @@ import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import io.reactivex.Observable;
 import java.util.List;
 import javax.inject.Inject;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * Created by infamouSs on 8/10/17.
@@ -45,11 +47,27 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
         return mRemoteRepository.getImage(userid,token);
     }
     
+    @Override
+    public Observable<String> uploadImage(RequestBody userid, RequestBody token, RequestBody detail,
+              MultipartBody.Part file){
+        return mRemoteRepository.uploadImage(userid,token,detail,file);
+    }
     
     @Override
-    public Observable<String> uploadImage() {
-        return null;
+    public Observable<Image> getImageById(String userid, String token, String imageid) {
+       return mRemoteRepository.getImageByid(userid,token,imageid);
     }
+    
+    @Override
+    public Observable<String> removeImage(String userid, String token, String imageid) {
+        return mRemoteRepository.removeImage(userid,token,imageid);
+    }
+    
+    @Override
+    public Observable<String> updateImage(String userid, String token, String imageid) {
+        return mRemoteRepository.updateImage(userid,token,imageid);
+    }
+    
     
     @Override
     public void putUserId(String userid) {

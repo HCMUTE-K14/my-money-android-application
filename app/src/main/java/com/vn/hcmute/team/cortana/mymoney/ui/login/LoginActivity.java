@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -19,6 +18,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.LoginModule;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
+import com.vn.hcmute.team.cortana.mymoney.utils.permission.PermissionCallBack;
 import javax.inject.Inject;
 
 /**
@@ -26,6 +26,19 @@ import javax.inject.Inject;
  */
 
 public class LoginActivity extends BaseActivity implements LoginContract.View {
+    
+    
+    private PermissionCallBack mPermissionCallBack = new PermissionCallBack() {
+        @Override
+        public void onPermissionGranted() {
+            // loadHomeFragment();
+        }
+        
+        @Override
+        public void onPermissionDenied() {
+            finish();
+        }
+    };
     
     @BindView(R.id.txt_username)
     TextView mTextViewUsername;
@@ -35,9 +48,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     
     @BindView(R.id.button)
     Button mButtonLogin;
-    
-    @BindView(R.id.iamgeView)
-    ImageView mImageView;
     
     @Inject
     LoginPresenter mLoginPresenter;
@@ -84,18 +94,19 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         mTextViewUsername.setText("USERNAME");
         mTextViewPassword.setText("PASSWORD");
         
+        
     }
     
     @OnClick(R.id.button)
     public void onClickLogin(View view) {
         UserCredential userCredential = new UserCredential();
-    
+        
         userCredential.setUsername(mTextViewUsername.getText().toString());
         userCredential.setPassword(mTextViewPassword.getText().toString());
-    
+        
         mLoginPresenter.login(userCredential);
     }
-    
+   
     @Override
     public void loginSuccessful() {
         Toast.makeText(this, "LOGIN successful", Toast.LENGTH_SHORT).show();

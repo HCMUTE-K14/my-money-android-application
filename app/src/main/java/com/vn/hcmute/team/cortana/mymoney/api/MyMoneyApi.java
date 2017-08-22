@@ -17,6 +17,6 @@ public class MyMoneyApi {
     public static final String REMOVE_IMAGE_URL = "image/remove";
     
     public static final String GET_IMAGE_URL = "image/get";
-   
     
+    public static final String UPDATE_IMAGE_URL = "image/update";
 }

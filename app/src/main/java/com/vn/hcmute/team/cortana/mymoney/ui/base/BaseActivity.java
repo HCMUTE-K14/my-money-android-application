@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.view.BaseView;
 
 /**
@@ -44,6 +46,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         initializeActionBar(this.findViewById(android.R.id.content));
     }
     
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+      
+        return true;
+    }
     
     @Override
     protected void onStart() {

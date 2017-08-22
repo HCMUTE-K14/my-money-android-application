@@ -13,13 +13,15 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import java.util.List;
 import javax.inject.Inject;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 
 /**
  * Created by infamouSs on 8/10/17.
  */
 
-public class RemoteRepository implements RemoteTask.UserTask,RemoteTask.ImageTask {
+public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTask {
     
     public static final String TAG = RemoteRepository.class.getSimpleName();
     
@@ -68,16 +70,16 @@ public class RemoteRepository implements RemoteTask.UserTask,RemoteTask.ImageTas
     
     @Override
     public Observable<List<Image>> getImage(String userid, String token) {
-        ImageService imageService=mServiceGenerator.getService(ImageService.class);
-        return imageService.get(userid,token)
+        ImageService imageService = mServiceGenerator.getService(ImageService.class);
+        return imageService.get(userid, token)
                   .map(new Function<JsonResponse<List<Image>>, List<Image>>() {
                       @Override
                       public List<Image> apply(@NonNull JsonResponse<List<Image>> listJsonResponse)
                                 throws Exception {
                           
-                          if(listJsonResponse.getStatus().equals("success")){
+                          if (listJsonResponse.getStatus().equals("success")) {
                               return listJsonResponse.getData();
-                          }else{
+                          } else {
                               throw new ImageException(listJsonResponse.getMessage());
                           }
                       }
@@ -85,7 +87,77 @@ public class RemoteRepository implements RemoteTask.UserTask,RemoteTask.ImageTas
     }
     
     @Override
-    public Observable<String> uploadImage() {
-        return null;
+    public Observable<Image> getImageByid(String userid, String token, String imageid) {
+        ImageService imageService = mServiceGenerator.getService(ImageService.class);
+        
+        return imageService.getImageById(userid, token, imageid)
+                  .map(new Function<JsonResponse<Image>, Image>() {
+                      @Override
+                      public Image apply(@NonNull JsonResponse<Image> imageJsonResponse)
+                                throws Exception {
+                          if (imageJsonResponse.getStatus().equals("success")) {
+                              return imageJsonResponse.getData();
+                          } else {
+                              throw new ImageException(imageJsonResponse.getMessage());
+                          }
+                      }
+                  });
     }
+    
+    
+    @Override
+    public Observable<String> removeImage(String userid, String token, String imageid) {
+        ImageService imageService = mServiceGenerator.getService(ImageService.class);
+        
+        return imageService.remove(userid, token, imageid)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getData();
+                          } else {
+                              throw new ImageException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> uploadImage(RequestBody userid, RequestBody token, RequestBody detail,
+              MultipartBody.Part file) {
+        ImageService imageService = mServiceGenerator.getService(ImageService.class);
+        return imageService.upload(userid, token, detail, file)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getData();
+                          } else {
+                              throw new ImageException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> updateImage(String userid, String token, String imageid) {
+        ImageService imageService = mServiceGenerator.getService(ImageService.class);
+        
+        return imageService.update(userid, token, imageid)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getData();
+                          } else {
+                              throw new ImageException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    
 }
