@@ -1,12 +1,17 @@
 package com.vn.hcmute.team.cortana.mymoney.data.remote;
 
+import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.ImageService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.UserService;
+import com.vn.hcmute.team.cortana.mymoney.exception.ImageException;
 import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
+import com.vn.hcmute.team.cortana.mymoney.exception.UserRegisterException;
+import com.vn.hcmute.team.cortana.mymoney.model.Image;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
+import java.util.List;
 import javax.inject.Inject;
 
 
@@ -14,7 +19,7 @@ import javax.inject.Inject;
  * Created by infamouSs on 8/10/17.
  */
 
-public class RemoteRepository implements RemoteTask {
+public class RemoteRepository implements RemoteTask.UserTask,RemoteTask.ImageTask {
     
     public static final String TAG = RemoteRepository.class.getSimpleName();
     
@@ -51,9 +56,36 @@ public class RemoteRepository implements RemoteTask {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          return stringJsonResponse.getMessage();
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getMessage();
+                          } else {
+                              throw new UserRegisterException(stringJsonResponse.getMessage());
+                          }
+                          
                       }
                   });
     }
     
+    @Override
+    public Observable<List<Image>> getImage(String userid, String token) {
+        ImageService imageService=mServiceGenerator.getService(ImageService.class);
+        return imageService.get(userid,token)
+                  .map(new Function<JsonResponse<List<Image>>, List<Image>>() {
+                      @Override
+                      public List<Image> apply(@NonNull JsonResponse<List<Image>> listJsonResponse)
+                                throws Exception {
+                          
+                          if(listJsonResponse.getStatus().equals("success")){
+                              return listJsonResponse.getData();
+                          }else{
+                              throw new ImageException(listJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> uploadImage() {
+        return null;
+    }
 }

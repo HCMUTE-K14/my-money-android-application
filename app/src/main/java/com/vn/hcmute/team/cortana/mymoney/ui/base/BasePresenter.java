@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class BasePresenter<T extends BaseView> {
     
     protected AtomicBoolean isViewAlive = new AtomicBoolean();
+    
     private WeakReference<T> view;
     
     public T getView() {

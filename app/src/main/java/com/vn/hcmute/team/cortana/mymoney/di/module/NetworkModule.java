@@ -4,9 +4,6 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
-import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
-import com.vn.hcmute.team.cortana.mymoney.data.local.LocalRepository;
-import com.vn.hcmute.team.cortana.mymoney.data.remote.RemoteRepository;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.ServiceGenerator;
 import dagger.Module;
 import dagger.Provides;
@@ -37,11 +34,5 @@ public class NetworkModule {
         return new GsonBuilder().create();
     }
     
-    @Singleton
-    @Provides
-    public DataRepository provideDataRepository(
-              LocalRepository localRepository,
-              RemoteRepository remoteRepository) {
-        return new DataRepository(remoteRepository, localRepository);
-    }
+    
 }

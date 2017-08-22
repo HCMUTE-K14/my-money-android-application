@@ -18,6 +18,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     
     protected BasePresenter mPresenter;
     private Unbinder unbinder;
+    
     public BaseActivity() {
     }
     
