@@ -7,7 +7,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import butterknife.BindView;
+import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
@@ -18,11 +19,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.LoginModule;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
-
 import javax.inject.Inject;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by infamouSs on 8/11/17.
@@ -60,8 +57,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
                   .activityModule(new ActivityModule(this))
                   .loginModule(new LoginModule())
                   .build();
-
-
+        
         loginComponent.inject(this);
     }
     
@@ -93,10 +89,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @OnClick(R.id.button)
     public void onClickLogin(View view) {
         UserCredential userCredential = new UserCredential();
-    
+        
         userCredential.setUsername(mTextViewUsername.getText().toString());
         userCredential.setPassword(mTextViewPassword.getText().toString());
-    
+        
         mLoginPresenter.login(userCredential);
     }
     

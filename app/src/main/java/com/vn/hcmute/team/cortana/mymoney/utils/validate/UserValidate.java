@@ -43,13 +43,13 @@ public class UserValidate {
         requireNotNull(user);
         String username = user.getUsername();
         String password = user.getPassword();
-        String name = user.getName();
+        String email = user.getEmail();
         
-        if (username == null || password == null || name == null) {
+        if (username == null || password == null || email == null) {
             return false;
         }
         
-        if (username.isEmpty() || password.isEmpty() || name.isEmpty()) {
+        if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
             return false;
         }
         
@@ -61,9 +61,9 @@ public class UserValidate {
             return false;
         }
         
-        if (!mPatternName.matcher(name).matches()) {
+    /*    if (!mPatternName.matcher(name).matches()) {
             return false;
-        }
+        }*/
         
         return true;
     }

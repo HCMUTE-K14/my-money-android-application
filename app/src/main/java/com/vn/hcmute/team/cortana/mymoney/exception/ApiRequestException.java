@@ -6,7 +6,7 @@ package com.vn.hcmute.team.cortana.mymoney.exception;
 
 public class ApiRequestException extends Exception {
     
-    public ApiRequestException(String messgae){
+    public ApiRequestException(String messgae) {
         super(messgae);
     }
 }

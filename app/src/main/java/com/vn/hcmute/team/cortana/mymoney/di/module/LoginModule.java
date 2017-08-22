@@ -18,10 +18,11 @@ public class LoginModule {
     public LoginModule() {
         
     }
-   
+    
+    
     @Provides
-    ImageUseCase provideImageUseCase(Context context,DataRepository dataRepository){
-        return new ImageUseCase(context,dataRepository);
+    ImageUseCase provideImageUseCase(Context context, DataRepository dataRepository) {
+        return new ImageUseCase(context, dataRepository);
     }
     
     @Provides

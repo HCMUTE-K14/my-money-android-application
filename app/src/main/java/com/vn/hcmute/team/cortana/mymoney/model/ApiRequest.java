@@ -5,12 +5,13 @@ package com.vn.hcmute.team.cortana.mymoney.model;
  */
 
 public class ApiRequest {
+    
     private String userid;
     private String token;
     
-    public ApiRequest(){
-        this.userid="";
-        this.token="";
+    public ApiRequest() {
+        this.userid = "";
+        this.token = "";
     }
     
     public String getUserid() {

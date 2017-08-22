@@ -3,9 +3,12 @@ package com.vn.hcmute.team.cortana.mymoney.data;
 import com.vn.hcmute.team.cortana.mymoney.data.cache.CacheRepository;
 import com.vn.hcmute.team.cortana.mymoney.data.local.LocalRepository;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.RemoteRepository;
+import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
+import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import io.reactivex.Observable;
 import java.util.List;
 import javax.inject.Inject;
@@ -15,7 +18,8 @@ import javax.inject.Inject;
  */
 
 public class DataRepository implements DataSource.RemoteDataSource, DataSource.CacheDataSource,
-                                       DataSource.LocalDataSource {
+                                       DataSource.LocalDataSource, DataSource.WalletDataSource,
+                                       DataSource.CurrenciesDataSource, DataSource.EvetnDataSource {
     
     private RemoteRepository mRemoteRepository;
     private LocalRepository mLocalRepository;
@@ -42,7 +46,7 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     
     @Override
     public Observable<List<Image>> getImage(String userid, String token) {
-        return mRemoteRepository.getImage(userid,token);
+        return mRemoteRepository.getImage(userid, token);
     }
     
     
@@ -110,5 +114,59 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     @Override
     public void removeLoginStage() {
         mCacheRepository.removeLoginStage();
+    }
+    
+    //wallet
+    @Override
+    public Observable<String> createWallet(Wallet wallet, String userid, String token) {
+        return mRemoteRepository.createWallet(wallet, userid, token);
+    }
+    
+    @Override
+    public Observable<String> updateWallet(Wallet wallet, String userid, String token) {
+        return mRemoteRepository.updateWallet(wallet, userid, token);
+    }
+    
+    @Override
+    public Observable<String> deleteWallet(String userid, String token, String idwallet) {
+        return mRemoteRepository.deleteWallet(userid, token, idwallet);
+    }
+    
+    @Override
+    public Observable<List<Wallet>> getAllWallet(String userid, String token) {
+        return mRemoteRepository.getAllWallet(userid, token);
+    }
+    
+    @Override
+    public Observable<String> moveWallet(String userid, String token, String wallet1,
+              String wallet2, String money) {
+        return mRemoteRepository.moveWallet(userid, token, wallet1, wallet2, money);
+    }
+    
+    //currencies
+    @Override
+    public Observable<List<Currencies>> getCurrencies() {
+        
+        return mRemoteRepository.getCurrencies();
+    }
+    //event
+    @Override
+    public Observable<List<Event>> getEvent(String uerid, String token) {
+        return mRemoteRepository.getEvent(uerid,token);
+    }
+    
+    @Override
+    public Observable<String> createEvent(Event event, String userid, String token) {
+        return mRemoteRepository.createEvent(event,userid,token);
+    }
+    
+    @Override
+    public Observable<String> updateEvent(Event event, String userid, String token) {
+        return mRemoteRepository.updateEvent(event,userid,token);
+    }
+    
+    @Override
+    public Observable<String> deleteEvent(String userid, String token, String idEvent) {
+        return mRemoteRepository.deleteEvent(userid,token,idEvent);
     }
 }

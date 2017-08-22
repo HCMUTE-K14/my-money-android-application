@@ -94,7 +94,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
         
         user.setUsername(mTextViewUsername.getText().toString());
         user.setPassword(mTextViewPassword.getText().toString());
-        user.setName(mTextViewName.getText().toString());
+        user.setEmail(mTextViewName.getText().toString());
         
         mRegisterPresenter.register(user);
     }

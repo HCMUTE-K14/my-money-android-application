@@ -15,6 +15,7 @@ import retrofit2.http.Query;
 public interface ImageService {
     
     @GET(MyMoneyApi.GET_IMAGE_URL)
-    Observable<JsonResponse<List<Image>>> get(@Query("uid")String userid,@Query("token")String token);
+    Observable<JsonResponse<List<Image>>> get(@Query("uid") String userid,
+              @Query("token") String token);
     
 }
