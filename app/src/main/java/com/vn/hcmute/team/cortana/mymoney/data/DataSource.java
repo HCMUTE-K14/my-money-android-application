@@ -11,6 +11,8 @@ import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import io.reactivex.Observable;
 import java.util.List;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * Created by infamouSs on 8/10/17.
@@ -26,7 +28,18 @@ public interface DataSource {
         
         Observable<List<Image>> getImage(String userid, String token);
         
+
         Observable<String> uploadImage();
+
+        Observable<String> uploadImage(RequestBody userid, RequestBody token, RequestBody detail,
+                  MultipartBody.Part file);
+        
+        Observable<Image> getImageById(String userid, String token, String imageid);
+        
+        Observable<String> removeImage(String userid, String token, String imageid);
+        
+        Observable<String> updateImage(String userid, String token, String imageid);
+
     }
     
     public interface CacheDataSource {

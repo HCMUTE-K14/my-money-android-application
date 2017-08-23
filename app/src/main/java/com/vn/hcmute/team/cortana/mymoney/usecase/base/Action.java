@@ -12,6 +12,7 @@ public class Action {
     
     public static final String ACTION_GET_IMAGE = "action_get_image";
     
+
     public static final String ACTION_CREATE_WALLET = "create_wallet";
     public static final String ACTION_UPDATE_WALLET = "update_wallet";
     public static final String ACTION_DELETE_WALLET = "delete_wallet";
@@ -43,4 +44,13 @@ public class Action {
     public static final String ACTION_UPDATE_BUDGET="update_budget";
     public static final String ACTION_DELETE_BUDGET="delete_budget";
     
+
+    public static final String ACTION_GET_IMAGE_BY_ID = "action_get_image_by_id";
+    
+    public static final String ACTION_UPLOAD_IMAGE = "action_upload_image";
+    
+    public static final String ACTION_REMOVE_IMAGE = "action_remove_image";
+    
+    public static final String ACTION_UPDATE_IMAGE = "action_update_image";
+
 }
