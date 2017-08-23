@@ -5,5 +5,6 @@ package com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.listener;
  */
 
 public interface OnImageClickListener {
-   boolean onImageClick(int position,boolean isSelected);
+    
+    boolean onImageClick(int position, boolean isSelected);
 }

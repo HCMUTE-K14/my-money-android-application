@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/container"
-  android:orientation="vertical" android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:id="@+id/container_image"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:foregroundGravity="center">
   <View
     android:id="@+id/alpha_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"/>
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/colorPrimary"/>
+
   <com.vn.hcmute.team.cortana.mymoney.ui.view.SquareImageView
     android:id="@+id/image_item"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:src="@drawable/ic_done_white"
-    android:foreground="?selectableItemBackground"
-    android:scaleType="centerCrop"/>
+    android:scaleType="centerCrop" />
+
 </FrameLayout>

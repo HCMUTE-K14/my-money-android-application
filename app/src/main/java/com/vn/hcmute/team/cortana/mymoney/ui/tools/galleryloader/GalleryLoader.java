@@ -18,21 +18,99 @@ import java.util.List;
 
 public abstract class GalleryLoader {
     
-    public static final String TAG=GalleryLoader.class.getSimpleName();
+    public static final String TAG = GalleryLoader.class.getSimpleName();
     
     public static final int LIMIT_ITEM_SELECTED = 99;
     public static final int MODE_SINGLE = 0;
     public static final int MODE_MULTIPLE = 1;
-    private static final String EXTRA_SELECTED_IMAGES = "extra_selected_images";
+    public static final String EXTRA_SELECTED_IMAGES = "extra_selected_images";
     
     
     private GalleryLoaderConfig mGalleryLoaderConfig;
     
-    public abstract void start(int requestCode);
+    public static GalleryLoaderWithActivity create(Activity activity) {
+        return new GalleryLoaderWithActivity(activity);
+    }
     
+    public static GalleryLoaderWithFragment create(Fragment fragment) {
+        return new GalleryLoaderWithFragment(fragment);
+    }
+    
+    public static List<ImageGallery> getImages(Intent intent) {
+        if (intent == null) {
+            return null;
+        }
+        return intent.getParcelableArrayListExtra(GalleryLoader.EXTRA_SELECTED_IMAGES);
+    }
+    
+    public abstract void start(int requestCode);
     
     public void buildDefaultConfig(Context context) {
         mGalleryLoaderConfig = GalleryLoaderConfigFactory.getDefaultConfig(context);
+    }
+    
+    public GalleryLoader setFolderTitle(String title) {
+        mGalleryLoaderConfig.setFolderTitle(title);
+        return this;
+    }
+    
+    public GalleryLoader setImageTitle(String title) {
+        mGalleryLoaderConfig.setImageTitle(title);
+        return this;
+    }
+    
+    public GalleryLoader setMode(int mode) {
+        mGalleryLoaderConfig.setMode(mode);
+        return this;
+    }
+    
+    public GalleryLoader single() {
+        return setMode(GalleryLoader.MODE_SINGLE);
+    }
+    
+    public GalleryLoader multi() {
+        return setMode(GalleryLoader.MODE_MULTIPLE);
+    }
+    
+    public GalleryLoader setLimit(int limit) {
+        mGalleryLoaderConfig.setLimit(limit);
+        return this;
+    }
+    
+    public GalleryLoader setTheme(int theme) {
+        mGalleryLoaderConfig.setTheme(theme);
+        return this;
+    }
+    
+    public GalleryLoader setFolderMode(boolean folderMode) {
+        mGalleryLoaderConfig.setFolderMode(folderMode);
+        return this;
+    }
+    
+    public GalleryLoader setImageLoader(ImageLoader imageLoader) {
+        mGalleryLoaderConfig.setImageLoader(imageLoader);
+        return this;
+    }
+    
+    public GalleryLoaderConfig getConfig() {
+        return mGalleryLoaderConfig;
+    }
+    
+    public void setConfig(GalleryLoaderConfig config) {
+        this.mGalleryLoaderConfig = config;
+    }
+    
+    public Intent getIntent(Context context) {
+        GalleryLoaderConfig config = getConfig();
+        
+        if (config == null) {
+            throw new ConfigException("Config is null");
+        }
+        Intent intent = new Intent(context, GalleryLoaderActivity.class); //Activity.class;
+        intent.putExtra(TAG, config);
+        
+        return intent;
+        
     }
     
     public static class GalleryLoaderWithActivity extends GalleryLoader {
@@ -68,78 +146,6 @@ public abstract class GalleryLoader {
         }
         
         
-    }
-    
-    public static GalleryLoaderWithActivity create(Activity activity) {
-        return new GalleryLoaderWithActivity(activity);
-    }
-    
-    public static GalleryLoaderWithFragment create(Fragment fragment) {
-        return new GalleryLoaderWithFragment(fragment);
-    }
-    
-    public GalleryLoader setFolderTitle(String title) {
-        mGalleryLoaderConfig.setFolderTitle(title);
-        return this;
-    }
-    
-    public GalleryLoader setImageTitle(String title) {
-        mGalleryLoaderConfig.setImageTitle(title);
-        return this;
-    }
-    
-    public GalleryLoader setMode(int mode) {
-        mGalleryLoaderConfig.setMode(mode);
-        return this;
-    }
-    
-    public GalleryLoader setLimit(int limit) {
-        mGalleryLoaderConfig.setLimit(limit);
-        return this;
-    }
-    
-    public GalleryLoader setTheme(int theme) {
-        mGalleryLoaderConfig.setTheme(theme);
-        return this;
-    }
-    
-    public GalleryLoader setFolderMode(boolean folderMode) {
-        mGalleryLoaderConfig.setFolderMode(folderMode);
-        return this;
-    }
-    
-    public GalleryLoader setImageLoader(ImageLoader imageLoader) {
-        mGalleryLoaderConfig.setImageLoader(imageLoader);
-        return this;
-    }
-    
-    
-    public GalleryLoaderConfig getConfig() {
-        return mGalleryLoaderConfig;
-    }
-    
-    public void setConfig(GalleryLoaderConfig config) {
-        this.mGalleryLoaderConfig = config;
-    }
-    
-    public Intent getIntent(Context context) {
-        GalleryLoaderConfig config = getConfig();
-        
-        if (config == null) {
-            throw new ConfigException("Config is null");
-        }
-        Intent intent = new Intent(context, GalleryLoaderActivity.class); //Activity.class;
-        intent.putExtra(TAG, config);
-        
-        return intent;
-        
-    }
-    
-    public static List<ImageGallery> getImages(Intent intent) {
-        if (intent == null) {
-            return null;
-        }
-        return intent.getParcelableArrayListExtra(GalleryLoader.EXTRA_SELECTED_IMAGES);
     }
     
 }

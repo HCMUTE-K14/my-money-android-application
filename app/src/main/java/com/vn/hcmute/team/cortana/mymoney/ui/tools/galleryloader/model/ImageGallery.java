@@ -7,28 +7,45 @@ import android.os.Parcelable;
  * Created by infamouSs on 8/22/17.
  */
 
-public class ImageGallery implements Parcelable{
+public class ImageGallery implements Parcelable {
     
+    public static final Creator<ImageGallery> CREATOR = new Creator<ImageGallery>() {
+        @Override
+        public ImageGallery createFromParcel(Parcel source) {
+            return new ImageGallery(source);
+        }
+        
+        @Override
+        public ImageGallery[] newArray(int size) {
+            return new ImageGallery[size];
+        }
+    };
     private long id;
     private String name;
-    private String datetaken;
+    private long datetaken;
     private String path;
     
-    public ImageGallery(long id, String name, String datetaken, String path) {
+    public ImageGallery(long id, String name, long datetaken, String path) {
         this.id = id;
         this.name = name;
         this.datetaken = datetaken;
         this.path = path;
     }
     
-    public ImageGallery(){
-        this.id=0L;
-        this.name="";
-        this.datetaken="";
-        this.path="";
+    
+    public ImageGallery() {
+        this.id = 0L;
+        this.name = "";
+        this.datetaken = 0L;
+        this.path = "";
     }
     
-    
+    protected ImageGallery(Parcel in) {
+        this.id = in.readLong();
+        this.name = in.readString();
+        this.datetaken = in.readLong();
+        this.path = in.readString();
+    }
     
     public long getId() {
         return id;
@@ -46,11 +63,11 @@ public class ImageGallery implements Parcelable{
         this.name = name;
     }
     
-    public String getDatetaken() {
+    public long getDatetaken() {
         return datetaken;
     }
     
-    public void setDatetaken(String datetaken) {
+    public void setDatetaken(long datetaken) {
         this.datetaken = datetaken;
     }
     
@@ -62,7 +79,6 @@ public class ImageGallery implements Parcelable{
         this.path = path;
     }
     
-    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -72,9 +88,9 @@ public class ImageGallery implements Parcelable{
             return false;
         }
         ImageGallery that = (ImageGallery) o;
-    
+        
         return path != null ? path.equals(that.path) : that.path == null;
-    
+        
     }
     
     @Override
@@ -91,28 +107,9 @@ public class ImageGallery implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
         dest.writeString(this.name);
-        dest.writeString(this.datetaken);
+        dest.writeLong(this.datetaken);
         dest.writeString(this.path);
     }
-    
-    protected ImageGallery(Parcel in) {
-        this.id = in.readLong();
-        this.name = in.readString();
-        this.datetaken = in.readString();
-        this.path = in.readString();
-    }
-    
-    public static final Creator<ImageGallery> CREATOR = new Creator<ImageGallery>() {
-        @Override
-        public ImageGallery createFromParcel(Parcel source) {
-            return new ImageGallery(source);
-        }
-        
-        @Override
-        public ImageGallery[] newArray(int size) {
-            return new ImageGallery[size];
-        }
-    };
     
     @Override
     public String toString() {

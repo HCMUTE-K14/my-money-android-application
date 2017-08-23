@@ -15,7 +15,7 @@ import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.helper.imageloader.ImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.helper.imageloader.ImageType;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.listener.OnImageClickListener;
-import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.listener.OnImageSelectedClickListener;
+import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.listener.OnImageSelectedListener;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.model.ImageGallery;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.ui.adapter.ImagePickerAdapter.ImagePickerViewHolder;
 import java.util.ArrayList;
@@ -27,11 +27,12 @@ import java.util.List;
 
 public class ImagePickerAdapter extends BaseGalleryAdapter<ImagePickerViewHolder> {
     
+    
     private List<ImageGallery> mImages = new ArrayList<>();
     private List<ImageGallery> mSelectedImages = new ArrayList<>();
     
     private OnImageClickListener mImageClickListener;
-    private OnImageSelectedClickListener mImageSelectedClickListener;
+    private OnImageSelectedListener mImageSelectedListener;
     
     public ImagePickerAdapter(Context context, ImageLoader imageLoader,
               List<ImageGallery> selectedImages, OnImageClickListener onImageClickListener) {
@@ -44,51 +45,62 @@ public class ImagePickerAdapter extends BaseGalleryAdapter<ImagePickerViewHolder
         }
     }
     
+    /*------------------------------------------*/
+    /* Initialize                               */
+    /*------------------------------------------*/
+    @Override
+    public int getLayoutId() {
+        return R.layout.item_gallery_image;
+    }
+    
     @Override
     public ImagePickerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(getLayoutId(), parent, false);
-        
         return new ImagePickerViewHolder(v);
     }
     
     @Override
-    public void onBindViewHolder(final ImagePickerViewHolder holder, int position) {
+    public void onBindViewHolder(final ImagePickerViewHolder holder, final int position) {
         final ImageGallery image = mImages.get(position);
         
         final boolean isSelected = isSelected(image);
         
         getImageLoader().loadImage(image.getPath(), holder.mImageView, ImageType.IMAGE_GALLERY);
         
-        holder.mAlphaView.setAlpha(isSelected ? 0.5f : 0.0f);
+        holder.mAlphaView.setAlpha(isSelected ? 0.5f : 0f);
+        
+        holder.mContainer.setForeground(isSelected
+                  ? ContextCompat.getDrawable(getContext(), R.drawable.ic_done_white)
+                  : null);
         
         holder.itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean shouldSelect = mImageClickListener
                           .onImageClick(holder.getAdapterPosition(), !isSelected);
-                if(isSelected){
-                    
-                }else if(shouldSelect){
-                    
+                if (isSelected) {
+                    removeSelected(image, position);
+                } else if (shouldSelect) {
+                    addSelected(image, position);
                 }
             }
         });
-    
-        holder.mContainer.setForeground(isSelected
-                  ? ContextCompat.getDrawable(getContext(), R.drawable.ic_done_white)
-                  : null);
+        
+        
     }
     
     @Override
     public int getItemCount() {
-        return 0;
+        return mImages.size();
     }
     
-    @Override
-    public int getLayoutId() {
-        return R.layout.item_gallery_folder;
-    }
     
+    /*------------------------------------------*/
+    /* Helper method                            */
+    /*------------------------------------------*/
+    public List<ImageGallery> getSelectedImages() {
+        return mSelectedImages;
+    }
     
     private boolean isSelected(ImageGallery image) {
         for (ImageGallery selectedImage : mSelectedImages) {
@@ -99,10 +111,63 @@ public class ImagePickerAdapter extends BaseGalleryAdapter<ImagePickerViewHolder
         return false;
     }
     
+    public void setData(List<ImageGallery> data) {
+        this.mImages.clear();
+        this.mImages.addAll(data);
+    }
     
+    public void setImageSelectedListener(
+              OnImageSelectedListener imageSelectedListener) {
+        mImageSelectedListener = imageSelectedListener;
+    }
+    
+    public ImageGallery getItem(int index) {
+        return mImages.get(index);
+    }
+    
+    public void removeAllSelectedSingleClick() {
+        handlerSelection(new Runnable() {
+            @Override
+            public void run() {
+                mSelectedImages.clear();
+                notifyDataSetChanged();
+            }
+        });
+    }
+    
+    public void addSelected(final ImageGallery image, final int position) {
+        handlerSelection(new Runnable() {
+            @Override
+            public void run() {
+                mSelectedImages.add(image);
+                notifyItemChanged(position);
+            }
+        });
+    }
+    
+    public void removeSelected(final ImageGallery image, final int position) {
+        handlerSelection(new Runnable() {
+            @Override
+            public void run() {
+                mSelectedImages.remove(image);
+                notifyItemChanged(position);
+            }
+        });
+    }
+    
+    private void handlerSelection(Runnable runnable) {
+        runnable.run();
+        if (mImageSelectedListener != null) {
+            mImageSelectedListener.onUpdateSelection(getSelectedImages());
+        }
+    }
+    
+    /*------------------------------------------*/
+    /* View holder                              */
+    /*------------------------------------------*/
     public class ImagePickerViewHolder extends RecyclerView.ViewHolder {
         
-        @BindView(R.id.container)
+        @BindView(R.id.container_image)
         FrameLayout mContainer;
         
         @BindView(R.id.image_item)

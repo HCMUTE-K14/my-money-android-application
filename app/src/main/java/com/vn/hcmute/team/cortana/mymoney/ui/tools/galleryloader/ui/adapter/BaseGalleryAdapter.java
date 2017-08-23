@@ -9,15 +9,17 @@ import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.helper.imageloa
  * Created by infamouSs on 8/23/17.
  */
 
-public abstract class BaseGalleryAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T>{
+public abstract class BaseGalleryAdapter<T extends RecyclerView.ViewHolder> extends
+                                                                            RecyclerView.Adapter<T> {
     
     private Context mContext;
     private ImageLoader mImageLoader;
     
-    public BaseGalleryAdapter(Context context,ImageLoader imageLoader){
-        this.mContext=context;
-        this.mImageLoader=imageLoader;
+    public BaseGalleryAdapter(Context context, ImageLoader imageLoader) {
+        this.mContext = context;
+        this.mImageLoader = imageLoader;
     }
+    
     @LayoutRes
     public abstract int getLayoutId();
     

@@ -14,4 +14,8 @@
   <string name="action_view_as_grid">Grid</string>
   <string name="txt_folder">Folder</string>
   <string name="txt_tap_to_select_image">Tap to select image</string>
+  <string name="txt_selected_with_max_limit">%d selected</string>
+  <string name="txt_selected_with_limit">%1$d/%2$d selected</string>
+  <string name="txt_no_album">No Album</string>
+  <string name="txt_done">Done</string>
 </resources>

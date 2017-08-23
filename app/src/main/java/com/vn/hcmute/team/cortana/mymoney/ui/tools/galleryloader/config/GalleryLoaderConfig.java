@@ -10,9 +10,20 @@ import java.util.List;
  * Created by infamouSs on 8/22/17.
  */
 
-public class GalleryLoaderConfig implements Parcelable{
+public class GalleryLoaderConfig implements Parcelable {
     
     
+    public static final Creator<GalleryLoaderConfig> CREATOR = new Creator<GalleryLoaderConfig>() {
+        @Override
+        public GalleryLoaderConfig createFromParcel(Parcel in) {
+            return new GalleryLoaderConfig(in);
+        }
+        
+        @Override
+        public GalleryLoaderConfig[] newArray(int size) {
+            return new GalleryLoaderConfig[size];
+        }
+    };
     private List<ImageGallery> selectedIamges;
     private String folderTitle;
     private String imageTitle;
@@ -22,7 +33,7 @@ public class GalleryLoaderConfig implements Parcelable{
     private boolean folderMode;
     private ImageLoader imageLoader;
     
-    public GalleryLoaderConfig(){
+    public GalleryLoaderConfig() {
         
     }
     
@@ -36,18 +47,6 @@ public class GalleryLoaderConfig implements Parcelable{
         folderMode = in.readByte() != 0;
         this.imageLoader = (ImageLoader) in.readSerializable();
     }
-    
-    public static final Creator<GalleryLoaderConfig> CREATOR = new Creator<GalleryLoaderConfig>() {
-        @Override
-        public GalleryLoaderConfig createFromParcel(Parcel in) {
-            return new GalleryLoaderConfig(in);
-        }
-        
-        @Override
-        public GalleryLoaderConfig[] newArray(int size) {
-            return new GalleryLoaderConfig[size];
-        }
-    };
     
     public List<ImageGallery> getSelectedIamges() {
         return selectedIamges;
@@ -123,7 +122,7 @@ public class GalleryLoaderConfig implements Parcelable{
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-    
+        
         dest.writeTypedList(selectedIamges);
         dest.writeString(folderTitle);
         dest.writeString(imageTitle);
@@ -134,5 +133,5 @@ public class GalleryLoaderConfig implements Parcelable{
         dest.writeSerializable(this.imageLoader);
     }
     
-
+    
 }

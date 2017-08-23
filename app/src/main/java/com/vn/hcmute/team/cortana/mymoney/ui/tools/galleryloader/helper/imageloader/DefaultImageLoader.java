@@ -17,8 +17,10 @@ public class DefaultImageLoader implements ImageLoader {
         GlideApp.with(imageView.getContext())
                   .load(object)
                   .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                  .placeholder(imageType == ImageType.FOLDER ? R.drawable.folder_placeholder:R.drawable.image_placeholder)
-                  .error(imageType == ImageType.FOLDER ? R.drawable.folder_placeholder:R.drawable.image_placeholder)
+                  .placeholder(imageType == ImageType.FOLDER ? R.drawable.folder_placeholder
+                            : R.drawable.image_placeholder)
+                  .error(imageType == ImageType.FOLDER ? R.drawable.folder_placeholder
+                            : R.drawable.image_placeholder)
                   .into(imageView);
     }
 }

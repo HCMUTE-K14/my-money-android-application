@@ -7,6 +7,7 @@ import java.io.Serializable;
  * Created by infamouSs on 8/22/17.
  */
 
-public interface ImageLoader extends Serializable{
-    void loadImage(Object object,ImageView imageView,ImageType imageType);
+public interface ImageLoader extends Serializable {
+    
+    void loadImage(Object object, ImageView imageView, ImageType imageType);
 }

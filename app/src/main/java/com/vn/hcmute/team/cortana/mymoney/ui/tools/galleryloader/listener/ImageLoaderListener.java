@@ -8,6 +8,7 @@ import io.reactivex.Observable;
  */
 
 public interface ImageLoaderListener {
+    
     void onLoaded(Observable<ReturnGalleryValue> result);
     
     void onFailure(Throwable throwable);

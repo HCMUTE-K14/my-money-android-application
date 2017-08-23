@@ -12,22 +12,22 @@ public class ReturnGalleryValue {
     private List<Folder> folders;
     private List<ImageGallery> images;
     
-    public ReturnGalleryValue(){
-        folders=new ArrayList<>();
-        images=new ArrayList<>();
+    public ReturnGalleryValue() {
+        folders = new ArrayList<>();
+        images = new ArrayList<>();
     }
     
     public List<Folder> getFolders() {
         return folders;
     }
     
-    public List<ImageGallery> getImages() {
-        return images;
-    }
-    
     public void setFolders(
               List<Folder> folders) {
         this.folders = folders;
+    }
+    
+    public List<ImageGallery> getImages() {
+        return images;
     }
     
     public void setImages(

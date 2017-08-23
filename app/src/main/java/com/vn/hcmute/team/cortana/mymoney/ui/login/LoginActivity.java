@@ -1,5 +1,6 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -16,10 +17,13 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.LoginComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.LoginModule;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
-import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.GalleryLoader;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.GalleryLoader;
+import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.model.ImageGallery;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import com.vn.hcmute.team.cortana.mymoney.utils.permission.PermissionCallBack;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -98,6 +102,16 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         
     }
     
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+       if(requestCode == 1 && resultCode==RESULT_OK && data!=null){
+           List<ImageGallery> images = (ArrayList<ImageGallery>) GalleryLoader.getImages(data);
+           MyLogger.d("Return",images);
+       }
+        
+       
+    }
+    
     @OnClick(R.id.button)
     public void onClickLogin(View view) {
         UserCredential userCredential = new UserCredential();
@@ -107,7 +121,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         
         //mLoginPresenter.login(userCredential);
     
-        GalleryLoader.create(this).start(1);
+        GalleryLoader.create(this).setFolderMode(true).multi().start(1);
     }
    
     @Override
