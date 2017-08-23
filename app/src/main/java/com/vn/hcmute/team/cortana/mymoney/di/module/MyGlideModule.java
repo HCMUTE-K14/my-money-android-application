@@ -7,7 +7,7 @@ import com.bumptech.glide.module.AppGlideModule;
  * Created by infamouSs on 8/11/17.
  */
 
-@GlideModule
+@GlideModule(glideName = "MyGlide")
 public class MyGlideModule extends AppGlideModule {
     
     private static final String TAG = MyGlideModule.class.getSimpleName();

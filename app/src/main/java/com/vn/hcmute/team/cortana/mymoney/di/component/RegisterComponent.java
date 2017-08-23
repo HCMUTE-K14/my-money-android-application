@@ -15,4 +15,5 @@ import dagger.Component;
 public interface RegisterComponent {
     
     void inject(RegisterActivity registerActivity);
+    
 }
