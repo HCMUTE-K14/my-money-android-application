@@ -1,5 +1,6 @@
 package com.vn.hcmute.team.cortana.mymoney.tools.galleryloader.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,10 +11,14 @@ public class Folder {
     private String name;
     private List<ImageGallery> images;
     
+    public Folder(String name) {
+        this.name = name;
+        this.images=new ArrayList<>();
+    }
     
     public Folder(){
         this.name="";
-        this.images=null;
+        this.images=new ArrayList<>();
     }
     
     public String getName() {

@@ -12,4 +12,6 @@
   <string name="action_view_as">View as</string>
   <string name="action_view_as_list">List</string>
   <string name="action_view_as_grid">Grid</string>
+  <string name="txt_folder">Folder</string>
+  <string name="txt_tap_to_select_image">Tap to select image</string>
 </resources>
