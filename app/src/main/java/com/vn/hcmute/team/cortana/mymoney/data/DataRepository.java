@@ -44,28 +44,28 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     
     @Override
     public Observable<List<Image>> getImage(String userid, String token) {
-        return mRemoteRepository.getImage(userid,token);
+        return mRemoteRepository.getImage(userid, token);
     }
     
     @Override
     public Observable<String> uploadImage(RequestBody userid, RequestBody token, RequestBody detail,
-              MultipartBody.Part file){
-        return mRemoteRepository.uploadImage(userid,token,detail,file);
+              MultipartBody.Part file) {
+        return mRemoteRepository.uploadImage(userid, token, detail, file);
     }
     
     @Override
     public Observable<Image> getImageById(String userid, String token, String imageid) {
-       return mRemoteRepository.getImageByid(userid,token,imageid);
+        return mRemoteRepository.getImageByid(userid, token, imageid);
     }
     
     @Override
     public Observable<String> removeImage(String userid, String token, String imageid) {
-        return mRemoteRepository.removeImage(userid,token,imageid);
+        return mRemoteRepository.removeImage(userid, token, imageid);
     }
     
     @Override
     public Observable<String> updateImage(String userid, String token, String imageid) {
-        return mRemoteRepository.updateImage(userid,token,imageid);
+        return mRemoteRepository.updateImage(userid, token, imageid);
     }
     
     

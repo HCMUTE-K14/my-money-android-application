@@ -10,13 +10,13 @@ public class Action {
     
     public static final String ACTION_REGISTER = "action_register";
     
-    public static final String ACTION_GET_IMAGE="action_get_image";
+    public static final String ACTION_GET_IMAGE = "action_get_image";
     
-    public static final String ACTION_GET_IMAGE_BY_ID="action_get_image_by_id";
+    public static final String ACTION_GET_IMAGE_BY_ID = "action_get_image_by_id";
     
-    public static final String ACTION_UPLOAD_IMAGE="action_upload_image";
+    public static final String ACTION_UPLOAD_IMAGE = "action_upload_image";
     
     public static final String ACTION_REMOVE_IMAGE = "action_remove_image";
     
-    public static final String ACTION_UPDATE_IMAGE="action_update_image";
+    public static final String ACTION_UPDATE_IMAGE = "action_update_image";
 }

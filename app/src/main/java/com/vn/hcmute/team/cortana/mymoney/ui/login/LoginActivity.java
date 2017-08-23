@@ -90,13 +90,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-       if(requestCode == 1 && resultCode==RESULT_OK && data!=null){
-           List<ImageGallery> images = (ArrayList<ImageGallery>) GalleryLoader.getImages(data);
-           MyLogger.d("Return",images);
-       }
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            List<ImageGallery> images = (ArrayList<ImageGallery>) GalleryLoader.getImages(data);
+            MyLogger.d("Return", images);
+        }
         
-       
-       
+        
     }
     
     @OnClick(R.id.button)
@@ -107,9 +106,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         userCredential.setPassword(mTextViewPassword.getText().toString());
         
         mLoginPresenter.login(userCredential);
-       // GalleryLoader.create(this).start(GalleryLoader.REQUEST_GALLERY_LOADER);
+        // GalleryLoader.create(this).start(GalleryLoader.REQUEST_GALLERY_LOADER);
     }
-   
+    
     @Override
     public void loginSuccessful() {
         Toast.makeText(this, "LOGIN successful", Toast.LENGTH_SHORT).show();

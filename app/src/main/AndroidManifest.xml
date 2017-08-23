@@ -3,8 +3,9 @@
   package="com.vn.hcmute.team.cortana.mymoney">
 
   <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
   <application
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
@@ -21,7 +22,7 @@
       </intent-filter>
     </activity>
 
-    <activity android:name=".ui.tools.galleryloader.ui.GalleryLoaderActivity"/>
+    <activity android:name=".ui.tools.galleryloader.ui.GalleryLoaderActivity" />
   </application>
 
 </manifest>

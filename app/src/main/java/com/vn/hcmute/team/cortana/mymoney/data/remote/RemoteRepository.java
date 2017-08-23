@@ -35,7 +35,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<User> login(UserCredential userCredential) {
         UserService userService = mServiceGenerator.getService(UserService.class);
-        if(userService ==null){
+        if (userService == null) {
             return null;
         }
         return userService.login(userCredential)
@@ -56,7 +56,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> register(User user) {
         UserService userService = mServiceGenerator.getService(UserService.class);
-        if(userService ==null){
+        if (userService == null) {
             return null;
         }
         return userService.register(user)
@@ -77,7 +77,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<List<Image>> getImage(String userid, String token) {
         ImageService imageService = mServiceGenerator.getService(ImageService.class);
-        if(imageService ==null){
+        if (imageService == null) {
             return null;
         }
         return imageService.get(userid, token)
@@ -98,7 +98,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<Image> getImageByid(String userid, String token, String imageid) {
         ImageService imageService = mServiceGenerator.getService(ImageService.class);
-        if(imageService ==null){
+        if (imageService == null) {
             return null;
         }
         return imageService.getImageById(userid, token, imageid)
@@ -119,7 +119,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> removeImage(String userid, String token, String imageid) {
         ImageService imageService = mServiceGenerator.getService(ImageService.class);
-        if(imageService ==null){
+        if (imageService == null) {
             return null;
         }
         return imageService.remove(userid, token, imageid)
@@ -140,7 +140,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     public Observable<String> uploadImage(RequestBody userid, RequestBody token, RequestBody detail,
               MultipartBody.Part file) {
         ImageService imageService = mServiceGenerator.getService(ImageService.class);
-        if(imageService ==null){
+        if (imageService == null) {
             return null;
         }
         return imageService.upload(userid, token, detail, file)
@@ -160,7 +160,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> updateImage(String userid, String token, String imageid) {
         ImageService imageService = mServiceGenerator.getService(ImageService.class);
-        if(imageService ==null){
+        if (imageService == null) {
             return null;
         }
         return imageService.update(userid, token, imageid)

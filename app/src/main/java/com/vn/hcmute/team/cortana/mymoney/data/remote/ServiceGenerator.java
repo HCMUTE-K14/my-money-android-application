@@ -65,16 +65,17 @@ public class ServiceGenerator {
         return new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                try{
+                try {
                     Request modifiedRequest = chain.request().newBuilder()
                               .addHeader("Cache-Control", String.format("max-age=%d, max-stale=%d",
                                         CACHE_MAX_AGE, CACHE_MAX_STALE))
                               .build();
                     return chain.proceed(modifiedRequest);
-                }catch (SocketTimeoutException e){
-                    throw new NetworkException(mContext.getString(R.string.message_connect_server_error));
+                } catch (SocketTimeoutException e) {
+                    throw new NetworkException(
+                              mContext.getString(R.string.message_connect_server_error));
                 }
-               
+                
             }
         };
     }
@@ -85,10 +86,10 @@ public class ServiceGenerator {
     }
     
     public <T> T getService(final Class<T> clazz, String baseurl) {
-        if(!NetworkUtil.isNetworkAvailable(mContext)){
+        if (!NetworkUtil.isNetworkAvailable(mContext)) {
             return null;
         }
-        try{
+        try {
             Retrofit retrofit = new Retrofit.Builder()
                       .baseUrl(baseurl)
                       .client(mClient)
@@ -96,7 +97,7 @@ public class ServiceGenerator {
                       .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                       .build();
             return retrofit.create(clazz);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new NetworkException(mContext.getString(R.string.message_connect_server_error));
         }
     }

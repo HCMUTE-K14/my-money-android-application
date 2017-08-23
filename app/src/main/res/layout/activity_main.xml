@@ -27,7 +27,6 @@
     android:id="@+id/iamgeView"
     android:layout_width="300dp"
     android:layout_height="300dp"
-    android:layout_below="@id/button"
-    />
+    android:layout_below="@id/button" />
 
 </RelativeLayout>

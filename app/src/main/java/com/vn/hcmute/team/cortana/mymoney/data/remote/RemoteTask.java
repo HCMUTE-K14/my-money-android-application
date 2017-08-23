@@ -13,21 +13,25 @@ import okhttp3.RequestBody;
  */
 
 public interface RemoteTask {
-    public interface UserTask{
-        Observable<User> login(UserCredential userCredential);
     
+    public interface UserTask {
+        
+        Observable<User> login(UserCredential userCredential);
+        
         Observable<String> register(User user);
     }
-    public interface ImageTask{
-        Observable<List<Image>> getImage(String userid,String token);
+    
+    public interface ImageTask {
         
-        Observable<Image> getImageByid(String userid,String token,String imageid);
+        Observable<List<Image>> getImage(String userid, String token);
         
-        Observable<String> removeImage(String userid,String token,String imageid);
+        Observable<Image> getImageByid(String userid, String token, String imageid);
         
-        Observable<String> uploadImage(RequestBody userid,RequestBody token,RequestBody detail,
+        Observable<String> removeImage(String userid, String token, String imageid);
+        
+        Observable<String> uploadImage(RequestBody userid, RequestBody token, RequestBody detail,
                   MultipartBody.Part file);
         
-        Observable<String> updateImage(String userid,String token,String imageid);
+        Observable<String> updateImage(String userid, String token, String imageid);
     }
 }

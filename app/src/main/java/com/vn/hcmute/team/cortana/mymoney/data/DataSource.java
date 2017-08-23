@@ -24,12 +24,12 @@ public interface DataSource {
         
         Observable<String> uploadImage(RequestBody userid, RequestBody token, RequestBody detail,
                   MultipartBody.Part file);
-    
-        Observable<Image>  getImageById(String userid, String token, String imageid);
-    
-        Observable<String>  removeImage(String userid, String token, String imageid);
         
-        Observable<String> updateImage(String userid,String token,String imageid);
+        Observable<Image> getImageById(String userid, String token, String imageid);
+        
+        Observable<String> removeImage(String userid, String token, String imageid);
+        
+        Observable<String> updateImage(String userid, String token, String imageid);
     }
     
     public interface CacheDataSource {

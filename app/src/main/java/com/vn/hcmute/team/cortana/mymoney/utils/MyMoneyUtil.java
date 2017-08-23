@@ -9,6 +9,7 @@ import com.vn.hcmute.team.cortana.mymoney.utils.permission.PermissionHelper;
  */
 
 public class MyMoneyUtil {
+    
     public static boolean isMarshmallow() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }

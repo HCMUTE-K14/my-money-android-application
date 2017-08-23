@@ -8,7 +8,7 @@
     android:id="@+id/alpha_view"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/colorPrimary"/>
+    android:background="@color/colorPrimary" />
 
   <com.vn.hcmute.team.cortana.mymoney.ui.view.SquareImageView
     android:id="@+id/image_item"
