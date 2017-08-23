@@ -23,10 +23,7 @@ import okhttp3.RequestBody;
  */
 
 public class DataRepository implements DataSource.RemoteDataSource, DataSource.CacheDataSource,
-                                       DataSource.LocalDataSource, DataSource.WalletDataSource,
-                                       DataSource.CurrenciesDataSource, DataSource.EvetnDataSource,
-                                       DataSource.SavingDataSource,DataSource.PersonDataSource ,
-                                       DataSource.BudgetDataSource{
+                                       DataSource.LocalDataSource{
     
     private RemoteRepository mRemoteRepository;
     private LocalRepository mLocalRepository;

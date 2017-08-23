@@ -182,15 +182,6 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                   });
     }
     
-
-    // wallet
-    @Override
-    public Observable<String> createWallet(Wallet wallet, String userid, String token) {
-        WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
-        
-        return mWalletService.createWallet(wallet, userid, token)
-
-    }
     @Override
     public Observable<String> updateImage(String userid, String token, String imageid) {
         ImageService imageService = mServiceGenerator.getService(ImageService.class);
@@ -210,6 +201,26 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                       }
                   });
     }
+
+    // wallet
+    @Override
+    public Observable<String> createWallet(Wallet wallet, String userid, String token) {
+        WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
+        
+        return mWalletService.createWallet(wallet, userid, token)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getData();
+                          } else {
+                              throw new ImageException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+   
     
 
     @Override

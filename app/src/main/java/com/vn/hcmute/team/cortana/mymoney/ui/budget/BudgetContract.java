@@ -9,10 +9,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.view.BaseView;
 
 public interface BudgetContract {
     interface View extends BaseView {
-        
         void onSuccess(Object object);
-        
-        
         
         void onFailure(String message);
     }
