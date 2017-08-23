@@ -16,6 +16,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.LoginComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.LoginModule;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
+import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.GalleryLoader;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import com.vn.hcmute.team.cortana.mymoney.utils.permission.PermissionCallBack;
@@ -104,7 +105,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         userCredential.setUsername(mTextViewUsername.getText().toString());
         userCredential.setPassword(mTextViewPassword.getText().toString());
         
-        mLoginPresenter.login(userCredential);
+        //mLoginPresenter.login(userCredential);
+    
+        GalleryLoader.create(this).start(1);
     }
    
     @Override

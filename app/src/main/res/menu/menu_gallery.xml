@@ -16,24 +16,4 @@
         android:title="@string/action_sort_date_added" />
     </menu>
   </item>
-
-  <item
-    android:id="@+id/action_view_as"
-    android:title="@string/action_view_as">
-    <menu>
-      <item
-        android:id="@+id/action_view_as_list"
-        android:checkable="true"
-        android:checked="true"
-        android:title="@string/action_view_as_list"
-        app:actionViewClass="android.widget.CheckBox"
-        app:showAsAction="ifRoom|withText" />
-      <item
-        android:id="@+id/action_view_as_grid"
-        android:checkable="true"
-        android:title="@string/action_view_as_grid"
-        app:actionViewClass="android.widget.CheckBox"
-        app:showAsAction="ifRoom|withText" />
-    </menu>
-  </item>
 </menu>
