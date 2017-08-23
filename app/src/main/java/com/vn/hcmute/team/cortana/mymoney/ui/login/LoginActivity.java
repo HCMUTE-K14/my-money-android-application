@@ -21,7 +21,6 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.GalleryLoader;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.model.ImageGallery;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
-import com.vn.hcmute.team.cortana.mymoney.utils.permission.PermissionCallBack;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -31,19 +30,6 @@ import javax.inject.Inject;
  */
 
 public class LoginActivity extends BaseActivity implements LoginContract.View {
-    
-    
-    private PermissionCallBack mPermissionCallBack = new PermissionCallBack() {
-        @Override
-        public void onPermissionGranted() {
-            // loadHomeFragment();
-        }
-        
-        @Override
-        public void onPermissionDenied() {
-            finish();
-        }
-    };
     
     @BindView(R.id.txt_username)
     TextView mTextViewUsername;
@@ -110,6 +96,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
        }
         
        
+       
     }
     
     @OnClick(R.id.button)
@@ -119,9 +106,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         userCredential.setUsername(mTextViewUsername.getText().toString());
         userCredential.setPassword(mTextViewPassword.getText().toString());
         
-        //mLoginPresenter.login(userCredential);
-    
-        GalleryLoader.create(this).setFolderMode(true).multi().start(1);
+        mLoginPresenter.login(userCredential);
+       // GalleryLoader.create(this).start(GalleryLoader.REQUEST_GALLERY_LOADER);
     }
    
     @Override
@@ -137,10 +123,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     
     @Override
     public void loading(boolean isLoading) {
-        if (isLoading) {
-            MyLogger.d("RUNNING");
-            return;
-        }
-        MyLogger.d("STOPPED");
+        
     }
 }

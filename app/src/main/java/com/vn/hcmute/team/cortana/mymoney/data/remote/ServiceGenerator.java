@@ -7,9 +7,13 @@ import static com.vn.hcmute.team.cortana.mymoney.ApplicationConfig.READ_TIMEOUT;
 
 import android.content.Context;
 import com.google.gson.Gson;
+import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.api.MyMoneyApi;
+import com.vn.hcmute.team.cortana.mymoney.exception.NetworkException;
+import com.vn.hcmute.team.cortana.mymoney.utils.NetworkUtil;
 import java.io.File;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -61,11 +65,16 @@ public class ServiceGenerator {
         return new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                Request modifiedRequest = chain.request().newBuilder()
-                          .addHeader("Cache-Control", String.format("max-age=%d, max-stale=%d",
-                                    CACHE_MAX_AGE, CACHE_MAX_STALE))
-                          .build();
-                return chain.proceed(modifiedRequest);
+                try{
+                    Request modifiedRequest = chain.request().newBuilder()
+                              .addHeader("Cache-Control", String.format("max-age=%d, max-stale=%d",
+                                        CACHE_MAX_AGE, CACHE_MAX_STALE))
+                              .build();
+                    return chain.proceed(modifiedRequest);
+                }catch (SocketTimeoutException e){
+                    throw new NetworkException(mContext.getString(R.string.message_connect_server_error));
+                }
+               
             }
         };
     }
@@ -76,13 +85,19 @@ public class ServiceGenerator {
     }
     
     public <T> T getService(final Class<T> clazz, String baseurl) {
-        Retrofit retrofit = new Retrofit.Builder()
-                  .baseUrl(baseurl)
-                  .client(mClient)
-                  .addConverterFactory(GsonConverterFactory.create(mGson))
-                  .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                  .build();
-        
-        return retrofit.create(clazz);
+        if(!NetworkUtil.isNetworkAvailable(mContext)){
+            return null;
+        }
+        try{
+            Retrofit retrofit = new Retrofit.Builder()
+                      .baseUrl(baseurl)
+                      .client(mClient)
+                      .addConverterFactory(GsonConverterFactory.create(mGson))
+                      .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                      .build();
+            return retrofit.create(clazz);
+        }catch (Exception e){
+            throw new NetworkException(mContext.getString(R.string.message_connect_server_error));
+        }
     }
 }

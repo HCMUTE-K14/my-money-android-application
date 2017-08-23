@@ -6,7 +6,6 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ItemDecoration;
-import android.widget.Toast;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.GalleryLoader;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.config.GalleryLoaderConfig;
@@ -133,7 +132,6 @@ public class RecyclerViewManager {
     public boolean selectImage() {
         if (mConfig.getMode() == GalleryLoader.MODE_MULTIPLE) {
             if (mImagePickerAdapter.getSelectedImages().size() >= mConfig.getLimit()) {
-                Toast.makeText(mContext, "DSADAS", Toast.LENGTH_SHORT).show();
                 return false;
             }
         } else if (mConfig.getMode() == MODE_SINGLE) {

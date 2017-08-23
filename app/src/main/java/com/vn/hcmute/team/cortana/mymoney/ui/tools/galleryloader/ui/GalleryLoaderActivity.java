@@ -61,6 +61,7 @@ public class GalleryLoaderActivity extends BaseActivity implements GalleryLoader
     private OnFolderClickListener mFolderClickListener = new OnFolderClickListener() {
         @Override
         public void onFolderClick(Folder folder) {
+            mActionbar.setTitle(folder.getName());
             mRecyclerViewManager.setImageAdapter(folder.getImages());
         }
     };
@@ -216,7 +217,7 @@ public class GalleryLoaderActivity extends BaseActivity implements GalleryLoader
                   PermissionHelper.Permission.READ_EXTERNAL_STORAGE)) {
             
             Snackbar.make(findViewById(android.R.id.content),
-                      getString(R.string.permission_read_request),
+                      getString(R.string.message_permission_read_request),
                       Snackbar.LENGTH_INDEFINITE)
                       .setAction(getString(R.string.action_ok),
                                 new View.OnClickListener() {

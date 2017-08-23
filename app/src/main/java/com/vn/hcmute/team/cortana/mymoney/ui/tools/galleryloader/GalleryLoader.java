@@ -24,6 +24,7 @@ public abstract class GalleryLoader {
     public static final int MODE_SINGLE = 0;
     public static final int MODE_MULTIPLE = 1;
     public static final String EXTRA_SELECTED_IMAGES = "extra_selected_images";
+    public static final int REQUEST_GALLERY_LOADER=1;
     
     
     private GalleryLoaderConfig mGalleryLoaderConfig;

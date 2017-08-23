@@ -2,7 +2,8 @@
   <string name="app_name">MyMoney</string>
   <string name="message_validate_user_login">Username and password must be at least 4 character</string>
   <string name="message_validate_user_register">Username,password and name must be at least 4 character</string>
-  <string name="permission_read_request">This app will need to read external storage to display image on your device.</string>
+  <string name="message_permission_read_request">This app will need to read external storage to display image on your device.</string>
+  <string name="message_connect_server_error">Cannot connect to server ! Please try later</string>
   <string name="action_ok">OK</string>
   <string name="txt_gallery">Gallery</string>
   <string name="action_sort_by">Sort by</string>
@@ -18,4 +19,5 @@
   <string name="txt_selected_with_limit">%1$d/%2$d selected</string>
   <string name="txt_no_album">No Album</string>
   <string name="txt_done">Done</string>
+  <string name="txt_warning_limit">Cannot pick more</string>
 </resources>
