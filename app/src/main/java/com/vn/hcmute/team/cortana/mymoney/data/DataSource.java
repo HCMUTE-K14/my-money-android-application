@@ -1,8 +1,11 @@
 package com.vn.hcmute.team.cortana.mymoney.data;
 
+import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
+import com.vn.hcmute.team.cortana.mymoney.model.Person;
+import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
@@ -78,6 +81,25 @@ public interface DataSource {
         Observable<String> createEvent(Event event,String userid,String token);
         Observable<String> updateEvent(Event event,String userid,String token);
         Observable<String> deleteEvent(String userid,String token,String idEvent);
+    }
+    interface SavingDataSource{
+        Observable<List<Saving>> getSaving(String userid,String token);
+        Observable<String> createSaving(Saving saving, String userid, String token);
+        Observable<String> updateSaving(Saving saving,String userid,String token);
+        Observable<String> deleteSaving (String userid,String token,String idSaving);
+        Observable<String> takeInSaving(String userid,String token,String idWallet,String idSaving,String money);
+        Observable<String> takeOutSaving(String userid,String token,String idWallet,String idSaving,String money);
+    }
+    interface  PersonDataSource{
+        Observable<List<Person>> getPerson(String userid,String token);
+        Observable<String> addPerson(Person person,String userid,String token);
+        Observable<String> removePerson(String userid,String token,String personid);
+    }
+    interface BudgetDataSource{
+        Observable<List<Budget>> getBudget(String userid,String token);
+        Observable<String> createBudget(Budget budget, String userid,String token);
+        Observable<String> updateBudget(Budget budget, String userid,String token);
+        Observable<String> deleteBudget(String userid,String token,String budgetId);
     }
     
 }

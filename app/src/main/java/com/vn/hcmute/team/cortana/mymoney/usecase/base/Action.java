@@ -25,5 +25,22 @@ public class Action {
     public static final String ACTION_UPDATE_EVENT="update_event";
     public static final String ACTION_DELETE_EVENT="delete_event";
     
+    public static final String ACTION_GET_SAVING="get_saving";
+    public static final String ACTION_CREATE_SAVING="create_saving";
+    public static final String ACTION_UPDATE_SAVING="update_saving";
+    public static final String ACTION_DELETE_SAVING="delete_saving";
+    public static final String ACTION_TAKE_IN_SAVING="take_in";
+    public static final String ACTION_TAKE_OUT_SAVING="take_out";
+    
+    
+    public static final String ACTION_GET_PERSON="get_person";
+    public static final String ACTION_ADD_PERSON="add_person";
+    public static final String ACTION_REMOVE_PERSON="remove_person";
+    
+    
+    public static final String ACTION_GET_BUDGET="get_budget";
+    public static final String ACTION_CREATE_BUDGET="create_budget";
+    public static final String ACTION_UPDATE_BUDGET="update_budget";
+    public static final String ACTION_DELETE_BUDGET="delete_budget";
     
 }

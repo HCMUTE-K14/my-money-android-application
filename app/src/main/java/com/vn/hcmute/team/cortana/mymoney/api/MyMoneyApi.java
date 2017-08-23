@@ -31,6 +31,22 @@ public class MyMoneyApi {
     public static final String CREATE_EVENT="event/createEvent";
     public static final String UPDATE_EVENT="event/updateEvent";
     public static final String DELETE_EVENT="event/deleteEvent";
+    //saving
+    public static final String GET_SAVING="saving/getSaving";
+    public static final String CREATE_SAVING="saving/create";
+    public static final String UPDATE_SAVING="saving/update";
+    public static final String DELETE_SAVING="saving/delete";
+    public static final String TAKE_IN_SAVING="saving/takeIn";
+    public static final String TAKE_OUT_SAVING="saving/takeOut";
+    //person
+    public static final String GET_PERSON="person/getPerson";
+    public static final String ADD_PERSON="person/add";
+    public static final String REMOVE_PERSON="person/remove";
+    //budget
+    public static final String GET_BUDGET="budget/getBudget";
+    public static final String CREATE_BUDGET="budget/createBudget";
+    public static final String UPDATE_BUDGET="budget/updateBudget";
+    public static final String DELETE_BUDGET="budget/deleteBudget";
     
     
 }
