@@ -12,9 +12,10 @@ public interface EventContract {
     
     interface View extends BaseView {
         
-        void onSuccess(String message);
-        
-        void onSuccessGetEvent(List<Event> events);
+        void onSuccessCreate(String message);
+        void onSuccessUpdate(String message);
+        void onSuccessDelete(String message);
+        void onSuccessGet(List<Event> events);
         
         void onFailure(String message);
     }

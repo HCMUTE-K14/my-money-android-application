@@ -206,7 +206,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> createWallet(Wallet wallet, String userid, String token) {
         WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
-        
+        if(mWalletService==null){
+            return null;
+        }
         return mWalletService.createWallet(wallet, userid, token)
                   .map(new Function<JsonResponse<String>, String>() {
                       @Override
@@ -226,6 +228,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> updateWallet(Wallet wallet, String userid, String token) {
         WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
+        if(mWalletService==null){
+            return null;
+        }
         return mWalletService.updateWallet(wallet, userid, token)
                   .map(new Function<JsonResponse<String>, String>() {
                       @Override
@@ -244,6 +249,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> deleteWallet(String userid, String token, String idwallet) {
         WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
+        if(mWalletService==null){
+            return null;
+        }
         return mWalletService.deleteWallet(userid, token, idwallet)
                   .map(new Function<JsonResponse<String>, String>() {
                       @Override
@@ -262,6 +270,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<List<Wallet>> getAllWallet(String userid, String token) {
         WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
+        if(mWalletService==null){
+            return null;
+        }
         return mWalletService.getAllWallet(userid, token)
                   .map(new Function<JsonResponse<List<Wallet>>, List<Wallet>>() {
                       @Override
@@ -285,6 +296,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     public Observable<String> moveWallet(String userid, String token, String wallet1,
               String wallet2, String money) {
         WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
+        if(mWalletService==null){
+            return null;
+        }
         return mWalletService.moveWallet(userid, token, wallet1, wallet2, money)
                   .map(new Function<JsonResponse<String>, String>() {
                       @Override
@@ -305,7 +319,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     public Observable<List<Currencies>> getCurrencies() {
         
         CurrenciesService currencies = mServiceGenerator.getService(CurrenciesService.class);
-        
+        if(currencies==null){
+            return null;
+        }
         return currencies.getCurrencies().map(
                   new Function<JsonResponse<List<Currencies>>, List<Currencies>>() {
                       @Override
@@ -327,7 +343,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<List<Event>> getEvent(String uerid, String token) {
         EventService eventService = mServiceGenerator.getService(EventService.class);
-        
+        if(eventService==null){
+            return null;
+        }
         return eventService.getEvent(uerid, token)
                   .map(new Function<JsonResponse<List<Event>>, List<Event>>() {
                       @Override
@@ -346,7 +364,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> createEvent(Event event, String userid, String token) {
         EventService eventService = mServiceGenerator.getService(EventService.class);
-        
+        if(eventService==null){
+            return null;
+        }
         return eventService.createEvent(event, userid, token).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
@@ -366,7 +386,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> updateEvent(Event event, String userid, String token) {
         EventService eventService = mServiceGenerator.getService(EventService.class);
-        
+        if(eventService==null){
+            return null;
+        }
         return eventService.updateEvent(event, userid, token).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
@@ -386,7 +408,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> deleteEvent(String userid, String token, String idEvent) {
         EventService eventService = mServiceGenerator.getService(EventService.class);
-        
+        if(eventService==null){
+            return null;
+        }
         return eventService.deleteEvent(userid, token, idEvent).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
@@ -405,7 +429,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<List<Saving>> getSaving(String userid, String token) {
         SavingService savingService=mServiceGenerator.getService(SavingService.class);
-        
+        if(savingService==null){
+            return null;
+        }
         return savingService.getSaving(userid,token).map(
                   new Function<JsonResponse<List<Saving>>, List<Saving>>() {
                       @Override
@@ -426,6 +452,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> createSaving(final Saving saving, String userid, String token) {
         SavingService savingService=mServiceGenerator.getService(SavingService.class);
+        if(savingService==null){
+            return null;
+        }
         return savingService.createSaving(saving,userid,token).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
@@ -444,6 +473,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> updateSaving(Saving saving, String userid, String token) {
         SavingService savingService=mServiceGenerator.getService(SavingService.class);
+        if(savingService==null){
+            return null;
+        }
         return savingService.updateSaving(saving,userid,token).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
@@ -465,6 +497,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> deleteSaving(String userid, String token, String idSaving) {
         SavingService savingService=mServiceGenerator.getService(SavingService.class);
+        if(savingService==null){
+            return null;
+        }
         return savingService.deleteSaving(userid,token,idSaving).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
@@ -484,6 +519,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     public Observable<String> takeInSaving(String userid, String token, String idWallet,
               String idSaving, String money) {
         SavingService savingService=mServiceGenerator.getService(SavingService.class);
+        if(savingService==null){
+            return null;
+        }
         return savingService.takeInSaving(userid,token,idWallet,idSaving,money).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
@@ -503,6 +541,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     public Observable<String> takeOutSaving(String userid, String token, String idWallet,
               String idSaving, String money) {
         SavingService savingService=mServiceGenerator.getService(SavingService.class);
+        if(savingService==null){
+            return null;
+        }
         return savingService.takeOutSaving(userid,token,idWallet,idSaving,money).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
@@ -521,7 +562,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<List<Person>> getPerson(String userid, String token) {
         PersonService personService=mServiceGenerator.getService(PersonService.class);
-        
+        if(personService==null){
+            return null;
+        }
         return personService.getPerson(userid,token).map(
                   new Function<JsonResponse<List<Person>>, List<Person>>() {
                       @Override
@@ -540,6 +583,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> addPerson(Person person, String userid, String token) {
         PersonService personService=mServiceGenerator.getService(PersonService.class);
+        if(personService==null){
+            return null;
+        }
         return personService.addPerson(person,userid,token).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
@@ -558,6 +604,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> removePerson(String userid, String token, String personid) {
         PersonService personService=mServiceGenerator.getService(PersonService.class);
+        if(personService==null){
+            return null;
+        }
         return personService.removePerson(userid,token,personid).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
@@ -580,6 +629,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<List<Budget>> getBudget(String userid, String token) {
         BudgetService budgetService=mServiceGenerator.getService(BudgetService.class);
+        if(budgetService==null){
+            return null;
+        }
         return budgetService.getBudget(userid,token).map(
                   new Function<JsonResponse<List<Budget>>, List<Budget>>() {
                       @Override
@@ -599,6 +651,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> createBudget(Budget budget, String userid, String token) {
         BudgetService budgetService=mServiceGenerator.getService(BudgetService.class);
+        if(budgetService==null){
+            return null;
+        }
         return budgetService.createBudget(budget,userid,token).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
@@ -618,6 +673,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> updateBudget(Budget budget, String userid, String token) {
         BudgetService budgetService=mServiceGenerator.getService(BudgetService.class);
+        if(budgetService==null){
+            return null;
+        }
         return budgetService.updateBudget(budget,userid,token).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
@@ -637,6 +695,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> deleteBudget(String userid, String token, String budgetId) {
         BudgetService budgetService=mServiceGenerator.getService(BudgetService.class);
+        if(budgetService==null){
+            return null;
+        }
         return budgetService.deleteBudget(userid,token,budgetId).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override

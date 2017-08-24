@@ -2,6 +2,7 @@ package com.vn.hcmute.team.cortana.mymoney.ui.budget;
 
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.view.BaseView;
+import java.util.List;
 
 /**
  * Created by kunsubin on 8/23/2017.
@@ -9,8 +10,10 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.view.BaseView;
 
 public interface BudgetContract {
     interface View extends BaseView {
-        void onSuccess(Object object);
-        
+        void onSuccessGet(List<Budget> list);
+        void onSuccessCreate(String message);
+        void onSuccessUpdate(String message);
+        void onSucsessDelete(String message);
         void onFailure(String message);
     }
     

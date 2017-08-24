@@ -21,32 +21,16 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
     public EventPresenter(EventUseCase mEventUseCase) {
         this.mEventUseCase = mEventUseCase;
     }
-    BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
-        
-        @Override
-        public void onSuccess(Object value) {
-            getView().onSuccess((String) value);
-       
-        }
-        
-        @Override
-        public void onFailure(Throwable throwable) {
-            getView().onFailure(throwable.getMessage());
-        }
-        
-        @Override
-        public void onLoading() {
-            
-        }
-    };
     
     @Override
     public void getEvent() {
+        
+        
         BaseCallBack<Object> callBack = new BaseCallBack<Object>() {
         
             @Override
             public void onSuccess(Object value) {
-                getView().onSuccessGetEvent((List<Event>) value);
+                getView().onSuccessGet((List<Event>) value);
             
             }
         
@@ -66,18 +50,73 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
     
     @Override
     public void createEvent(Event event) {
+        BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
+        
+            @Override
+            public void onSuccess(Object value) {
+                getView().onSuccessCreate((String) value);
+            
+            }
+        
+            @Override
+            public void onFailure(Throwable throwable) {
+                getView().onFailure(throwable.getMessage());
+            }
+        
+            @Override
+            public void onLoading() {
+            
+            }
+        };
+        
         EventRequest eventRequest=new EventRequest(Action.ACTION_CREATAE_EVENT,mObjectBaseCallBack,event,null);
         mEventUseCase.subscribe(eventRequest);
     }
     
     @Override
     public void updateEvent(Event event) {
+        BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
+        
+            @Override
+            public void onSuccess(Object value) {
+                getView().onSuccessUpdate((String) value);
+            
+            }
+        
+            @Override
+            public void onFailure(Throwable throwable) {
+                getView().onFailure(throwable.getMessage());
+            }
+        
+            @Override
+            public void onLoading() {
+            
+            }
+        };
         EventRequest eventRequest=new EventRequest(Action.ACTION_UPDATE_EVENT,mObjectBaseCallBack,event,null);
         mEventUseCase.subscribe(eventRequest);
     }
     
     @Override
     public void deleteEvent(String idEvent) {
+        BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
+        
+            @Override
+            public void onSuccess(Object value) {
+                getView().onSuccessDelete((String) value);
+            
+            }
+        
+            @Override
+            public void onFailure(Throwable throwable) {
+                getView().onFailure(throwable.getMessage());
+            }
+        
+            @Override
+            public void onLoading() {
+            
+            }
+        };
         String[] params={idEvent};
         EventRequest eventRequest=new EventRequest(Action.ACTION_DELETE_EVENT,mObjectBaseCallBack,null,params);
         mEventUseCase.subscribe(eventRequest);

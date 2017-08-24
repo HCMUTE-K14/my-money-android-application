@@ -72,19 +72,26 @@ public class EventActivity extends BaseActivity implements EventContract.View  {
     
     
     
+  
+    
     @Override
-    public void onSuccess(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public void onSuccessCreate(String message) {
+        
     }
     
     @Override
-    public void onSuccessGetEvent(List<Event> events) {
-        if(events!=null&&!events.isEmpty()){
-            Toast.makeText(this, events.get(0).getName(), Toast.LENGTH_LONG).show();
+    public void onSuccessUpdate(String message) {
         
-        }else {
-            Toast.makeText(this, "fail", Toast.LENGTH_LONG).show();
-        }
+    }
+    
+    @Override
+    public void onSuccessDelete(String message) {
+        
+    }
+    
+    @Override
+    public void onSuccessGet(List<Event> events) {
+        
     }
     
     @Override

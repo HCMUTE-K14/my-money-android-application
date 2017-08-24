@@ -11,9 +11,10 @@ import java.util.List;
 public interface SavingContract {
     
     interface View extends BaseView {
-        
-        void onSuccess(String message);
-        
+    
+        void onSuccessCreate(String message);
+        void onSuccessUpdate(String message);
+        void onSuccessDelete(String message);
         void onSuccessGetSaving(List<Saving> list);
         
         void onFailure(String message);

@@ -2,7 +2,6 @@ package com.vn.hcmute.team.cortana.mymoney.ui.budget;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
@@ -26,17 +25,17 @@ public class BudgetActivity extends BaseActivity {
     @BindView(R.id.button2)
     Button mButton;
     
-    BudgetContract.View view=new BudgetContract.View() {
+   /* BudgetContract.View view=new BudgetContract.View() {
         @Override
         public void onSuccess(Object object) {
-               /* List<Budget> list=(List<Budget>) object;
+               *//* List<Budget> list=(List<Budget>) object;
                 
                 if(list==null||list.isEmpty()){
                     Toast.makeText(getApplicationContext(),"null",Toast.LENGTH_LONG).show();
                 }else {
                     Toast.makeText(getApplicationContext(),list.get(0).getBudgetId(),Toast.LENGTH_LONG).show();
                    
-                }*/
+                }*//*
             Toast.makeText(getApplicationContext(),(String)object,Toast.LENGTH_LONG).show();
         }
         
@@ -44,11 +43,11 @@ public class BudgetActivity extends BaseActivity {
         public void onFailure(String message) {
             Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
         }
-    };
+    };*/
     
     @OnClick(R.id.button2)
     public void onClick() {
-        mBudgetPresenter.setView(view);
+        //mBudgetPresenter.setView(view);
        // mBudgetPresenter.getBudget();
         //mBudgetPresenter.createBudget(new Budget());
        /* Budget budget=new Budget();
