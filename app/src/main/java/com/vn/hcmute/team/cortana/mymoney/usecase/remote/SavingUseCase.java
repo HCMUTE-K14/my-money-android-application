@@ -33,6 +33,7 @@ public class SavingUseCase extends UseCase<SavingRequest> {
     
     @Inject
     public SavingUseCase(Context context, DataRepository dataRepository) {
+        this.mContext=context;
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
     }

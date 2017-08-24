@@ -31,6 +31,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
     
     @Inject
     public WalletUseCase(Context context, DataRepository dataRepository) {
+        this.mContext=context;
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
     }

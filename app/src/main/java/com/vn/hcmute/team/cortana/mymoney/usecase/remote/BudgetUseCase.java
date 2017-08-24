@@ -32,6 +32,7 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
     
     @Inject
     public BudgetUseCase(Context context, DataRepository dataRepository) {
+        this.mContext=context;
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
     }

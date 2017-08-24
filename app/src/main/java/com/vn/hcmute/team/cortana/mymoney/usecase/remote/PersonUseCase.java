@@ -33,6 +33,7 @@ public class PersonUseCase extends UseCase<PersonRequest> {
     
     @Inject
     public PersonUseCase(Context context, DataRepository dataRepository) {
+        this.mContext=context;
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
     }

@@ -45,6 +45,7 @@ public class ImageUseCase extends UseCase<ImageRequest> {
     @Inject
     public ImageUseCase(Context context, DataRepository dataRepository) {
         this.mDataRepository = dataRepository;
+        this.mContext=context;
         this.mCompositeDisposable = new CompositeDisposable();
     }
     

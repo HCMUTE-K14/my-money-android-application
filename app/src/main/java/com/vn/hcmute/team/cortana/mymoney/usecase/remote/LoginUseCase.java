@@ -39,6 +39,7 @@ public class LoginUseCase extends UseCase<LoginRequest> {
     @Inject
     public LoginUseCase(Context context, DataRepository dataRepository) {
         this.mDataRepository = dataRepository;
+        this.mContext=context;
         this.mCompositeDisposable = new CompositeDisposable();
     }
     
