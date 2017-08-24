@@ -2,6 +2,7 @@ package com.vn.hcmute.team.cortana.mymoney.ui.person;
 
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.view.BaseView;
+import java.util.List;
 
 /**
  * Created by kunsubin on 8/23/2017.
@@ -10,11 +11,14 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.view.BaseView;
 public interface PersonContract {
     interface View extends BaseView {
         
-        void onSuccess(Object object);
-        
+        void onSuccessGet(List<Person> list);
+        void onSuccessAdd(String message);
+        void onSuccessRemove(String message);
        
         
         void onFailure(String message);
+        
+        void loading(boolean isLoading);
     }
     
     interface Presenter {
