@@ -31,7 +31,7 @@ public class PersonPersenter extends BasePresenter<PersonContract.View> implemen
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
-                getView().onSuccessGet((List<Person>) value);
+                getView().onSuccessGetListPerson((List<Person>) value);
             }
             
             @Override
@@ -57,7 +57,7 @@ public class PersonPersenter extends BasePresenter<PersonContract.View> implemen
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
-                getView().onSuccessAdd((String) value);
+                getView().onSuccessAddPerson((String) value);
             }
             
             @Override
@@ -82,7 +82,7 @@ public class PersonPersenter extends BasePresenter<PersonContract.View> implemen
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
-                getView().onSuccessRemove((String) value);
+                getView().onSuccessRemovePerson((String) value);
             }
             
             @Override

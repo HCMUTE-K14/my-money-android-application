@@ -282,14 +282,14 @@ public class ImageUseCase extends UseCase<ImageRequest> {
         private BaseCallBack<Object> callBack;
         private String[] params;
         
-
+        
         public ImageRequest(@NonNull String action, @NonNull BaseCallBack<Object> callBack) {
             this.action = action;
             
             this.callBack = callBack;
         }
         
-
+        
         public ImageRequest() {
             
         }
@@ -301,7 +301,7 @@ public class ImageUseCase extends UseCase<ImageRequest> {
             this.params = params;
         }
         
-
+        
         public String getAction() {
             return action;
         }

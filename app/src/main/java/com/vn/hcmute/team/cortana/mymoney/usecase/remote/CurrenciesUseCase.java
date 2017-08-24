@@ -118,6 +118,6 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
             this.callBack = callBack;
         }
         
-
+        
     }
 }

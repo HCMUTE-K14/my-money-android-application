@@ -13,7 +13,9 @@ public interface WalletContract {
     interface View extends BaseView {
         
         void onSuccess(String message);
+
         void onSuccessGetWallet(List<Wallet> wallets);
+
         void onFailure(String message);
     }
     
@@ -25,7 +27,7 @@ public interface WalletContract {
         
         void deleteWallet(String idWallet);
         
-        void moveWallet(String walletFrom,String walletTo, String money);
+        void moveWallet(String walletFrom, String walletTo, String money);
         
         void getAllWallet();
     }

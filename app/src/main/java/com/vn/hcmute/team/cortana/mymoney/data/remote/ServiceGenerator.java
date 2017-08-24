@@ -1,7 +1,5 @@
 package com.vn.hcmute.team.cortana.mymoney.data.remote;
 
-import static com.vn.hcmute.team.cortana.mymoney.ApplicationConfig.CACHE_MAX_AGE;
-import static com.vn.hcmute.team.cortana.mymoney.ApplicationConfig.CACHE_MAX_STALE;
 import static com.vn.hcmute.team.cortana.mymoney.ApplicationConfig.CONNECT_TIMEOUT;
 import static com.vn.hcmute.team.cortana.mymoney.ApplicationConfig.READ_TIMEOUT;
 
@@ -42,7 +40,7 @@ public class ServiceGenerator {
     public ServiceGenerator(Context context, Gson gson) {
         this.mContext = context;
         mClient = new OkHttpClient.Builder()
-                  .cache(createDefaultCache(this.mContext))
+                  //.cache(createDefaultCache(this.mContext))
                   .addInterceptor(createCacheControlInterceptor())
                   .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                   .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
@@ -67,8 +65,8 @@ public class ServiceGenerator {
             public Response intercept(Chain chain) throws IOException {
                 try {
                     Request modifiedRequest = chain.request().newBuilder()
-                              .addHeader("Cache-Control", String.format("max-age=%d, max-stale=%d",
-                                        CACHE_MAX_AGE, CACHE_MAX_STALE))
+/*                              .addHeader("Cache-Control", String.format("max-age=%d, max-stale=%d",
+                                        CACHE_MAX_AGE, CACHE_MAX_STALE))*/
                               .build();
                     return chain.proceed(modifiedRequest);
                 } catch (SocketTimeoutException e) {

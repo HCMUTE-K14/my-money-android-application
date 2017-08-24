@@ -42,9 +42,10 @@ import okhttp3.RequestBody;
 
 public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTask,
                                          RemoteTask.WalletTask, RemoteTask.CurrenciesTask,
-                                         RemoteTask.EventTask, RemoteTask.SavingTask ,RemoteTask.PersonTask, RemoteTask.BudgetTask{
-
- 
+                                         RemoteTask.EventTask, RemoteTask.SavingTask,
+                                         RemoteTask.PersonTask, RemoteTask.BudgetTask {
+    
+    
     public static final String TAG = RemoteRepository.class.getSimpleName();
     
     private ServiceGenerator mServiceGenerator;
@@ -99,12 +100,11 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<List<Image>> getImage(String userid, String token) {
         ImageService imageService = mServiceGenerator.getService(ImageService.class);
-
-
+        
         if (imageService == null) {
             return null;
         }
-
+        
         return imageService.get(userid, token)
                   .map(new Function<JsonResponse<List<Image>>, List<Image>>() {
                       @Override
@@ -201,12 +201,12 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                       }
                   });
     }
-
+    
     // wallet
     @Override
     public Observable<String> createWallet(Wallet wallet, String userid, String token) {
         WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
-        if(mWalletService==null){
+        if (mWalletService == null) {
             return null;
         }
         return mWalletService.createWallet(wallet, userid, token)
@@ -222,13 +222,12 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                       }
                   });
     }
-   
     
-
+    
     @Override
     public Observable<String> updateWallet(Wallet wallet, String userid, String token) {
         WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
-        if(mWalletService==null){
+        if (mWalletService == null) {
             return null;
         }
         return mWalletService.updateWallet(wallet, userid, token)
@@ -249,7 +248,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> deleteWallet(String userid, String token, String idwallet) {
         WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
-        if(mWalletService==null){
+        if (mWalletService == null) {
             return null;
         }
         return mWalletService.deleteWallet(userid, token, idwallet)
@@ -270,7 +269,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<List<Wallet>> getAllWallet(String userid, String token) {
         WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
-        if(mWalletService==null){
+        if (mWalletService == null) {
             return null;
         }
         return mWalletService.getAllWallet(userid, token)
@@ -296,7 +295,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     public Observable<String> moveWallet(String userid, String token, String wallet1,
               String wallet2, String money) {
         WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
-        if(mWalletService==null){
+        if (mWalletService == null) {
             return null;
         }
         return mWalletService.moveWallet(userid, token, wallet1, wallet2, money)
@@ -319,7 +318,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     public Observable<List<Currencies>> getCurrencies() {
         
         CurrenciesService currencies = mServiceGenerator.getService(CurrenciesService.class);
-        if(currencies==null){
+        if (currencies == null) {
             return null;
         }
         return currencies.getCurrencies().map(
@@ -343,7 +342,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<List<Event>> getEvent(String uerid, String token) {
         EventService eventService = mServiceGenerator.getService(EventService.class);
-        if(eventService==null){
+        if (eventService == null) {
             return null;
         }
         return eventService.getEvent(uerid, token)
@@ -364,7 +363,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> createEvent(Event event, String userid, String token) {
         EventService eventService = mServiceGenerator.getService(EventService.class);
-        if(eventService==null){
+        if (eventService == null) {
             return null;
         }
         return eventService.createEvent(event, userid, token).map(
@@ -386,7 +385,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> updateEvent(Event event, String userid, String token) {
         EventService eventService = mServiceGenerator.getService(EventService.class);
-        if(eventService==null){
+        if (eventService == null) {
             return null;
         }
         return eventService.updateEvent(event, userid, token).map(
@@ -408,7 +407,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> deleteEvent(String userid, String token, String idEvent) {
         EventService eventService = mServiceGenerator.getService(EventService.class);
-        if(eventService==null){
+        if (eventService == null) {
             return null;
         }
         return eventService.deleteEvent(userid, token, idEvent).map(
@@ -428,19 +427,19 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     //saving
     @Override
     public Observable<List<Saving>> getSaving(String userid, String token) {
-        SavingService savingService=mServiceGenerator.getService(SavingService.class);
-        if(savingService==null){
+        SavingService savingService = mServiceGenerator.getService(SavingService.class);
+        if (savingService == null) {
             return null;
         }
-        return savingService.getSaving(userid,token).map(
+        return savingService.getSaving(userid, token).map(
                   new Function<JsonResponse<List<Saving>>, List<Saving>>() {
                       @Override
                       public List<Saving> apply(
                                 @NonNull JsonResponse<List<Saving>> listJsonResponse)
                                 throws Exception {
-                          if(listJsonResponse.getStatus().equals("success")){
+                          if (listJsonResponse.getStatus().equals("success")) {
                               return listJsonResponse.getData();
-                          }else{
+                          } else {
                               throw new SavingException(listJsonResponse.getMessage());
                           }
                           
@@ -451,66 +450,66 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     
     @Override
     public Observable<String> createSaving(final Saving saving, String userid, String token) {
-        SavingService savingService=mServiceGenerator.getService(SavingService.class);
-        if(savingService==null){
+        SavingService savingService = mServiceGenerator.getService(SavingService.class);
+        if (savingService == null) {
             return null;
         }
-        return savingService.createSaving(saving,userid,token).map(
+        return savingService.createSaving(saving, userid, token).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          if(stringJsonResponse.getStatus().equals("success")){
+                          if (stringJsonResponse.getStatus().equals("success")) {
                               return stringJsonResponse.getData();
-                          }else {
+                          } else {
                               throw new SavingException(stringJsonResponse.getMessage());
                           }
-                      
+                          
                       }
                   });
     }
     
     @Override
     public Observable<String> updateSaving(Saving saving, String userid, String token) {
-        SavingService savingService=mServiceGenerator.getService(SavingService.class);
-        if(savingService==null){
+        SavingService savingService = mServiceGenerator.getService(SavingService.class);
+        if (savingService == null) {
             return null;
         }
-        return savingService.updateSaving(saving,userid,token).map(
+        return savingService.updateSaving(saving, userid, token).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          MyLogger.d("baodmfds",stringJsonResponse.getMessage());
-                          if(stringJsonResponse.getStatus().equals("success")){
+                          MyLogger.d("baodmfds", stringJsonResponse.getMessage());
+                          if (stringJsonResponse.getStatus().equals("success")) {
                               MyLogger.d("skjfdsjksfdsfsfsdfs");
                               return stringJsonResponse.getData();
-                          }else {
+                          } else {
                               MyLogger.d("fail update saving");
                               throw new SavingException(stringJsonResponse.getMessage());
                           }
-                      
+                          
                       }
                   });
     }
     
     @Override
     public Observable<String> deleteSaving(String userid, String token, String idSaving) {
-        SavingService savingService=mServiceGenerator.getService(SavingService.class);
-        if(savingService==null){
+        SavingService savingService = mServiceGenerator.getService(SavingService.class);
+        if (savingService == null) {
             return null;
         }
-        return savingService.deleteSaving(userid,token,idSaving).map(
+        return savingService.deleteSaving(userid, token, idSaving).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          if(stringJsonResponse.getStatus().equals("success")){
+                          if (stringJsonResponse.getStatus().equals("success")) {
                               return stringJsonResponse.getData();
-                          }else {
+                          } else {
                               throw new SavingException(stringJsonResponse.getMessage());
                           }
-                      
+                          
                       }
                   });
     }
@@ -518,21 +517,21 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> takeInSaving(String userid, String token, String idWallet,
               String idSaving, String money) {
-        SavingService savingService=mServiceGenerator.getService(SavingService.class);
-        if(savingService==null){
+        SavingService savingService = mServiceGenerator.getService(SavingService.class);
+        if (savingService == null) {
             return null;
         }
-        return savingService.takeInSaving(userid,token,idWallet,idSaving,money).map(
+        return savingService.takeInSaving(userid, token, idWallet, idSaving, money).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          if(stringJsonResponse.getStatus().equals("success")){
+                          if (stringJsonResponse.getStatus().equals("success")) {
                               return stringJsonResponse.getData();
-                          }else {
+                          } else {
                               throw new SavingException(stringJsonResponse.getMessage());
                           }
-                      
+                          
                       }
                   });
     }
@@ -540,41 +539,42 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     @Override
     public Observable<String> takeOutSaving(String userid, String token, String idWallet,
               String idSaving, String money) {
-        SavingService savingService=mServiceGenerator.getService(SavingService.class);
-        if(savingService==null){
+        SavingService savingService = mServiceGenerator.getService(SavingService.class);
+        if (savingService == null) {
             return null;
         }
-        return savingService.takeOutSaving(userid,token,idWallet,idSaving,money).map(
+        return savingService.takeOutSaving(userid, token, idWallet, idSaving, money).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          if(stringJsonResponse.getStatus().equals("success")){
+                          if (stringJsonResponse.getStatus().equals("success")) {
                               return stringJsonResponse.getData();
-                          }else {
+                          } else {
                               throw new SavingException(stringJsonResponse.getMessage());
                           }
-                      
+                          
                       }
                   });
     }
+    
     //person
     @Override
     public Observable<List<Person>> getPerson(String userid, String token) {
-        PersonService personService=mServiceGenerator.getService(PersonService.class);
-        if(personService==null){
+        PersonService personService = mServiceGenerator.getService(PersonService.class);
+        if (personService == null) {
             return null;
         }
-        return personService.getPerson(userid,token).map(
+        return personService.getPerson(userid, token).map(
                   new Function<JsonResponse<List<Person>>, List<Person>>() {
                       @Override
                       public List<Person> apply(
                                 @NonNull JsonResponse<List<Person>> listJsonResponse)
                                 throws Exception {
-                          if(listJsonResponse.getStatus().equals("success")){
+                          if (listJsonResponse.getStatus().equals("success")) {
                               return listJsonResponse.getData();
-                          }else {
-                              throw  new PersonException(listJsonResponse.getMessage());
+                          } else {
+                              throw new PersonException(listJsonResponse.getMessage());
                           }
                       }
                   });
@@ -582,18 +582,18 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     
     @Override
     public Observable<String> addPerson(Person person, String userid, String token) {
-        PersonService personService=mServiceGenerator.getService(PersonService.class);
-        if(personService==null){
+        PersonService personService = mServiceGenerator.getService(PersonService.class);
+        if (personService == null) {
             return null;
         }
-        return personService.addPerson(person,userid,token).map(
+        return personService.addPerson(person, userid, token).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          if(stringJsonResponse.getStatus().equals("success")){
+                          if (stringJsonResponse.getStatus().equals("success")) {
                               return stringJsonResponse.getData();
-                          }else {
+                          } else {
                               throw new PersonException(stringJsonResponse.getMessage());
                           }
                           
@@ -603,115 +603,117 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     
     @Override
     public Observable<String> removePerson(String userid, String token, String personid) {
-        PersonService personService=mServiceGenerator.getService(PersonService.class);
-        if(personService==null){
+        PersonService personService = mServiceGenerator.getService(PersonService.class);
+        if (personService == null) {
             return null;
         }
-        return personService.removePerson(userid,token,personid).map(
+        return personService.removePerson(userid, token, personid).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          MyLogger.d("checkkkkkkkkkkkk",stringJsonResponse.getData());
+                          MyLogger.d("checkkkkkkkkkkkk", stringJsonResponse.getData());
                           
-                          if(stringJsonResponse.getStatus().equals("success")){
-                              MyLogger.d("check data",stringJsonResponse.getData());
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              MyLogger.d("check data", stringJsonResponse.getData());
                               return stringJsonResponse.getData();
                               
-                          }else {
+                          } else {
+                              MyLogger.d("errreeee", stringJsonResponse.getMessage());
                               throw new PersonException(stringJsonResponse.getMessage());
                           }
-                      
+                          
                       }
                   });
     }
+    
     //budget
     @Override
     public Observable<List<Budget>> getBudget(String userid, String token) {
-        BudgetService budgetService=mServiceGenerator.getService(BudgetService.class);
-        if(budgetService==null){
+        BudgetService budgetService = mServiceGenerator.getService(BudgetService.class);
+        if (budgetService == null) {
             return null;
         }
-        return budgetService.getBudget(userid,token).map(
+        return budgetService.getBudget(userid, token).map(
                   new Function<JsonResponse<List<Budget>>, List<Budget>>() {
                       @Override
                       public List<Budget> apply(
                                 @NonNull JsonResponse<List<Budget>> listJsonResponse)
                                 throws Exception {
-                          if(listJsonResponse.getStatus().equals("success")){
+                          if (listJsonResponse.getStatus().equals("success")) {
                               return listJsonResponse.getData();
-                          }else {
+                          } else {
                               throw new BudgetException(listJsonResponse.getMessage());
                           }
-                  
+                          
                       }
                   });
     }
     
     @Override
     public Observable<String> createBudget(Budget budget, String userid, String token) {
-        BudgetService budgetService=mServiceGenerator.getService(BudgetService.class);
-        if(budgetService==null){
+        BudgetService budgetService = mServiceGenerator.getService(BudgetService.class);
+        if (budgetService == null) {
             return null;
         }
-        return budgetService.createBudget(budget,userid,token).map(
+        return budgetService.createBudget(budget, userid, token).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          if(stringJsonResponse.getStatus().equals("success")){
+                          if (stringJsonResponse.getStatus().equals("success")) {
                               return stringJsonResponse.getData();
                               
-                          }else {
+                          } else {
                               throw new BudgetException(stringJsonResponse.getMessage());
                           }
-                         
+                          
                       }
                   });
     }
     
     @Override
     public Observable<String> updateBudget(Budget budget, String userid, String token) {
-        BudgetService budgetService=mServiceGenerator.getService(BudgetService.class);
-        if(budgetService==null){
+        BudgetService budgetService = mServiceGenerator.getService(BudgetService.class);
+        if (budgetService == null) {
             return null;
         }
-        return budgetService.updateBudget(budget,userid,token).map(
+        return budgetService.updateBudget(budget, userid, token).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          if(stringJsonResponse.getStatus().equals("success")){
+                          if (stringJsonResponse.getStatus().equals("success")) {
                               return stringJsonResponse.getData();
-                          
-                          }else {
+                              
+                          } else {
                               throw new BudgetException(stringJsonResponse.getMessage());
                           }
-                      
+                          
                       }
                   });
     }
     
     @Override
     public Observable<String> deleteBudget(String userid, String token, String budgetId) {
-        BudgetService budgetService=mServiceGenerator.getService(BudgetService.class);
-        if(budgetService==null){
+        BudgetService budgetService = mServiceGenerator.getService(BudgetService.class);
+        if (budgetService == null) {
             return null;
         }
-        return budgetService.deleteBudget(userid,token,budgetId).map(
+        return budgetService.deleteBudget(userid, token, budgetId).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          if(stringJsonResponse.getStatus().equals("success")){
+                          if (stringJsonResponse.getStatus().equals("success")) {
                               return stringJsonResponse.getData();
-                          
-                          }else {
+                              
+                          } else {
                               throw new BudgetException(stringJsonResponse.getMessage());
                           }
-                      
+                          
                       }
                   });
     }
-
+    
 }

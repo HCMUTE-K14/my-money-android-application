@@ -36,8 +36,8 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
         wallet.setCurrencyUnit("VND");
         wallet.setWalletid("anh");*/
         //mWalletPresenter.deleteWallet("vi2");
-       // mWalletPresenter.getAllWallet();
-        mWalletPresenter.moveWallet("vi1","vi2","1000000");
+        // mWalletPresenter.getAllWallet();
+        mWalletPresenter.moveWallet("vi1", "vi2", "1000000");
     }
     
     @Override
@@ -71,15 +71,15 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
     
     @Override
     public void onSuccess(String message) {
-       Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
     
     @Override
     public void onSuccessGetWallet(List<Wallet> wallets) {
-        if(wallets!=null&&!wallets.isEmpty()){
+        if (wallets != null && !wallets.isEmpty()) {
             Toast.makeText(this, wallets.get(0).getUserid(), Toast.LENGTH_LONG).show();
             
-        }else {
+        } else {
             Toast.makeText(this, "fail", Toast.LENGTH_LONG).show();
         }
     }

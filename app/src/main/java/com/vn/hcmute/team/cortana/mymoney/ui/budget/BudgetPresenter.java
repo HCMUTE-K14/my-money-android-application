@@ -31,7 +31,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
-                getView().onSuccessGet((List<Budget>) value);
+                getView().onSuccessGetListBudget((List<Budget>) value);
             }
             
             @Override
@@ -57,7 +57,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
-                getView().onSuccessCreate((String) value);
+                getView().onSuccessCreateBudget((String) value);
             }
             
             @Override
@@ -80,10 +80,9 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
     public void updateBudget(Budget budget) {
         BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
             @Override
-            public void onSuccess(Object value)
-            {
+            public void onSuccess(Object value) {
                 getView().loading(false);
-                getView().onSuccessUpdate((String) value);
+                getView().onSuccessUpdateBudget((String) value);
             }
             
             @Override
@@ -106,10 +105,9 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
     public void deleteBudget(String budgetId) {
         BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
             @Override
-            public void onSuccess(Object value)
-            {
+            public void onSuccess(Object value) {
                 getView().loading(false);
-                getView().onSucsessDelete((String) value);
+                getView().onSucsessDeleteBudget((String) value);
             }
             
             @Override

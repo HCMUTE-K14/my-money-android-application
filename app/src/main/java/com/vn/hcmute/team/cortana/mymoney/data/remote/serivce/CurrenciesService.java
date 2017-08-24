@@ -12,6 +12,7 @@ import retrofit2.http.GET;
  */
 
 public interface CurrenciesService {
+    
     @GET(MyMoneyApi.GET_CURRENCIES)
     Observable<JsonResponse<List<Currencies>>> getCurrencies();
 }

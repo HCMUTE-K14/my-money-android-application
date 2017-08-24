@@ -51,7 +51,7 @@ public class ImageFileLoader {
         new ImageLoadRunnable(isFolderMode, listener).run();
     }
     
-    private class ImageLoadRunnable implements Runnable{
+    private class ImageLoadRunnable implements Runnable {
         
         private boolean isFolderMode;
         private ImageLoaderListener listener;

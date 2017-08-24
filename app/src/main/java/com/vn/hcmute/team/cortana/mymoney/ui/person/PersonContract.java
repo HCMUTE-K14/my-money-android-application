@@ -9,12 +9,15 @@ import java.util.List;
  */
 
 public interface PersonContract {
+    
     interface View extends BaseView {
         
-        void onSuccessGet(List<Person> list);
-        void onSuccessAdd(String message);
-        void onSuccessRemove(String message);
-       
+        void onSuccessGetListPerson(List<Person> list);
+        
+        void onSuccessAddPerson(String message);
+        
+        void onSuccessRemovePerson(String message);
+        
         
         void onFailure(String message);
         
@@ -24,8 +27,9 @@ public interface PersonContract {
     interface Presenter {
         
         void getPerson();
-       
+        
         void addPerson(Person person);
+        
         void removePerson(String personid);
     }
 }

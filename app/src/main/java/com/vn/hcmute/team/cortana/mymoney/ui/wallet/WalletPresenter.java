@@ -28,7 +28,7 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
         @Override
         public void onSuccess(Object value) {
             getView().onSuccess((String) value);
-           // getView().onSuccessGetWallet();
+            // getView().onSuccessGetWallet();
         }
         
         @Override
@@ -66,7 +66,7 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
     
     @Override
     public void moveWallet(String walletFrom, String walletTo, String money) {
-        String [] params={walletFrom,walletTo,money};
+        String[] params = {walletFrom, walletTo, money};
         WalletUseCase.WalletRequest walletRequest = new WalletUseCase.WalletRequest(
                   Action.ACCTION_MOVE_WALLET, mObjectBaseCallBack, null, params);
         mWalletUseCase.subscribe(walletRequest);
@@ -75,20 +75,20 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
     @Override
     public void getAllWallet() {
         
-        BaseCallBack<Object> baseCallBack=new BaseCallBack<Object>() {
+        BaseCallBack<Object> baseCallBack = new BaseCallBack<Object>() {
             @Override
             public void onSuccess(Object value) {
                 getView().onSuccessGetWallet((List<Wallet>) value);
             }
-    
+
             @Override
             public void onFailure(Throwable throwable) {
                 getView().onFailure(throwable.getMessage());
             }
-    
+
             @Override
             public void onLoading() {
-        
+
             }
         };
         

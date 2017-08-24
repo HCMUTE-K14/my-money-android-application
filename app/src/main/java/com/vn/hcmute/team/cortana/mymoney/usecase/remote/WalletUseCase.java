@@ -51,7 +51,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                 doDelete(requestValues.getCallBack(), requestValues.getParam());
                 break;
             case Action.ACCTION_MOVE_WALLET:
-                doMove(requestValues.getCallBack(),requestValues.getParam());
+                doMove(requestValues.getCallBack(), requestValues.getParam());
                 break;
             case Action.ACTION_GET_WALLET:
                 doGetWallet(requestValues.getCallBack());
@@ -176,26 +176,27 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
             
         }
     }
+    
     private void doMove(final BaseCallBack<Object> callBack, final String[] params) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
-    
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
-            
+                
                 callBack.onSuccess(user);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.moveWallet(userid, token, params[0],params[1],params[2])
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.moveWallet(userid, token, params[0], params[1], params[2])
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -208,29 +209,30 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-        
+            
         }
     }
-    private void doGetWallet(final BaseCallBack<Object> callBack){
+    
+    private void doGetWallet(final BaseCallBack<Object> callBack) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
-    
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object list) {
-            
+                
                 callBack.onSuccess(list);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.getAllWallet(userid,token)
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.getAllWallet(userid, token)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -243,7 +245,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-        
+            
         }
     }
     

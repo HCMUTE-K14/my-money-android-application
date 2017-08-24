@@ -21,7 +21,8 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/22/2017.
  */
 
-public class EventActivity extends BaseActivity implements EventContract.View  {
+public class EventActivity extends BaseActivity implements EventContract.View {
+    
     @Inject
     EventPresenter mEventPresenter;
     
@@ -31,15 +32,15 @@ public class EventActivity extends BaseActivity implements EventContract.View  {
     @OnClick(R.id.button2)
     public void onClick() {
         //mEventPresenter.getEvent();
-       // mEventPresenter.createEvent(new Event());
+        // mEventPresenter.createEvent(new Event());
        /* Event event=new Event();
         event.setMoney("100000");
         event.setEventid("anhky");
         mEventPresenter.updateEvent(event);*/
-      // mEventPresenter.deleteEvent("anhbom");
+        // mEventPresenter.deleteEvent("anhbom");
         mEventPresenter.getEvent();
     }
- 
+    
     
     @Override
     public int getLayoutId() {
@@ -71,26 +72,23 @@ public class EventActivity extends BaseActivity implements EventContract.View  {
     }
     
     
-    
-  
-    
     @Override
-    public void onSuccessCreate(String message) {
+    public void onSuccessCreateEvent(String message) {
         
     }
     
     @Override
-    public void onSuccessUpdate(String message) {
+    public void onSuccessUpdateEvent(String message) {
         
     }
     
     @Override
-    public void onSuccessDelete(String message) {
+    public void onSuccessDeleteEvent(String message) {
         
     }
     
     @Override
-    public void onSuccessGet(List<Event> events) {
+    public void onSuccessGetListEvent(List<Event> events) {
         
     }
     

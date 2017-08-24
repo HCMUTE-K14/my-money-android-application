@@ -21,7 +21,8 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/22/2017.
  */
 
-public class EventUseCase extends UseCase<EventRequest>{
+public class EventUseCase extends UseCase<EventRequest> {
+    
     private DataRepository mDataRepository;
     private Context mContext;
     
@@ -38,19 +39,19 @@ public class EventUseCase extends UseCase<EventRequest>{
     @Override
     public void subscribe(EventRequest requestValues) {
         String action = requestValues.getAction();
-    
+        
         switch (action) {
             case Action.ACTION_GET_EVENT:
                 doGetEvent(requestValues.getCallBack());
                 break;
             case Action.ACTION_CREATAE_EVENT:
-                doCreateEvent(requestValues.getCallBack(),requestValues.getData());
+                doCreateEvent(requestValues.getCallBack(), requestValues.getData());
                 break;
             case Action.ACTION_UPDATE_EVENT:
-                doUpdateEvent(requestValues.getCallBack(),requestValues.getData());
+                doUpdateEvent(requestValues.getCallBack(), requestValues.getData());
                 break;
             case Action.ACTION_DELETE_EVENT:
-                doDeleteEvent(requestValues.getCallBack(),requestValues.getParam());
+                doDeleteEvent(requestValues.getCallBack(), requestValues.getParam());
                 break;
             default:
                 break;
@@ -64,26 +65,26 @@ public class EventUseCase extends UseCase<EventRequest>{
         }
     }
     
-    private void doGetEvent( final BaseCallBack<Object> callBack){
+    private void doGetEvent(final BaseCallBack<Object> callBack) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
-    
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
-            
+                
                 callBack.onSuccess(user);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.getEvent(userid,token)
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.getEvent(userid, token)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -96,30 +97,30 @@ public class EventUseCase extends UseCase<EventRequest>{
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-        
+            
         }
     }
     
-    private void doCreateEvent(final BaseCallBack<Object> callBack,final Event event){
+    private void doCreateEvent(final BaseCallBack<Object> callBack, final Event event) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
-    
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
-            
+                
                 callBack.onSuccess(object);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.createEvent(event,userid,token)
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.createEvent(event, userid, token)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -132,29 +133,30 @@ public class EventUseCase extends UseCase<EventRequest>{
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-        
+            
         }
     }
-    private void doUpdateEvent(final BaseCallBack<Object> callBack,final Event event){
+    
+    private void doUpdateEvent(final BaseCallBack<Object> callBack, final Event event) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
-    
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
-            
+                
                 callBack.onSuccess(object);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.updateEvent(event,userid,token)
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.updateEvent(event, userid, token)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -167,29 +169,30 @@ public class EventUseCase extends UseCase<EventRequest>{
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-        
+            
         }
     }
-    private void doDeleteEvent(final BaseCallBack<Object> callBack,final String[] params){
+    
+    private void doDeleteEvent(final BaseCallBack<Object> callBack, final String[] params) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
-    
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
-            
+                
                 callBack.onSuccess(object);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.deleteEvent(userid,token,params[0])
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.deleteEvent(userid, token, params[0])
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -202,7 +205,7 @@ public class EventUseCase extends UseCase<EventRequest>{
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-        
+            
         }
     }
     

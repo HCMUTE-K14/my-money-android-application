@@ -13,7 +13,8 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/22/2017.
  */
 
-public class EventPresenter extends BasePresenter<EventContract.View> implements EventContract.Presenter {
+public class EventPresenter extends BasePresenter<EventContract.View> implements
+                                                                      EventContract.Presenter {
     
     EventUseCase mEventUseCase;
     
@@ -25,100 +26,102 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
     @Override
     public void getEvent() {
         
-        
         BaseCallBack<Object> callBack = new BaseCallBack<Object>() {
-        
+            
             @Override
             public void onSuccess(Object value) {
-                getView().onSuccessGet((List<Event>) value);
-            
+                getView().onSuccessGetListEvent((List<Event>) value);
+                
             }
-        
+            
             @Override
             public void onFailure(Throwable throwable) {
                 getView().onFailure(throwable.getMessage());
             }
-        
+            
             @Override
             public void onLoading() {
-            
+                
             }
         };
-        EventRequest eventRequest=new EventRequest(Action.ACTION_GET_EVENT,callBack,null,null);
+        EventRequest eventRequest = new EventRequest(Action.ACTION_GET_EVENT, callBack, null, null);
         mEventUseCase.subscribe(eventRequest);
     }
     
     @Override
     public void createEvent(Event event) {
         BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
-        
+            
             @Override
             public void onSuccess(Object value) {
-                getView().onSuccessCreate((String) value);
-            
+                getView().onSuccessCreateEvent((String) value);
+                
             }
-        
+            
             @Override
             public void onFailure(Throwable throwable) {
                 getView().onFailure(throwable.getMessage());
             }
-        
+            
             @Override
             public void onLoading() {
-            
+                
             }
         };
         
-        EventRequest eventRequest=new EventRequest(Action.ACTION_CREATAE_EVENT,mObjectBaseCallBack,event,null);
+        EventRequest eventRequest = new EventRequest(Action.ACTION_CREATAE_EVENT,
+                  mObjectBaseCallBack, event, null);
         mEventUseCase.subscribe(eventRequest);
     }
     
     @Override
     public void updateEvent(Event event) {
         BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
-        
+            
             @Override
             public void onSuccess(Object value) {
-                getView().onSuccessUpdate((String) value);
-            
+                getView().onSuccessUpdateEvent((String) value);
+                
             }
-        
+            
             @Override
             public void onFailure(Throwable throwable) {
                 getView().onFailure(throwable.getMessage());
             }
-        
+            
             @Override
             public void onLoading() {
-            
+                
             }
         };
-        EventRequest eventRequest=new EventRequest(Action.ACTION_UPDATE_EVENT,mObjectBaseCallBack,event,null);
+        EventRequest eventRequest = new EventRequest(Action.ACTION_UPDATE_EVENT,
+                  mObjectBaseCallBack, event, null);
         mEventUseCase.subscribe(eventRequest);
     }
     
     @Override
     public void deleteEvent(String idEvent) {
         BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
-        
+            
             @Override
             public void onSuccess(Object value) {
-                getView().onSuccessDelete((String) value);
-            
+                getView().onSuccessDeleteEvent((String) value);
+                
             }
-        
+            
             @Override
             public void onFailure(Throwable throwable) {
                 getView().onFailure(throwable.getMessage());
             }
-        
+            
             @Override
             public void onLoading() {
-            
+                
             }
         };
-        String[] params={idEvent};
-        EventRequest eventRequest=new EventRequest(Action.ACTION_DELETE_EVENT,mObjectBaseCallBack,null,params);
+        String[] params = {idEvent};
+        EventRequest eventRequest = new EventRequest(Action.ACTION_DELETE_EVENT,
+                  mObjectBaseCallBack, null, params);
         mEventUseCase.subscribe(eventRequest);
     }
 }

@@ -12,6 +12,7 @@ import dagger.Provides;
  */
 @Module
 public class SavingModule {
+    
     @Provides
     SavingUseCase provideWalletUseCase(Context context, DataRepository dataRepository) {
         return new SavingUseCase(context, dataRepository);

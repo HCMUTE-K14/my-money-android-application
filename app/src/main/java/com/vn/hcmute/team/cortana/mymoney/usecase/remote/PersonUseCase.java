@@ -38,19 +38,18 @@ public class PersonUseCase extends UseCase<PersonRequest> {
     }
     
     
-    
     @Override
     public void subscribe(PersonRequest requestValues) {
-        String action=requestValues.getAction();
-        switch (action){
+        String action = requestValues.getAction();
+        switch (action) {
             case Action.ACTION_GET_PERSON:
                 doGetPerson(requestValues.getCallBack());
                 break;
             case Action.ACTION_ADD_PERSON:
-                doAddPerson(requestValues.getCallBack(),requestValues.getData());
+                doAddPerson(requestValues.getCallBack(), requestValues.getData());
                 break;
             case Action.ACTION_REMOVE_PERSON:
-                doRemovePerson(requestValues.getCallBack(),requestValues.getParam());
+                doRemovePerson(requestValues.getCallBack(), requestValues.getParam());
                 break;
             default:
                 break;
@@ -64,26 +63,26 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         }
     }
     
-    private void doGetPerson(final BaseCallBack<Object> callBack){
+    private void doGetPerson(final BaseCallBack<Object> callBack) {
         String userid = mDataRepository.getUserId();
-        String token =mDataRepository.getUserToken();
-    
+        String token = mDataRepository.getUserToken();
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
-            
+                
                 callBack.onSuccess(user);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.getPerson(userid,token)
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.getPerson(userid, token)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -99,26 +98,26 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         }
     }
     
-    private void doAddPerson(final BaseCallBack<Object> callBack,Person person){
+    private void doAddPerson(final BaseCallBack<Object> callBack, Person person) {
         String userid = mDataRepository.getUserId();
-        String token =mDataRepository.getUserToken();
-    
+        String token = mDataRepository.getUserToken();
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
-            
+                
                 callBack.onSuccess(object);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.addPerson(person,userid,token)
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.addPerson(person, userid, token)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -131,30 +130,31 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-        
+            
         }
     }
-    //bi loi chua sua
-    private void doRemovePerson(final BaseCallBack<Object> callBack,String[] params){
-        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
-        String token ="557b32ce486d4a02b961d2befd310541" ;//mDataRepository.getUserToken();
     
+    //bi loi chua sua
+    private void doRemovePerson(final BaseCallBack<Object> callBack, String[] params) {
+        String userid = mDataRepository.getUserId();
+        String token = mDataRepository.getUserToken();
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
-            
+                
                 callBack.onSuccess(object);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.removePerson(userid,token,params[0])
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.removePerson(userid, token, params[0])
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -167,7 +167,7 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-        
+            
         }
     }
     

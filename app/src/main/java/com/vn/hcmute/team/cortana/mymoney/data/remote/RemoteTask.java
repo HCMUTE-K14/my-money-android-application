@@ -30,7 +30,7 @@ public interface RemoteTask {
     public interface ImageTask {
         
         Observable<List<Image>> getImage(String userid, String token);
-      
+        
         Observable<Image> getImageByid(String userid, String token, String imageid);
         
         Observable<String> removeImage(String userid, String token, String imageid);
@@ -54,34 +54,58 @@ public interface RemoteTask {
         Observable<String> moveWallet(String userid, String token, String wallet1, String wallet2,
                   String money);
     }
-    interface CurrenciesTask{
+    
+    interface CurrenciesTask {
+        
         Observable<List<Currencies>> getCurrencies();
     }
-    interface EventTask{
+    
+    interface EventTask {
         
-        Observable<List<Event>> getEvent(String uerid,String token);
-        Observable<String> createEvent(Event event,String userid,String token);
-        Observable<String> updateEvent(Event event,String userid,String token);
-        Observable<String> deleteEvent(String userid,String token,String idEvent);
+        Observable<List<Event>> getEvent(String uerid, String token);
+        
+        Observable<String> createEvent(Event event, String userid, String token);
+        
+        Observable<String> updateEvent(Event event, String userid, String token);
+        
+        Observable<String> deleteEvent(String userid, String token, String idEvent);
         
     }
-    interface SavingTask{
-        Observable<List<Saving>> getSaving(String userid,String token);
+    
+    interface SavingTask {
+        
+        Observable<List<Saving>> getSaving(String userid, String token);
+        
         Observable<String> createSaving(Saving saving, String userid, String token);
-        Observable<String> updateSaving(Saving saving,String userid,String token);
-        Observable<String> deleteSaving (String userid,String token,String idSaving);
-        Observable<String> takeInSaving(String userid,String token,String idWallet,String idSaving,String money);
-        Observable<String> takeOutSaving(String userid,String token,String idWallet,String idSaving,String money);
+        
+        Observable<String> updateSaving(Saving saving, String userid, String token);
+        
+        Observable<String> deleteSaving(String userid, String token, String idSaving);
+        
+        Observable<String> takeInSaving(String userid, String token, String idWallet,
+                  String idSaving, String money);
+        
+        Observable<String> takeOutSaving(String userid, String token, String idWallet,
+                  String idSaving, String money);
     }
-    interface PersonTask{
-        Observable<List<Person>> getPerson(String userid,String token);
-        Observable<String> addPerson(Person person,String userid,String token);
-        Observable<String> removePerson(String userid,String token,String personid);
+    
+    interface PersonTask {
+        
+        Observable<List<Person>> getPerson(String userid, String token);
+        
+        Observable<String> addPerson(Person person, String userid, String token);
+        
+        Observable<String> removePerson(String userid, String token, String personid);
     }
-    interface BudgetTask{
-        Observable<List<Budget>> getBudget(String userid,String token);
-        Observable<String> createBudget(Budget budget, String userid,String token);
-        Observable<String> updateBudget(Budget budget, String userid,String token);
-        Observable<String> deleteBudget(String userid,String token,String budgetId);
+    
+    interface BudgetTask {
+        
+        Observable<List<Budget>> getBudget(String userid, String token);
+        
+        Observable<String> createBudget(Budget budget, String userid, String token);
+        
+        Observable<String> updateBudget(Budget budget, String userid, String token);
+        
+        Observable<String> deleteBudget(String userid, String token, String budgetId);
     }
 }

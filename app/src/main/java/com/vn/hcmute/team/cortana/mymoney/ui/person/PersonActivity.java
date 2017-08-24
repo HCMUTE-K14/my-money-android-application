@@ -2,6 +2,7 @@ package com.vn.hcmute.team.cortana.mymoney.ui.person;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
@@ -11,48 +12,26 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerPersonComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.PersonComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.PersonModule;
+import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
  * Created by kunsubin on 8/23/2017.
  */
 
-public class PersonActivity extends BaseActivity {
+public class PersonActivity extends BaseActivity implements PersonContract.View {
+    
     @Inject
     PersonPersenter mPersonPersenter;
     
     @BindView(R.id.button2)
     Button mButton;
-   /*
-    PersonContract.View view=new PersonContract.View() {
-        @Override
-        public void onSuccess(Object object) {
-                *//*List<Person> list=(List<Person>) object;
-                
-                if(list==null||list.isEmpty()){
-                    Toast.makeText(getApplicationContext(),"null",Toast.LENGTH_LONG).show();
-                }else {
-                    Toast.makeText(getApplicationContext(),list.get(0).getName(),Toast.LENGTH_LONG).show();
-                   
-                }*//*
-            Toast.makeText(getApplicationContext(),(String)object,Toast.LENGTH_LONG).show();
-        }
-        
-        @Override
-        public void onFailure(String message) {
-            Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
-        }
-    };*/
     
     @OnClick(R.id.button2)
     public void onClick() {
-        
-       // mPersonPersenter.setView(view);
-        //mPersonPersenter.getPerson();
-        //mPersonPersenter.addPerson(new Person());
-       mPersonPersenter.removePerson("hi");
-        
+        mPersonPersenter.removePerson("hi");
     }
     
     
@@ -76,8 +55,8 @@ public class PersonActivity extends BaseActivity {
     
     @Override
     protected void initializePresenter() {
-        this.mPresenter=mPersonPersenter;
-        //mPersonPersenter.setView(this);
+        this.mPresenter = mPersonPersenter;
+        mPersonPersenter.setView(this);
     }
     
     @Override
@@ -85,13 +64,29 @@ public class PersonActivity extends BaseActivity {
         
     }
     
-  /*  @Override
-    public void onSuccess(Object object) {
-        Toast.makeText(getApplicationContext(),object.toString(),Toast.LENGTH_LONG).show();
+    
+    @Override
+    public void onSuccessGetListPerson(List<Person> list) {
+        
+    }
+    
+    @Override
+    public void onSuccessAddPerson(String message) {
+        
+    }
+    
+    @Override
+    public void onSuccessRemovePerson(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
     
     @Override
     public void onFailure(String message) {
-        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
-    }*/
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+    
+    @Override
+    public void loading(boolean isLoading) {
+        
+    }
 }

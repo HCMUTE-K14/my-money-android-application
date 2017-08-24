@@ -20,11 +20,11 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/22/2017.
  */
 
-public class CurrenciesActivity extends BaseActivity implements CurrenciesContract.View{
+public class CurrenciesActivity extends BaseActivity implements CurrenciesContract.View {
     
     @Inject
     CurrenciesPresenter mCurrenciesPresenter;
- 
+    
     
     @BindView(R.id.button2)
     Button mButton;

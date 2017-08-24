@@ -24,6 +24,7 @@ public interface CurrenciesContract {
     public interface Presenter {
         
         void getCurrencies();
+        
         void unSubscribe();
     }
 }

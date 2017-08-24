@@ -15,12 +15,15 @@ public class CurrenciesModule {
     
     public CurrenciesModule() {
     }
+    
     @Provides
-    public CurrenciesUseCase providesCurrenciesUseCase(Context context, DataRepository dataRepository) {
-        return new CurrenciesUseCase(context,dataRepository);
+    public CurrenciesUseCase providesCurrenciesUseCase(Context context,
+              DataRepository dataRepository) {
+        return new CurrenciesUseCase(context, dataRepository);
     }
+    
     @Provides
-    public CurrenciesPresenter providesCurrenciesPresenter(CurrenciesUseCase currenciesUseCase){
+    public CurrenciesPresenter providesCurrenciesPresenter(CurrenciesUseCase currenciesUseCase) {
         return new CurrenciesPresenter(currenciesUseCase);
     }
 }

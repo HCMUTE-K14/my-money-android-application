@@ -38,28 +38,27 @@ public class SavingUseCase extends UseCase<SavingRequest> {
     }
     
     
-    
     @Override
     public void subscribe(SavingRequest requestValues) {
-        String action=requestValues.getAction();
-        switch (action){
+        String action = requestValues.getAction();
+        switch (action) {
             case Action.ACTION_GET_SAVING:
                 doGetSaving(requestValues.getCallBack());
                 break;
             case Action.ACTION_CREATE_SAVING:
-                doCreateSaving(requestValues.getCallBack(),requestValues.getData());
+                doCreateSaving(requestValues.getCallBack(), requestValues.getData());
                 break;
             case Action.ACTION_UPDATE_SAVING:
-                doUpdateSaving(requestValues.getCallBack(),requestValues.getData());
+                doUpdateSaving(requestValues.getCallBack(), requestValues.getData());
                 break;
             case Action.ACTION_DELETE_SAVING:
-                doDeleteSaving(requestValues.getCallBack(),requestValues.getParam());
+                doDeleteSaving(requestValues.getCallBack(), requestValues.getParam());
                 break;
             case Action.ACTION_TAKE_IN_SAVING:
-                doTakeInSaving(requestValues.getCallBack(),requestValues.getParam());
+                doTakeInSaving(requestValues.getCallBack(), requestValues.getParam());
                 break;
             case Action.ACTION_TAKE_OUT_SAVING:
-                doTakeOutSaving(requestValues.getCallBack(),requestValues.getParam());
+                doTakeOutSaving(requestValues.getCallBack(), requestValues.getParam());
                 break;
             default:
                 break;
@@ -73,62 +72,26 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         }
     }
     
-    private void doGetSaving(final BaseCallBack<Object> callBack){
+    private void doGetSaving(final BaseCallBack<Object> callBack) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
-    
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
-            
+                
                 callBack.onSuccess(user);
             }
-        
-            @Override
-            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-                callBack.onFailure(e);
-            }
-        };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
-        
-            mDisposable = mDataRepository.getSaving(userid,token)
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              callBack.onLoading();
-                          }
-                      })
-                      .cacheWithInitialCapacity(10)
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
-            this.mCompositeDisposable.add(mDisposable);
-        }
-        
-        
-    }
-    private void doCreateSaving(final BaseCallBack<Object> callBack,Saving saving){
-        String userid = mDataRepository.getUserId();
-        String token = mDataRepository.getUserToken();
-    
-        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
-            @Override
-            public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
             
-                callBack.onSuccess(object);
-            }
-        
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.createSaving(saving,userid,token)
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.getSaving(userid, token)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -141,10 +104,12 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-        
         }
+        
+        
     }
-    private void doUpdateSaving(final BaseCallBack<Object> callBack,Saving saving){
+    
+    private void doCreateSaving(final BaseCallBack<Object> callBack, Saving saving) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         
@@ -163,7 +128,43 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             
-            mDisposable = mDataRepository.updateSaving(saving,userid,token)
+            mDisposable = mDataRepository.createSaving(saving, userid, token)
+                      .subscribeOn(Schedulers.io())
+                      .observeOn(AndroidSchedulers.mainThread())
+                      .doOnSubscribe(new Consumer<Disposable>() {
+                          @Override
+                          public void accept(Disposable disposable) throws Exception {
+                              callBack.onLoading();
+                          }
+                      })
+                      .cacheWithInitialCapacity(10)
+                      .singleOrError()
+                      .subscribeWith(this.mDisposableSingleObserver);
+            this.mCompositeDisposable.add(mDisposable);
+            
+        }
+    }
+    
+    private void doUpdateSaving(final BaseCallBack<Object> callBack, Saving saving) {
+        String userid = mDataRepository.getUserId();
+        String token = mDataRepository.getUserToken();
+        
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
+                
+                callBack.onSuccess(object);
+            }
+            
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
+        
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.updateSaving(saving, userid, token)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -180,77 +181,8 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         }
         MyLogger.d("update saving use case");
     }
-    private void doDeleteSaving(final BaseCallBack<Object> callBack,String[] params){
-        String userid = mDataRepository.getUserId();
-        String token = mDataRepository.getUserToken();
     
-        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
-            @Override
-            public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
-            
-                callBack.onSuccess(object);
-            }
-        
-            @Override
-            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-                callBack.onFailure(e);
-            }
-        };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
-        
-            mDisposable = mDataRepository.deleteSaving(userid,token,params[0])
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              callBack.onLoading();
-                          }
-                      })
-                      .cacheWithInitialCapacity(10)
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
-            this.mCompositeDisposable.add(mDisposable);
-        
-        }
-    }
-    private void doTakeInSaving(final BaseCallBack<Object> callBack,String[] params){
-        String userid = mDataRepository.getUserId();
-        String token = mDataRepository.getUserToken();
-    
-        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
-            @Override
-            public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
-            
-                callBack.onSuccess(object);
-            }
-        
-            @Override
-            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-                callBack.onFailure(e);
-            }
-        };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
-        
-            mDisposable = mDataRepository.takeInSaving(userid,token,params[0],params[1],params[2])
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              callBack.onLoading();
-                          }
-                      })
-                      .cacheWithInitialCapacity(10)
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
-            this.mCompositeDisposable.add(mDisposable);
-        
-        }
-    }
-    private void doTakeOutSaving(final BaseCallBack<Object> callBack,String[] params){
+    private void doDeleteSaving(final BaseCallBack<Object> callBack, String[] params) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         
@@ -269,7 +201,81 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             
-            mDisposable = mDataRepository.takeOutSaving(userid,token,params[0],params[1],params[2])
+            mDisposable = mDataRepository.deleteSaving(userid, token, params[0])
+                      .subscribeOn(Schedulers.io())
+                      .observeOn(AndroidSchedulers.mainThread())
+                      .doOnSubscribe(new Consumer<Disposable>() {
+                          @Override
+                          public void accept(Disposable disposable) throws Exception {
+                              callBack.onLoading();
+                          }
+                      })
+                      .cacheWithInitialCapacity(10)
+                      .singleOrError()
+                      .subscribeWith(this.mDisposableSingleObserver);
+            this.mCompositeDisposable.add(mDisposable);
+            
+        }
+    }
+    
+    private void doTakeInSaving(final BaseCallBack<Object> callBack, String[] params) {
+        String userid = mDataRepository.getUserId();
+        String token = mDataRepository.getUserToken();
+        
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
+                
+                callBack.onSuccess(object);
+            }
+            
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
+        
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository
+                      .takeInSaving(userid, token, params[0], params[1], params[2])
+                      .subscribeOn(Schedulers.io())
+                      .observeOn(AndroidSchedulers.mainThread())
+                      .doOnSubscribe(new Consumer<Disposable>() {
+                          @Override
+                          public void accept(Disposable disposable) throws Exception {
+                              callBack.onLoading();
+                          }
+                      })
+                      .cacheWithInitialCapacity(10)
+                      .singleOrError()
+                      .subscribeWith(this.mDisposableSingleObserver);
+            this.mCompositeDisposable.add(mDisposable);
+            
+        }
+    }
+    
+    private void doTakeOutSaving(final BaseCallBack<Object> callBack, String[] params) {
+        String userid = mDataRepository.getUserId();
+        String token = mDataRepository.getUserToken();
+        
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
+                
+                callBack.onSuccess(object);
+            }
+            
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
+        
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository
+                      .takeOutSaving(userid, token, params[0], params[1], params[2])
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {

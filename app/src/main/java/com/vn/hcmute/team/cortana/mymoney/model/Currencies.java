@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Currencies {
+    
     @SerializedName("cur_id")
     @Expose
     private String curId;

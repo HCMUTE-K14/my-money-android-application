@@ -9,20 +9,30 @@ import java.util.List;
  */
 
 public interface BudgetContract {
+    
     interface View extends BaseView {
-        void onSuccessGet(List<Budget> list);
-        void onSuccessCreate(String message);
-        void onSuccessUpdate(String message);
-        void onSucsessDelete(String message);
+        
+        void onSuccessGetListBudget(List<Budget> list);
+        
+        void onSuccessCreateBudget(String message);
+        
+        void onSuccessUpdateBudget(String message);
+        
+        void onSucsessDeleteBudget(String message);
+        
         void onFailure(String message);
         
         void loading(boolean isLoading);
     }
     
     interface Presenter {
+        
         void getBudget();
+        
         void createBudget(Budget budget);
+        
         void updateBudget(Budget budget);
+        
         void deleteBudget(String budgetId);
     }
 }

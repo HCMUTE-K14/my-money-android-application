@@ -21,7 +21,7 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/23/2017.
  */
 
-public class BudgetUseCase extends UseCase<BudgetRequest>{
+public class BudgetUseCase extends UseCase<BudgetRequest> {
     
     private DataRepository mDataRepository;
     private Context mContext;
@@ -37,23 +37,21 @@ public class BudgetUseCase extends UseCase<BudgetRequest>{
     }
     
     
-    
-    
     @Override
     public void subscribe(BudgetRequest requestValues) {
-        String action=requestValues.getAction();
-        switch (action){
+        String action = requestValues.getAction();
+        switch (action) {
             case Action.ACTION_GET_BUDGET:
                 doGetBudget(requestValues.getCallBack());
                 break;
             case Action.ACTION_CREATE_BUDGET:
-                doCreateBudget(requestValues.getCallBack(),requestValues.getData());
+                doCreateBudget(requestValues.getCallBack(), requestValues.getData());
                 break;
             case Action.ACTION_UPDATE_BUDGET:
-                doUpdateBudget(requestValues.getCallBack(),requestValues.getData());
+                doUpdateBudget(requestValues.getCallBack(), requestValues.getData());
                 break;
             case Action.ACTION_DELETE_BUDGET:
-                doDeleteBudget(requestValues.getCallBack(),requestValues.getParam());
+                doDeleteBudget(requestValues.getCallBack(), requestValues.getParam());
                 break;
             default:
                 break;
@@ -66,26 +64,27 @@ public class BudgetUseCase extends UseCase<BudgetRequest>{
             mCompositeDisposable.remove(mDisposable);
         }
     }
-    private void doGetBudget(final BaseCallBack<Object> callBack){
-        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
-        String token ="557b32ce486d4a02b961d2befd310541" ;//mDataRepository.getUserToken();
     
+    private void doGetBudget(final BaseCallBack<Object> callBack) {
+        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
+        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
-            
+                
                 callBack.onSuccess(user);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.getBudget(userid,token)
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.getBudget(userid, token)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -100,26 +99,27 @@ public class BudgetUseCase extends UseCase<BudgetRequest>{
             this.mCompositeDisposable.add(mDisposable);
         }
     }
-    private void doCreateBudget(final BaseCallBack<Object> callBack,Budget budget){
-        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
-        String token ="557b32ce486d4a02b961d2befd310541" ;//mDataRepository.getUserToken();
     
+    private void doCreateBudget(final BaseCallBack<Object> callBack, Budget budget) {
+        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
+        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
-            
+                
                 callBack.onSuccess(object);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.createBudget(budget,userid,token)
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.createBudget(budget, userid, token)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -132,29 +132,30 @@ public class BudgetUseCase extends UseCase<BudgetRequest>{
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-        
+            
         }
     }
-    private void doUpdateBudget(final BaseCallBack<Object> callBack,Budget budget){
-        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
-        String token ="557b32ce486d4a02b961d2befd310541" ;//mDataRepository.getUserToken();
     
+    private void doUpdateBudget(final BaseCallBack<Object> callBack, Budget budget) {
+        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
+        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
-            
+                
                 callBack.onSuccess(object);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.updateBudget(budget,userid,token)
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.updateBudget(budget, userid, token)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -167,29 +168,30 @@ public class BudgetUseCase extends UseCase<BudgetRequest>{
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-        
+            
         }
     }
-    private void doDeleteBudget(final BaseCallBack<Object> callBack,String[] params){
-        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
-        String token ="557b32ce486d4a02b961d2befd310541" ;//mDataRepository.getUserToken();
     
+    private void doDeleteBudget(final BaseCallBack<Object> callBack, String[] params) {
+        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
+        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
-            
+                
                 callBack.onSuccess(object);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
-            mDisposable = mDataRepository.deleteBudget(userid,token,params[0])
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.deleteBudget(userid, token, params[0])
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -202,9 +204,10 @@ public class BudgetUseCase extends UseCase<BudgetRequest>{
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-        
+            
         }
     }
+    
     public static class BudgetRequest implements UseCase.RequestValue {
         
         private String action;

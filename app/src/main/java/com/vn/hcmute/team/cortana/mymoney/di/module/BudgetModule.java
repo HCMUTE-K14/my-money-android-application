@@ -12,6 +12,7 @@ import dagger.Provides;
  */
 @Module
 public class BudgetModule {
+    
     @Provides
     BudgetUseCase providePersonUseCase(Context context, DataRepository dataRepository) {
         return new BudgetUseCase(context, dataRepository);

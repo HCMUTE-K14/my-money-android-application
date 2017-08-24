@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Saving {
+    
     @SerializedName("savingid")
     @Expose
     private String savingid;

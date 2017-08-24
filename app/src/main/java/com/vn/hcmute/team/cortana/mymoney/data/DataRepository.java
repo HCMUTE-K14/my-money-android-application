@@ -23,7 +23,7 @@ import okhttp3.RequestBody;
  */
 
 public class DataRepository implements DataSource.RemoteDataSource, DataSource.CacheDataSource,
-                                       DataSource.LocalDataSource{
+                                       DataSource.LocalDataSource {
     
     private RemoteRepository mRemoteRepository;
     private LocalRepository mLocalRepository;
@@ -169,91 +169,95 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
         
         return mRemoteRepository.getCurrencies();
     }
+    
     //event
     @Override
     public Observable<List<Event>> getEvent(String uerid, String token) {
-        return mRemoteRepository.getEvent(uerid,token);
+        return mRemoteRepository.getEvent(uerid, token);
     }
     
     @Override
     public Observable<String> createEvent(Event event, String userid, String token) {
-        return mRemoteRepository.createEvent(event,userid,token);
+        return mRemoteRepository.createEvent(event, userid, token);
     }
     
     @Override
     public Observable<String> updateEvent(Event event, String userid, String token) {
-        return mRemoteRepository.updateEvent(event,userid,token);
+        return mRemoteRepository.updateEvent(event, userid, token);
     }
     
     @Override
     public Observable<String> deleteEvent(String userid, String token, String idEvent) {
-        return mRemoteRepository.deleteEvent(userid,token,idEvent);
+        return mRemoteRepository.deleteEvent(userid, token, idEvent);
     }
+    
     //saving
     @Override
     public Observable<List<Saving>> getSaving(String userid, String token) {
-        return mRemoteRepository.getSaving(userid,token);
+        return mRemoteRepository.getSaving(userid, token);
     }
     
     @Override
     public Observable<String> createSaving(Saving saving, String userid, String token) {
-        return mRemoteRepository.createSaving(saving,userid,token);
+        return mRemoteRepository.createSaving(saving, userid, token);
     }
     
     @Override
     public Observable<String> updateSaving(Saving saving, String userid, String token) {
-        return mRemoteRepository.updateSaving(saving,userid,token);
+        return mRemoteRepository.updateSaving(saving, userid, token);
     }
     
     @Override
     public Observable<String> deleteSaving(String userid, String token, String idSaving) {
-        return mRemoteRepository.deleteSaving(userid,token,idSaving);
+        return mRemoteRepository.deleteSaving(userid, token, idSaving);
     }
     
     @Override
     public Observable<String> takeInSaving(String userid, String token, String idWallet,
               String idSaving, String money) {
-        return mRemoteRepository.takeInSaving(userid,token,idWallet,idSaving,money);
+        return mRemoteRepository.takeInSaving(userid, token, idWallet, idSaving, money);
     }
     
     @Override
     public Observable<String> takeOutSaving(String userid, String token, String idWallet,
               String idSaving, String money) {
-        return mRemoteRepository.takeOutSaving(userid,token,idWallet,idSaving,money);
+        return mRemoteRepository.takeOutSaving(userid, token, idWallet, idSaving, money);
     }
+    
     //person
     @Override
     public Observable<List<Person>> getPerson(String userid, String token) {
-        return mRemoteRepository.getPerson(userid,token);
+        return mRemoteRepository.getPerson(userid, token);
     }
     
     @Override
     public Observable<String> addPerson(Person person, String userid, String token) {
-        return mRemoteRepository.addPerson(person,userid,token);
+        return mRemoteRepository.addPerson(person, userid, token);
     }
     
     @Override
     public Observable<String> removePerson(String userid, String token, String personid) {
-        return mRemoteRepository.removePerson(userid,token,personid);
+        return mRemoteRepository.removePerson(userid, token, personid);
     }
+    
     //budget
     @Override
     public Observable<List<Budget>> getBudget(String userid, String token) {
-        return mRemoteRepository.getBudget(userid,token);
+        return mRemoteRepository.getBudget(userid, token);
     }
     
     @Override
     public Observable<String> createBudget(Budget budget, String userid, String token) {
-        return mRemoteRepository.createBudget(budget,userid,token);
+        return mRemoteRepository.createBudget(budget, userid, token);
     }
     
     @Override
     public Observable<String> updateBudget(Budget budget, String userid, String token) {
-        return mRemoteRepository.updateBudget(budget,userid,token);
+        return mRemoteRepository.updateBudget(budget, userid, token);
     }
     
     @Override
     public Observable<String> deleteBudget(String userid, String token, String budgetId) {
-        return mRemoteRepository.deleteBudget(userid,token,budgetId);
+        return mRemoteRepository.deleteBudget(userid, token, budgetId);
     }
 }

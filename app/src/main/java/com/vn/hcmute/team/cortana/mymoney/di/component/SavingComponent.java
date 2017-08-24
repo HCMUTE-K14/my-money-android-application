@@ -13,5 +13,6 @@ import dagger.Component;
 @Component(modules = {ActivityModule.class,
           SavingModule.class}, dependencies = ApplicationComponent.class)
 public interface SavingComponent {
+    
     void inject(SavingActivity savingActivity);
 }

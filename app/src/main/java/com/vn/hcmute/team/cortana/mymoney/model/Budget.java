@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Budget {
+    
     @SerializedName("budgetId")
     @Expose
     private String budgetId;

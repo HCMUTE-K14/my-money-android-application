@@ -11,12 +11,13 @@ import java.util.List;
 public interface SavingContract {
     
     public interface View extends BaseView {
+        
         void showListSaving(List<Saving> savings);
         
         void showSaving();
         
         void onSuccessCreateSaving();
-    
+        
         
         void onSuccessDeleteSaving();
         

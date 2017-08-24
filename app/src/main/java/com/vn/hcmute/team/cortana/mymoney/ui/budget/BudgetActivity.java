@@ -19,6 +19,7 @@ import javax.inject.Inject;
  */
 
 public class BudgetActivity extends BaseActivity {
+    
     @Inject
     BudgetPresenter mBudgetPresenter;
     
@@ -48,7 +49,7 @@ public class BudgetActivity extends BaseActivity {
     @OnClick(R.id.button2)
     public void onClick() {
         //mBudgetPresenter.setView(view);
-       // mBudgetPresenter.getBudget();
+        // mBudgetPresenter.getBudget();
         //mBudgetPresenter.createBudget(new Budget());
        /* Budget budget=new Budget();
         budget.setBudgetId("anhba");
@@ -57,6 +58,7 @@ public class BudgetActivity extends BaseActivity {
         mBudgetPresenter.updateBudget(budget);*/
         mBudgetPresenter.deleteBudget("anhba");
     }
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_wallet;
@@ -77,7 +79,7 @@ public class BudgetActivity extends BaseActivity {
     
     @Override
     protected void initializePresenter() {
-        this.mPresenter=mBudgetPresenter;
+        this.mPresenter = mBudgetPresenter;
     }
     
     @Override

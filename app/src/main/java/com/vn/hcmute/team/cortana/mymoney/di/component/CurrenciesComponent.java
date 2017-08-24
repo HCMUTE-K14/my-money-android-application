@@ -13,5 +13,6 @@ import dagger.Component;
 @Component(modules = {ActivityModule.class,
           CurrenciesModule.class}, dependencies = ApplicationComponent.class)
 public interface CurrenciesComponent {
+    
     void inject(CurrenciesActivity currenciesActivity);
 }
