@@ -2,7 +2,6 @@ package com.vn.hcmute.team.cortana.mymoney.ui.currencies;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
@@ -14,7 +13,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.CurrenciesModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletPresenter;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -26,9 +24,7 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
     @Inject
     CurrenciesPresenter mCurrenciesPresenter;
-    
-    @Inject
-    WalletPresenter mWalletPresenter;
+ 
     
     @BindView(R.id.button2)
     Button mButton;
@@ -68,17 +64,24 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
         
     }
     
+    
     @Override
-    public void onSuccessGetCurrencies(List<Currencies> list) {
-        if(list==null||list.isEmpty()){
-            Toast.makeText(this,"fail",Toast.LENGTH_LONG).show();
-        }else {
-            Toast.makeText(this, list.get(0).getCurName()+":"+list.size(), Toast.LENGTH_LONG).show();
-        }
+    public void showCurrencies(List<Currencies> list) {
+        
     }
     
     @Override
-    public void onFailureGetCurrencies(String message) {
-        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
+    public void showEmpty() {
+        
+    }
+    
+    @Override
+    public void showError(String message) {
+        
+    }
+    
+    @Override
+    public void loading(boolean isLoading) {
+        
     }
 }

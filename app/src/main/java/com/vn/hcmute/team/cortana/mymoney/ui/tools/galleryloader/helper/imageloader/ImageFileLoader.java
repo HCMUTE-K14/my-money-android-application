@@ -48,10 +48,10 @@ public class ImageFileLoader {
     }
     
     public void loadDeviceImages(final boolean isFolderMode, final ImageLoaderListener listener) {
-        new ImageLoadRunnable(isFolderMode, listener).get();
+        new ImageLoadRunnable(isFolderMode, listener).run();
     }
     
-    private class ImageLoadRunnable {
+    private class ImageLoadRunnable implements Runnable{
         
         private boolean isFolderMode;
         private ImageLoaderListener listener;
@@ -61,8 +61,8 @@ public class ImageFileLoader {
             this.listener = listener;
         }
         
-        
-        public void get() {
+        @Override
+        public void run() {
             Cursor cursor = mContext.getContentResolver()
                       .query(Images.Media.EXTERNAL_CONTENT_URI, projections, null, null,
                                 MediaStore.Images.Media.DATE_ADDED);

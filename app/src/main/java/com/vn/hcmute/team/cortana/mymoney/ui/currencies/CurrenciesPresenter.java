@@ -16,7 +16,7 @@ import javax.inject.Inject;
 public class CurrenciesPresenter extends BasePresenter<CurrenciesContract.View> implements
                                                                                 CurrenciesContract.Presenter {
     
-    CurrenciesUseCase mCurrenciesUseCase;
+    private CurrenciesUseCase mCurrenciesUseCase;
     
     @Inject
     public CurrenciesPresenter(
@@ -26,25 +26,36 @@ public class CurrenciesPresenter extends BasePresenter<CurrenciesContract.View> 
     
     @Override
     public void getCurrencies() {
-        BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
         
-            @Override
-            public void onSuccess(Object value) {
-                getView().onSuccessGetCurrencies((List<Currencies>) value);
-                // getView().onSuccessGetWallet();
-            }
+        CurrenciesRequest request = new CurrenciesRequest(Action.ACCTION_GET_CURRENCIES,
+                  new BaseCallBack<Object>() {
+                      
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          if (value == null) {
+                              getView().showEmpty();
+                          } else {
+                              getView().showCurrencies((List<Currencies>) value);
+                          }
+                      }
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().showError(throwable.getMessage());
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  });
         
-            @Override
-            public void onFailure(Throwable throwable) {
-                getView().onFailureGetCurrencies(throwable.getMessage());
-            }
-        
-            @Override
-            public void onLoading() {
-            
-            }
-        };
-        CurrenciesRequest currenciesRequest=new CurrenciesRequest(Action.ACCTION_GET_CURRENCIES,mObjectBaseCallBack,null,null);
-        mCurrenciesUseCase.subscribe(currenciesRequest);
+        mCurrenciesUseCase.subscribe(request);
+    }
+    
+    @Override
+    public void unSubscribe() {
+        mCurrenciesUseCase.unSubscribe();
     }
 }

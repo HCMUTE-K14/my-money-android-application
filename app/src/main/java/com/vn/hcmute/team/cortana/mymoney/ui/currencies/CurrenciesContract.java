@@ -9,13 +9,21 @@ import java.util.List;
  */
 
 public interface CurrenciesContract {
-    interface View extends BaseView {
+    
+    public interface View extends BaseView {
         
-        void onSuccessGetCurrencies(List<Currencies> list);
-        void onFailureGetCurrencies(String message);
+        void showCurrencies(List<Currencies> list);
+        
+        void showEmpty();
+        
+        void showError(String message);
+        
+        void loading(boolean isLoading);
     }
     
-    interface Presenter {
+    public interface Presenter {
+        
         void getCurrencies();
+        void unSubscribe();
     }
 }

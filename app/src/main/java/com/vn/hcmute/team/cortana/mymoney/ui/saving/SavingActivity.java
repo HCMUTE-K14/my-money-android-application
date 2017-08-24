@@ -2,7 +2,6 @@ package com.vn.hcmute.team.cortana.mymoney.ui.saving;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
@@ -21,7 +20,8 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/23/2017.
  */
 
-public class SavingActivity extends BaseActivity {
+public class SavingActivity extends BaseActivity implements SavingContract.View {
+    
     @Inject
     SavingPresenter mSavingPresenter;
     
@@ -30,36 +30,6 @@ public class SavingActivity extends BaseActivity {
     
     @OnClick(R.id.button2)
     public void onClick() {
-       // mSavingPresenter.getSaving();
-        //mSavingPresenter.createSaving(new Saving());
-       /* Saving saving=new Saving();
-        saving.setSavingid("anhky");
-        saving.setCurrentMoney("1234456");
-        saving.setUserid("e67757e090bb47bbbebf7db8b15e7c96");
-        mSavingPresenter.updateSaving(saving);*/
-     // mSavingPresenter.deleteSaving("bom");
-       // mSavingPresenter.takeOut("vi1","anhky","40000");
-        SavingContract.View view=new SavingContract.View() {
-            @Override
-            public void onSuccess(String message) {
-                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
-            }
-    
-            @Override
-            public void onSuccessGetSaving(List<Saving> list) {
-        
-            }
-    
-            @Override
-            public void onFailure(String message) {
-                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
-            }
-        };
-        
-        mSavingPresenter.setView(view);
-        mSavingPresenter.createSaving(new Saving());
-       
-        
         
     }
     
@@ -84,8 +54,8 @@ public class SavingActivity extends BaseActivity {
     
     @Override
     protected void initializePresenter() {
-        this.mPresenter=mSavingPresenter;
-       // mSavingPresenter.setView(this);
+        this.mPresenter = mSavingPresenter;
+        mSavingPresenter.setView(this);
     }
     
     @Override
@@ -93,25 +63,48 @@ public class SavingActivity extends BaseActivity {
         
     }
     
-    
-    
-    /*@Override
-    public void onSuccess(String message) {
-        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
+    @Override
+    public void showListSaving(List<Saving> savings) {
+        
     }
     
     @Override
-    public void onSuccessGetSaving(List<Saving> list) {
-        if(list==null||list.isEmpty()){
-            Toast.makeText(this,"fail",Toast.LENGTH_LONG).show();
-        }else {
-            Toast.makeText(this,list.get(0).getName(),Toast.LENGTH_LONG).show();
-        }
-       
+    public void showSaving() {
+        
     }
     
     @Override
-    public void onFailure(String message) {
-        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
-    }*/
+    public void onSuccessCreateSaving() {
+        
+    }
+    
+    @Override
+    public void onSuccessDeleteSaving() {
+        
+    }
+    
+    @Override
+    public void onSuccessUpdateSaving() {
+        
+    }
+    
+    @Override
+    public void onSuccessTakeIn() {
+        
+    }
+    
+    @Override
+    public void onSuccessTakeOut() {
+        
+    }
+    
+    @Override
+    public void showError(String message) {
+        
+    }
+    
+    @Override
+    public void loading(boolean isLoading) {
+        
+    }
 }

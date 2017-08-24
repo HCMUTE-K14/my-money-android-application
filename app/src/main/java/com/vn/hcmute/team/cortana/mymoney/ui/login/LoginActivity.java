@@ -85,7 +85,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         mTextViewUsername.setText("USERNAME");
         mTextViewPassword.setText("PASSWORD");
         
-        
+       GalleryLoader.create(this).setLimit(5).start(1);
     }
     
     @Override

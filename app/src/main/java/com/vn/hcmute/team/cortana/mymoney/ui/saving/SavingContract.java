@@ -10,18 +10,31 @@ import java.util.List;
 
 public interface SavingContract {
     
-    interface View extends BaseView {
+    public interface View extends BaseView {
+        void showListSaving(List<Saving> savings);
         
-        void onSuccess(String message);
+        void showSaving();
         
-        void onSuccessGetSaving(List<Saving> list);
+        void onSuccessCreateSaving();
         
-        void onFailure(String message);
+        void onSuccessDeleteSaving();
+        
+        void onSuccessUpdateSaving();
+        
+        void onSuccessTakeIn();
+        
+        void onSuccessTakeOut();
+        
+        void showError(String message);
+        
+        void loading(boolean isLoading);
     }
     
-    interface Presenter {
+    public interface Presenter {
         
         void getSaving();
+        
+        void getSavingById(String id);
         
         void createSaving(Saving saving);
         

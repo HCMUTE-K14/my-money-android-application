@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
-import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
@@ -22,6 +21,7 @@ import javax.inject.Inject;
  */
 
 public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
+    
     private DataRepository mDataRepository;
     private Context mContext;
     
@@ -39,7 +39,7 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
     @Override
     public void subscribe(CurrenciesRequest requestValues) {
         String action = requestValues.getAction();
-    
+        
         switch (action) {
             case Action.ACCTION_GET_CURRENCIES:
                 doGetCurrencies(requestValues.getCallBack());
@@ -56,25 +56,24 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
         }
     }
     
-    private void doGetCurrencies(final BaseCallBack<Object> callBack){
+    private void doGetCurrencies(final BaseCallBack<Object> callBack) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
-    
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
-            public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
-            
-                callBack.onSuccess(user);
+            public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
+                callBack.onSuccess(currencies);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
             mDisposable = mDataRepository.getCurrencies()
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
@@ -88,7 +87,7 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-        
+            
         }
     }
     
@@ -97,15 +96,10 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
         
         private String action;
         private BaseCallBack<Object> callBack;
-        private Currencies mCurrencies;
-        private String[] params;
         
-        public CurrenciesRequest(@NonNull String action, @Nullable BaseCallBack<Object> callBack,
-                  @Nullable Currencies currencies, @Nullable String[] params) {
+        public CurrenciesRequest(@NonNull String action, @Nullable BaseCallBack<Object> callBack) {
             this.action = action;
             this.callBack = callBack;
-            this.mCurrencies = currencies;
-            this.params = params;
         }
         
         public String getAction() {
@@ -124,16 +118,6 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
             this.callBack = callBack;
         }
         
-        public Currencies getData() {
-            return mCurrencies;
-        }
-        
-        public String[] getParam() {
-            return params;
-        }
-        
-        public void setData(Currencies object) {
-            this.mCurrencies = object;
-        }
+
     }
 }
