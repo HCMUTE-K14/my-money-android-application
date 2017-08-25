@@ -69,7 +69,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
             }
         };
         
-        EventRequest eventRequest = new EventRequest(Action.ACTION_CREATAE_EVENT,
+        EventRequest eventRequest = new EventRequest(Action.ACTION_CREATE_EVENT,
                   mObjectBaseCallBack, event, null);
         mEventUseCase.subscribe(eventRequest);
     }

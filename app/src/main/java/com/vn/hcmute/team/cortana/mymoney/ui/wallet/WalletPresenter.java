@@ -16,13 +16,6 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
                                                                         WalletContract.Presenter {
     
     WalletUseCase mWalletUseCase;
-    
-    @Inject
-    public WalletPresenter(WalletUseCase walletUseCase) {
-        mWalletUseCase = walletUseCase;
-    }
-    
-    
     BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
         
         @Override
@@ -41,6 +34,12 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
             
         }
     };
+    
+    
+    @Inject
+    public WalletPresenter(WalletUseCase walletUseCase) {
+        mWalletUseCase = walletUseCase;
+    }
     
     @Override
     public void createWallet(Wallet wallet) {
@@ -68,7 +67,7 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
     public void moveWallet(String walletFrom, String walletTo, String money) {
         String[] params = {walletFrom, walletTo, money};
         WalletUseCase.WalletRequest walletRequest = new WalletUseCase.WalletRequest(
-                  Action.ACCTION_MOVE_WALLET, mObjectBaseCallBack, null, params);
+                  Action.ACTION_MOVE_WALLET, mObjectBaseCallBack, null, params);
         mWalletUseCase.subscribe(walletRequest);
     }
     
@@ -80,15 +79,15 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
             public void onSuccess(Object value) {
                 getView().onSuccessGetWallet((List<Wallet>) value);
             }
-
+            
             @Override
             public void onFailure(Throwable throwable) {
                 getView().onFailure(throwable.getMessage());
             }
-
+            
             @Override
             public void onLoading() {
-
+                
             }
         };
         

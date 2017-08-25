@@ -13,7 +13,9 @@ public interface RegisterContract {
         
         void initializeView();
         
-        void registerSuccess();
+        void registerSuccess(String message);
+        
+        void registerWithFacebookSuccess(String message);
         
         void registerFailure(String message);
         
@@ -23,6 +25,8 @@ public interface RegisterContract {
     public interface Presenter {
         
         void register(User user);
+        
+        void registerWithFacebook();
         
         void unSubscribe();
     }

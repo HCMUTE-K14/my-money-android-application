@@ -26,6 +26,13 @@ public interface DataSource {
         
         Observable<String> register(User user);
         
+        Observable<String> forgetPassword(String email);
+        
+        Observable<String> changePassword(String userid, String token, String oldPassword,
+                  String newPassword);
+        
+        Observable<String> changeProfile(String userid, String token, User user);
+        
         Observable<List<Image>> getImage(String userid, String token);
         
         Observable<String> uploadImage(RequestBody userid, RequestBody token, RequestBody detail,

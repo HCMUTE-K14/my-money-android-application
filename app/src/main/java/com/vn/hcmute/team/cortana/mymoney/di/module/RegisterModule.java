@@ -3,7 +3,7 @@ package com.vn.hcmute.team.cortana.mymoney.di.module;
 import android.content.Context;
 import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
 import com.vn.hcmute.team.cortana.mymoney.ui.register.RegisterPresenter;
-import com.vn.hcmute.team.cortana.mymoney.usecase.remote.RegisterUseCase;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager;
 import dagger.Module;
 import dagger.Provides;
 
@@ -18,12 +18,13 @@ public class RegisterModule {
     }
     
     @Provides
-    RegisterUseCase provideRegisterUseCase(Context context, DataRepository dataRepository) {
-        return new RegisterUseCase(context, dataRepository);
+    UserManager provideUserManager(Context context, DataRepository dataRepository) {
+        return new UserManager(context, dataRepository);
     }
     
     @Provides
-    RegisterPresenter provideRegisterPresenter(RegisterUseCase registerUseCase) {
-        return new RegisterPresenter(registerUseCase);
+    RegisterPresenter provideRegisterPresenter(UserManager userManager) {
+        return new RegisterPresenter(userManager);
     }
+    
 }

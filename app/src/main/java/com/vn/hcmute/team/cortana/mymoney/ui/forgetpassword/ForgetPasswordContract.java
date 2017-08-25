@@ -1,21 +1,20 @@
-package com.vn.hcmute.team.cortana.mymoney.ui.login;
+package com.vn.hcmute.team.cortana.mymoney.ui.forgetpassword;
 
-import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.view.BaseView;
 
 /**
- * Created by infamouSs on 8/11/17.
+ * Created by infamouSs on 8/25/17.
  */
 
-public interface LoginContract {
+public interface ForgetPasswordContract {
     
     public interface View extends BaseView {
         
         void initializeView();
         
-        void loginSuccessful();
+        void successForgetPassword(String message);
         
-        void loginFailure(String message);
+        void showError(String message);
         
         void loading(boolean isLoading);
     }
@@ -23,10 +22,6 @@ public interface LoginContract {
     public interface Presenter {
         
         void forgetPassword(String email);
-        
-        void login(UserCredential userCredential);
-        
-        void loginWithFacebook();
         
         void unSubscribe();
     }

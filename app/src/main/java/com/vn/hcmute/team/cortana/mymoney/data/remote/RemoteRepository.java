@@ -98,6 +98,67 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     }
     
     @Override
+    public Observable<String> forgetPassword(String email) {
+        UserService userService = mServiceGenerator.getService(UserService.class);
+        if (userService == null) {
+            return null;
+        }
+        return userService.forgetPassword(email)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getMessage();
+                          } else {
+                              throw new ImageException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> changePassword(String userid, String token, String oldPassword,
+              String newPassword) {
+        UserService userService = mServiceGenerator.getService(UserService.class);
+        if (userService == null) {
+            return null;
+        }
+        return userService.changePassword(userid, token, oldPassword, newPassword)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getData();
+                          } else {
+                              throw new ImageException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> changeProfile(String userid, String token, User user) {
+        UserService userService = mServiceGenerator.getService(UserService.class);
+        if (userService == null) {
+            return null;
+        }
+        return userService.changeProfile(userid, token, user)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getData();
+                          } else {
+                              throw new ImageException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
     public Observable<List<Image>> getImage(String userid, String token) {
         ImageService imageService = mServiceGenerator.getService(ImageService.class);
         

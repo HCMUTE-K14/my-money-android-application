@@ -25,6 +25,13 @@ public interface RemoteTask {
         Observable<User> login(UserCredential userCredential);
         
         Observable<String> register(User user);
+        
+        Observable<String> forgetPassword(String email);
+        
+        Observable<String> changePassword(String userid, String token, String oldPassword,
+                  String newPassword);
+        
+        Observable<String> changeProfile(String userid, String token, User user);
     }
     
     public interface ImageTask {

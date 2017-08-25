@@ -3,7 +3,10 @@ package com.vn.hcmute.team.cortana.mymoney.usecase.remote;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
+import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
@@ -16,11 +19,12 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by kunsubin on 8/23/2017.
  */
-
+@Singleton
 public class BudgetUseCase extends UseCase<BudgetRequest> {
     
     private DataRepository mDataRepository;
@@ -32,7 +36,7 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
     
     @Inject
     public BudgetUseCase(Context context, DataRepository dataRepository) {
-        this.mContext=context;
+        this.mContext = context;
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
     }
@@ -61,14 +65,21 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
     
     @Override
     public void unSubscribe() {
-        if (!mCompositeDisposable.isDisposed()) {
+        if (mCompositeDisposable != null && !mCompositeDisposable.isDisposed() &&
+            mDisposable != null) {
             mCompositeDisposable.remove(mDisposable);
         }
     }
     
     private void doGetBudget(final BaseCallBack<Object> callBack) {
-        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
-        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();
+        String userid = mDataRepository.getUserId();
+        String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -102,8 +113,14 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
     }
     
     private void doCreateBudget(final BaseCallBack<Object> callBack, Budget budget) {
-        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
-        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();
+        String userid = mDataRepository.getUserId();
+        String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -138,8 +155,14 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
     }
     
     private void doUpdateBudget(final BaseCallBack<Object> callBack, Budget budget) {
-        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
-        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();
+        String userid = mDataRepository.getUserId();
+        String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -174,8 +197,14 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
     }
     
     private void doDeleteBudget(final BaseCallBack<Object> callBack, String[] params) {
-        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
-        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();
+        String userid = mDataRepository.getUserId();
+        String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -244,12 +273,12 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
             return mBudget;
         }
         
-        public String[] getParam() {
-            return params;
-        }
-        
         public void setData(Budget object) {
             this.mBudget = object;
+        }
+        
+        public String[] getParam() {
+            return params;
         }
     }
 }

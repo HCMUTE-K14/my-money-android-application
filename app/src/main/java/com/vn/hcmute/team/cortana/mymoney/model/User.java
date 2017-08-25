@@ -41,6 +41,12 @@ public class User {
         this.active = false;
     }
     
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+    
     public String getUserid() {
         return userid;
     }

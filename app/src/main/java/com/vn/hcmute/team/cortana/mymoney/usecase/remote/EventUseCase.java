@@ -3,7 +3,10 @@ package com.vn.hcmute.team.cortana.mymoney.usecase.remote;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
+import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
@@ -16,11 +19,12 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by kunsubin on 8/22/2017.
  */
-
+@Singleton
 public class EventUseCase extends UseCase<EventRequest> {
     
     private DataRepository mDataRepository;
@@ -32,7 +36,7 @@ public class EventUseCase extends UseCase<EventRequest> {
     
     @Inject
     public EventUseCase(Context context, DataRepository dataRepository) {
-        this.mContext=context;
+        this.mContext = context;
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
     }
@@ -45,7 +49,7 @@ public class EventUseCase extends UseCase<EventRequest> {
             case Action.ACTION_GET_EVENT:
                 doGetEvent(requestValues.getCallBack());
                 break;
-            case Action.ACTION_CREATAE_EVENT:
+            case Action.ACTION_CREATE_EVENT:
                 doCreateEvent(requestValues.getCallBack(), requestValues.getData());
                 break;
             case Action.ACTION_UPDATE_EVENT:
@@ -61,7 +65,8 @@ public class EventUseCase extends UseCase<EventRequest> {
     
     @Override
     public void unSubscribe() {
-        if (!mCompositeDisposable.isDisposed()) {
+        if (mCompositeDisposable != null && !mCompositeDisposable.isDisposed() &&
+            mDisposable != null) {
             mCompositeDisposable.remove(mDisposable);
         }
     }
@@ -69,6 +74,12 @@ public class EventUseCase extends UseCase<EventRequest> {
     private void doGetEvent(final BaseCallBack<Object> callBack) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -142,6 +153,12 @@ public class EventUseCase extends UseCase<EventRequest> {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
@@ -177,6 +194,12 @@ public class EventUseCase extends UseCase<EventRequest> {
     private void doDeleteEvent(final BaseCallBack<Object> callBack, final String[] params) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -245,12 +268,12 @@ public class EventUseCase extends UseCase<EventRequest> {
             return mEvent;
         }
         
-        public String[] getParam() {
-            return params;
-        }
-        
         public void setData(Event object) {
             this.mEvent = object;
+        }
+        
+        public String[] getParam() {
+            return params;
         }
     }
 }

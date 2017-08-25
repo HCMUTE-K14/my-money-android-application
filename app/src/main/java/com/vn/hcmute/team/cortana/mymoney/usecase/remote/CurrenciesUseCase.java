@@ -15,11 +15,12 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by kunsubin on 8/22/2017.
  */
-
+@Singleton
 public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
     
     private DataRepository mDataRepository;
@@ -31,7 +32,7 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
     
     @Inject
     public CurrenciesUseCase(Context context, DataRepository dataRepository) {
-        this.mContext=context;
+        this.mContext = context;
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
     }
@@ -42,7 +43,7 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
         String action = requestValues.getAction();
         
         switch (action) {
-            case Action.ACCTION_GET_CURRENCIES:
+            case Action.ACTION_GET_CURRENCIES:
                 doGetCurrencies(requestValues.getCallBack());
                 break;
             default:
@@ -52,14 +53,13 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
     
     @Override
     public void unSubscribe() {
-        if (!mCompositeDisposable.isDisposed()) {
+        if (mCompositeDisposable != null && !mCompositeDisposable.isDisposed() &&
+            mDisposable != null) {
             mCompositeDisposable.remove(mDisposable);
         }
     }
     
     private void doGetCurrencies(final BaseCallBack<Object> callBack) {
-        String userid = mDataRepository.getUserId();
-        String token = mDataRepository.getUserToken();
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override

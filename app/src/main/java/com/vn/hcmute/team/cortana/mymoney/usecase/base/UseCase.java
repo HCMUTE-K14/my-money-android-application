@@ -25,7 +25,6 @@ public abstract class UseCase<Q extends UseCase.RequestValue> {
     
     public abstract void unSubscribe();
     
-    
     public interface RequestValue {
         
     }

@@ -13,9 +13,9 @@ public interface WalletContract {
     interface View extends BaseView {
         
         void onSuccess(String message);
-
+        
         void onSuccessGetWallet(List<Wallet> wallets);
-
+        
         void onFailure(String message);
     }
     

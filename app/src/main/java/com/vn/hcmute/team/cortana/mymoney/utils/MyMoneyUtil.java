@@ -19,4 +19,5 @@ public class MyMoneyUtil {
                   .isHasPermission(activity,
                             PermissionHelper.Permission.READ_EXTERNAL_STORAGE);
     }
+    
 }

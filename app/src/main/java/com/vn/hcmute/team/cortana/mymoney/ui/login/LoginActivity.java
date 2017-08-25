@@ -1,11 +1,13 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -18,11 +20,8 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.LoginModule;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.GalleryLoader;
-import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.model.ImageGallery;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
-import java.util.ArrayList;
-import java.util.List;
+import com.vn.hcmute.team.cortana.mymoney.ui.forgetpassword.ForgetPasswordActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.register.RegisterActivity;
 import javax.inject.Inject;
 
 /**
@@ -31,21 +30,38 @@ import javax.inject.Inject;
 
 public class LoginActivity extends BaseActivity implements LoginContract.View {
     
+    
     @BindView(R.id.txt_username)
-    TextView mTextViewUsername;
+    EditText mTextViewUsername;
     
     @BindView(R.id.txt_password)
-    TextView mTextViewPassword;
+    EditText mTextViewPassword;
     
-    @BindView(R.id.button)
+    @BindView(R.id.btn_login)
     Button mButtonLogin;
+    
+    @BindView(R.id.btn_register)
+    Button mButtonRegister;
+    
+    @BindView(R.id.btn_login_with_facebook)
+    Button mButtonLoginWithFacebook;
+    
+    @BindView(R.id.btn_forget_password)
+    Button mButtonForgetPassword;
     
     @Inject
     LoginPresenter mLoginPresenter;
     
+    private ActionBar mActionBar;
+    
+    private ProgressDialog mProgressDialog;
+    
+    /*-----------------*/
+    /*Initialize       */
+    /*-----------------*/
     @Override
     public int getLayoutId() {
-        return R.layout.activity_main;
+        return R.layout.activity_login;
     }
     
     @Override
@@ -81,24 +97,16 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
     
     @Override
-    public void initializeView() {
-        mTextViewUsername.setText("USERNAME");
-        mTextViewPassword.setText("PASSWORD");
-        
-        GalleryLoader.create(this).setLimit(5).start(1);
+    protected void onDestroy() {
+        super.onDestroy();
+        mLoginPresenter.unSubscribe();
     }
     
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            List<ImageGallery> images = (ArrayList<ImageGallery>) GalleryLoader.getImages(data);
-            MyLogger.d("Return", images);
-        }
-        
-        
-    }
+    /*-----------------*/
+    /*Helper Method    */
+    /*-----------------*/
     
-    @OnClick(R.id.button)
+    @OnClick(R.id.btn_login)
     public void onClickLogin(View view) {
         UserCredential userCredential = new UserCredential();
         
@@ -106,7 +114,42 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         userCredential.setPassword(mTextViewPassword.getText().toString());
         
         mLoginPresenter.login(userCredential);
-        // GalleryLoader.create(this).start(GalleryLoader.REQUEST_GALLERY_LOADER);
+    }
+    
+    @OnClick(R.id.btn_register)
+    public void onClickRegister() {
+        openActivityRegister();
+    }
+    
+    @OnClick(R.id.btn_login_with_facebook)
+    public void onClickLoginWithFacebook() {
+        mLoginPresenter.loginWithFacebook();
+    }
+    
+    @OnClick(R.id.btn_forget_password)
+    public void onClickForgetPassword() {
+        openActivityForgetPassword();
+    }
+    
+    private void openActivityRegister() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+    }
+    
+    private void openActivityForgetPassword() {
+        Intent intent = new Intent(this, ForgetPasswordActivity.class);
+        startActivity(intent);
+    }
+    
+    
+    /*-----------------*/
+    /*Task View        */
+    /*-----------------*/
+    @Override
+    public void initializeView() {
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setMessage(getString(R.string.message_wait_login));
     }
     
     @Override
@@ -119,9 +162,14 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
     
-    
     @Override
     public void loading(boolean isLoading) {
         
+        if (isLoading) {
+            mProgressDialog.show();
+            return;
+        }
+        
+        mProgressDialog.dismiss();
     }
 }
