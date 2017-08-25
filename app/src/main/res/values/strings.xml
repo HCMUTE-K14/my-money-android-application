@@ -41,4 +41,7 @@
   <string name="message_sending_email">Sending email...</string>
   <string name="message_warning_need_login">Please try again after login</string>
   <string name="message_creating_account">Creating account...</string>
+  <string name="txt_name">Name</string>
+  <string name="txt_describe">Describe</string>
+  <string name="txt_add_person">Add Person</string>
 </resources>

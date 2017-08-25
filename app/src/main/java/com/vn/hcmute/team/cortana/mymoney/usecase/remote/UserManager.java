@@ -338,7 +338,6 @@ public class UserManager extends UseCase<UserRequest> {
             this.data = data;
         }
         
-        
         public User getData() {
             return data;
         }

@@ -11,13 +11,15 @@ import java.util.List;
 public interface PersonContract {
     
     interface View extends BaseView {
+        void initializeView();
         
-        void onSuccessGetListPerson(List<Person> list);
+        void showListPerson(List<Person> list);
+        
+        void showEmpty();
         
         void onSuccessAddPerson(String message);
         
         void onSuccessRemovePerson(String message);
-        
         
         void onFailure(String message);
         
@@ -31,5 +33,7 @@ public interface PersonContract {
         void addPerson(Person person);
         
         void removePerson(String personid);
+        
+        void unSubscribe();
     }
 }

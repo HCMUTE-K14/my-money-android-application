@@ -13,13 +13,13 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/23/2017.
  */
 
-public class PersonPersenter extends BasePresenter<PersonContract.View> implements
+public class PersonPresenter extends BasePresenter<PersonContract.View> implements
                                                                         PersonContract.Presenter {
     
     PersonUseCase mPersonUseCase;
     
     @Inject
-    public PersonPersenter(
+    public PersonPresenter(
               PersonUseCase personUseCase) {
         mPersonUseCase = personUseCase;
     }
@@ -31,7 +31,14 @@ public class PersonPersenter extends BasePresenter<PersonContract.View> implemen
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
-                getView().onSuccessGetListPerson((List<Person>) value);
+                
+                List<Person> list = (List<Person>) value;
+                
+                if (list.isEmpty()) {
+                    getView().showEmpty();
+                    return;
+                }
+                getView().showListPerson(list);
             }
             
             @Override
@@ -100,5 +107,10 @@ public class PersonPersenter extends BasePresenter<PersonContract.View> implemen
         PersonRequest personRequest = new PersonRequest(Action.ACTION_REMOVE_PERSON,
                   mObjectBaseCallBack, null, param);
         mPersonUseCase.subscribe(personRequest);
+    }
+    
+    @Override
+    public void unSubscribe() {
+        mPersonUseCase.unSubscribe();
     }
 }

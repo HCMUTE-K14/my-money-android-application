@@ -673,14 +673,11 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          MyLogger.d("checkkkkkkkkkkkk", stringJsonResponse.getData());
                           
                           if (stringJsonResponse.getStatus().equals("success")) {
-                              MyLogger.d("check data", stringJsonResponse.getData());
                               return stringJsonResponse.getData();
                               
                           } else {
-                              MyLogger.d("errreeee", stringJsonResponse.getMessage());
                               throw new PersonException(stringJsonResponse.getMessage());
                           }
                           

@@ -2,7 +2,7 @@ package com.vn.hcmute.team.cortana.mymoney.di.module;
 
 import android.content.Context;
 import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
-import com.vn.hcmute.team.cortana.mymoney.ui.person.PersonPersenter;
+import com.vn.hcmute.team.cortana.mymoney.ui.person.PersonPresenter;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.PersonUseCase;
 import dagger.Module;
 import dagger.Provides;
@@ -19,7 +19,7 @@ public class PersonModule {
     }
     
     @Provides
-    PersonPersenter providePersonPersenter(PersonUseCase personUseCase) {
-        return new PersonPersenter(personUseCase);
+    PersonPresenter providePersonPersenter(PersonUseCase personUseCase) {
+        return new PersonPresenter(personUseCase);
     }
 }

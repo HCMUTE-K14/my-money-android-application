@@ -15,7 +15,7 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
     <activity
-      android:name=".ui.login.LoginActivity"
+      android:name=".ui.person.PersonActivity"
       android:launchMode="singleTop"
       android:screenOrientation="portrait">
       <intent-filter>

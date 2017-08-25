@@ -12,6 +12,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.PersonUseCase.PersonRequest;
+import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -24,6 +25,7 @@ import javax.inject.Singleton;
 /**
  * Created by kunsubin on 8/23/2017.
  */
+
 @Singleton
 public class PersonUseCase extends UseCase<PersonRequest> {
     
@@ -114,6 +116,12 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
@@ -128,6 +136,9 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
+            
+            person.setPersonid(SecurityUtil.getRandomUUID());
+            person.setUserid(userid);
             
             mDisposable = mDataRepository.addPerson(person, userid, token)
                       .subscribeOn(Schedulers.io())
@@ -146,10 +157,15 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         }
     }
     
-    //bi loi chua sua
     private void doRemovePerson(final BaseCallBack<Object> callBack, String[] params) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
