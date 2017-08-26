@@ -15,8 +15,8 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
     <activity
-      android:name=".ui.person.PersonActivity"
       android:launchMode="singleTop"
+      android:name=".ui.transaction.Transaction"
       android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -25,14 +25,17 @@
       </intent-filter>
     </activity>
 
+    <activity
+      android:name=".ui.person.PersonActivity"
+      android:screenOrientation="portrait" />
     <activity android:name=".ui.tools.galleryloader.ui.GalleryLoaderActivity" />
     <activity
-      android:name=".ui.register.RegisterActivity"
       android:launchMode="singleTop"
+      android:name=".ui.register.RegisterActivity"
       android:screenOrientation="portrait" />
     <activity
-      android:name=".ui.forgetpassword.ForgetPasswordActivity"
       android:launchMode="singleTop"
+      android:name=".ui.forgetpassword.ForgetPasswordActivity"
       android:screenOrientation="portrait" />
   </application>
 

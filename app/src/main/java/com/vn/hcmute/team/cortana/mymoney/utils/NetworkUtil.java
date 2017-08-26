@@ -22,4 +22,19 @@ public class NetworkUtil {
         return (info != null && info.isConnected());
     }
     
+    public boolean isOnWiFi(Context context) {
+        ConnectivityManager connManager = (ConnectivityManager) context
+                  .getSystemService(Context.CONNECTIVITY_SERVICE);
+        
+        NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
+        if (networkInfo == null) {
+            return false;  // no network
+        }
+        if (!networkInfo.isConnected()) {
+            return false;
+        }
+        
+        return networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+        
+    }
 }

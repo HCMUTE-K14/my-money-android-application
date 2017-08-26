@@ -11,17 +11,20 @@ import java.util.List;
 public interface PersonContract {
     
     interface View extends BaseView {
+        
         void initializeView();
         
         void showListPerson(List<Person> list);
         
         void showEmpty();
         
-        void onSuccessAddPerson(String message,Person person);
+        void onSuccessAddPerson(String message, Person person);
         
-        void onSuccessRemovePerson(String message,int position,Person person);
+        void onSuccessRemovePerson(String message, int position, Person person);
         
         void onFailure(String message);
+        
+        void onDoneChoosePerson(List<Person> selectedPerson);
         
         void loading(boolean isLoading);
     }
@@ -32,7 +35,9 @@ public interface PersonContract {
         
         void addPerson(Person person);
         
-        void removePerson(int position,Person person);
+        void removePerson(int position, Person person);
+        
+        void finishChoosePerson(List<Person> selectedPersons);
         
         void unSubscribe();
     }

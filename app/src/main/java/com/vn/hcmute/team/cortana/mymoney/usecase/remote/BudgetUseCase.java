@@ -105,7 +105,6 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -146,7 +145,6 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -188,7 +186,6 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -230,7 +227,6 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);

@@ -106,7 +106,6 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -123,8 +122,9 @@ public class PersonUseCase extends UseCase<PersonRequest> {
             return;
         }
         
-        if(TextUtils.isEmpty(person.getName())){
-            callBack.onFailure(new PersonException(mContext.getString(R.string.message_name_person_empty)));
+        if (TextUtils.isEmpty(person.getName())) {
+            callBack.onFailure(
+                      new PersonException(mContext.getString(R.string.message_name_person_empty)));
             return;
         }
         
@@ -155,7 +155,6 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -197,7 +196,6 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);

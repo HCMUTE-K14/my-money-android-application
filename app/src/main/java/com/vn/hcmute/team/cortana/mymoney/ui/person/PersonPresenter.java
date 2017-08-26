@@ -6,7 +6,9 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.PersonUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.PersonUseCase.PersonRequest;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 
 /**
@@ -64,7 +66,7 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
-                getView().onSuccessAddPerson((String) value,person);
+                getView().onSuccessAddPerson((String) value, person);
             }
             
             @Override
@@ -84,12 +86,12 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
     }
     
     @Override
-    public void removePerson(final int position,final Person person) {
+    public void removePerson(final int position, final Person person) {
         BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
-                getView().onSuccessRemovePerson((String)value,position,person);
+                getView().onSuccessRemovePerson((String) value, position, person);
             }
             
             @Override
@@ -107,6 +109,18 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
         PersonRequest personRequest = new PersonRequest(Action.ACTION_REMOVE_PERSON,
                   mObjectBaseCallBack, null, param);
         mPersonUseCase.subscribe(personRequest);
+    }
+    
+    @Override
+    public void finishChoosePerson(List<Person> selectedPersons) {
+        if (selectedPersons != null) {
+            Set<Person> hs = new HashSet<>();
+            hs.addAll(selectedPersons);
+            selectedPersons.clear();
+            selectedPersons.addAll(hs);
+            
+            getView().onDoneChoosePerson(selectedPersons);
+        }
     }
     
     @Override

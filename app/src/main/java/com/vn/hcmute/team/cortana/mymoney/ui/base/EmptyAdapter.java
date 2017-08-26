@@ -20,14 +20,15 @@ public class EmptyAdapter extends RecyclerView.Adapter<EmptyAdapterViewHolder> {
     private Context mContext;
     private String mMessage;
     
-    public EmptyAdapter(Context context,String message){
-        this.mContext=context;
-        this.mMessage=message;
+    public EmptyAdapter(Context context, String message) {
+        this.mContext = context;
+        this.mMessage = message;
     }
     
     @Override
     public EmptyAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_empty,parent,false);
+        View v = LayoutInflater.from(parent.getContext())
+                  .inflate(R.layout.item_empty, parent, false);
         
         return new EmptyAdapterViewHolder(v);
     }

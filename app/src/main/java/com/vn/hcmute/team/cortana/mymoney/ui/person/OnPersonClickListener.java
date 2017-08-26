@@ -7,7 +7,8 @@ import com.vn.hcmute.team.cortana.mymoney.model.Person;
  */
 
 public interface OnPersonClickListener {
-    boolean onPersonClick(int position,boolean isSelected);
     
-    void onLongPersonClick(int position,Person person);
+    boolean onPersonClick(int position, boolean isSelected);
+    
+    void onLongPersonClick(int position, Person person);
 }

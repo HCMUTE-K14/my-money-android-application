@@ -11,6 +11,18 @@ import com.google.gson.annotations.SerializedName;
 
 public class Person implements Parcelable {
     
+    public static final String TAG = Person.class.getSimpleName();
+    public static final Creator<Person> CREATOR = new Creator<Person>() {
+        @Override
+        public Person createFromParcel(Parcel in) {
+            return new Person(in);
+        }
+        
+        @Override
+        public Person[] newArray(int size) {
+            return new Person[size];
+        }
+    };
     @SerializedName("personid")
     @Expose
     private String personid;
@@ -23,7 +35,6 @@ public class Person implements Parcelable {
     @SerializedName("userid")
     @Expose
     private String userid;
-    
     private int color;
     
     public Person() {
@@ -39,18 +50,6 @@ public class Person implements Parcelable {
         describe = in.readString();
         userid = in.readString();
     }
-    
-    public static final Creator<Person> CREATOR = new Creator<Person>() {
-        @Override
-        public Person createFromParcel(Parcel in) {
-            return new Person(in);
-        }
-        
-        @Override
-        public Person[] newArray(int size) {
-            return new Person[size];
-        }
-    };
     
     public String getPersonid() {
         return personid;
@@ -99,10 +98,44 @@ public class Person implements Parcelable {
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-    
+        
         dest.writeString(personid);
         dest.writeString(name);
         dest.writeString(describe);
         dest.writeString(userid);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        
+        Person person = (Person) o;
+        
+        if (personid != null ? !personid.equals(person.personid) : person.personid != null) {
+            return false;
+        }
+        return userid != null ? userid.equals(person.userid) : person.userid == null;
+        
+    }
+    
+    @Override
+    public int hashCode() {
+        int result = personid != null ? personid.hashCode() : 0;
+        result = 31 * result + (userid != null ? userid.hashCode() : 0);
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "Person{" +
+               "personid='" + personid + '\'' +
+               ", name='" + name + '\'' +
+               ", describe='" + describe + '\'' +
+               '}';
     }
 }

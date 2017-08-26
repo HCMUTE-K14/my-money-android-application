@@ -112,7 +112,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -155,7 +154,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -197,7 +195,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -240,7 +237,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -283,7 +279,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -326,7 +321,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);

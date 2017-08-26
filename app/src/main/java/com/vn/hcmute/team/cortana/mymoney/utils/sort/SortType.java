@@ -6,6 +6,5 @@ package com.vn.hcmute.team.cortana.mymoney.utils.sort;
 
 public enum SortType {
     A_Z,
-    Z_A,
-    DATE_ADDED
+    Z_A
 }

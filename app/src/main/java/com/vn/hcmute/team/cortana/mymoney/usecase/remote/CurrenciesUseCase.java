@@ -84,7 +84,6 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);

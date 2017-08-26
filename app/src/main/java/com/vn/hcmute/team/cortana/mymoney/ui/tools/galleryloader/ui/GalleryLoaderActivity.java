@@ -332,7 +332,6 @@ public class GalleryLoaderActivity extends BaseActivity implements GalleryLoader
     }
     
     private void onDone() {
-        // MyLogger.d(mRecyclerViewManager.getSelectedImages());
         mGalleryLoaderPresenter.finishPickImage(mRecyclerViewManager.getSelectedImages());
     }
 }

@@ -41,9 +41,10 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
               OnPersonClickListener personClickListener) {
         this.mContext = context;
         
-        if (mSelectedPersons != null && !mSelectedPersons.isEmpty()) {
+        if (selectedPersons != null) {
             this.mSelectedPersons.addAll(selectedPersons);
         }
+        
         this.mPersonClickListener = personClickListener;
         
         this.isFirstTime = true;
@@ -70,7 +71,6 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
         final Person person = mPersons.get(position);
         
         final boolean isSelected = isSelectedPerson(person);
-        
         int color = mPersons.get(position).getColor();
         
         if (color == 0) {
@@ -135,6 +135,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
                 return false;
             }
         });
+        
     }
     
     
@@ -154,9 +155,10 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
     public void setData(List<Person> persons) {
         mPersons.clear();
         mPersons.addAll(persons);
+        
     }
     
-    public boolean isEmpty() {
+    public boolean isEmptyData() {
         return mPersons.isEmpty();
     }
     
@@ -173,11 +175,13 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
     }
     
     public void remove(int position, Person person) {
-        mPersons.remove(person);
+        
         if (isSelectedPerson(person)) {
             mSelectedPersons.remove(person);
         }
-        notifyItemChanged(position);
+        mPersons.remove(person);
+        
+        notifyDataSetChanged();
     }
     
     public void add(Person person) {

@@ -18,9 +18,9 @@ import com.vn.hcmute.team.cortana.mymoney.R;
 
 public class RoundedLetterView extends View {
     
+    private static final int DEFAULT_VIEW_SIZE = 96;
     private static int DEFAULT_TITLE_COLOR = Color.WHITE;
     private static int DEFAULT_BACKGROUND_COLOR = Color.CYAN;
-    private static final int DEFAULT_VIEW_SIZE = 96;
     private static float DEFAULT_TITLE_SIZE = 25f;
     private static String DEFAULT_TITLE = "A";
     
@@ -55,14 +55,16 @@ public class RoundedLetterView extends View {
         final TypedArray a = getContext().obtainStyledAttributes(
                   attrs, R.styleable.RoundedLetterView, defStyle, 0);
         
-        if(a.hasValue(R.styleable.RoundedLetterView_rlv_titleText)){
+        if (a.hasValue(R.styleable.RoundedLetterView_rlv_titleText)) {
             mTitleText = a.getString(R.styleable.RoundedLetterView_rlv_titleText);
         }
         
-        mTitleColor = a.getColor(R.styleable.RoundedLetterView_rlv_titleColor,DEFAULT_TITLE_COLOR);
-        mBackgroundColor = a.getColor(R.styleable.RoundedLetterView_rlv_backgroundColorValue,DEFAULT_BACKGROUND_COLOR);
+        mTitleColor = a.getColor(R.styleable.RoundedLetterView_rlv_titleColor, DEFAULT_TITLE_COLOR);
+        mBackgroundColor = a.getColor(R.styleable.RoundedLetterView_rlv_backgroundColorValue,
+                  DEFAULT_BACKGROUND_COLOR);
         
-        mTitleSize = a.getDimension(R.styleable.RoundedLetterView_rlv_titleSize,DEFAULT_TITLE_SIZE);
+        mTitleSize = a
+                  .getDimension(R.styleable.RoundedLetterView_rlv_titleSize, DEFAULT_TITLE_SIZE);
         a.recycle();
         
         //Title TextPaint
@@ -83,13 +85,13 @@ public class RoundedLetterView extends View {
         mInnerRectF = new RectF();
     }
     
-    private void invalidateTextPaints(){
+    private void invalidateTextPaints() {
         mTitleTextPaint.setTypeface(mFont);
         mTitleTextPaint.setTextSize(mTitleSize);
         mTitleTextPaint.setColor(mTitleColor);
     }
     
-    private void invalidatePaints(){
+    private void invalidatePaints() {
         mBackgroundPaint.setColor(mBackgroundColor);
     }
     
@@ -126,6 +128,7 @@ public class RoundedLetterView extends View {
     
     /**
      * Gets the title string attribute value.
+     *
      * @return The title string attribute value.
      */
     public String getTitleText() {
@@ -134,6 +137,7 @@ public class RoundedLetterView extends View {
     
     /**
      * Sets the view's title string attribute value.
+     *
      * @param title The example string attribute value to use.
      */
     public void setTitleText(String title) {
@@ -143,6 +147,7 @@ public class RoundedLetterView extends View {
     
     /**
      * Gets the background color attribute value.
+     *
      * @return The background color attribute value.
      */
     public int getBackgroundColor() {
@@ -151,6 +156,7 @@ public class RoundedLetterView extends View {
     
     /**
      * Sets the view's background color attribute value.
+     *
      * @param backgroundColor The background color attribute value to use.
      */
     public void setBackgroundColor(int backgroundColor) {
@@ -160,6 +166,7 @@ public class RoundedLetterView extends View {
     
     /**
      * Gets the title size dimension attribute value.
+     *
      * @return The title size dimension attribute value.
      */
     public float getTitleSize() {
@@ -168,6 +175,7 @@ public class RoundedLetterView extends View {
     
     /**
      * Sets the view's title size dimension attribute value.
+     *
      * @param titleSize The title size dimension attribute value to use.
      */
     public void setTitleSize(float titleSize) {
@@ -177,15 +185,17 @@ public class RoundedLetterView extends View {
     
     /**
      * Sets the view's title typeface.
+     *
      * @param font The typeface to be used for the text.
      */
-    public void setTextTypeface(Typeface font){
+    public void setTextTypeface(Typeface font) {
         this.mFont = font;
         invalidateTextPaints();
     }
     
     /**
      * Sets the view's title color attribute value.
+     *
      * @param titleColor The title color attribute value to use.
      */
     public void setTitleColor(int titleColor) {

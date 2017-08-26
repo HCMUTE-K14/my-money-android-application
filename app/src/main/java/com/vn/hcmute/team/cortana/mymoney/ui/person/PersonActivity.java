@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
@@ -36,6 +36,8 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.EmptyAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.DividerItemDecoration;
 import com.vn.hcmute.team.cortana.mymoney.utils.sort.SortType;
+import com.vn.hcmute.team.cortana.mymoney.utils.sort.SortUtil;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -44,6 +46,8 @@ import javax.inject.Inject;
  */
 
 public class PersonActivity extends BaseActivity implements PersonContract.View {
+    
+    public static final String TAG = PersonActivity.class.getSimpleName();
     
     public static final String EXTRA_SELECTED_PERSON = "extra_selected_person";
     
@@ -99,6 +103,13 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
         }
     };
     
+    public PersonActivity() {
+        
+    }
+    
+    /*-----------------*/
+    /*Base Method      */
+    /*-----------------*/
     @Override
     public int getLayoutId() {
         return R.layout.activity_person;
@@ -136,16 +147,6 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     }
     
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem menuDone = menu.findItem(R.id.action_done);
-        if (menuDone != null) {
-            //menuDone.setVisible(mRecyclerViewManager.isShowDoneButton());
-        }
-        
-        return super.onPrepareOptionsMenu(menu);
-    }
-    
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_person, menu);
         return super.onCreateOptionsMenu(menu);
@@ -153,11 +154,29 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_done:
+                onDone();
+                return true;
+            case R.id.action_sort_a_z:
+                sortPersons(SortType.A_Z);
+                return true;
+            case R.id.action_sort_z_a:
+                sortPersons(SortType.Z_A);
+                return true;
+            case R.id.action_checked_all_person:
+                mPersonAdapter.addAllSelected();
+                return true;
+            case R.id.action_unchecked_all_person:
+                mPersonAdapter.removeAllSelected();
+                return true;
+        }
         return false;
     }
     
-    private void onDone() {
-    }
     
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -181,64 +200,16 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
         mAddPersonDialog.show();
     }
     
-    private void addPerson() {
-        Person person = new Person();
-        
-        person.setName(mEditTextNamePerson.getText().toString());
-        person.setDescribe(mEditTextDescribePerson.getText().toString());
-        
-        mPersonPresenter.addPerson(person);
-    }
-    
-    private Builder createAddPersonDialog() {
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        
-        LayoutInflater inflater = this.getLayoutInflater();
-        
-        View dialogView = inflater.inflate(R.layout.layout_dialog_add_person, null);
-        
-        dialogBuilder.setView(dialogView);
-        
-        dialogBuilder.setTitle(getString(R.string.txt_add_person));
-        
-        dialogBuilder.setNegativeButton(getString(R.string.action_ok),
-                  mOnClickPosition);
-        dialogBuilder.setPositiveButton(getString(R.string.txt_cancel),
-                  new DialogInterface.OnClickListener() {
-                      @Override
-                      public void onClick(DialogInterface dialog, int which) {
-                          dialog.dismiss();
-                      }
-                  });
-        
-        mEditTextNamePerson = (EditText) dialogView.findViewById(R.id.txt_person_name);
-        mEditTextDescribePerson = (EditText) dialogView.findViewById(R.id.txt_person_describe);
-        
-        return dialogBuilder;
-    }
-    
-    private List<Person> getListPerson() {
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle == null) {
-            return null;
-        }
-        return bundle.getParcelableArrayList(EXTRA_SELECTED_PERSON);
-    }
-    
-    private void getData() {
-        mPersonPresenter.getPerson();
-    }
-    
-    
+    /*-----------------*/
+    /*Task View         */
+    /*-----------------*/
     @Override
     public void initializeView() {
         
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(PersonActivity.this, "swipe", Toast.LENGTH_SHORT).show();
-                //getData();
+                getData();
             }
         });
         mAddPersonDialog = createAddPersonDialog().create();
@@ -269,6 +240,9 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     
     @Override
     public void showListPerson(List<Person> list) {
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
         
         mPersonAdapter.setData(list);
         mRecyclerView.setAdapter(mPersonAdapter);
@@ -276,38 +250,144 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     
     @Override
     public void showEmpty() {
-        Toast.makeText(this, "EMPTY", Toast.LENGTH_SHORT).show();
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+        
         mRecyclerView.setAdapter(mEmptyAdapter);
     }
     
     @Override
     public void onSuccessAddPerson(String message, Person person) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         mEditTextNamePerson.setText("");
         mEditTextDescribePerson.setText("");
+        
         if (mRecyclerView.getAdapter() instanceof EmptyAdapter) {
             mRecyclerView.setAdapter(mPersonAdapter);
         }
+        
         mPersonAdapter.add(person);
     }
     
     @Override
     public void onSuccessRemovePerson(String message, int position, Person person) {
-        Toast.makeText(this, "Remove successful", Toast.LENGTH_LONG).show();
         mPersonAdapter.remove(position, person);
-        if (mPersonAdapter.isEmpty()) {
+        
+        if (mPersonAdapter.isEmptyData()) {
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
     }
     
     @Override
     public void onFailure(String message) {
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
         
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        mEmptyAdapter.setMessage(message);
+        
+        if (mPersonAdapter.isEmptyData()) {
+            mRecyclerView.setAdapter(mEmptyAdapter);
+        }
+    }
+    
+    @Override
+    public void onDoneChoosePerson(final List<Person> selectedPerson) {
+        
+        Runnable doInBackGround = new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent();
+                intent.putParcelableArrayListExtra(PersonActivity.EXTRA_SELECTED_PERSON,
+                          (ArrayList<? extends Parcelable>) selectedPerson);
+                setResult(RESULT_OK, intent);
+                
+                finish();
+            }
+        };
+        
+        doInBackGround.run();
     }
     
     @Override
     public void loading(boolean isLoading) {
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            return;
+        }
+        
         mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
+    
+    /*-----------------*/
+    /*Helper Method    */
+    /*-----------------*/
+    
+    
+    private void addPerson() {
+        Person person = new Person();
+        
+        person.setName(mEditTextNamePerson.getText().toString());
+        person.setDescribe(mEditTextDescribePerson.getText().toString());
+        
+        mPersonPresenter.addPerson(person);
+    }
+    
+    private Builder createAddPersonDialog() {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        
+        LayoutInflater inflater = this.getLayoutInflater();
+        
+        View dialogView = inflater.inflate(R.layout.layout_dialog_add_person, null);
+        
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setTitle(getString(R.string.txt_add_person));
+        dialogBuilder.setNegativeButton(getString(R.string.action_ok),
+                  mOnClickPosition);
+        dialogBuilder.setPositiveButton(getString(R.string.txt_cancel),
+                  new DialogInterface.OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                          dialog.dismiss();
+                      }
+                  });
+        
+        mEditTextNamePerson = (EditText) dialogView.findViewById(R.id.txt_person_name);
+        mEditTextDescribePerson = (EditText) dialogView.findViewById(R.id.txt_person_describe);
+        
+        return dialogBuilder;
+    }
+    
+    private List<Person> getListPerson() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle == null) {
+            return null;
+        }
+        return bundle.getParcelableArrayList(EXTRA_SELECTED_PERSON);
+    }
+    
+    private void getData() {
+        mPersonPresenter.getPerson();
+    }
+    
+    private void sortPersons(SortType sortType) {
+        if (mPersonAdapter == null || mPersonAdapter.isEmptyData()) {
+            return;
+        }
+        List<Person> persons = mPersonAdapter.getData();
+        
+        if (persons.size() == 1) {
+            return;
+        }
+        
+        List<Person> sort = SortUtil.sort(persons, Person.class, "name", sortType);
+        
+        mPersonAdapter.setData(sort);
+        mPersonAdapter.notifyDataSetChanged();
+    }
+    
+    private void onDone() {
+        mPersonPresenter.finishChoosePerson(mPersonAdapter.getSelectedPersons());
+    }
+    
 }
