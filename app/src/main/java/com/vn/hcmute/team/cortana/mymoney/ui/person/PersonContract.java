@@ -17,9 +17,9 @@ public interface PersonContract {
         
         void showEmpty();
         
-        void onSuccessAddPerson(String message);
+        void onSuccessAddPerson(String message,Person person);
         
-        void onSuccessRemovePerson(String message);
+        void onSuccessRemovePerson(String message,int position,Person person);
         
         void onFailure(String message);
         
@@ -32,7 +32,7 @@ public interface PersonContract {
         
         void addPerson(Person person);
         
-        void removePerson(String personid);
+        void removePerson(int position,Person person);
         
         void unSubscribe();
     }

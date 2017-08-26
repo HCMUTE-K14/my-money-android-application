@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <item
+    android:id="@+id/action_done"
+    android:title="@string/txt_done"
+    app:showAsAction="always" />
+
+  <item
+    android:id="@+id/action_sort_by"
+    android:title="@string/action_sort_by">
+    <menu>
+      <item
+        android:id="@+id/action_sort_a_z"
+        android:title="@string/action_sort_a_z" />
+      <item
+        android:id="@+id/action_sort_z_a"
+        android:title="@string/action_sort_z_a" />
+    </menu>
+  </item>
+
+  <item
+    android:id="@+id/action_checked_all_person"
+    android:title="@string/action_checked_all_person" />
+
+  <item
+    android:id="@+id/action_unchecked_all_person"
+    android:title="@string/action_unchecked_all_person" />
+</menu>

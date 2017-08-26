@@ -6,9 +6,9 @@ package com.vn.hcmute.team.cortana.mymoney;
 
 public class ApplicationConfig {
     
-    public static final int CONNECT_TIMEOUT = 30; //30s
+    public static final int CONNECT_TIMEOUT = 5; //30s
     
-    public static final int READ_TIMEOUT = 30;//30s
+    public static final int READ_TIMEOUT = 5;//30s
     
     public static final int CACHE_MAX_AGE = 31536000; //1 year
     

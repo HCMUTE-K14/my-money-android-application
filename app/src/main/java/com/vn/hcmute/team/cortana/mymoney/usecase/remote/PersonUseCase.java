@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
+import com.vn.hcmute.team.cortana.mymoney.exception.PersonException;
 import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
@@ -119,6 +120,11 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
             callBack.onFailure(new UserLoginException(
                       mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
+        
+        if(TextUtils.isEmpty(person.getName())){
+            callBack.onFailure(new PersonException(mContext.getString(R.string.message_name_person_empty)));
             return;
         }
         

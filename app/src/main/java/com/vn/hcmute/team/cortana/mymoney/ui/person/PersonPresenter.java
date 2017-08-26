@@ -59,12 +59,12 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
     }
     
     @Override
-    public void addPerson(Person person) {
+    public void addPerson(final Person person) {
         BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
-                getView().onSuccessAddPerson((String) value);
+                getView().onSuccessAddPerson((String) value,person);
             }
             
             @Override
@@ -84,12 +84,12 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
     }
     
     @Override
-    public void removePerson(String personid) {
+    public void removePerson(final int position,final Person person) {
         BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
-                getView().onSuccessRemovePerson((String) value);
+                getView().onSuccessRemovePerson((String)value,position,person);
             }
             
             @Override
@@ -103,7 +103,7 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
                 getView().loading(true);
             }
         };
-        String[] param = {personid};
+        String[] param = {person.getPersonid()};
         PersonRequest personRequest = new PersonRequest(Action.ACTION_REMOVE_PERSON,
                   mObjectBaseCallBack, null, param);
         mPersonUseCase.subscribe(personRequest);

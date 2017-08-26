@@ -44,4 +44,11 @@
   <string name="txt_name">Name</string>
   <string name="txt_describe">Describe</string>
   <string name="txt_add_person">Add Person</string>
+  <string name="txt_contact">Contacts</string>
+  <string name="message_name_person_empty">Name cannot be empty</string>
+  <string name="txt_cancel">Cancel</string>
+  <string name="action_remove_person">Remove</string>
+  <string name="message_empty_person">No Contact.</string>
+  <string name="action_checked_all_person">Checked All</string>
+  <string name="action_unchecked_all_person">Unchecked All</string>
 </resources>
