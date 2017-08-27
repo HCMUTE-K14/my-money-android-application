@@ -136,6 +136,7 @@ public class Person implements Parcelable {
                "personid='" + personid + '\'' +
                ", name='" + name + '\'' +
                ", describe='" + describe + '\'' +
+               ", userid='" + userid + '\'' +
                '}';
     }
 }

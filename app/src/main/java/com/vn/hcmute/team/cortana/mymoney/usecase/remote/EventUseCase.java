@@ -75,11 +75,13 @@ public class EventUseCase extends UseCase<EventRequest> {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         
+
         if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
             callBack.onFailure(new UserLoginException(
                       mContext.getString(R.string.message_warning_need_login)));
             return;
         }
+
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -116,6 +118,7 @@ public class EventUseCase extends UseCase<EventRequest> {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
@@ -151,12 +154,13 @@ public class EventUseCase extends UseCase<EventRequest> {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         
+
         if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
             callBack.onFailure(new UserLoginException(
                       mContext.getString(R.string.message_warning_need_login)));
             return;
         }
-        
+
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
@@ -192,11 +196,13 @@ public class EventUseCase extends UseCase<EventRequest> {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         
+
         if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
             callBack.onFailure(new UserLoginException(
                       mContext.getString(R.string.message_warning_need_login)));
             return;
         }
+
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override

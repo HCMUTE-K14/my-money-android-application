@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/border_item_saving"
+  android:layout_margin="15dp">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+    android:background="@color/white">
+    <ImageView
+      android:layout_width="36dp"
+      android:layout_height="36dp"
+      android:src="@drawable/ic_saving"
+      android:layout_marginLeft="5dp"
+      />
+    <TextView
+      android:id="@+id/saving_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="name"
+      android:layout_marginTop="5dp"
+      android:layout_marginLeft="10dp"
+      android:textColor="@color/black"
+      android:textSize="@dimen/item_name_saving"/>
+  </LinearLayout>
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="0.5dp"
+    android:background="@color/gray_boder_item_saving"
+    />
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:weightSum="2">
+      <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="1">
+        <TextView
+
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/goal_money"
+          android:textSize="@dimen/item_name_saving_ssmall"
+          android:textColor="@color/black"/>
+
+        <TextView
+
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/current_money"
+          android:gravity="right"
+          android:textColor="@color/black"
+          android:textSize="@dimen/item_name_saving_ssmall"/>
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/need_more"
+          android:gravity="right"
+          android:textColor="@color/black"
+          android:textSize="@dimen/item_name_saving_small"/>
+      </LinearLayout>
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_marginRight="5dp"
+        android:gravity="right">
+        <TextView
+          android:id="@+id/goal_money"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="1000000 đ"
+          android:textColor="@color/black"
+          android:textSize="@dimen/item_name_saving_ssmall"/>
+
+        <TextView
+          android:id="@+id/current_money"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="200000 đ"
+          android:gravity="right"
+          android:textColor="@color/black"
+          android:textSize="@dimen/item_name_saving_ssmall"/>
+        <TextView
+          android:id="@+id/need_money"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="800000 đ"
+          android:gravity="right"
+          android:textColor="@color/colorPrimary"
+          android:textSize="@dimen/item_name_saving_small"/>
+      </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/linearlayout_process"
+      android:layout_width="match_parent"
+      android:layout_height="5dp"
+      android:layout_marginRight="5dp"
+      android:layout_marginLeft="5dp"
+      android:background="@color/gray_boder_item_saving">
+      <!--<View-->
+        <!--android:id="@+id/view_process"-->
+        <!--android:layout_width="1dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/green"/>-->
+      <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:progressDrawable="@drawable/drawable_barseek_currencies"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginRight="5dp"
+      android:gravity="right">
+      <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10 ngày trước"
+        android:textColor="@color/black"
+        android:textSize="@dimen/item_name_saving_small"/>
+    </LinearLayout>
+
+
+  </LinearLayout>
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="0.5dp"
+    android:background="@color/gray_boder_item_saving"
+    />
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:weightSum="2">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="1">
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <ImageView
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:src="@drawable/ic_cash_in"/>
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/take_in"
+          android:textSize="@dimen/item_name_saving_small"
+          android:layout_marginLeft="5dp"/>
+      </LinearLayout>
+    </LinearLayout>
+    <View
+      android:layout_width="0.5dp"
+      android:layout_height="wrap_content"
+      android:background="@color/gray_boder_item_saving"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="1">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <ImageView
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:src="@drawable/ic_cash_out"/>
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/take_out"
+          android:textSize="@dimen/item_name_saving_small"
+          android:layout_marginLeft="5dp"/>
+      </LinearLayout>
+
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

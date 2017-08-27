@@ -132,4 +132,20 @@ public class Saving {
     public void setUserid(String userid) {
         this.userid = userid;
     }
+    
+    @Override
+    public String toString() {
+        return "Saving{" +
+               "savingid='" + savingid + '\'' +
+               ", name='" + name + '\'' +
+               ", goalMoney='" + goalMoney + '\'' +
+               ", startMoney='" + startMoney + '\'' +
+               ", currentMoney='" + currentMoney + '\'' +
+               ", date='" + date + '\'' +
+               ", idWallet='" + idWallet + '\'' +
+               ", idCurrencies='" + idCurrencies + '\'' +
+               ", status='" + status + '\'' +
+               ", userid='" + userid + '\'' +
+               '}';
+    }
 }

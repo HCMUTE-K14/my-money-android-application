@@ -6,6 +6,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.BudgetUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.BudgetUseCase.BudgetRequest;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -31,6 +32,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
+                MyLogger.d("bommm",((List<Budget>)value).get(0).getBudgetId());
                 getView().onSuccessGetListBudget((List<Budget>) value);
             }
             

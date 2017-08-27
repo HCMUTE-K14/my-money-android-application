@@ -4,9 +4,18 @@
   android:layout_height="match_parent"
   android:orientation="vertical">
 
-  <Button
-    android:id="@+id/button2"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Button" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
+    <ImageView
+      android:id="@+id/image_view"
+      android:layout_width="100dp"
+      android:layout_height="100dp"
+      android:src="@mipmap/ic_launcher"
+      />
+
 </LinearLayout>
