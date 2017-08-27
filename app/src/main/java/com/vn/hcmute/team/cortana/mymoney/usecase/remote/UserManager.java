@@ -78,6 +78,10 @@ public class UserManager extends UseCase<UserRequest> {
         }
     }
     
+    public boolean isLogined(){
+        return mDataRepository.getUser()!=null;
+    }
+    
     private void doChangeProfile(final BaseCallBack<Object> callBack, final User user) {
         if (!UserValidate.getInstance().validateUser(user)) {
             callBack.onFailure(new UserValidateException(

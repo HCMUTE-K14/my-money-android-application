@@ -27,4 +27,12 @@ public interface PersonService {
     @GET(MyMoneyApi.REMOVE_PERSON + "/{userid}/{token}/{personid}")
     Observable<JsonResponse<String>> removePerson(@Path("userid") String userid,
               @Path("token") String token, @Path("personid") String personid);
+    
+    @POST(MyMoneyApi.UPDATE_PERSON + "/{userid}/{token}")
+    Observable<JsonResponse<String>> updatePerson(@Path("userid") String userid,
+              @Path("token") String token,@Body Person person);
+    
+    @POST(MyMoneyApi.SYNC_PERSON+"/{userid}/{token}")
+    Observable<JsonResponse<String>> synchPerson(@Path("userid") String userid,
+              @Path("token") String token,@Body List<Person> person);
 }

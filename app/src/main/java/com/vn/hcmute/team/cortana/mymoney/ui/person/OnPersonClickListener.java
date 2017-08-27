@@ -10,5 +10,7 @@ public interface OnPersonClickListener {
     
     boolean onPersonClick(int position, boolean isSelected);
     
-    void onLongPersonClick(int position, Person person);
+    void onRemoveClick(int position, Person person);
+    
+    void onEditClick(int position,Person person);
 }

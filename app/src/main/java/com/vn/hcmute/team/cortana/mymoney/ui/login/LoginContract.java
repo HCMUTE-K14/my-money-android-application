@@ -13,6 +13,7 @@ public interface LoginContract {
         
         void initializeView();
         
+        
         void loginSuccessful();
         
         void loginFailure(String message);
@@ -21,6 +22,8 @@ public interface LoginContract {
     }
     
     public interface Presenter {
+        
+        boolean isLogined();
         
         void forgetPassword(String email);
         

@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
@@ -69,14 +70,18 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     @Inject
     PersonPresenter mPersonPresenter;
     
-    private EditText mEditTextNamePerson;
-    private EditText mEditTextDescribePerson;
+    private EditText mEditTextNamePerson_Add;
+    private EditText mEditTextDescribePerson_Add;
+    
+    private EditText mEditTextNamePerson_Edit;
+    private EditText mEditTextDescribePerson_Edit;
     
     private ActionBar mActionBar;
     
     private LayoutManager mLayoutManager;
     
-    private AlertDialog mAddPersonDialog;
+    private AlertDialog.Builder mAddPersonDialog;
+    private AlertDialog.Builder mEditPersonDialog;
     
     private PersonAdapter mPersonAdapter;
     private EmptyAdapter mEmptyAdapter;
@@ -84,24 +89,46 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     private List<Person> mSelectedsPerons;
     
     
-    private DialogInterface.OnClickListener mOnClickPosition = new OnClickListener() {
+    private DialogInterface.OnClickListener mOnClickAddPersonDialog = new OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             addPerson();
         }
     };
     
-    private OnPersonClickListener mPersonClickListener = new OnPersonClickListener() {
+    
+    private OnPersonClickListener mPersonItemClickListener = new OnPersonClickListener() {
         @Override
         public boolean onPersonClick(int position, boolean isSelected) {
             return true;
         }
         
+        
         @Override
-        public void onLongPersonClick(int position, Person person) {
+        public void onRemoveClick(int position, Person person) {
             mPersonPresenter.removePerson(position, person);
         }
+        
+        @Override
+        public void onEditClick(final int position, final Person person) {
+            mEditPersonDialog=createEditPersonDialog();
+            
+            mEditTextNamePerson_Edit.setText(person.getName());
+            mEditTextDescribePerson_Edit.setText(person.getDescribe());
+            
+            mEditPersonDialog
+                      .setPositiveButton(getString(R.string.action_ok), new OnClickListener() {
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+                              editPerson(position, person);
+                          }
+                      });
+            
+            mEditPersonDialog.show();
+        }
+        
     };
+    
     
     public PersonActivity() {
         
@@ -140,7 +167,7 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
         mActionBar = getSupportActionBar();
         
         if (mActionBar != null) {
-            mActionBar.setTitle(getString(R.string.txt_contact));
+            mActionBar.setTitle(getString(R.string.txt_person));
             mActionBar.setDisplayHomeAsUpEnabled(true);
             mActionBar.setDisplayShowTitleEnabled(true);
         }
@@ -197,6 +224,10 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     
     @OnClick(R.id.btn_add_person)
     public void onClickAddPerson() {
+        mEditTextDescribePerson_Add.setText("");
+        mEditTextDescribePerson_Add.setText("");
+        
+        mAddPersonDialog=createAddPersonDialog();
         mAddPersonDialog.show();
     }
     
@@ -212,7 +243,9 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
                 getData();
             }
         });
-        mAddPersonDialog = createAddPersonDialog().create();
+        
+        mAddPersonDialog = createAddPersonDialog();
+        mEditPersonDialog = createEditPersonDialog();
         
         mLayoutManager = new LinearLayoutManager(this);
         
@@ -235,8 +268,9 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
         });
         
         mEmptyAdapter = new EmptyAdapter(this, getString(R.string.message_empty_person));
-        mPersonAdapter = new PersonAdapter(this, mSelectedsPerons, mPersonClickListener);
+        mPersonAdapter = new PersonAdapter(this, mSelectedsPerons, mPersonItemClickListener);
     }
+    
     
     @Override
     public void showListPerson(List<Person> list) {
@@ -259,14 +293,20 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     
     @Override
     public void onSuccessAddPerson(String message, Person person) {
-        mEditTextNamePerson.setText("");
-        mEditTextDescribePerson.setText("");
-        
         if (mRecyclerView.getAdapter() instanceof EmptyAdapter) {
             mRecyclerView.setAdapter(mPersonAdapter);
         }
         
         mPersonAdapter.add(person);
+    }
+    
+    @Override
+    public void onSuccessUpdatePerson(String message, int position, Person person) {
+        if (mRecyclerView.getAdapter() instanceof EmptyAdapter) {
+            mRecyclerView.setAdapter(mPersonAdapter);
+        }
+        
+        mPersonAdapter.update(position, person);
     }
     
     @Override
@@ -283,10 +323,11 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }
-        
-        mEmptyAdapter.setMessage(message);
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
         
         if (mPersonAdapter.isEmptyData()) {
+            mEmptyAdapter.setMessage(message);
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
     }
@@ -326,33 +367,61 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     private void addPerson() {
         Person person = new Person();
         
-        person.setName(mEditTextNamePerson.getText().toString());
-        person.setDescribe(mEditTextDescribePerson.getText().toString());
+        person.setName(mEditTextNamePerson_Add.getText().toString());
+        person.setDescribe(mEditTextDescribePerson_Add.getText().toString());
         
         mPersonPresenter.addPerson(person);
+    }
+    
+    private void editPerson(int position, Person person) {
+        person.setName(mEditTextNamePerson_Edit.getText().toString());
+        person.setDescribe(mEditTextDescribePerson_Edit.getText().toString());
+        
+        mPersonPresenter.updatePerson(position, person);
     }
     
     private Builder createAddPersonDialog() {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         
         LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.layout_dialog_add_person, null);
+        mEditTextNamePerson_Add = (EditText) view.findViewById(R.id.txt_person_name);
+        mEditTextDescribePerson_Add = (EditText) view.findViewById(R.id.txt_person_describe);
         
-        View dialogView = inflater.inflate(R.layout.layout_dialog_add_person, null);
-        
-        dialogBuilder.setView(dialogView);
+        dialogBuilder.setView(view);
         dialogBuilder.setTitle(getString(R.string.txt_add_person));
         dialogBuilder.setNegativeButton(getString(R.string.action_ok),
-                  mOnClickPosition);
+                  mOnClickAddPersonDialog);
         dialogBuilder.setPositiveButton(getString(R.string.txt_cancel),
                   new DialogInterface.OnClickListener() {
                       @Override
                       public void onClick(DialogInterface dialog, int which) {
+                          dialog.cancel();
                           dialog.dismiss();
                       }
                   });
         
-        mEditTextNamePerson = (EditText) dialogView.findViewById(R.id.txt_person_name);
-        mEditTextDescribePerson = (EditText) dialogView.findViewById(R.id.txt_person_describe);
+        return dialogBuilder;
+    }
+    
+    private Builder createEditPersonDialog() {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.layout_dialog_edit_person, null);
+        mEditTextNamePerson_Edit = (EditText) view.findViewById(R.id.txt_person_name);
+        mEditTextDescribePerson_Edit = (EditText) view.findViewById(R.id.txt_person_describe);
+        
+        dialogBuilder.setView(view);
+        dialogBuilder.setTitle(getString(R.string.txt_edit_person));
+        dialogBuilder.setPositiveButton(getString(R.string.txt_cancel),
+                  new DialogInterface.OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                          dialog.cancel();
+                          dialog.dismiss();
+                      }
+                  });
         
         return dialogBuilder;
     }

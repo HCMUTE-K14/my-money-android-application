@@ -103,6 +103,10 @@ public interface RemoteTask {
         Observable<String> addPerson(Person person, String userid, String token);
         
         Observable<String> removePerson(String userid, String token, String personid);
+        
+        Observable<String> updatePerson(Person person,String userid,String token);
+        
+        Observable<String> syncPerson(List<Person> persons,String userid,String token);
     }
     
     interface BudgetTask {

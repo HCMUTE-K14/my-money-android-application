@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -82,8 +83,10 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
         }
         holder.mLetterView.setBackgroundColor(color);
         
-        final String startLetter = String.valueOf(person.getName().charAt(0)).toUpperCase();
-        holder.mLetterView.setTitleText(startLetter);
+        if(!TextUtils.isEmpty(person.getName())){
+            final String startLetter = String.valueOf(person.getName().charAt(0)).toUpperCase();
+            holder.mLetterView.setTitleText(startLetter);
+        }
         
         holder.mCheckBox.setChecked(isSelected);
         
@@ -122,10 +125,15 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
                 popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId() == R.id.action_remove_person) {
-                            mPersonClickListener.onLongPersonClick(position, person);
+                        final int itemId=item.getItemId();
+                        if (itemId == R.id.action_remove_person) {
+                            mPersonClickListener.onRemoveClick(position, person);
+                            return true;
+                        }else if(itemId== R.id.action_update_person){
+                            mPersonClickListener.onEditClick(position,person);
                             return true;
                         }
+                        
                         return false;
                     }
                 });
@@ -187,6 +195,13 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
     public void add(Person person) {
         mPersons.add(person);
         notifyItemChanged(mPersons.size() - 1);
+    }
+    
+    public void update(int position,Person person){
+        mPersons.get(position).setName(person.getName());
+        mPersons.get(position).setDescribe(person.getDescribe());
+        
+        notifyItemChanged(position);
     }
     
     public void addSelected(final Person person, final int position) {

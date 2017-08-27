@@ -685,6 +685,47 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                   });
     }
     
+    @Override
+    public Observable<String> updatePerson(Person person, String userid, String token) {
+        PersonService personService = mServiceGenerator.getService(PersonService.class);
+        if (personService == null) {
+            return null;
+        }
+        return personService.updatePerson(userid, token, person).map(
+                  new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getData();
+                              
+                          } else {
+                              throw new PersonException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> syncPerson(List<Person> persons, String userid, String token) {
+        PersonService personService = mServiceGenerator.getService(PersonService.class);
+        if (personService == null) {
+            return null;
+        }
+        return personService.synchPerson(userid, token, persons).map(
+                  new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getData();
+                          } else {
+                              throw new PersonException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
     //budget
     @Override
     public Observable<List<Budget>> getBudget(String userid, String token) {

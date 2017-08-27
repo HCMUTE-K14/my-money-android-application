@@ -64,6 +64,8 @@ public class MyMoneyApi {
     public static final String GET_PERSON = "person/getPerson";
     public static final String ADD_PERSON = "person/add";
     public static final String REMOVE_PERSON = "person/remove";
+    public static final String UPDATE_PERSON ="person/update";
+    public static final String SYNC_PERSON = "person/sync";
     
     /*-----------------*/
     /*Budget         */
@@ -74,4 +76,5 @@ public class MyMoneyApi {
     public static final String DELETE_BUDGET = "budget/deleteBudget";
     
     
+
 }

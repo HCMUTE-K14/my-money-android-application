@@ -28,6 +28,11 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     
     
     @Override
+    public boolean isLogined() {
+        return mUserManager.isLogined();
+    }
+    
+    @Override
     public void forgetPassword(String email) {
         ForgetPasswordRequest forgetPasswordRequest = new ForgetPasswordRequest(
                   Action.ACTION_FORGET_PASSWORD, new BaseCallBack<Object>() {

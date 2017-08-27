@@ -5,6 +5,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BasePresenter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.PersonUseCase;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.PersonUseCase.CRUDPersonRequest;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.PersonUseCase.PersonRequest;
 import java.util.HashSet;
 import java.util.List;
@@ -56,7 +57,7 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
         };
         
         PersonRequest personRequest = new PersonRequest(Action.ACTION_GET_PERSON,
-                  mObjectBaseCallBack, null, null);
+                  mObjectBaseCallBack);
         mPersonUseCase.subscribe(personRequest);
     }
     
@@ -80,8 +81,9 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
                 getView().loading(true);
             }
         };
-        PersonRequest personRequest = new PersonRequest(Action.ACTION_ADD_PERSON,
-                  mObjectBaseCallBack, person, null);
+        PersonRequest personRequest = new CRUDPersonRequest(Action.ACTION_ADD_PERSON,
+                  mObjectBaseCallBack,person);
+        
         mPersonUseCase.subscribe(personRequest);
     }
     
@@ -105,9 +107,8 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
                 getView().loading(true);
             }
         };
-        String[] param = {person.getPersonid()};
-        PersonRequest personRequest = new PersonRequest(Action.ACTION_REMOVE_PERSON,
-                  mObjectBaseCallBack, null, param);
+        PersonRequest personRequest = new CRUDPersonRequest(Action.ACTION_REMOVE_PERSON,
+                  mObjectBaseCallBack, person);
         mPersonUseCase.subscribe(personRequest);
     }
     
@@ -121,6 +122,31 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
             
             getView().onDoneChoosePerson(selectedPersons);
         }
+    }
+    
+    @Override
+    public void updatePerson(final int position,final Person person) {
+        PersonRequest request = new CRUDPersonRequest(Action.ACTION_UPDATE_PERSON,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().onSuccessUpdatePerson((String)value,position,person);
+                      }
+                      
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().onFailure(throwable.getMessage());
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, person);
+        
+        mPersonUseCase.subscribe(request);
     }
     
     @Override

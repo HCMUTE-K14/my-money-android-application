@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/action_update_person"
+    android:title="@string/action_update_person"
+    app:showAsAction="ifRoom" />
+  <item xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/action_remove_person"
     android:title="@string/action_remove_person"
-    app:showAsAction="always" />
+    app:showAsAction="ifRoom" />
 </menu>

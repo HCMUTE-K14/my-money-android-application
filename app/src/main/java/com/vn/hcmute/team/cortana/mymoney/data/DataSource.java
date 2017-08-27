@@ -87,6 +87,10 @@ public interface DataSource {
         
         Observable<String> removePerson(String userid, String token, String personid);
         
+        Observable<String> updatePerson(Person person,String userid,String token);
+        
+        Observable<String> syncPerson(List<Person> persons,String userid,String token);
+        
         Observable<List<Budget>> getBudget(String userid, String token);
         
         Observable<String> createBudget(Budget budget, String userid, String token);

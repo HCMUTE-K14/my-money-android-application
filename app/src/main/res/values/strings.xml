@@ -51,4 +51,7 @@
   <string name="message_empty_person">No Contact.</string>
   <string name="action_checked_all_person">Checked All</string>
   <string name="action_unchecked_all_person">Unchecked All</string>
+  <string name="action_update_person">Edit</string>
+  <string name="txt_edit_person">Edit Person</string>
+  <string name="txt_person">Person</string>
 </resources>

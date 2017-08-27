@@ -20,6 +20,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -54,13 +55,102 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                 doGetPerson(requestValues.getCallBack());
                 break;
             case Action.ACTION_ADD_PERSON:
-                doAddPerson(requestValues.getCallBack(), requestValues.getData());
+                doAddPerson(requestValues.getCallBack(),
+                          ((CRUDPersonRequest) requestValues).getPerson());
                 break;
             case Action.ACTION_REMOVE_PERSON:
-                doRemovePerson(requestValues.getCallBack(), requestValues.getParam());
+                doRemovePerson(requestValues.getCallBack(),
+                          ((CRUDPersonRequest) requestValues).getPerson().getPersonid());
                 break;
+            case Action.ACTION_UPDATE_PERSON:
+                doUpdatePerson(requestValues.getCallBack(),
+                          ((CRUDPersonRequest) requestValues).getPerson());
+                break;
+            case Action.ACTION_SYNC_PERSON:
+                doSyncPerson(requestValues.getCallBack(),
+                          ((SyncPersonRequest) requestValues).getPersons());
             default:
                 break;
+        }
+    }
+    
+    private void doSyncPerson(final BaseCallBack<Object> callBack, List<Person> persons) {
+        String userid = mDataRepository.getUserId();
+        String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
+        
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object obj) {
+                
+                callBack.onSuccess(obj);
+            }
+            
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
+        
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.syncPerson(persons, userid, token)
+                      .subscribeOn(Schedulers.io())
+                      .observeOn(AndroidSchedulers.mainThread())
+                      .doOnSubscribe(new Consumer<Disposable>() {
+                          @Override
+                          public void accept(Disposable disposable) throws Exception {
+                              callBack.onLoading();
+                          }
+                      })
+                      .singleOrError()
+                      .subscribeWith(this.mDisposableSingleObserver);
+            this.mCompositeDisposable.add(mDisposable);
+        }
+    }
+    
+    private void doUpdatePerson(final BaseCallBack<Object> callBack, Person person) {
+        String userid = mDataRepository.getUserId();
+        String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
+        
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object obj) {
+                
+                callBack.onSuccess(obj);
+            }
+            
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
+        
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.updatePerson(person, userid, token)
+                      .subscribeOn(Schedulers.io())
+                      .observeOn(AndroidSchedulers.mainThread())
+                      .doOnSubscribe(new Consumer<Disposable>() {
+                          @Override
+                          public void accept(Disposable disposable) throws Exception {
+                              callBack.onLoading();
+                          }
+                      })
+                      .singleOrError()
+                      .subscribeWith(this.mDisposableSingleObserver);
+            this.mCompositeDisposable.add(mDisposable);
         }
     }
     
@@ -162,7 +252,7 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         }
     }
     
-    private void doRemovePerson(final BaseCallBack<Object> callBack, String[] params) {
+    private void doRemovePerson(final BaseCallBack<Object> callBack, String personid) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         
@@ -187,7 +277,7 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             
-            mDisposable = mDataRepository.removePerson(userid, token, params[0])
+            mDisposable = mDataRepository.removePerson(userid, token, personid)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -207,15 +297,10 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         
         private String action;
         private BaseCallBack<Object> callBack;
-        private Person mPerson;
-        private String[] params;
         
-        public PersonRequest(@NonNull String action, @Nullable BaseCallBack<Object> callBack,
-                  @Nullable Person person, @Nullable String[] params) {
+        public PersonRequest(@NonNull String action, @Nullable BaseCallBack<Object> callBack) {
             this.action = action;
             this.callBack = callBack;
-            this.mPerson = person;
-            this.params = params;
         }
         
         public String getAction() {
@@ -233,17 +318,44 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         public void setCallBack(BaseCallBack<Object> callBack) {
             this.callBack = callBack;
         }
+    }
+    
+    public static class CRUDPersonRequest extends PersonRequest {
         
-        public Person getData() {
+        private Person mPerson;
+        
+        
+        public CRUDPersonRequest(@NonNull String action,
+                  @Nullable BaseCallBack<Object> callBack, @NonNull Person person) {
+            super(action, callBack);
+            this.mPerson = person;
+        }
+        
+        public Person getPerson() {
             return mPerson;
         }
         
-        public void setData(Person object) {
-            this.mPerson = object;
+        public void setPerson(Person person) {
+            mPerson = person;
+        }
+    }
+    
+    public static class SyncPersonRequest extends PersonRequest {
+        
+        private List<Person> mPersons;
+        
+        public SyncPersonRequest(@NonNull String action,
+                  @Nullable BaseCallBack<Object> callBack, List<Person> persons) {
+            super(action, callBack);
+            this.mPersons = persons;
         }
         
-        public String[] getParam() {
-            return params;
+        public List<Person> getPersons() {
+            return mPersons;
+        }
+        
+        public void setPersons(List<Person> persons) {
+            mPersons = persons;
         }
     }
 }

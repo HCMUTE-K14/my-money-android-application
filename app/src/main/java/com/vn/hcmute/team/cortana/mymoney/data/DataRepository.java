@@ -256,6 +256,17 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
         return mRemoteRepository.removePerson(userid, token, personid);
     }
     
+    @Override
+    public Observable<String> updatePerson(Person person, String userid, String token) {
+        return mRemoteRepository.updatePerson(person, userid, token);
+    }
+    
+    
+    @Override
+    public Observable<String> syncPerson(List<Person> persons, String userid, String token) {
+        return mRemoteRepository.syncPerson(persons, userid, token);
+    }
+    
     //budget
     @Override
     public Observable<List<Budget>> getBudget(String userid, String token) {

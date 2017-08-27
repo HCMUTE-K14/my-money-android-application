@@ -21,6 +21,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.LoginModule;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.forgetpassword.ForgetPasswordActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.person.PersonActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.register.RegisterActivity;
 import javax.inject.Inject;
 
@@ -93,6 +94,13 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        if(mLoginPresenter.isLogined()){
+            openMainActivity();
+            finish();
+            return;
+        }
+        
         initializeView();
     }
     
@@ -141,6 +149,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         startActivity(intent);
     }
     
+    private void openMainActivity(){
+        Intent intent=new Intent(this, PersonActivity.class);
+    
+        startActivityForResult(intent,1);
+    }
+    
     
     /*-----------------*/
     /*Task View        */
@@ -151,10 +165,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMessage(getString(R.string.message_wait_login));
     }
+  
     
     @Override
     public void loginSuccessful() {
-        Toast.makeText(this, "LOGIN successful", Toast.LENGTH_SHORT).show();
+        openMainActivity();
     }
     
     @Override
