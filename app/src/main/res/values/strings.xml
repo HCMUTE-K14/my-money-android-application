@@ -20,6 +20,15 @@
   <string name="txt_no_album">No Album</string>
   <string name="txt_done">Done</string>
   <string name="txt_warning_limit">Cannot pick more</string>
+
+  <string name="action_search">Search Currency</string>
+  <string name="title_currency">Đơn vị tiền tệ</string>
+  <string name="take_in">Gửi vào</string>
+  <string name="take_out">Rút ra</string>
+  <string name="goal_money">Mục tiêu</string>
+  <string name="current_money">Đã lưu</string>
+  <string name="need_more">Cần thêm</string>
+
   <string name="message_email_cannot_be_empty">Email cannot be empty</string>
   <string name="message_password_cannot_be_empty">Password cannot be empty</string>
   <string name="message_log_out_successful">Logout successful</string>
@@ -51,4 +60,5 @@
   <string name="message_empty_person">No Contact.</string>
   <string name="action_checked_all_person">Checked All</string>
   <string name="action_unchecked_all_person">Unchecked All</string>
+
 </resources>

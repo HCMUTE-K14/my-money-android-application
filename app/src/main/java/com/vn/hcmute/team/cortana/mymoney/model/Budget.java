@@ -108,4 +108,18 @@ public class Budget {
     public void setMoneyExpense(String moneyExpense) {
         this.moneyExpense = moneyExpense;
     }
+    
+    @Override
+    public String toString() {
+        return "Budget{" +
+               "budgetId='" + budgetId + '\'' +
+               ", categoryId='" + categoryId + '\'' +
+               ", walletid='" + walletid + '\'' +
+               ", rangeDate='" + rangeDate + '\'' +
+               ", moneyGoal='" + moneyGoal + '\'' +
+               ", status='" + status + '\'' +
+               ", userid='" + userid + '\'' +
+               ", moneyExpense='" + moneyExpense + '\'' +
+               '}';
+    }
 }

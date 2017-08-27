@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="currencies_text_name">15dp</dimen>
+  <dimen name="toolbar_currencies">17dp</dimen>
+  <dimen name="item_name_saving_small">15dp</dimen>
+  <dimen name="item_name_saving_ssmall">13dp</dimen>
+  <dimen name="item_name_saving">20dp</dimen>
+</resources>

@@ -96,4 +96,17 @@ public class Event {
     public void setUserid(String userid) {
         this.userid = userid;
     }
+    
+    @Override
+    public String toString() {
+        return "Event{" +
+               "eventid='" + eventid + '\'' +
+               ", name='" + name + '\'' +
+               ", money='" + money + '\'' +
+               ", date='" + date + '\'' +
+               ", idWallet='" + idWallet + '\'' +
+               ", status='" + status + '\'' +
+               ", userid='" + userid + '\'' +
+               '}';
+    }
 }

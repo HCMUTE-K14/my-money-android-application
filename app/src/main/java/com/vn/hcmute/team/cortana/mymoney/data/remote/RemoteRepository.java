@@ -698,6 +698,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                       public List<Budget> apply(
                                 @NonNull JsonResponse<List<Budget>> listJsonResponse)
                                 throws Exception {
+                          MyLogger.d("bdosioiewr",listJsonResponse.getData().size());
                           if (listJsonResponse.getStatus().equals("success")) {
                               return listJsonResponse.getData();
                           } else {

@@ -1,9 +1,13 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.saving;
 
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
+import android.widget.Toast;
 import butterknife.BindView;
-import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
@@ -13,6 +17,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.saving.adapter.MyRecyclerViewSavingAdapter;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -20,23 +25,23 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/23/2017.
  */
 
-public class SavingActivity extends BaseActivity implements SavingContract.View {
+public class SavingActivity extends BaseActivity implements SavingContract.View,MyRecyclerViewSavingAdapter.ItemClickListener {
     
     @Inject
     SavingPresenter mSavingPresenter;
     
-    @BindView(R.id.button2)
-    Button mButton;
+  
+    @BindView(R.id.recyclerViewSaving)
+    RecyclerView mRecyclerViewSaving;
     
-    @OnClick(R.id.button2)
-    public void onClick() {
-        
-    }
+    MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
+    
+    List<Saving> mSavings;
     
     
     @Override
     public int getLayoutId() {
-        return R.layout.activity_wallet;
+        return R.layout.activity_saving;
     }
     
     @Override
@@ -50,6 +55,12 @@ public class SavingActivity extends BaseActivity implements SavingContract.View 
                   .savingModule(new SavingModule())
                   .build();
         savingComponent.inject(this);
+    }
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mSavingPresenter.getSaving();
+    
     }
     
     @Override
@@ -65,7 +76,11 @@ public class SavingActivity extends BaseActivity implements SavingContract.View 
     
     @Override
     public void showListSaving(List<Saving> savings) {
-        
+        mSavings=savings;
+        mMyRecyclerViewSavingAdapter=new MyRecyclerViewSavingAdapter(this,savings);
+        mRecyclerViewSaving.setLayoutManager(new GridLayoutManager(this,1));
+        mMyRecyclerViewSavingAdapter.setClickListener(this);
+        mRecyclerViewSaving.setAdapter(mMyRecyclerViewSavingAdapter);
     }
     
     @Override
@@ -75,36 +90,41 @@ public class SavingActivity extends BaseActivity implements SavingContract.View 
     
     @Override
     public void onSuccessCreateSaving() {
-        
+        mSavingPresenter.getSaving();
     }
     
     @Override
     public void onSuccessDeleteSaving() {
-        
+        mSavingPresenter.getSaving();
     }
     
     @Override
     public void onSuccessUpdateSaving() {
-        
+        mSavingPresenter.getSaving();
     }
     
     @Override
     public void onSuccessTakeIn() {
-        
+        mSavingPresenter.getSaving();
     }
     
     @Override
     public void onSuccessTakeOut() {
-        
+        mSavingPresenter.getSaving();
     }
     
     @Override
     public void showError(String message) {
-        
+        Toast.makeText(this,message+"",Toast.LENGTH_LONG).show();
     }
     
     @Override
     public void loading(boolean isLoading) {
+        
+    }
+    
+    @Override
+    public void onItemClick(View view, List<Saving> savingList, int position) {
         
     }
 }
