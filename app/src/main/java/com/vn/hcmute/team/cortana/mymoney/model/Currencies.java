@@ -72,4 +72,15 @@ public class Currencies {
     public void setCurDisplayType(String curDisplayType) {
         this.curDisplayType = curDisplayType;
     }
+    
+    @Override
+    public String toString() {
+        return "Currencies{" +
+               "curId='" + curId + '\'' +
+               ", curCode='" + curCode + '\'' +
+               ", curName='" + curName + '\'' +
+               ", curSymbol='" + curSymbol + '\'' +
+               ", curDisplayType='" + curDisplayType + '\'' +
+               '}';
+    }
 }

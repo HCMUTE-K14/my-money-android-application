@@ -67,8 +67,8 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
     }
     
     private void doGetBudget(final BaseCallBack<Object> callBack) {
-        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
-        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();
+        String userid = mDataRepository.getUserId();
+        String token =mDataRepository.getUserToken();
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -102,8 +102,8 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
     }
     
     private void doCreateBudget(final BaseCallBack<Object> callBack, Budget budget) {
-        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
-        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();
+        String userid = mDataRepository.getUserId();
+        String token =mDataRepository.getUserToken();
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -138,8 +138,8 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
     }
     
     private void doUpdateBudget(final BaseCallBack<Object> callBack, Budget budget) {
-        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
-        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();
+        String userid = mDataRepository.getUserId();
+        String token =mDataRepository.getUserToken();
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -174,8 +174,10 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
     }
     
     private void doDeleteBudget(final BaseCallBack<Object> callBack, String[] params) {
-        String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
-        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();
+        String userid = mDataRepository.getUserId();
+        String token =mDataRepository.getUserToken();
+       /* String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
+        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();*/
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override

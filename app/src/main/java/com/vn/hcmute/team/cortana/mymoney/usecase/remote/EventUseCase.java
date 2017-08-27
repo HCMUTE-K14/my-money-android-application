@@ -70,6 +70,7 @@ public class EventUseCase extends UseCase<EventRequest> {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
@@ -105,6 +106,7 @@ public class EventUseCase extends UseCase<EventRequest> {
     private void doCreateEvent(final BaseCallBack<Object> callBack, final Event event) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -142,6 +144,8 @@ public class EventUseCase extends UseCase<EventRequest> {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         
+     /*     String userid = "e67757e090bb47bbbebf7db8b15e7c96";//mDataRepository.getUserId();
+        String token = "557b32ce486d4a02b961d2befd310541";//mDataRepository.getUserToken();*/
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
@@ -177,6 +181,7 @@ public class EventUseCase extends UseCase<EventRequest> {
     private void doDeleteEvent(final BaseCallBack<Object> callBack, final String[] params) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override

@@ -60,4 +60,14 @@ public class Person {
     public void setUserid(String userid) {
         this.userid = userid;
     }
+    
+    @Override
+    public String toString() {
+        return "Person{" +
+               "personid='" + personid + '\'' +
+               ", name='" + name + '\'' +
+               ", describe='" + describe + '\'' +
+               ", userid='" + userid + '\'' +
+               '}';
+    }
 }
