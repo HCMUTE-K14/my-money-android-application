@@ -4,8 +4,8 @@ import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BasePresenter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
-import com.vn.hcmute.team.cortana.mymoney.usecase.remote.RegisterUseCase;
-import com.vn.hcmute.team.cortana.mymoney.usecase.remote.RegisterUseCase.RegisterRequest;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager.RegisterRequest;
 import javax.inject.Inject;
 
 /**
@@ -15,17 +15,18 @@ import javax.inject.Inject;
 public class RegisterPresenter extends BasePresenter<RegisterContract.View> implements
                                                                             RegisterContract.Presenter {
     
-    private RegisterUseCase mRegisterUseCase;
+    private UserManager mUserManager;
     
     private BaseCallBack<Object> callBack = new BaseCallBack<Object>() {
         @Override
         public void onSuccess(Object value) {
             getView().loading(false);
-            getView().registerSuccess();
+            getView().registerSuccess((String) value);
         }
         
         @Override
         public void onFailure(Throwable throwable) {
+            getView().loading(false);
             getView().registerFailure(throwable.getMessage());
         }
         
@@ -36,8 +37,8 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
     };
     
     @Inject
-    public RegisterPresenter(RegisterUseCase registerUseCase) {
-        this.mRegisterUseCase = registerUseCase;
+    public RegisterPresenter(UserManager userManagerUseCase) {
+        this.mUserManager = userManagerUseCase;
     }
     
     @Override
@@ -45,11 +46,16 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
         RegisterRequest registerRequest = new RegisterRequest(Action.ACTION_REGISTER, callBack,
                   user);
         
-        mRegisterUseCase.subscribe(registerRequest);
+        mUserManager.subscribe(registerRequest);
+    }
+    
+    @Override
+    public void registerWithFacebook() {
+        
     }
     
     @Override
     public void unSubscribe() {
-        
+        mUserManager.unSubscribe();
     }
 }

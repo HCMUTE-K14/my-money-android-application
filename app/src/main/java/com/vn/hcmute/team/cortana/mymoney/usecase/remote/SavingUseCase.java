@@ -3,7 +3,10 @@ package com.vn.hcmute.team.cortana.mymoney.usecase.remote;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
+import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
@@ -17,11 +20,12 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by kunsubin on 8/23/2017.
  */
-
+@Singleton
 public class SavingUseCase extends UseCase<SavingRequest> {
     
     private DataRepository mDataRepository;
@@ -33,7 +37,7 @@ public class SavingUseCase extends UseCase<SavingRequest> {
     
     @Inject
     public SavingUseCase(Context context, DataRepository dataRepository) {
-        this.mContext=context;
+        this.mContext = context;
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
     }
@@ -68,7 +72,8 @@ public class SavingUseCase extends UseCase<SavingRequest> {
     
     @Override
     public void unSubscribe() {
-        if (!mCompositeDisposable.isDisposed()) {
+        if (mCompositeDisposable != null && !mCompositeDisposable.isDisposed() &&
+            mDisposable != null) {
             mCompositeDisposable.remove(mDisposable);
         }
     }
@@ -76,6 +81,12 @@ public class SavingUseCase extends UseCase<SavingRequest> {
     private void doGetSaving(final BaseCallBack<Object> callBack) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -101,7 +112,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -113,6 +123,12 @@ public class SavingUseCase extends UseCase<SavingRequest> {
     private void doCreateSaving(final BaseCallBack<Object> callBack, Saving saving) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -138,7 +154,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -149,6 +164,12 @@ public class SavingUseCase extends UseCase<SavingRequest> {
     private void doUpdateSaving(final BaseCallBack<Object> callBack, Saving saving) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -174,7 +195,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -186,6 +206,12 @@ public class SavingUseCase extends UseCase<SavingRequest> {
     private void doDeleteSaving(final BaseCallBack<Object> callBack, String[] params) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -211,7 +237,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -222,6 +247,12 @@ public class SavingUseCase extends UseCase<SavingRequest> {
     private void doTakeInSaving(final BaseCallBack<Object> callBack, String[] params) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -248,7 +279,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -259,6 +289,12 @@ public class SavingUseCase extends UseCase<SavingRequest> {
     private void doTakeOutSaving(final BaseCallBack<Object> callBack, String[] params) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -285,7 +321,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -328,12 +363,12 @@ public class SavingUseCase extends UseCase<SavingRequest> {
             return mSaving;
         }
         
-        public String[] getParam() {
-            return params;
-        }
-        
         public void setData(Saving object) {
             this.mSaving = object;
+        }
+        
+        public String[] getParam() {
+            return params;
         }
     }
     

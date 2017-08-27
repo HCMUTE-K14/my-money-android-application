@@ -1,8 +1,10 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -124,10 +126,6 @@ public class GalleryLoaderActivity extends BaseActivity implements GalleryLoader
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        if (MyMoneyUtil.isMarshmallow() || !MyMoneyUtil.isHasReadPermission(this)) {
-            requirePermission();
-        }
-        
         Intent intent = getIntent();
         if (intent == null || intent.getExtras() == null) {
             finish();
@@ -138,7 +136,12 @@ public class GalleryLoaderActivity extends BaseActivity implements GalleryLoader
         
         initializeView(mConfig);
         
-        getData();
+        if (MyMoneyUtil.isMarshmallow() || !MyMoneyUtil.isHasReadPermission(this)) {
+            requirePermission();
+        } else {
+            getData();
+        }
+        
     }
     
     @Override
@@ -194,12 +197,19 @@ public class GalleryLoaderActivity extends BaseActivity implements GalleryLoader
             }
         });
     }
-   /*------------------------------*/
+    
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+              @NonNull int[] grantResults) {
+        PermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+    /*------------------------------*/
     /*Initialize & Callback Method   */
     /*------------------------------*/
     
     @Override
     public void initializeView(GalleryLoaderConfig config) {
+        
         if (mActionbar != null) {
             mActionbar.setTitle(
                       config.isFolderMode() ? config.getFolderTitle() : config.getImageTitle());
@@ -209,33 +219,40 @@ public class GalleryLoaderActivity extends BaseActivity implements GalleryLoader
         mRecyclerViewManager = new RecyclerViewManager(this, this.mRecyclerView, mConfig);
         mRecyclerViewManager.setupAdapter(mFolderClickListener, mImageClickListener);
         mRecyclerViewManager.setImageSelectedListener(mImageSelectedListener);
+        
+        mProgressBar.setVisibility(View.GONE);
     }
     
     @Override
     public void requirePermission() {
-        if (PermissionHelper.shouldShowRequestPermissionRationale(this,
-                  PermissionHelper.Permission.READ_EXTERNAL_STORAGE)) {
-            
-            Snackbar.make(findViewById(android.R.id.content),
-                      getString(R.string.message_permission_read_request),
-                      Snackbar.LENGTH_INDEFINITE)
-                      .setAction(getString(R.string.action_ok),
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        PermissionHelper
-                                                  .askForPermission(
-                                                            GalleryLoaderActivity.this,
-                                                            PermissionHelper.Permission.READ_EXTERNAL_STORAGE,
-                                                            mPermissionCallBack);
-                                    }
-                                })
-                      .show();
+        if (PermissionHelper
+                  .isHasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            getData();
         } else {
-            PermissionHelper
-                      .askForPermission(this,
-                                PermissionHelper.Permission.READ_EXTERNAL_STORAGE,
-                                mPermissionCallBack);
+            if (PermissionHelper.shouldShowRequestPermissionRationale(this,
+                      PermissionHelper.Permission.READ_EXTERNAL_STORAGE)) {
+                
+                Snackbar.make(findViewById(android.R.id.content),
+                          getString(R.string.message_permission_read_request),
+                          Snackbar.LENGTH_INDEFINITE)
+                          .setAction(getString(R.string.action_ok),
+                                    new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            PermissionHelper
+                                                      .askForPermission(
+                                                                GalleryLoaderActivity.this,
+                                                                PermissionHelper.Permission.READ_EXTERNAL_STORAGE,
+                                                                mPermissionCallBack);
+                                        }
+                                    })
+                          .show();
+            } else {
+                PermissionHelper
+                          .askForPermission(this,
+                                    PermissionHelper.Permission.READ_EXTERNAL_STORAGE,
+                                    mPermissionCallBack);
+            }
         }
     }
     
@@ -315,7 +332,6 @@ public class GalleryLoaderActivity extends BaseActivity implements GalleryLoader
     }
     
     private void onDone() {
-        // MyLogger.d(mRecyclerViewManager.getSelectedImages());
         mGalleryLoaderPresenter.finishPickImage(mRecyclerViewManager.getSelectedImages());
     }
 }

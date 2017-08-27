@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorPrimary">#3F51B5</color>
-  <color name="colorPrimaryDark">#303F9F</color>
-  <color name="colorAccent">#FF4081</color>
+  <color name="colorPrimary">#2db84c</color>
+  <color name="colorPrimaryDark">#247936</color>
+  <color name="colorAccent">#5af158</color>
   <color name="white">#FFFF</color>
+
   <color name="black">#000000</color>
-  <color name="gray">#696767</color>
+
   <color name="green">#04b62b</color>
   <color name="gray_boder_item_saving">#c9c5c5</color>
+
+  <color name="color_text_login">#FBFEFC</color>
+  <color name="gray">#D2D2D2</color>
+
+  <color name="color_background_login">#EFEFEF</color>
+
 </resources>

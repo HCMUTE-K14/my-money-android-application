@@ -3,12 +3,17 @@ package com.vn.hcmute.team.cortana.mymoney.usecase.remote;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
+import com.vn.hcmute.team.cortana.mymoney.exception.PersonException;
+import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.PersonUseCase.PersonRequest;
+import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -16,11 +21,13 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by kunsubin on 8/23/2017.
  */
 
+@Singleton
 public class PersonUseCase extends UseCase<PersonRequest> {
     
     
@@ -33,7 +40,7 @@ public class PersonUseCase extends UseCase<PersonRequest> {
     
     @Inject
     public PersonUseCase(Context context, DataRepository dataRepository) {
-        this.mContext=context;
+        this.mContext = context;
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
     }
@@ -59,7 +66,8 @@ public class PersonUseCase extends UseCase<PersonRequest> {
     
     @Override
     public void unSubscribe() {
-        if (!mCompositeDisposable.isDisposed()) {
+        if (mCompositeDisposable != null && !mCompositeDisposable.isDisposed() &&
+            mDisposable != null) {
             mCompositeDisposable.remove(mDisposable);
         }
     }
@@ -71,6 +79,12 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -96,7 +110,6 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -106,6 +119,18 @@ public class PersonUseCase extends UseCase<PersonRequest> {
     private void doAddPerson(final BaseCallBack<Object> callBack, Person person) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
+        
+        if (TextUtils.isEmpty(person.getName())) {
+            callBack.onFailure(
+                      new PersonException(mContext.getString(R.string.message_name_person_empty)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -122,6 +147,9 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             
+            person.setPersonid(SecurityUtil.getRandomUUID());
+            person.setUserid(userid);
+            
             mDisposable = mDataRepository.addPerson(person, userid, token)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
@@ -131,7 +159,6 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -139,10 +166,15 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         }
     }
     
-    //bi loi chua sua
     private void doRemovePerson(final BaseCallBack<Object> callBack, String[] params) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -168,7 +200,6 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                               callBack.onLoading();
                           }
                       })
-                      .cacheWithInitialCapacity(10)
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
@@ -211,12 +242,12 @@ public class PersonUseCase extends UseCase<PersonRequest> {
             return mPerson;
         }
         
-        public String[] getParam() {
-            return params;
-        }
-        
         public void setData(Person object) {
             this.mPerson = object;
+        }
+        
+        public String[] getParam() {
+            return params;
         }
     }
 }

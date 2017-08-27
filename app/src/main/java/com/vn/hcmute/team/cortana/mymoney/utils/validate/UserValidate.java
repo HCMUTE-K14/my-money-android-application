@@ -14,25 +14,25 @@ public class UserValidate {
     
     
     public static final String TAG = UserValidate.class.getSimpleName();
+    
     private static final String USERNAME_PATTERN = "^[a-zA-Z0-9]{4,15}$";
     private static final String PASSWORD_PATTERN = "^[a-zA-Z0-9]{4,15}$";
     private static final String NAME_PATTERN = "^[a-zA-Z0-9]{4,15}$";
+    private static final String EMAIL_PATTERN = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+    
+    
     public static UserValidate sInstance = new UserValidate();
+    
     private Pattern mPatternUsername;
     private Pattern mPatternPassword;
     private Pattern mPatternName;
-    
-    /**
-     * Username Pattern & Password Pattern
-     * Length: 4-15 char
-     * Character: a-z,A-Z,0-9
-     */
-    
+    private Pattern mPatternEmail;
     
     private UserValidate() {
         mPatternUsername = Pattern.compile(USERNAME_PATTERN);
         mPatternPassword = Pattern.compile(PASSWORD_PATTERN);
         mPatternName = Pattern.compile(NAME_PATTERN);
+        mPatternEmail = Pattern.compile(EMAIL_PATTERN);
     }
     
     public static UserValidate getInstance() {
@@ -60,10 +60,9 @@ public class UserValidate {
         if (!mPatternPassword.matcher(password).matches()) {
             return false;
         }
-        
-    /*    if (!mPatternName.matcher(name).matches()) {
+        if (!mPatternEmail.matcher(email).matches()) {
             return false;
-        }*/
+        }
         
         return true;
     }

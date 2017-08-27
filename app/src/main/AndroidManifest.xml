@@ -14,7 +14,13 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <activity android:name=".ui.saving.SavingActivity">
+
+    <activity android:name=".ui.saving.SavingActivity"/>
+
+    <activity
+      android:launchMode="singleTop"
+      android:name=".ui.transaction.Transaction"
+      android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +28,18 @@
       </intent-filter>
     </activity>
 
+    <activity
+      android:name=".ui.currencies.CurrenciesActivity"
+      android:screenOrientation="portrait" />
     <activity android:name=".ui.tools.galleryloader.ui.GalleryLoaderActivity" />
+    <activity
+      android:launchMode="singleTop"
+      android:name=".ui.register.RegisterActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:launchMode="singleTop"
+      android:name=".ui.forgetpassword.ForgetPasswordActivity"
+      android:screenOrientation="portrait" />
   </application>
 
 </manifest>

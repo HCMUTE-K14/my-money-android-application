@@ -22,7 +22,11 @@ public interface LoginContract {
     
     public interface Presenter {
         
+        void forgetPassword(String email);
+        
         void login(UserCredential userCredential);
+        
+        void loginWithFacebook();
         
         void unSubscribe();
     }

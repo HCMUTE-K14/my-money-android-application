@@ -49,6 +49,22 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
+    public Observable<String> forgetPassword(String email) {
+        return this.mRemoteRepository.forgetPassword(email);
+    }
+    
+    @Override
+    public Observable<String> changePassword(String userid, String token, String oldPassword,
+              String newPassword) {
+        return this.mRemoteRepository.changePassword(userid, token, oldPassword, newPassword);
+    }
+    
+    @Override
+    public Observable<String> changeProfile(String userid, String token, User user) {
+        return this.mRemoteRepository.changeProfile(userid, token, user);
+    }
+    
+    @Override
     public Observable<List<Image>> getImage(String userid, String token) {
         return mRemoteRepository.getImage(userid, token);
     }

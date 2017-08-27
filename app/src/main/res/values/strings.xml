@@ -1,7 +1,7 @@
 <resources>
   <string name="app_name">MyMoney</string>
-  <string name="message_validate_user_login">Username and password must be at least 4 character</string>
-  <string name="message_validate_user_register">Username,password and name must be at least 4 character</string>
+  <string name="message_validate_user_login">Username or password is empty </string>
+  <string name="message_validate_user_register">Username,password and email must be at least 4 character</string>
   <string name="message_permission_read_request">This app will need to read external storage to display image on your device.</string>
   <string name="message_connect_server_error">Cannot connect to server ! Please try later</string>
   <string name="action_ok">OK</string>
@@ -20,6 +20,7 @@
   <string name="txt_no_album">No Album</string>
   <string name="txt_done">Done</string>
   <string name="txt_warning_limit">Cannot pick more</string>
+
   <string name="action_search">Search Currency</string>
   <string name="title_currency">Đơn vị tiền tệ</string>
   <string name="take_in">Gửi vào</string>
@@ -27,4 +28,37 @@
   <string name="goal_money">Mục tiêu</string>
   <string name="current_money">Đã lưu</string>
   <string name="need_more">Cần thêm</string>
+
+  <string name="message_email_cannot_be_empty">Email cannot be empty</string>
+  <string name="message_password_cannot_be_empty">Password cannot be empty</string>
+  <string name="message_log_out_successful">Logout successful</string>
+  <string name="message_wait_login">Login....</string>
+  <string name="txt_username">Username</string>
+  <string name="txt_password">Password</string>
+  <string name="txt_login">Login</string>
+  <string name="txt_register">Register</string>
+  <string name="txt_create_account">Create Account</string>
+  <string name="txt_forget_password_1">FORGET PASSWORD ?</string>
+  <string name="txt_forget_password_2">Forget password</string>
+  <string name="txt_login_with_username">Login with Username</string>
+  <string name="txt_or"> OR </string>
+  <string name="txt_login_with_facebook">Login with Facebook</string>
+  <string name="txt_email">Email</string>
+  <string name="txt_register_with_facebook">Connect with Facebook</string>
+  <string name="txt_submit">Submit</string>
+  <string name="message_forgot_password_content">Enter the email address you used to register, and we will send you an email to recover your password in no time.</string>
+  <string name="message_sending_email">Sending email...</string>
+  <string name="message_warning_need_login">Please try again after login</string>
+  <string name="message_creating_account">Creating account...</string>
+  <string name="txt_name">Name</string>
+  <string name="txt_describe">Describe</string>
+  <string name="txt_add_person">Add Person</string>
+  <string name="txt_contact">Contacts</string>
+  <string name="message_name_person_empty">Name cannot be empty</string>
+  <string name="txt_cancel">Cancel</string>
+  <string name="action_remove_person">Remove</string>
+  <string name="message_empty_person">No Contact.</string>
+  <string name="action_checked_all_person">Checked All</string>
+  <string name="action_unchecked_all_person">Unchecked All</string>
+
 </resources>

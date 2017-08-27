@@ -3,9 +3,10 @@ package com.vn.hcmute.team.cortana.mymoney.usecase.remote;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
-import com.vn.hcmute.team.cortana.mymoney.exception.ApiRequestException;
 import com.vn.hcmute.team.cortana.mymoney.exception.ImageException;
+import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -30,7 +32,7 @@ import okhttp3.RequestBody;
 /**
  * Created by infamouSs on 8/21/17.
  */
-
+@Singleton
 public class ImageUseCase extends UseCase<ImageRequest> {
     
     public static final String TAG = ImageUseCase.class.getSimpleName();
@@ -45,7 +47,7 @@ public class ImageUseCase extends UseCase<ImageRequest> {
     @Inject
     public ImageUseCase(Context context, DataRepository dataRepository) {
         this.mDataRepository = dataRepository;
-        this.mContext=context;
+        this.mContext = context;
         this.mCompositeDisposable = new CompositeDisposable();
     }
     
@@ -76,6 +78,13 @@ public class ImageUseCase extends UseCase<ImageRequest> {
     private void doUpdateImage(String[] params, final BaseCallBack<Object> callBack) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
+        
         String imageid = params[0];
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
@@ -105,6 +114,13 @@ public class ImageUseCase extends UseCase<ImageRequest> {
     private void doRemoveImage(String[] params, final BaseCallBack<Object> callBack) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
+        
         String imageid = params[0];
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
@@ -139,6 +155,13 @@ public class ImageUseCase extends UseCase<ImageRequest> {
     private void doGetImageById(String[] params, final BaseCallBack<Object> callBack) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
+        
         String imageid = params[0];
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -172,6 +195,13 @@ public class ImageUseCase extends UseCase<ImageRequest> {
     private void doUploadImage(String[] params, final BaseCallBack<Object> callBack) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
+        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
+            return;
+        }
+        
         String detail = params[0];
         String path_url = params[1];
         
@@ -227,10 +257,13 @@ public class ImageUseCase extends UseCase<ImageRequest> {
     private void doGetImage(final BaseCallBack<Object> callBack) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
+        
         if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
-            callBack.onFailure(new ApiRequestException("USER ID, TOKEN NULL"));
+            callBack.onFailure(new UserLoginException(
+                      mContext.getString(R.string.message_warning_need_login)));
             return;
         }
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object o) {
@@ -272,7 +305,8 @@ public class ImageUseCase extends UseCase<ImageRequest> {
     
     @Override
     public void unSubscribe() {
-        if (!mCompositeDisposable.isDisposed()) {
+        if (mCompositeDisposable != null && !mCompositeDisposable.isDisposed() &&
+            mDisposable != null) {
             mCompositeDisposable.remove(mDisposable);
         }
     }
