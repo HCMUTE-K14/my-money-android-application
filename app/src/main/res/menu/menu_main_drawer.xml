@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <group android:checkableBehavior="single">
+    <item
+      android:id="@+id/navigation_item_cashbook"
+      android:icon="@drawable/ic_bk_cashbook"
+      android:title="@string/txt_navigation_cashbook" />
+    <item
+      android:id="@+id/navigation_item_debt"
+      android:icon="@drawable/ic_bk_debts"
+      android:title="@string/txt_navigation_debts" />
+    <item
+      android:id="@+id/navigation_item_trends"
+      android:icon="@drawable/ic_bk_trends"
+      android:title="@string/txt_statistics" />
+    <item
+      android:id="@+id/navigation_item_categories"
+      android:icon="@drawable/ic_bk_category_manager"
+      android:title="@string/txt_navigation_category" />
+    <item
+      android:id="@+id/navigation_item_budgets"
+      android:icon="@drawable/ic_bk_budget"
+      android:title="@string/txt_navigation_budget" />
+    <item
+      android:id="@+id/navigation_item_events"
+      android:icon="@drawable/ic_bk_events"
+      android:title="@string/txt_navigation_event" />
+    <item
+      android:id="@+id/navigation_groups_other"
+      android:checkable="false"
+      android:title="@string/txt_navigation_group_others">
+
+      <menu>
+        <item
+          android:id="@+id/navigation_item_tools"
+          android:checkable="false"
+          android:icon="@drawable/ic_bk_tools"
+          android:title="@string/txt_navigation_tools" />
+
+        <item
+          android:id="@+id/navigation_item_settings"
+          android:checkable="false"
+          android:icon="@drawable/ic_bk_settings"
+          android:title="@string/txt_navigation_settings" />
+      </menu>
+    </item>
+
+  </group>
+</menu>
+

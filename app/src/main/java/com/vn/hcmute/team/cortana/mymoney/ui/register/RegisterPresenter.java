@@ -15,6 +15,8 @@ import javax.inject.Inject;
 public class RegisterPresenter extends BasePresenter<RegisterContract.View> implements
                                                                             RegisterContract.Presenter {
     
+    public static final String TAG = RegisterPresenter.class.getSimpleName();
+    
     private UserManager mUserManager;
     
     private BaseCallBack<Object> callBack = new BaseCallBack<Object>() {

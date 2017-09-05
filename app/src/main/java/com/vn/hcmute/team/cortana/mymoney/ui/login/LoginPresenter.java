@@ -28,8 +28,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     
     
     @Override
-    public boolean isLogined() {
-        return mUserManager.isLogined();
+    public boolean isLogin() {
+        return mUserManager.isLogin();
     }
     
     @Override

@@ -1,8 +1,11 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.currencies;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -10,10 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
@@ -23,8 +24,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.CurrenciesModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.currencies.adapter.MyRecyclerViewCurrenciesAdapter;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -34,8 +33,10 @@ import javax.inject.Inject;
  */
 
 public class CurrenciesActivity extends BaseActivity implements CurrenciesContract.View,
-                                                                MyRecyclerViewCurrenciesAdapter.ItemClickListener,
-                                                                SearchView.OnQueryTextListener{
+                                                                CurrenciesAdapter.ItemClickListener,
+                                                                SearchView.OnQueryTextListener {
+    
+    public static final String TAG = CurrenciesActivity.class.getSimpleName();
     
     @Inject
     CurrenciesPresenter mCurrenciesPresenter;
@@ -46,9 +47,14 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
     @BindView(R.id.toolbar_currencies)
     Toolbar mToolbar_currencies;
- 
-    private MyRecyclerViewCurrenciesAdapter mMyRecyclerViewCurrenciesAdapter;
+    
+    private CurrenciesAdapter mCurrenciesAdapter;
     private List<Currencies> mCurrenciesList;
+    
+    public CurrenciesActivity() {
+        
+    }
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_currencies;
@@ -70,9 +76,7 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSupportActionBar(mToolbar_currencies);
-        getSupportActionBar().setTitle(getResources().getString(R.string.title_currency));
-        mToolbar_currencies.setTitleTextColor(getResources().getColor(R.color.white));
+        
         mCurrenciesPresenter.getCurrencies();
     }
     
@@ -86,8 +90,8 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search_currencies, menu);
-        MenuItem menuItem=menu.findItem(R.id.action_search);
-        SearchView searchView=(SearchView) MenuItemCompat.getActionView(menuItem);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
         searchView.setOnQueryTextListener(this);
         
         return true;
@@ -101,18 +105,25 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
     @Override
     protected void initializeActionBar(View rootView) {
+        setSupportActionBar(mToolbar_currencies);
         
+        ActionBar actionBar = getSupportActionBar();
+        
+        if (actionBar != null) {
+            getSupportActionBar().setTitle(getString(R.string.title_currency));
+            mToolbar_currencies.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
+        }
     }
     
     
     @Override
     public void showCurrencies(List<Currencies> list) {
-        mCurrenciesList=list;
+        mCurrenciesList = list;
         
-        mMyRecyclerViewCurrenciesAdapter=new MyRecyclerViewCurrenciesAdapter(this,list);
-        mRecyclerViewCurrencies.setLayoutManager(new GridLayoutManager(this,1));
-        mMyRecyclerViewCurrenciesAdapter.setClickListener(this);
-        mRecyclerViewCurrencies.setAdapter(mMyRecyclerViewCurrenciesAdapter);
+        mCurrenciesAdapter = new CurrenciesAdapter(this, list);
+        mRecyclerViewCurrencies.setLayoutManager(new GridLayoutManager(this, 1));
+        mCurrenciesAdapter.setClickListener(this);
+        mRecyclerViewCurrencies.setAdapter(mCurrenciesAdapter);
     }
     
     @Override
@@ -122,7 +133,7 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
     @Override
     public void showError(String message) {
-        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
     
     @Override
@@ -131,14 +142,15 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     }
     
     @Override
-    public void onItemClick(View view,Currencies currencies, int position) {
-        TextView textView= ButterKnife.findById(view,R.id.currencies_code);
-    
-        MyLogger.d("currencies",currencies.toString());
+    public void onItemClick(View view, Currencies currencies, int position) {
         
-        Toast.makeText(this,textView.getText().toString(),Toast.LENGTH_LONG).show();
+        Toast.makeText(this, currencies.getCurName(), Toast.LENGTH_LONG).show();
+        
+        Intent intent = new Intent();
+        intent.putExtra("currency", currencies);
+        setResult(RESULT_OK, intent);
+        finish();
     }
-    
     
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -148,18 +160,22 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
     @Override
     public boolean onQueryTextChange(String newText) {
-    
-        newText=newText.toLowerCase();
-        List<Currencies> currenciesList=new ArrayList<>();
-        for (Currencies currencies:mCurrenciesList){
-            String name=currencies.getCurName().toLowerCase();
-            String code=currencies.getCurCode().toLowerCase();
-            if(name.contains(newText)||code.contains(newText)){
-                currenciesList.add(currencies);
+        
+        newText = newText.toLowerCase();
+        List<Currencies> currenciesList = new ArrayList<>();
+        
+        if (mCurrenciesList != null) {
+            for (Currencies currencies : mCurrenciesList) {
+                String name = currencies.getCurName().toLowerCase();
+                String code = currencies.getCurCode().toLowerCase();
+                if (name.contains(newText) || code.contains(newText)) {
+                    currenciesList.add(currencies);
+                }
             }
+            
+            mCurrenciesAdapter.setFilter(currenciesList);
         }
         
-        mMyRecyclerViewCurrenciesAdapter.setFilter(currenciesList);
         return true;
     }
 }

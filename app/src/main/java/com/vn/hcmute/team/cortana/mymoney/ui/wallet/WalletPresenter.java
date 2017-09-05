@@ -5,6 +5,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BasePresenter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase.WalletRequest;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -15,26 +16,9 @@ import javax.inject.Inject;
 public class WalletPresenter extends BasePresenter<WalletContract.View> implements
                                                                         WalletContract.Presenter {
     
-    WalletUseCase mWalletUseCase;
-    BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
-        
-        @Override
-        public void onSuccess(Object value) {
-            getView().onSuccess((String) value);
-            // getView().onSuccessGetWallet();
-        }
-        
-        @Override
-        public void onFailure(Throwable throwable) {
-            getView().onFailure(throwable.getMessage());
-        }
-        
-        @Override
-        public void onLoading() {
-            
-        }
-    };
+    public static final String TAG = WalletPresenter.class.getSimpleName();
     
+    private WalletUseCase mWalletUseCase;
     
     @Inject
     public WalletPresenter(WalletUseCase walletUseCase) {
@@ -42,57 +26,136 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
     }
     
     @Override
-    public void createWallet(Wallet wallet) {
-        WalletUseCase.WalletRequest walletRequest = new WalletUseCase.WalletRequest(
-                  Action.ACTION_CREATE_WALLET, mObjectBaseCallBack, wallet, null);
-        mWalletUseCase.subscribe(walletRequest);
+    public void addWallet(Wallet wallet) {
+        WalletUseCase.WalletRequest requestValue = new WalletRequest(Action.ACTION_CREATE_WALLET,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().onAddWalletSuccess((String) value);
+                          
+                      }
+                      
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().onFailure(throwable.getMessage());
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, wallet, null);
+        mWalletUseCase.subscribe(requestValue);
     }
     
     @Override
-    public void updateWallet(Wallet wallet) {
-        WalletUseCase.WalletRequest walletRequest = new WalletUseCase.WalletRequest(
-                  Action.ACTION_UPDATE_WALLET, mObjectBaseCallBack, wallet, null);
-        mWalletUseCase.subscribe(walletRequest);
+    public void updateWallet(final int position, final Wallet wallet) {
+        WalletUseCase.WalletRequest requestValue = new WalletRequest(Action.ACTION_UPDATE_WALLET,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().onUpdateWalletSuccess((String) value, position, wallet);
+                      }
+                      
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().onFailure(throwable.getMessage());
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, wallet, null);
+        mWalletUseCase.subscribe(requestValue);
     }
     
     @Override
-    public void deleteWallet(String idWallet) {
-        String[] params = {idWallet};
-        WalletUseCase.WalletRequest walletRequest = new WalletUseCase.WalletRequest(
-                  Action.ACTION_DELETE_WALLET, mObjectBaseCallBack, null, params);
-        mWalletUseCase.subscribe(walletRequest);
+    public void removeWallet(final int position, final Wallet wallet) {
+        WalletUseCase.WalletRequest request = new WalletRequest(Action.ACTION_DELETE_WALLET,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().onRemoveWalletSuccess((String) value, position, wallet);
+                      }
+                      
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().onFailure(throwable.getMessage());
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, wallet, null);
+        mWalletUseCase.subscribe(request);
     }
     
     @Override
     public void moveWallet(String walletFrom, String walletTo, String money) {
         String[] params = {walletFrom, walletTo, money};
-        WalletUseCase.WalletRequest walletRequest = new WalletUseCase.WalletRequest(
-                  Action.ACTION_MOVE_WALLET, mObjectBaseCallBack, null, params);
-        mWalletUseCase.subscribe(walletRequest);
+        
+        WalletUseCase.WalletRequest request = new WalletRequest(Action.ACTION_MOVE_WALLET,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().onMoveMoneySuccess((String) value);
+                      }
+                      
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().onFailure(throwable.getMessage());
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, null, params);
+        mWalletUseCase.subscribe(request);
     }
     
     @Override
     public void getAllWallet() {
-        
-        BaseCallBack<Object> baseCallBack = new BaseCallBack<Object>() {
-            @Override
-            public void onSuccess(Object value) {
-                getView().onSuccessGetWallet((List<Wallet>) value);
-            }
-            
-            @Override
-            public void onFailure(Throwable throwable) {
-                getView().onFailure(throwable.getMessage());
-            }
-            
-            @Override
-            public void onLoading() {
-                
-            }
-        };
-        
-        WalletUseCase.WalletRequest walletRequest = new WalletUseCase.WalletRequest(
-                  Action.ACTION_GET_WALLET, baseCallBack, null, null);
-        mWalletUseCase.subscribe(walletRequest);
+        WalletUseCase.WalletRequest request = new WalletRequest(Action.ACTION_GET_WALLET,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          List<Wallet> wallets = (List<Wallet>) value;
+                          
+                          if (wallets.isEmpty()) {
+                              getView().showEmpty();
+                          } else {
+                              getView().showListWallet(wallets);
+                          }
+                      }
+                      
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().onFailure(throwable.getMessage());
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, null, null);
+        mWalletUseCase.subscribe(request);
+    }
+    
+    @Override
+    public void unSubscribe() {
+        mWalletUseCase.unSubscribe();
     }
 }

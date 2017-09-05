@@ -5,6 +5,7 @@ import android.content.Context;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
 import com.vn.hcmute.team.cortana.mymoney.data.cache.CacheRepository;
+import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.LocalRepository;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.RemoteRepository;
 import dagger.Module;
@@ -39,6 +40,11 @@ public class ApplicationModule {
         return mMoneyApplication;
     }
     
+    @Singleton
+    @Provides
+    public PreferencesHelper providePreferenceHelper(){
+        return new PreferencesHelper(mMoneyApplication);
+    }
     
     @Singleton
     @Provides
@@ -48,4 +54,5 @@ public class ApplicationModule {
               CacheRepository cacheRepository) {
         return new DataRepository(remoteRepository, localRepository, cacheRepository);
     }
+    
 }

@@ -78,7 +78,7 @@ public class UserManager extends UseCase<UserRequest> {
         }
     }
     
-    public boolean isLogined(){
+    public boolean isLogin(){
         return mDataRepository.getUser()!=null;
     }
     

@@ -1,34 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical" android:layout_width="match_parent"
-  android:layout_height="wrap_content">
-
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/personid"
-    android:text="H"/>
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/name"
-    android:text="H"/>
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/describe"
-    android:text="H"/>
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/userid"
-    android:text="H"/>
-
-  <View
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/container_person"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:layout_marginTop="5dp"
+  android:background="?selectableItemBackground">
+  <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="2dp"
-    android:layout_below="@+id/moneyExpense"
-    android:background="@android:color/black"
-    />
+    android:layout_height="80dp"
+    android:padding="10dp">
 
-</LinearLayout>
+    <com.vn.hcmute.team.cortana.mymoney.ui.view.RoundedLetterView
+      android:id="@+id/rounded_letter"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      app:rlv_backgroundColorValue="#FF5722"
+      app:rlv_titleColor="@color/white"
+      app:rlv_titleSize="25dp"
+      app:rlv_titleText="B" />
+
+    <LinearLayout
+      android:id="@+id/linear_layout_title"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_toRightOf="@id/rounded_letter"
+      android:paddingLeft="10dp"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@+id/txt_name"
+        style="@style/ListItemSubTitleStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="fsdafdsafdsafdsafsadfdsafsda"
+        android:textSize="18sp" />
+
+      <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+          android:id="@+id/txt_describe"
+          style="@style/ListItemSubTitleStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="fdsafdsafsdafdsa"
+          android:textSize="15sp" />
+
+      </RelativeLayout>
+    </LinearLayout>
+    <CheckBox
+      android:id="@+id/check_box"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_centerVertical="true"
+      android:checked="true" />
+
+  </RelativeLayout>
+
+</android.support.v7.widget.CardView>

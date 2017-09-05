@@ -1,5 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.wallet;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -31,12 +33,6 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
     
     @OnClick(R.id.button2)
     public void onClick() {
-    /*    Wallet wallet = new Wallet();
-        wallet.setMoney("112321321");
-        wallet.setCurrencyUnit("VND");
-        wallet.setWalletid("anh");*/
-        //mWalletPresenter.deleteWallet("vi2");
-        // mWalletPresenter.getAllWallet();
         mWalletPresenter.moveWallet("vi1", "vi2", "1000000");
     }
     
@@ -70,22 +66,58 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
     }
     
     @Override
-    public void onSuccess(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
     
     @Override
-    public void onSuccessGetWallet(List<Wallet> wallets) {
-        if (wallets != null && !wallets.isEmpty()) {
-            Toast.makeText(this, wallets.get(0).getUserid(), Toast.LENGTH_LONG).show();
-            
-        } else {
-            Toast.makeText(this, "fail", Toast.LENGTH_LONG).show();
-        }
+    protected void onDestroy() {
+        super.onDestroy();
+        mWalletPresenter.unSubscribe();
+    }
+    
+    @Override
+    public void initializeView() {
+        
+    }
+    
+    @Override
+    public void showEmpty() {
+        
+    }
+    
+    @Override
+    public void showListWallet(List<Wallet> wallets) {
+        
+    }
+    
+    @Override
+    public void onAddWalletSuccess(String message) {
+        
+    }
+    
+    @Override
+    public void onUpdateWalletSuccess(String message, int position, Wallet wallet) {
+        
+    }
+    
+    @Override
+    public void onRemoveWalletSuccess(String message, int position, Wallet wallet) {
+        
+    }
+    
+    @Override
+    public void onMoveMoneySuccess(String message) {
+        
     }
     
     @Override
     public void onFailure(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+    
+    @Override
+    public void loading(boolean isLoading) {
+        
     }
 }

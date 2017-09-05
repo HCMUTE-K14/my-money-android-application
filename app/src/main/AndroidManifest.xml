@@ -15,23 +15,13 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
 
-    <activity android:name=".ui.saving.SavingActivity"/>
-
+    <!-- User -->
     <activity
       android:launchMode="singleTop"
       android:name=".ui.login.LoginActivity"
       android:screenOrientation="portrait">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
 
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
     </activity>
-
-    <activity
-      android:name=".ui.currencies.CurrenciesActivity"
-      android:screenOrientation="portrait" />
-    <activity android:name=".ui.tools.galleryloader.ui.GalleryLoaderActivity" />
     <activity
       android:launchMode="singleTop"
       android:name=".ui.register.RegisterActivity"
@@ -40,6 +30,31 @@
       android:launchMode="singleTop"
       android:name=".ui.forgetpassword.ForgetPasswordActivity"
       android:screenOrientation="portrait" />
+
+    <!-- Main -->
+    <activity android:name=".ui.main.MainActivity"/>
+
+    <!-- Wallet -->
+    <activity android:name=".ui.wallet.SelectWalletActivity"/>
+    <activity android:name=".ui.wallet.AddWalletActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
+    <!-- Saving -->
+    <activity android:name=".ui.saving.SavingActivity" />
+
+    <!-- Person -->
+    <activity android:name=".ui.person.PersonActivity" />
+
+    <!-- Currency -->
+    <activity android:name=".ui.currencies.CurrenciesActivity"/>
+
+    <!-- Tool -->
+    <activity android:name=".ui.tools.galleryloader.ui.GalleryLoaderActivity" />
   </application>
 
 </manifest>

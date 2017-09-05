@@ -25,6 +25,8 @@ import okhttp3.RequestBody;
 public class DataRepository implements DataSource.RemoteDataSource, DataSource.CacheDataSource,
                                        DataSource.LocalDataSource {
     
+    public static final String TAG = DataRepository.class.getSimpleName();
+    
     private RemoteRepository mRemoteRepository;
     private LocalRepository mLocalRepository;
     private CacheRepository mCacheRepository;
@@ -41,7 +43,6 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     public Observable<User> login(UserCredential userCredential) {
         return this.mRemoteRepository.login(userCredential);
     }
-    
     
     @Override
     public Observable<String> register(User user) {

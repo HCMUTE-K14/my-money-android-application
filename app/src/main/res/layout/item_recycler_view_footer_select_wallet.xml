@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:padding="30dp"
+  android:orientation="vertical">
+  <LinearLayout
+    android:id="@+id/btn_add_wallet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+
+    android:clickable="false">
+    <ImageView
+      android:layout_width="30dp"
+      android:layout_height="match_parent"
+      android:background="?attr/selectableItemBackground"
+      android:src="@drawable/ic_add" />
+
+    <android.support.v7.widget.AppCompatButton
+      android:textStyle="bold"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingLeft="10dp"
+      android:background="?attr/selectableItemBackground"
+      android:clickable="false"
+      android:gravity="left|center"
+      android:text="@string/txt_add_wallet"
+      android:textColor="#2FB84D"
+      android:textSize="15sp" />
+
+  </LinearLayout>
+
+
+  <LinearLayout
+    android:id="@+id/btn_my_wallet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true">
+
+    <ImageView
+      android:layout_width="30dp"
+      android:layout_height="match_parent"
+      android:background="?attr/selectableItemBackground"
+      android:src="@drawable/ic_bk_settings" />
+
+    <android.support.v7.widget.AppCompatButton
+
+      android:textStyle="bold"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingLeft="10dp"
+      android:background="?attr/selectableItemBackground"
+      android:clickable="false"
+      android:gravity="left|center"
+      android:text="@string/txt_my_wallet"
+      android:textColor="#2FB84D"
+      android:textSize="15sp" />
+
+  </LinearLayout>
+</LinearLayout>

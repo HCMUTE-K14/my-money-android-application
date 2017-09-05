@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 public class LocalRepository {
     
+    public static final String TAG = LocalRepository.class.getSimpleName();
     
     @Inject
     public LocalRepository() {

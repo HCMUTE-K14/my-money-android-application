@@ -14,6 +14,8 @@ import javax.inject.Inject;
 public class ForgetPasswordPresenter extends BasePresenter<ForgetPasswordContract.View> implements
                                                                                         ForgetPasswordContract.Presenter {
     
+    public static final String TAG = ForgetPasswordActivity.class.getSimpleName();
+    
     private UserManager mUserManager;
     
     @Inject

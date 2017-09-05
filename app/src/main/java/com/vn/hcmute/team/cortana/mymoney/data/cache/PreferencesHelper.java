@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
+import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import javax.inject.Inject;
 
 /**
@@ -13,11 +14,14 @@ import javax.inject.Inject;
 
 public class PreferencesHelper {
     
+    public static final String TAG = PreferencesHelper.class.getSimpleName();
+    
     private static final String PREF_NAME = "my_money_pref";
     
     private final String PREF_USER_ID = "PREF_USER_ID";
     private final String PREF_USER_TOKEN = "PREF_USER_TOKEN";
     private final String PREF_CURRENT_USER = "PREF_CURRENT_USER";
+    private final String PREF_CURRENT_WALLET = "PREF_CURRENT_WALLET";
     
     private SharedPreferences mSharedPreferences;
     private Gson mGson;
@@ -59,6 +63,19 @@ public class PreferencesHelper {
             return null;
         }
         return mGson.fromJson(currentUser, User.class);
+    }
+    
+    public Wallet getCurrentWallet() {
+        String currentWallet = mSharedPreferences.getString(PREF_CURRENT_WALLET, "");
+        if (TextUtils.isEmpty(currentWallet)) {
+            return null;
+        }
+        return mGson.fromJson(currentWallet, Wallet.class);
+    }
+    
+    public void putCurrentWallet(Wallet wallet) {
+        String _wallet = mGson.toJson(wallet, Wallet.class);
+        mSharedPreferences.edit().putString(PREF_CURRENT_WALLET, _wallet).apply();
     }
     
 }

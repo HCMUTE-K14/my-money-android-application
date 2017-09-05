@@ -55,9 +55,14 @@ public abstract class BaseFragment extends Fragment {
         if (mPresenter != null) {
             mPresenter.initialize(getArguments());
         }
-        initializeActionBar(this.view);
         unbinder = ButterKnife.bind(this, view);
+        initializeActionBar(this.view);
         return view;
+    }
+    
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
     
     @Override

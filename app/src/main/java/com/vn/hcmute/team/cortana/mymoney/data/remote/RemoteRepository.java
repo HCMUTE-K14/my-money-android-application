@@ -341,10 +341,8 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                                 throws Exception {
                           
                           if (listJsonResponse.getStatus().equals("success")) {
-                              MyLogger.d("TRUE");
                               return listJsonResponse.getData();
                           } else {
-                              MyLogger.d("FALSE");
                               throw new WalletException(listJsonResponse.getMessage());
                           }
                       }

@@ -1,5 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by kunsubin on 8/22/2017.
  */
 
-public class Currencies {
+public class Currencies implements Parcelable{
     
     @SerializedName("cur_id")
     @Expose
@@ -32,6 +34,26 @@ public class Currencies {
         this.curSymbol = "";
         this.curDisplayType = "";
     }
+    
+    protected Currencies(Parcel in) {
+        curId = in.readString();
+        curCode = in.readString();
+        curName = in.readString();
+        curSymbol = in.readString();
+        curDisplayType = in.readString();
+    }
+    
+    public static final Creator<Currencies> CREATOR = new Creator<Currencies>() {
+        @Override
+        public Currencies createFromParcel(Parcel in) {
+            return new Currencies(in);
+        }
+        
+        @Override
+        public Currencies[] newArray(int size) {
+            return new Currencies[size];
+        }
+    };
     
     public String getCurId() {
         return curId;
@@ -82,5 +104,20 @@ public class Currencies {
                ", curSymbol='" + curSymbol + '\'' +
                ", curDisplayType='" + curDisplayType + '\'' +
                '}';
+    }
+    
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+    
+        dest.writeString(curId);
+        dest.writeString(curCode);
+        dest.writeString(curName);
+        dest.writeString(curSymbol);
+        dest.writeString(curDisplayType);
     }
 }

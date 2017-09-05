@@ -12,7 +12,6 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.SavingUseCase.SavingRequest;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -200,7 +199,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
             this.mCompositeDisposable.add(mDisposable);
             
         }
-        MyLogger.d("update saving use case");
     }
     
     private void doDeleteSaving(final BaseCallBack<Object> callBack, String[] params) {

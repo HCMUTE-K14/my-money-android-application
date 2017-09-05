@@ -2,6 +2,7 @@ package com.vn.hcmute.team.cortana.mymoney.di.component;
 
 import android.app.Application;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
+import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.ServiceGenerator;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ApplicationModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.NetworkModule;
@@ -23,5 +24,6 @@ public interface ApplicationComponent {
     MyMoneyApplication myMoneyApplication();
     
     ServiceGenerator serviceGenerator();
-    
+   
+    PreferencesHelper prefenencesHelper();
 }

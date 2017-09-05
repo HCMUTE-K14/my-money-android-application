@@ -23,7 +23,7 @@ public interface LoginContract {
     
     public interface Presenter {
         
-        boolean isLogined();
+        boolean isLogin();
         
         void forgetPassword(String email);
         

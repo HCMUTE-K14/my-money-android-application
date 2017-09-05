@@ -41,7 +41,7 @@ public class MyMoneyApi {
     
     
     /*-----------------*/
-    /*Event         */
+    /*Event            */
     /*-----------------*/
     public static final String GET_EVENT = "event/getEvent";
     public static final String CREATE_EVENT = "event/createEvent";
@@ -74,7 +74,4 @@ public class MyMoneyApi {
     public static final String CREATE_BUDGET = "budget/createBudget";
     public static final String UPDATE_BUDGET = "budget/updateBudget";
     public static final String DELETE_BUDGET = "budget/deleteBudget";
-    
-    
-
 }

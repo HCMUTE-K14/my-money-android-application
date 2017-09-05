@@ -28,6 +28,8 @@ import javax.inject.Inject;
 
 public class RegisterActivity extends BaseActivity implements RegisterContract.View {
     
+    public static final String TAG = RegisterActivity.class.getSimpleName();
+    
     @BindView(R.id.txt_username)
     EditText mEditTextUsername;
     

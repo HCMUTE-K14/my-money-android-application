@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Filter;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,13 +31,17 @@ import java.util.List;
 
 public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder> {
     
+    public static final String TAG = PersonAdapter.class.getSimpleName();
+    
     private Context mContext;
+    
     private List<Person> mPersons = new ArrayList<>();
     private List<Person> mSelectedPersons = new ArrayList<>();
-    private OnPersonClickListener mPersonClickListener;
+    private List<Person> mDisplayPersons = new ArrayList<>();
     
-    private boolean isFirstTime;
-    private boolean isNeedLoadMore;
+    private Filter mFilter = new ItemFilter();
+    
+    private OnPersonClickListener mPersonClickListener;
     
     public PersonAdapter(Context context, List<Person> selectedPersons,
               OnPersonClickListener personClickListener) {
@@ -47,13 +52,10 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
         }
         
         this.mPersonClickListener = personClickListener;
-        
-        this.isFirstTime = true;
-        this.isNeedLoadMore = false;
     }
     
     public int getLayoutId() {
-        return R.layout.item_person;
+        return R.layout.item_recycler_view_person;
     }
     
     @Override
@@ -64,26 +66,26 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
     
     @Override
     public int getItemCount() {
-        return mPersons.size();
+        return mDisplayPersons.size();
     }
     
     @Override
     public void onBindViewHolder(final PersonAdapterViewHolder holder, final int position) {
-        final Person person = mPersons.get(position);
+        final Person person = mDisplayPersons.get(position);
         
         final boolean isSelected = isSelectedPerson(person);
-        int color = mPersons.get(position).getColor();
+        int color = mDisplayPersons.get(position).getColor();
         
         if (color == 0) {
             color = Color.parseColor(ColorUtil.getRandomColor());
-            mPersons.get(position).setColor(color);
+            mDisplayPersons.get(position).setColor(color);
         }
         if (color == Color.WHITE) {
             color = Color.BLACK;
         }
         holder.mLetterView.setBackgroundColor(color);
         
-        if(!TextUtils.isEmpty(person.getName())){
+        if (!TextUtils.isEmpty(person.getName())) {
             final String startLetter = String.valueOf(person.getName().charAt(0)).toUpperCase();
             holder.mLetterView.setTitleText(startLetter);
         }
@@ -125,12 +127,12 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
                 popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        final int itemId=item.getItemId();
+                        final int itemId = item.getItemId();
                         if (itemId == R.id.action_remove_person) {
                             mPersonClickListener.onRemoveClick(position, person);
                             return true;
-                        }else if(itemId== R.id.action_update_person){
-                            mPersonClickListener.onEditClick(position,person);
+                        } else if (itemId == R.id.action_update_person) {
+                            mPersonClickListener.onEditClick(position, person);
                             return true;
                         }
                         
@@ -164,18 +166,12 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
         mPersons.clear();
         mPersons.addAll(persons);
         
+        mDisplayPersons.clear();
+        mDisplayPersons.addAll(persons);
     }
     
     public boolean isEmptyData() {
         return mPersons.isEmpty();
-    }
-    
-    public boolean isNeedLoadMore() {
-        return isNeedLoadMore;
-    }
-    
-    public void setNeedLoadMore(boolean needLoadMore) {
-        isNeedLoadMore = needLoadMore;
     }
     
     public List<Person> getSelectedPersons() {
@@ -188,18 +184,21 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
             mSelectedPersons.remove(person);
         }
         mPersons.remove(person);
+        mDisplayPersons.remove(person);
         
         notifyDataSetChanged();
     }
     
     public void add(Person person) {
         mPersons.add(person);
-        notifyItemChanged(mPersons.size() - 1);
+        mDisplayPersons.add(person);
+        
+        notifyItemInserted(mPersons.indexOf(person));
     }
     
-    public void update(int position,Person person){
-        mPersons.get(position).setName(person.getName());
-        mPersons.get(position).setDescribe(person.getDescribe());
+    public void update(int position, Person person) {
+        mDisplayPersons.get(position).setName(person.getName());
+        mDisplayPersons.get(position).setDescribe(person.getDescribe());
         
         notifyItemChanged(position);
     }
@@ -245,6 +244,10 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
         });
     }
     
+    public void filter(String text) {
+        mFilter.filter(text);
+    }
+    
     private void handlerSelection(Runnable runnable) {
         runnable.run();
     }
@@ -268,6 +271,41 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
         public PersonAdapterViewHolder(View root) {
             super(root);
             ButterKnife.bind(this, root);
+        }
+    }
+    
+    private class ItemFilter extends Filter {
+        
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            String filterString = constraint.toString().toLowerCase();
+            
+            FilterResults results = new FilterResults();
+            
+            int count = mPersons.size();
+            
+            final ArrayList<Person> tempFilterList = new ArrayList<>();
+            
+            for (int i = 0; i < count; i++) {
+                Person person = mPersons.get(i);
+                String name = person.getName().toLowerCase();
+                String describe = person.getDescribe().toLowerCase();
+                if (name.contains(filterString) || describe.contains(filterString)) {
+                    tempFilterList.add(person);
+                }
+            }
+            
+            results.values = tempFilterList;
+            results.count = tempFilterList.size();
+            
+            return results;
+        }
+        
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mDisplayPersons.clear();
+            mDisplayPersons = (ArrayList<Person>) results.values;
+            notifyDataSetChanged();
         }
     }
 }

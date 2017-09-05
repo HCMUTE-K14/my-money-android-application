@@ -10,8 +10,9 @@ import javax.inject.Inject;
 
 public class CacheRepository implements PreferenceService {
     
-    private PreferencesHelper mPreferencesHelper;
+    public static final String TAG = CacheRepository.class.getSimpleName();
     
+    private PreferencesHelper mPreferencesHelper;
     
     @Inject
     public CacheRepository(PreferencesHelper preferencesHelper) {

@@ -12,23 +12,37 @@ public interface WalletContract {
     
     interface View extends BaseView {
         
-        void onSuccess(String message);
+        void initializeView();
         
-        void onSuccessGetWallet(List<Wallet> wallets);
+        void showEmpty();
+        
+        void showListWallet(List<Wallet> wallets);
+        
+        void onAddWalletSuccess(String message);
+        
+        void onUpdateWalletSuccess(String message,int position,Wallet wallet);
+        
+        void onRemoveWalletSuccess(String message,int position,Wallet wallet);
+        
+        void onMoveMoneySuccess(String message);
         
         void onFailure(String message);
+        
+        void loading(boolean isLoading);
     }
     
     interface Presenter {
         
-        void createWallet(Wallet wallet);
+        void addWallet(Wallet wallet);
         
-        void updateWallet(Wallet wallet);
+        void updateWallet(int position,Wallet wallet);
         
-        void deleteWallet(String idWallet);
+        void removeWallet(int position,Wallet wallet);
         
         void moveWallet(String walletFrom, String walletTo, String money);
         
         void getAllWallet();
+        
+        void unSubscribe();
     }
 }

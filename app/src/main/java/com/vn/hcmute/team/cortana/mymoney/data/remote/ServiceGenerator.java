@@ -31,6 +31,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Singleton
 public class ServiceGenerator {
     
+    public static final String TAG = ServiceGenerator.class.getSimpleName();
+    
     private Gson mGson;
     private OkHttpClient mClient;
     

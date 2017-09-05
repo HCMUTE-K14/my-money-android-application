@@ -26,7 +26,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        //buildConfigField "String", "property.", "\"${getProperty("local.properties", "property_field")}\""
+        //buildConfigField "String", "TEST", "\"${getProperty("local.properties", "test")}\""
 
     }
     buildTypes {
@@ -46,6 +46,9 @@ android {
         exclude 'META-INF/license.txt'
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
+    }
+    lintOptions {
+        disable 'RestrictedApi'
     }
 }
 

@@ -28,6 +28,10 @@ public class Wallet {
     @Expose
     private String walletImage;
     
+    @SerializedName("archive")
+    @Expose
+    public boolean archive;
+    
     public Wallet() {
         this.walletid = "";
         this.userid = "";
@@ -83,5 +87,39 @@ public class Wallet {
     
     public void setWalletImage(String walletImage) {
         this.walletImage = walletImage;
+    }
+    
+    public boolean isArchive() {
+        return archive;
+    }
+    
+    public void setArchive(boolean archive) {
+        this.archive = archive;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        
+        Wallet wallet = (Wallet) o;
+        
+        if (walletid != null ? !walletid.equals(wallet.walletid) : wallet.walletid != null) {
+            return false;
+        }
+        return walletName != null ? walletName.equals(wallet.walletName)
+                  : wallet.walletName == null;
+    
+    }
+    
+    @Override
+    public int hashCode() {
+        int result = walletid != null ? walletid.hashCode() : 0;
+        result = 31 * result + (walletName != null ? walletName.hashCode() : 0);
+        return result;
     }
 }

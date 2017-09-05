@@ -16,11 +16,12 @@ import javax.inject.Inject;
 public class CurrenciesPresenter extends BasePresenter<CurrenciesContract.View> implements
                                                                                 CurrenciesContract.Presenter {
     
+    public static final String TAG = CurrenciesPresenter.class.getSimpleName();
+    
     private CurrenciesUseCase mCurrenciesUseCase;
     
     @Inject
-    public CurrenciesPresenter(
-              CurrenciesUseCase currenciesUseCase) {
+    public CurrenciesPresenter(CurrenciesUseCase currenciesUseCase) {
         mCurrenciesUseCase = currenciesUseCase;
     }
     

@@ -1,7 +1,6 @@
-package com.vn.hcmute.team.cortana.mymoney.ui.currencies.adapter;
+package com.vn.hcmute.team.cortana.mymoney.ui.currencies;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
+import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,20 +21,22 @@ import java.util.List;
  * Created by kunsubin on 8/25/2017.
  */
 
-public class MyRecyclerViewCurrenciesAdapter extends RecyclerView.Adapter<MyRecyclerViewCurrenciesAdapter.ViewHolder>{
+public class CurrenciesAdapter extends
+                               RecyclerView.Adapter<CurrenciesAdapter.ViewHolder> {
+    
+    public static final String TAG = CurrenciesAdapter.class.getSimpleName();
+    
     private List<Currencies> mData = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private Context mContext;
     
-    // data is passed into the constructor
-    public MyRecyclerViewCurrenciesAdapter(Context context, List<Currencies> data) {
+    public CurrenciesAdapter(Context context, List<Currencies> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
-        this.mContext=context;
+        this.mContext = context;
     }
     
-    // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item_recycler_view_currencies, parent, false);
@@ -41,44 +44,35 @@ public class MyRecyclerViewCurrenciesAdapter extends RecyclerView.Adapter<MyRecy
         return viewHolder;
     }
     
-    // binds the data to the textview in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.currenccies_name.setText(mData.get(position).getCurName());
-        holder.currencies_code.setText(mData.get(position).getCurCode());
-        Drawable drawable=getDrawable(mData.get(position).getCurCode().toLowerCase());
-        if(drawable!=null){
-            holder.image_view_curencies.setImageDrawable(drawable);
-        }
-       
+        Currencies currencies = mData.get(position);
+        
+        holder.currencies_name.setText(currencies.getCurName());
+        holder.currencies_code.setText(currencies.getCurCode());
+        
+        String iconString = "ic_currency_" + currencies.getCurCode().toLowerCase();
+        
+        GlideApp.with(mContext)
+                  .load(DrawableUtil.getDrawable(mContext, iconString))
+                  .placeholder(R.drawable.folder_placeholder)
+                  .error(R.drawable.folder_placeholder)
+                  .into(holder.image_view_currencies);
+        
     }
-    private Drawable getDrawable(String name){
-        String srcName="ic_currency_"+name;
-        int id = mContext.getResources().getIdentifier(srcName, "drawable", mContext.getPackageName());
-        if(checkDrawableExists(id)){
-            Drawable drawable = mContext.getResources().getDrawable(id);
-            return drawable;
-        }
-        return null;
-    }
-    private boolean checkDrawableExists(int id){
-        if(id!=0)
-            return true;
-        return false;
-    }
-    // total number of rows
+    
     @Override
     public int getItemCount() {
         return mData.size();
     }
     
     
-    // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        
         @BindView(R.id.image_view_curencies)
-        ImageView image_view_curencies;
+        ImageView image_view_currencies;
         @BindView(R.id.currenccies_name)
-        TextView currenccies_name;
+        TextView currencies_name;
         @BindView(R.id.currencies_code)
         TextView currencies_code;
         
@@ -91,29 +85,27 @@ public class MyRecyclerViewCurrenciesAdapter extends RecyclerView.Adapter<MyRecy
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
-                mClickListener.onItemClick(view,getItem(getAdapterPosition()), getAdapterPosition());
+                mClickListener
+                          .onItemClick(view, getItem(getAdapterPosition()), getAdapterPosition());
             }
         }
     }
     
-    // convenience method for getting data at click position
     public Currencies getItem(int id) {
         return mData.get(id);
     }
     
-    // allows clicks events to be caught
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
     
-    // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         
-        void onItemClick(View view,Currencies currencies, int position);
+        void onItemClick(View view, Currencies currencies, int position);
     }
     
-    public void setFilter(List<Currencies> list){
-        mData=new ArrayList<>();
+    public void setFilter(List<Currencies> list) {
+        mData = new ArrayList<>();
         mData.addAll(list);
         notifyDataSetChanged();
     }

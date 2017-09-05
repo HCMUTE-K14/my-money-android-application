@@ -32,8 +32,7 @@ public class MyRecyclerViewEventAdapter extends RecyclerView.Adapter<MyRecyclerV
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item_recycler_view_event, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
     
     // binds the data to the textview in each row

@@ -25,6 +25,7 @@ import javax.inject.Inject;
 
 public class ForgetPasswordActivity extends BaseActivity implements ForgetPasswordContract.View {
     
+    public static final String TAG = ForgetPasswordActivity.class.getSimpleName();
     
     @BindView(R.id.txt_email)
     EditText mEditTextEmail;
@@ -85,7 +86,7 @@ public class ForgetPasswordActivity extends BaseActivity implements ForgetPasswo
         mForgetPasswordPresenter.unSubscribe();
     }
     /*-----------------*/
-    /*Helper Method    */
+    /*OnClick          */
     /*-----------------*/
     
     @OnClick(R.id.btn_submit)

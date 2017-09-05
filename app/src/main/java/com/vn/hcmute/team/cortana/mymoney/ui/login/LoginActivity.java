@@ -21,7 +21,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.LoginModule;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.forgetpassword.ForgetPasswordActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.person.PersonActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.main.MainActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.register.RegisterActivity;
 import javax.inject.Inject;
 
@@ -31,6 +31,8 @@ import javax.inject.Inject;
 
 public class LoginActivity extends BaseActivity implements LoginContract.View {
     
+    
+    public static final String TAG = LoginActivity.class.getSimpleName();
     
     @BindView(R.id.txt_username)
     EditText mTextViewUsername;
@@ -95,7 +97,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        if(mLoginPresenter.isLogined()){
+        if (mLoginPresenter.isLogin()) {
             openMainActivity();
             finish();
             return;
@@ -111,7 +113,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
     
     /*-----------------*/
-    /*Helper Method    */
+    /* Onclick         */
     /*-----------------*/
     
     @OnClick(R.id.btn_login)
@@ -139,22 +141,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         openActivityForgetPassword();
     }
     
-    private void openActivityRegister() {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-    }
-    
-    private void openActivityForgetPassword() {
-        Intent intent = new Intent(this, ForgetPasswordActivity.class);
-        startActivity(intent);
-    }
-    
-    private void openMainActivity(){
-        Intent intent=new Intent(this, PersonActivity.class);
-    
-        startActivityForResult(intent,1);
-    }
-    
     
     /*-----------------*/
     /*Task View        */
@@ -165,7 +151,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMessage(getString(R.string.message_wait_login));
     }
-  
+    
     
     @Override
     public void loginSuccessful() {
@@ -186,5 +172,25 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         }
         
         mProgressDialog.dismiss();
+    }
+    
+    /*-----------------*/
+    /*Helper Method    */
+    /*-----------------*/
+    
+   
+    private void openActivityRegister() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+    }
+    
+    private void openActivityForgetPassword() {
+        Intent intent = new Intent(this, ForgetPasswordActivity.class);
+        startActivity(intent);
+    }
+    
+    private void openMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivityForResult(intent, 1);
     }
 }
