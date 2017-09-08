@@ -32,6 +32,7 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                       public void onSuccess(Object value) {
                           getView().loading(false);
                           getView().showListSaving((List<Saving>) value);
+                          
                       }
                       
                       @Override
@@ -174,5 +175,10 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                       }
                   }, null, params);
         mSavingUseCase.subscribe(savingRequest);
+    }
+    
+    @Override
+    public void unSubscribe() {
+        mSavingUseCase.unSubscribe();
     }
 }

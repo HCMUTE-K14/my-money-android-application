@@ -79,6 +79,10 @@ public class SavingUseCase extends UseCase<SavingRequest> {
     }
     
     private void doGetSaving(final BaseCallBack<Object> callBack) {
+       /* mDataRepository.putUserId("e67757e090bb47bbbebf7db8b15e7c96");
+        mDataRepository.putUserToken("557b32ce486d4a02b961d2befd310541");*/
+        
+        
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         

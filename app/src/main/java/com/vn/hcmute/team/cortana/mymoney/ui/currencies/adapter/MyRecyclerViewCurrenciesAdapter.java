@@ -2,6 +2,7 @@ package com.vn.hcmute.team.cortana.mymoney.ui.currencies.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ public class MyRecyclerViewCurrenciesAdapter extends RecyclerView.Adapter<MyRecy
         holder.currenccies_name.setText(mData.get(position).getCurName());
         holder.currencies_code.setText(mData.get(position).getCurCode());
         Drawable drawable=getDrawable(mData.get(position).getCurCode().toLowerCase());
+        
         if(drawable!=null){
             holder.image_view_curencies.setImageDrawable(drawable);
         }
@@ -56,7 +58,7 @@ public class MyRecyclerViewCurrenciesAdapter extends RecyclerView.Adapter<MyRecy
         String srcName="ic_currency_"+name;
         int id = mContext.getResources().getIdentifier(srcName, "drawable", mContext.getPackageName());
         if(checkDrawableExists(id)){
-            Drawable drawable = mContext.getResources().getDrawable(id);
+            Drawable drawable = ContextCompat.getDrawable(mContext,id);
             return drawable;
         }
         return null;

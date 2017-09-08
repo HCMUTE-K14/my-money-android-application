@@ -48,6 +48,9 @@ android {
         exclude 'META-INF/LGPL2.1'
     }
 }
+repositories {
+    mavenCentral()
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -88,6 +91,9 @@ dependencies {
 
     compile 'com.github.bumptech.glide:glide:4.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+
+
+    compile group: 'net.objecthunter', name: 'exp4j', version: '0.4.8'
 
     testCompile 'junit:junit:4.12'
 }

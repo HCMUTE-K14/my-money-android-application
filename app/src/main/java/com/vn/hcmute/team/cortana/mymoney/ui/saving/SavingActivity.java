@@ -3,23 +3,17 @@ package com.vn.hcmute.team.cortana.mymoney.ui.saving;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.TabLayout;
+import android.support.design.widget.TabLayout.OnTabSelectedListener;
+import android.support.design.widget.TabLayout.Tab;
+import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.Toast;
 import butterknife.BindView;
-import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
-import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerSavingComponent;
-import com.vn.hcmute.team.cortana.mymoney.di.component.SavingComponent;
-import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.adapter.MyRecyclerViewSavingAdapter;
 import java.util.List;
-import javax.inject.Inject;
 
 /**
  * Created by kunsubin on 8/23/2017.
@@ -27,18 +21,14 @@ import javax.inject.Inject;
 
 public class SavingActivity extends BaseActivity implements SavingContract.View,MyRecyclerViewSavingAdapter.ItemClickListener {
     
-    @Inject
-    SavingPresenter mSavingPresenter;
     
-  
-    @BindView(R.id.recyclerViewSaving)
-    RecyclerView mRecyclerViewSaving;
+    @BindView(R.id.tab_layout)
+    TabLayout mTabLayout;
+    @BindView(R.id.pager)
+    ViewPager mViewPager;
     
-    MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
-    
-    List<Saving> mSavings;
-    
-    
+    private PagerAdapter mPagerAdapter;
+ 
     @Override
     public int getLayoutId() {
         return R.layout.activity_saving;
@@ -46,41 +36,63 @@ public class SavingActivity extends BaseActivity implements SavingContract.View,
     
     @Override
     protected void initializeDagger() {
-        ApplicationComponent applicationComponent = ((MyMoneyApplication) this.getApplication())
-                  .getAppComponent();
-        SavingComponent savingComponent = DaggerSavingComponent
-                  .builder()
-                  .applicationComponent(applicationComponent)
-                  .activityModule(new ActivityModule(this))
-                  .savingModule(new SavingModule())
-                  .build();
-        savingComponent.inject(this);
+     
     }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSavingPresenter.getSaving();
+       
     
+        mPagerAdapter=new PagerAdapter(getSupportFragmentManager(),0);
+        mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
+            }
+        
+            @Override
+            public void onTabUnselected(Tab tab) {
+            
+            }
+        
+            @Override
+            public void onTabReselected(Tab tab) {
+            
+            }
+        });
+        
+        initTabLayout();
+    
+    }
+    
+    @Override
+    protected void onDestroy() {
+     
+        super.onDestroy();
     }
     
     @Override
     protected void initializePresenter() {
-        this.mPresenter = mSavingPresenter;
-        mSavingPresenter.setView(this);
+      
     }
     
     @Override
     protected void initializeActionBar(View rootView) {
-        
+       
     }
-    
+    private void initTabLayout(){
+        mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
+        mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));
+        mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+       
+    }
     @Override
     public void showListSaving(List<Saving> savings) {
-        mSavings=savings;
-        mMyRecyclerViewSavingAdapter=new MyRecyclerViewSavingAdapter(this,savings);
-        mRecyclerViewSaving.setLayoutManager(new GridLayoutManager(this,1));
-        mMyRecyclerViewSavingAdapter.setClickListener(this);
-        mRecyclerViewSaving.setAdapter(mMyRecyclerViewSavingAdapter);
+       
+     
     }
     
     @Override
@@ -90,32 +102,32 @@ public class SavingActivity extends BaseActivity implements SavingContract.View,
     
     @Override
     public void onSuccessCreateSaving() {
-        mSavingPresenter.getSaving();
+       
     }
     
     @Override
     public void onSuccessDeleteSaving() {
-        mSavingPresenter.getSaving();
+     
     }
     
     @Override
     public void onSuccessUpdateSaving() {
-        mSavingPresenter.getSaving();
+       
     }
     
     @Override
     public void onSuccessTakeIn() {
-        mSavingPresenter.getSaving();
+      
     }
     
     @Override
     public void onSuccessTakeOut() {
-        mSavingPresenter.getSaving();
+    
     }
     
     @Override
     public void showError(String message) {
-        Toast.makeText(this,message+"",Toast.LENGTH_LONG).show();
+      
     }
     
     @Override
@@ -124,7 +136,9 @@ public class SavingActivity extends BaseActivity implements SavingContract.View,
     }
     
     @Override
-    public void onItemClick(View view, List<Saving> savingList, int position) {
+    public void onItemClick(View view, List<Saving> savingList, int position,int process) {
         
     }
+    
+    
 }

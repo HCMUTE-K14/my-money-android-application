@@ -1,7 +1,10 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.currencies;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,10 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
@@ -24,7 +25,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.CurrenciesModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.adapter.MyRecyclerViewCurrenciesAdapter;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -70,9 +70,7 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSupportActionBar(mToolbar_currencies);
-        getSupportActionBar().setTitle(getResources().getString(R.string.title_currency));
-        mToolbar_currencies.setTitleTextColor(getResources().getColor(R.color.white));
+       
         mCurrenciesPresenter.getCurrencies();
     }
     
@@ -101,7 +99,9 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
     @Override
     protected void initializeActionBar(View rootView) {
-        
+        setSupportActionBar(mToolbar_currencies);
+        getSupportActionBar().setTitle(getResources().getString(R.string.title_currency));
+        mToolbar_currencies.setTitleTextColor(ContextCompat.getColor(this,R.color.white));
     }
     
     
@@ -132,11 +132,12 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
     @Override
     public void onItemClick(View view,Currencies currencies, int position) {
-        TextView textView= ButterKnife.findById(view,R.id.currencies_code);
     
-        MyLogger.d("currencies",currencies.toString());
-        
-        Toast.makeText(this,textView.getText().toString(),Toast.LENGTH_LONG).show();
+        //MyLogger.d(currencies!=null?"Khong null":"Null mat rui");
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("MyCurrencies",currencies);
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
     }
     
     
@@ -151,15 +152,17 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
         newText=newText.toLowerCase();
         List<Currencies> currenciesList=new ArrayList<>();
-        for (Currencies currencies:mCurrenciesList){
-            String name=currencies.getCurName().toLowerCase();
-            String code=currencies.getCurCode().toLowerCase();
-            if(name.contains(newText)||code.contains(newText)){
-                currenciesList.add(currencies);
+        if(mCurrenciesList!=null){
+            for (Currencies currencies:mCurrenciesList){
+                String name=currencies.getCurName().toLowerCase();
+                String code=currencies.getCurCode().toLowerCase();
+                if(name.contains(newText)||code.contains(newText)){
+                    currenciesList.add(currencies);
+                }
             }
+            mMyRecyclerViewCurrenciesAdapter.setFilter(currenciesList);
         }
         
-        mMyRecyclerViewCurrenciesAdapter.setFilter(currenciesList);
         return true;
     }
 }

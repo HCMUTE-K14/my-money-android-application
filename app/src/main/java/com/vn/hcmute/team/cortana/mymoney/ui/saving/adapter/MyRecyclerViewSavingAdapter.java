@@ -5,11 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
+import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,17 +24,18 @@ public class MyRecyclerViewSavingAdapter extends RecyclerView.Adapter<MyRecycler
     private List<Saving> mData = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    
+    private Context mContext;
 
     public MyRecyclerViewSavingAdapter(Context context, List<Saving> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+        this.mContext=context;
     }
     
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.item_recycler_view_saving, parent, false);
+        View view = mInflater.inflate(R.layout.item_saving, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -39,30 +43,9 @@ public class MyRecyclerViewSavingAdapter extends RecyclerView.Adapter<MyRecycler
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.saving_name.setText(mData.get(position).getName());
-        holder.goal_money.setText(mData.get(position).getGoalMoney());
-        holder.current_money.setText(mData.get(position).getCurrentMoney());
-        
-        
-        
-        holder.need_money.setText(getNeedMoney(mData.get(position).getGoalMoney(),mData.get(position).getCurrentMoney()));
-        
-        //holder.need_money.setText(holder.getWidthLinearLayout()+"");
-       // holder.setWidthView(getProportion(mData.get(position).getCurrentMoney(),mData.get(position).getGoalMoney()));
-        
-        holder.date.setText(mData.get(0).getDate());
-        
-        
+        holder.bind(getItem(position));
     }
-    
-    public  String getNeedMoney(String goalMoney,String currentMoney){
-        double money=Double.parseDouble(goalMoney)-Double.parseDouble(currentMoney);
-        return String.valueOf(money);
-    }
-    public double getProportion(String a,String b){
-        double proportion=Double.parseDouble(a)/Double.parseDouble(b);
-        return proportion;
-    }
+
     
     @Override
     public int getItemCount() {
@@ -71,45 +54,50 @@ public class MyRecyclerViewSavingAdapter extends RecyclerView.Adapter<MyRecycler
     
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.saving_name)
-        TextView saving_name;
-        @BindView(R.id.goal_money)
-        TextView goal_money;
-        @BindView(R.id.current_money)
-        TextView current_money;
-        @BindView(R.id.need_money)
-        TextView need_money;
-        @BindView(R.id.date)
-        TextView date;
+        @BindView(R.id.txt_saving_name)
+        TextView txt_saving_name;
+        @BindView(R.id.txt_money_goal)
+        TextView txt_money_goal;
+        @BindView(R.id.txt_time_rest)
+        TextView txt_time_rest;
+        @BindView(R.id.seek_bar_saving)
+        SeekBar seek_bar_saving;
+       
    
-        //@BindView(R.id.view_process)
-      //  View view_process;
-      /*  @BindView(R.id.linearlayout_process)
-        LinearLayout linearlayout_process;*/
-        
-        
         
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
-     /*   public int getWidthLinearLayout(){
-            return linearlayout_process.getLayoutParams().width;
+        public void bind(Saving saving){
+            txt_saving_name.setText(saving.getName());
+            txt_money_goal.setText(saving.getGoalMoney());
+            
+            txt_time_rest.setText(mContext.getString(R.string.days_left,getDateRest(saving.getDate())+""));
+            int t=getProgress(saving.getCurrentMoney(),saving.getGoalMoney());
+            seek_bar_saving.setProgress(t);
+            seek_bar_saving.setEnabled(false);
+            
+            
         }
-        public int getWidthView(){
-            return view_process.getLayoutParams().width;
+        public int getDateRest(String milisecond){
+            long dateMilisecond=Long.parseLong(milisecond);
+            return DateUtil.getDateLeft(dateMilisecond);
         }
-        public void setWidthView(double values){
-            double result=values*getWidthLinearLayout()-0.065*values*getWidthLinearLayout();
-            view_process.getLayoutParams().width=(int)result;
-          
-        }*/
         
+        public int getProgress(String a, String b){
+            double current=Double.parseDouble(a);
+            double goal=Double.parseDouble(b);
+            
+            double proportion=(current/goal)*100;
+            
+            return (int)proportion;
+        }
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
-                mClickListener.onItemClick(view,mData, getAdapterPosition());
+                mClickListener.onItemClick(view,mData, getAdapterPosition(),seek_bar_saving.getProgress());
             }
         }
     }
@@ -124,6 +112,11 @@ public class MyRecyclerViewSavingAdapter extends RecyclerView.Adapter<MyRecycler
     }
 
     public interface ItemClickListener {
-        void onItemClick(View view,List<Saving> savingList, int position);
+        void onItemClick(View view,List<Saving> savingList, int position,int process);
+    }
+    public void setList(List<Saving> list){
+        mData=new ArrayList<>();
+        mData.addAll(list);
+        notifyDataSetChanged();
     }
 }

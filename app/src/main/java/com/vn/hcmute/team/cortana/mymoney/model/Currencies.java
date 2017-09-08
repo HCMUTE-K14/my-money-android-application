@@ -2,12 +2,13 @@ package com.vn.hcmute.team.cortana.mymoney.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
 /**
  * Created by kunsubin on 8/22/2017.
  */
 
-public class Currencies {
+public class Currencies implements Serializable{
     
     @SerializedName("cur_id")
     @Expose
