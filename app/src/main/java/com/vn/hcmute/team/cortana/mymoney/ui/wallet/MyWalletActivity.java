@@ -1,14 +1,16 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.wallet;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.widget.LinearLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerWalletComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.WalletComponent;
@@ -18,56 +20,62 @@ import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletListener;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletView;
+import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletContract.View;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import java.util.List;
 import javax.inject.Inject;
 
 /**
- * Created by infamouSs on 8/30/17.
+ * Created by infamouSs on 9/6/17.
  */
 
-public class SelectWalletActivity extends BaseActivity implements
-                                                       WalletContract.View {
+public class MyWalletActivity extends BaseActivity implements View {
     
-    public static final String TAG = SelectWalletActivity.class.getSimpleName();
+    public static final int MODE_OPEN_FROM_SELECT_WALLET = 0;
+    public static final int MODE_OPEN_FROM_ANOTHER = 1;
     
     @BindView(R.id.select_wallet)
     SelectWalletView mSelectWalletView;
     
-    @BindView(R.id.btn_close)
-    LinearLayout mButtonClose;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     
     @Inject
     WalletPresenter mWalletPresenter;
     
-    @Inject
-    PreferencesHelper mPreferenceHelper;
+    private ProgressDialog mProgressDialog;
+    private int mMode;
     
     private SelectWalletListener mSelectWalletListener = new SelectWalletListener() {
         @Override
         public void onClickAddWallet() {
-            openAddWalletActivity();
+            
         }
         
         @Override
         public void onClickMyWallet() {
-            openActivityMyWallet();
+            
         }
         
         @Override
         public void onCLickTotal() {
+            
         }
         
         @Override
         public void onCLickWallet(Wallet wallet) {
-            mPreferenceHelper.putCurrentWallet(wallet);
-            finish();
+            if (mMode == MODE_OPEN_FROM_ANOTHER) {
+                Intent intent = new Intent();
+                intent.putExtra("wallet", wallet);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
         }
         
         @Override
         public void onEditWallet(int position, Wallet wallet) {
-            openEditWalletActivity(wallet);
+            openActivityUpdateWallet(wallet);
         }
         
         @Override
@@ -77,25 +85,18 @@ public class SelectWalletActivity extends BaseActivity implements
         
         @Override
         public void onArchiveWallet(int position, Wallet wallet) {
-            boolean isArchive = wallet.isArchive();
-            wallet.setArchive(!isArchive);
             
-            mWalletPresenter.updateWallet(position, wallet);
         }
         
         @Override
         public void onTransferMoneyWallet(int position, Wallet wallet) {
-            
+            Toast.makeText(MyWalletActivity.this, "MONEY", Toast.LENGTH_SHORT).show();
         }
     };
     
-    
-    /*-----------------*/
-    /*Initialize       */
-    /*-----------------*/
     @Override
     public int getLayoutId() {
-        return R.layout.activity_select_wallet;
+        return R.layout.activity_my_wallet;
     }
     
     @Override
@@ -119,22 +120,30 @@ public class SelectWalletActivity extends BaseActivity implements
     }
     
     @Override
-    protected void initializeActionBar(View rootView) {
+    protected void initializeActionBar(android.view.View rootView) {
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.txt_my_wallet));
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
     
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        mMode = getIntent().getIntExtra("mode", MODE_OPEN_FROM_ANOTHER);
+        
         initializeView();
         
         getWalletData();
-        
     }
     
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         mWalletPresenter.unSubscribe();
+        super.onDestroy();
     }
     
     @Override
@@ -162,11 +171,16 @@ public class SelectWalletActivity extends BaseActivity implements
         }
     }
     
-    /*-----------------*/
-    /*Task View       */
-    /*-----------------*/
+    @OnClick(R.id.btn_add_wallet)
+    public void onClickAddWallet() {
+        openActivityAddWallet();
+    }
+    
     @Override
     public void initializeView() {
+        mSelectWalletView.showFooter(false);
+        mSelectWalletView.showTotal(false);
+        mSelectWalletView.showMenuWallet(true);
         mSelectWalletView.setSelectWalletListener(mSelectWalletListener);
     }
     
@@ -181,8 +195,18 @@ public class SelectWalletActivity extends BaseActivity implements
     }
     
     @Override
+    public void onAddWalletSuccess(String message, Wallet wallet) {
+        
+    }
+    
+    @Override
     public void onUpdateWalletSuccess(String message, int position, Wallet wallet) {
-        mSelectWalletView.updateArchiveWallet(position, wallet);
+        
+    }
+    
+    @Override
+    public void onMoveMoneySuccess(String message) {
+        
     }
     
     @Override
@@ -200,29 +224,16 @@ public class SelectWalletActivity extends BaseActivity implements
         mSelectWalletView.loading(isLoading);
     }
     
-    @Override
-    public void onMoveMoneySuccess(String message) {
-        
-    }
-    
-    @Override
-    public void onAddWalletSuccess(String message, Wallet wallet) {
-        
-    }
-    
-    /*-----------------*/
-    /*Helper Method    */
-    /*-----------------*/
     private void getWalletData() {
         mWalletPresenter.getAllWallet();
     }
     
-    private void openAddWalletActivity() {
+    private void openActivityAddWallet() {
         Intent intent = new Intent(this, AddWalletActivity.class);
         startActivityForResult(intent, RequestCode.ADD_WALLET_REQUEST_CODE);
     }
     
-    private void openEditWalletActivity(Wallet wallet) {
+    private void openActivityUpdateWallet(Wallet wallet) {
         Intent intent = new Intent(this, EditWalletActivity.class);
         intent.putExtra("wallet", wallet);
         startActivityForResult(intent, RequestCode.EDIT_WALLET_REQUEST_CODE);
@@ -230,11 +241,5 @@ public class SelectWalletActivity extends BaseActivity implements
     
     private void removeWallet(int position, Wallet wallet) {
         mWalletPresenter.removeWallet(position, wallet);
-    }
-    
-    private void openActivityMyWallet() {
-        Intent intent = new Intent(this, MyWalletActivity.class);
-        intent.putExtra("mode", MyWalletActivity.MODE_OPEN_FROM_SELECT_WALLET);
-        startActivity(intent);
     }
 }

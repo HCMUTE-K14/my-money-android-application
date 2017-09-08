@@ -1,5 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by kunsubin on 8/22/2017.
  */
 
-public class Wallet {
+public class Wallet implements Parcelable {
     
     @SerializedName("walletid")
     @Expose
@@ -23,23 +25,47 @@ public class Wallet {
     private String money;
     @SerializedName("currencyUnit")
     @Expose
-    private String currencyUnit;
+    private Currencies currencyUnit;
     @SerializedName("walletImage")
     @Expose
     private String walletImage;
     
     @SerializedName("archive")
     @Expose
-    public boolean archive;
+    private boolean archive;
+    
     
     public Wallet() {
         this.walletid = "";
         this.userid = "";
         this.walletName = "";
         this.money = "";
-        this.currencyUnit = "";
+        this.currencyUnit = new Currencies();
         this.walletImage = "";
     }
+    
+    
+    protected Wallet(Parcel in) {
+        walletid = in.readString();
+        userid = in.readString();
+        walletName = in.readString();
+        money = in.readString();
+        currencyUnit = in.readParcelable(Currencies.class.getClassLoader());
+        walletImage = in.readString();
+        archive = in.readByte() != 0;
+    }
+    
+    public static final Creator<Wallet> CREATOR = new Creator<Wallet>() {
+        @Override
+        public Wallet createFromParcel(Parcel in) {
+            return new Wallet(in);
+        }
+        
+        @Override
+        public Wallet[] newArray(int size) {
+            return new Wallet[size];
+        }
+    };
     
     public String getWalletid() {
         return walletid;
@@ -73,11 +99,11 @@ public class Wallet {
         this.money = money;
     }
     
-    public String getCurrencyUnit() {
+    public Currencies getCurrencyUnit() {
         return currencyUnit;
     }
     
-    public void setCurrencyUnit(String currencyUnit) {
+    public void setCurrencyUnit(Currencies currencyUnit) {
         this.currencyUnit = currencyUnit;
     }
     
@@ -111,15 +137,31 @@ public class Wallet {
         if (walletid != null ? !walletid.equals(wallet.walletid) : wallet.walletid != null) {
             return false;
         }
-        return walletName != null ? walletName.equals(wallet.walletName)
-                  : wallet.walletName == null;
-    
+        return userid != null ? userid.equals(wallet.userid) : wallet.userid == null;
+        
     }
     
     @Override
     public int hashCode() {
         int result = walletid != null ? walletid.hashCode() : 0;
-        result = 31 * result + (walletName != null ? walletName.hashCode() : 0);
+        result = 31 * result + (userid != null ? userid.hashCode() : 0);
         return result;
+    }
+    
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+    
+        dest.writeString(walletid);
+        dest.writeString(userid);
+        dest.writeString(walletName);
+        dest.writeString(money);
+        dest.writeParcelable(currencyUnit, flags);
+        dest.writeString(walletImage);
+        dest.writeByte((byte) (archive ? 1 : 0));
     }
 }

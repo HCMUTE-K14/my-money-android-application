@@ -80,24 +80,6 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         }
     }
     
-    private boolean validateWallet(BaseCallBack callBack, Wallet wallet) {
-        if (TextUtils.isEmpty(wallet.getWalletName())) {
-            callBack.onFailure(new WalletException(
-                      mContext.getString(R.string.message_validate_name_wallet)));
-            return false;
-        }
-        if (TextUtils.isEmpty(wallet.getCurrencyUnit())) {
-            callBack.onFailure(new WalletException(
-                      mContext.getString(R.string.message_validate_currency_wallet)));
-            return false;
-        }
-        
-        if (TextUtils.isEmpty(wallet.getWalletImage())) {
-            wallet.setWalletImage("ic_saving");
-        }
-        return true;
-    }
-    
     private void doCreate(final BaseCallBack<Object> callBack, final Wallet wallet) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
@@ -108,8 +90,19 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
             return;
         }
         
-        if (!validateWallet(callBack, wallet)) {
+        if (TextUtils.isEmpty(wallet.getWalletName())) {
+            callBack.onFailure(new WalletException(
+                      mContext.getString(R.string.message_validate_name_wallet)));
             return;
+        }
+        if (wallet.getCurrencyUnit() == null) {
+            callBack.onFailure(new WalletException(
+                      mContext.getString(R.string.message_validate_currency_wallet)));
+            return;
+        }
+        
+        if (TextUtils.isEmpty(wallet.getWalletImage())) {
+            wallet.setWalletImage("ic_saving");
         }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
@@ -153,6 +146,21 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
             callBack.onFailure(new UserLoginException(
                       mContext.getString(R.string.message_warning_need_login)));
             return;
+        }
+    
+        if (TextUtils.isEmpty(wallet.getWalletName())) {
+            callBack.onFailure(new WalletException(
+                      mContext.getString(R.string.message_validate_name_wallet)));
+            return;
+        }
+        if (wallet.getCurrencyUnit() == null) {
+            callBack.onFailure(new WalletException(
+                      mContext.getString(R.string.message_validate_currency_wallet)));
+            return;
+        }
+    
+        if (TextUtils.isEmpty(wallet.getWalletImage())) {
+            wallet.setWalletImage("ic_saving");
         }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {

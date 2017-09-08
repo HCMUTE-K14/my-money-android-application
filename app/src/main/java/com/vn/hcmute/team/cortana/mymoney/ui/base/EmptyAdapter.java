@@ -57,10 +57,10 @@ public class EmptyAdapter extends RecyclerView.Adapter<EmptyAdapterViewHolder> {
     
     public void setMessage(String message) {
         mMessage = message;
-        notifyItemChanged(1);
+        notifyDataSetChanged();
     }
     
-    public class EmptyAdapterViewHolder extends RecyclerView.ViewHolder {
+    static class EmptyAdapterViewHolder extends RecyclerView.ViewHolder {
         
         @BindView(R.id.txt_message)
         TextView mTextViewMessage;

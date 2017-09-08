@@ -37,7 +37,7 @@ public class EmptyGalleryAdapter extends RecyclerView.Adapter<EmptyGalleryAdapte
         return 1;
     }
     
-    public class EmptyGalleryAdapterViewHolder extends RecyclerView.ViewHolder {
+    static class EmptyGalleryAdapterViewHolder extends RecyclerView.ViewHolder {
         
         public EmptyGalleryAdapterViewHolder(View root) {
             super(root);

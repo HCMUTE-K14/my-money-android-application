@@ -93,7 +93,7 @@
   <string name="action_archive">Archive</string>
   <string name="txt_init_balance">Initial Balance</string>
   <string name="txt_currency">Currency</string>
-  <string name="txt_enable_notify">Enable Notifycation</string>
+  <string name="txt_enable_notify">Enable Notification</string>
   <string name="txt_quick_help_transaction_notification">Get notified when there are changes to this wallet\'s transactions.</string>
   <string name="txt_add_account_exclude_from_total">Excluded from Total</string>
   <string name="txt_quick_help_exclude_from_total">Ignore this wallet and its balance in the "Total"  mode.</string>
@@ -103,4 +103,12 @@
   <string name="message_validate_name_wallet">Name\'s wallet cannot be empty</string>
   <string name="message_validate_currency_wallet">Please choose currency</string>
   <string name="txt_creating_wallet">Creating wallet...</string>
+  <string name="txt_no_data">No data.</string>
+  <string name="txt_updating_wallet">Updating wallet...</string>
+  <string name="txt_wait_a_second">Wait a second...</string>
+  <string name="message_waring_remove_wallet">Do you want to remove this wallet</string>
+  <string name="message_warning_finish_edit_wallet">Did you finish to editing this wallet</string>
+  <string name="txt_edit_wallet">Edit Wallet</string>
+  <string name="txt_successful">Successful</string>
+  <string name="action_transfer_money">Transfer Money</string>
 </resources>

@@ -21,4 +21,6 @@ public interface SelectWalletListener {
     void onRemoveWallet(int position, Wallet wallet);
     
     void onArchiveWallet(int position, Wallet wallet);
+    
+    void onTransferMoneyWallet(int position,Wallet wallet);
 }

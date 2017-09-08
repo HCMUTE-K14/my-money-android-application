@@ -89,7 +89,7 @@ public class FolderPickerAdapter extends BaseGalleryAdapter<FolderPickerViewHold
     /*-----------------------------*/
     /*View Holder                  */
     /*-----------------------------*/
-    public class FolderPickerViewHolder extends RecyclerView.ViewHolder {
+    static class FolderPickerViewHolder extends RecyclerView.ViewHolder {
         
         @BindView(R.id.container_folder)
         RelativeLayout mContainer;

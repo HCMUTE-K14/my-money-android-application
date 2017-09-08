@@ -8,10 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AlertDialog.Builder;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -45,25 +43,17 @@ public class AddWalletActivity extends BaseActivity implements View {
     @BindView(R.id.txt_name_wallet)
     EditText mEditTextNameWallet;
     
-    @BindView(R.id.currency)
-    RelativeLayout mLayoutCurrency;
-    
     @BindView(R.id.txt_currency)
     EditText mEditTextCurrency;
     
     @BindView(R.id.txt_balance)
     EditText mEditTextBalance;
-    
-    @BindView(R.id.check_box_enable_notify)
-    CheckBox mCheckBoxEnableNotify;
-    
-    @BindView(R.id.check_box_excluded_total)
-    CheckBox mCheckBoxExcludedTotal;
+
     
     @Inject
     WalletPresenter mWalletPresenter;
     
-    private String mCurrencyCode;
+    private Currencies mCurrentCurrency;
     private String mIconWallet;
     
     private ProgressDialog mProgressDialog;
@@ -72,6 +62,9 @@ public class AddWalletActivity extends BaseActivity implements View {
         
     }
     
+    /*-----------------*/
+    /*Initialize       */
+    /*-----------------*/
     @Override
     public int getLayoutId() {
         return R.layout.activity_add_wallet;
@@ -119,9 +112,10 @@ public class AddWalletActivity extends BaseActivity implements View {
         if (resultCode == RESULT_OK && data != null) {
             switch (requestCode) {
                 case RequestCode.CURRENCY_REQUEST_CODE:
-                    Currencies currencies = data.getParcelableExtra("currency");
-                    mCurrencyCode = currencies.getCurCode();
-                    mEditTextCurrency.setText(currencies.getCurName());
+                    mCurrentCurrency = data.getParcelableExtra("currency");
+                    if(mCurrentCurrency != null){
+                        mEditTextCurrency.setText(mCurrentCurrency.getCurName());
+                    }
                     break;
                 default:
                     break;
@@ -131,12 +125,16 @@ public class AddWalletActivity extends BaseActivity implements View {
     
     @Override
     public void onBackPressed() {
-        showCofirmQuitDialog();
+        showConfirmQuitDialog();
     }
+    
+    /*-----------------*/
+    /*OnClick          */
+    /*-----------------*/
     
     @OnClick(R.id.btn_close)
     public void onClickClose() {
-        showCofirmQuitDialog();
+        showConfirmQuitDialog();
     }
     
     @OnClick(R.id.txt_done)
@@ -149,12 +147,14 @@ public class AddWalletActivity extends BaseActivity implements View {
         Toast.makeText(this, "ICON", Toast.LENGTH_SHORT).show();
     }
     
-    @OnClick({R.id.currency, R.id.txt_currency})
+    @OnClick({R.id.parent_text_2, R.id.txt_currency})
     public void onClickToChooseCurrency() {
-        Intent intent = new Intent(this, CurrenciesActivity.class);
-        startActivityForResult(intent, RequestCode.CURRENCY_REQUEST_CODE);
+        openCurrencyActivity();
     }
     
+    /*-----------------*/
+    /*TaskView         */
+    /*-----------------*/
     @Override
     public void initializeView() {
         mProgressDialog = new ProgressDialog(this);
@@ -172,8 +172,8 @@ public class AddWalletActivity extends BaseActivity implements View {
     }
     
     @Override
-    public void onAddWalletSuccess(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void onAddWalletSuccess(String message, Wallet wallet) {
+        finishAddWallet(wallet);
     }
     
     @Override
@@ -205,20 +205,23 @@ public class AddWalletActivity extends BaseActivity implements View {
         mProgressDialog.dismiss();
     }
     
+    /*-----------------*/
+    /*Helper Method    */
+    /*-----------------*/
     private void addWallet() {
         String name = mEditTextNameWallet.getText().toString();
         String money = mEditTextBalance.getText().toString();
         
         Wallet wallet = new Wallet();
         wallet.setWalletName(name);
-        wallet.setCurrencyUnit(mCurrencyCode);
+        wallet.setCurrencyUnit(mCurrentCurrency);
         wallet.setMoney(money);
         wallet.setWalletImage(mIconWallet);
         
         mWalletPresenter.addWallet(wallet);
     }
     
-    private void showCofirmQuitDialog() {
+    private void showConfirmQuitDialog() {
         AlertDialog.Builder confirmDialog = new Builder(this);
         
         confirmDialog.setMessage("Do you want to quit ?");
@@ -237,5 +240,17 @@ public class AddWalletActivity extends BaseActivity implements View {
             }
         });
         confirmDialog.create().show();
+    }
+    
+    private void finishAddWallet(Wallet wallet) {
+        Intent intent = new Intent();
+        intent.putExtra("wallet", wallet);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+    
+    private void openCurrencyActivity() {
+        Intent intent = new Intent(this, CurrenciesActivity.class);
+        startActivityForResult(intent, RequestCode.CURRENCY_REQUEST_CODE);
     }
 }

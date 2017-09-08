@@ -48,9 +48,5 @@
       </LinearLayout>
     </RelativeLayout>
   </android.support.v7.widget.CardView>
-  <TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="20dp"
-    android:text="@string/txt_include_in_total" />
+  <include layout="@layout/item_recycler_view_header_wallet"/>
 </LinearLayout>

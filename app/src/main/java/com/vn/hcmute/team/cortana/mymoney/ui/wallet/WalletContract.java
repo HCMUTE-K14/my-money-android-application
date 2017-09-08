@@ -18,11 +18,11 @@ public interface WalletContract {
         
         void showListWallet(List<Wallet> wallets);
         
-        void onAddWalletSuccess(String message);
+        void onAddWalletSuccess(String message, Wallet wallet);
         
-        void onUpdateWalletSuccess(String message,int position,Wallet wallet);
+        void onUpdateWalletSuccess(String message, int position, Wallet wallet);
         
-        void onRemoveWalletSuccess(String message,int position,Wallet wallet);
+        void onRemoveWalletSuccess(String message, int position, Wallet wallet);
         
         void onMoveMoneySuccess(String message);
         
@@ -35,9 +35,9 @@ public interface WalletContract {
         
         void addWallet(Wallet wallet);
         
-        void updateWallet(int position,Wallet wallet);
+        void updateWallet(int position, Wallet wallet);
         
-        void removeWallet(int position,Wallet wallet);
+        void removeWallet(int position, Wallet wallet);
         
         void moveWallet(String walletFrom, String walletTo, String money);
         

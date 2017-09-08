@@ -45,7 +45,7 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     @BindView(R.id.recyclerViewCurrencies)
     RecyclerView mRecyclerViewCurrencies;
     
-    @BindView(R.id.toolbar_currencies)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar_currencies;
     
     private CurrenciesAdapter mCurrenciesAdapter;
@@ -82,9 +82,9 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
     @Override
     protected void onDestroy() {
+        mRecyclerViewCurrencies.setAdapter(null);
         mCurrenciesPresenter.unSubscribe();
         super.onDestroy();
-        
     }
     
     @Override
@@ -95,6 +95,15 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
         searchView.setOnQueryTextListener(this);
         
         return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     
     @Override
@@ -110,7 +119,8 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
         ActionBar actionBar = getSupportActionBar();
         
         if (actionBar != null) {
-            getSupportActionBar().setTitle(getString(R.string.title_currency));
+            actionBar.setTitle(getString(R.string.title_currency));
+            actionBar.setDisplayHomeAsUpEnabled(true);
             mToolbar_currencies.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
         }
     }

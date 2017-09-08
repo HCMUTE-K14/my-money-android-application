@@ -165,7 +165,7 @@ public class ImagePickerAdapter extends BaseGalleryAdapter<ImagePickerViewHolder
     /*------------------------------------------*/
     /* View holder                              */
     /*------------------------------------------*/
-    public class ImagePickerViewHolder extends RecyclerView.ViewHolder {
+    static class ImagePickerViewHolder extends RecyclerView.ViewHolder {
         
         @BindView(R.id.container_image)
         FrameLayout mContainer;

@@ -27,6 +27,7 @@ public class MyMoneyApplication extends Application {
                   .applicationModule(new ApplicationModule(this))
                   .networkModule(new NetworkModule(this))
                   .build();
+        
     }
     
     public ApplicationComponent getAppComponent() {

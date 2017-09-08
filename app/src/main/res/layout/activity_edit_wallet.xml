@@ -5,7 +5,7 @@
   android:orientation="vertical">
   <android.support.v7.widget.CardView
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="?attr/actionBarSize">
     <RelativeLayout
       android:id="@+id/layout_top_bar"
       android:layout_width="fill_parent"
@@ -33,16 +33,16 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_centerInParent="true"
-        android:layout_toLeftOf="@+id/txt_edit_saving"
+        android:layout_toLeftOf="@+id/txt_done"
         android:layout_toRightOf="@+id/btn_close"
         android:ellipsize="end"
         android:focusable="true"
         android:gravity="center_vertical"
-        android:text="@string/txt_add_wallet"
+        android:text="@string/txt_edit_wallet"
         android:textColor="@color/black"
         android:textSize="20sp" />
       <TextView
-        android:id="@+id/txt_edit_saving"
+        android:id="@+id/txt_done"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
@@ -61,127 +61,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="15dp">
-    <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="vertical">
-
-      <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp">
-        <ImageView
-          android:id="@+id/image_view_icon"
-          android:layout_width="50dp"
-          android:layout_height="50dp"
-          android:layout_centerVertical="true"
-          android:src="@drawable/ic_global" />
-        <EditText
-          android:id="@+id/txt_name_wallet"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_toRightOf="@id/image_view_icon"
-          android:hint="@string/txt_name" />
-
-
-      </RelativeLayout>
-      <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp">
-        <ImageView
-          android:id="@+id/image_view_money"
-          android:layout_width="30dp"
-          android:layout_height="30dp"
-          android:layout_centerVertical="true"
-          android:src="@drawable/ic_currency" />
-        <EditText
-          android:id="@+id/txt_currency"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="15dp"
-          android:layout_toRightOf="@id/image_view_money"
-          android:hint="@string/txt_currency" />
-
-      </RelativeLayout>
-
-    </LinearLayout>
+  <include android:id="@+id/txt_layout" layout="@layout/include_layout_text_add_edit_wallet"/>
 
   </android.support.v7.widget.CardView>
 
-  <android.support.v7.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="20dp">
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="vertical">
-
-      <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
-
-
-        <CheckBox
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_centerVertical="true"
-          android:gravity="center" />
-
-        <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="55dp"
-          android:orientation="vertical">
-          <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_enable_notify"
-            android:textSize="16sp" />
-          <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_quick_help_transaction_notification"
-            android:textSize="12sp" />
-        </LinearLayout>
-
-      </RelativeLayout>
-
-      <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
-
-
-        <CheckBox
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_centerVertical="true"
-          android:gravity="center" />
-
-        <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="55dp"
-          android:orientation="vertical">
-          <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_add_account_exclude_from_total"
-            android:textSize="16sp" />
-          <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_quick_help_exclude_from_total"
-            android:textSize="12sp" />
-        </LinearLayout>
-
-      </RelativeLayout>
-
-    </LinearLayout>
-  </android.support.v7.widget.CardView>
   <android.support.v7.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -191,8 +74,8 @@
       android:layout_height="wrap_content"
       android:padding="10dp">
 
-
       <CheckBox
+        android:id="@+id/check_box_archive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -220,25 +103,27 @@
   </android.support.v7.widget.CardView>
 
   <LinearLayout
-    android:id="@+id/btn_add_wallet"
+    android:id="@+id/btn_remove_wallet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:padding="30dp"
+    android:layout_marginTop="30dp"
+    android:paddingLeft="60dp"
     android:background="?attr/selectableItemBackground"
-    android:clickable="false"
-    android:gravity="center">
+    android:clickable="false">
     <ImageView
+      android:id="@+id/imageView"
       android:layout_width="30dp"
       android:layout_height="match_parent"
       android:background="?attr/selectableItemBackground"
       android:src="@drawable/ic_delete" />
 
     <android.support.v7.widget.AppCompatButton
+      android:id="@+id/button"
       android:textStyle="bold"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:paddingLeft="10dp"
+
       android:background="?attr/selectableItemBackground"
       android:clickable="false"
       android:gravity="left|center"

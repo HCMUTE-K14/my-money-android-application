@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
+  <RelativeLayout
+    android:id="@+id/parent_text_1"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:padding="8dp"
+    android:gravity="center">
+    <ImageView
+      android:id="@+id/image_view_icon"
+      android:layout_width="35dp"
+      android:layout_height="35dp"
+      android:src="@drawable/ic_global" />
+    <EditText
+      android:id="@+id/txt_name_wallet"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="10dp"
+      android:layout_toRightOf="@id/image_view_icon"
+      android:hint="@string/txt_name" />
+
+
+  </RelativeLayout>
+  <RelativeLayout
+    android:id="@+id/parent_text_2"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:padding="10dp"
+    android:clickable="true"
+    android:gravity="center">
+    <ImageView
+      android:id="@+id/image_view_money"
+      android:layout_width="35dp"
+      android:layout_height="35dp"
+      android:src="@drawable/ic_currency" />
+    <EditText
+      android:id="@+id/txt_currency"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="10dp"
+      android:layout_toRightOf="@id/image_view_money"
+      android:clickable="false"
+      android:focusable="false"
+      android:hint="@string/txt_currency" />
+
+  </RelativeLayout>
+</LinearLayout>

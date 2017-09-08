@@ -26,13 +26,13 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
     }
     
     @Override
-    public void addWallet(Wallet wallet) {
+    public void addWallet(final Wallet wallet) {
         WalletUseCase.WalletRequest requestValue = new WalletRequest(Action.ACTION_CREATE_WALLET,
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
-                          getView().onAddWalletSuccess((String) value);
+                          getView().onAddWalletSuccess((String) value,wallet);
                           
                       }
                       

@@ -111,7 +111,12 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
             wallet.setArchive(!isArchive);
             mWalletPresenter.updateWallet(position, wallet);
         }
+    
+        @Override
+        public void onTransferMoneyWallet(int position, Wallet wallet) {
         
+        }
+    
     };
     
     private OnClickListener mOnHeaderClickListener = new OnClickListener() {
@@ -196,11 +201,9 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     }
     
     
-    
-    
     @Override
     public void showEmpty() {
-        showEmptyData("No data");
+        showEmptyData(getString(R.string.txt_no_data));
     }
     
     @Override
@@ -209,7 +212,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     }
     
     @Override
-    public void onAddWalletSuccess(String message) {
+    public void onAddWalletSuccess(String message, Wallet wallet) {
         
     }
     

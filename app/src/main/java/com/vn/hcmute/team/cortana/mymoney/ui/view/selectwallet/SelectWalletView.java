@@ -22,6 +22,7 @@ public class SelectWalletView extends RelativeLayout {
     private ProgressBar mProgressBar;
     private SelectWalletAdapter mSelectWalletAdapter;
     private EmptyAdapter mEmptyAdapter;
+    private Context mContext;
     
     public SelectWalletView(Context context) {
         super(context);
@@ -30,6 +31,7 @@ public class SelectWalletView extends RelativeLayout {
     
     public SelectWalletView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        
         initializeView(context);
     }
     
@@ -39,6 +41,7 @@ public class SelectWalletView extends RelativeLayout {
     }
     
     private void initializeView(Context context) {
+        mContext = context;
         inflate(context, R.layout.layout_content_select_wallet, this);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
@@ -64,18 +67,18 @@ public class SelectWalletView extends RelativeLayout {
     }
     
     public void setEmptyAdapter(String message) {
-        mEmptyAdapter.setMessage(message);
         mRecyclerView.setAdapter(mEmptyAdapter);
+        mEmptyAdapter.setMessage(message);
     }
     
     public void setSelectWalletListener(SelectWalletListener listener) {
         mSelectWalletAdapter.setSelectWalletListener(listener);
     }
     
-    public void removeWallet(int position, Wallet wallet) {
-        mSelectWalletAdapter.removeWallet(position, wallet);
+    public void removeWallet(Wallet wallet) {
+        mSelectWalletAdapter.removeWallet(wallet);
         if (mSelectWalletAdapter.isEmptyData()) {
-            setEmptyAdapter("No Data");
+            setEmptyAdapter(mContext.getString(R.string.txt_no_data));
         }
     }
     
@@ -84,6 +87,29 @@ public class SelectWalletView extends RelativeLayout {
     }
     
     public void updateArchiveWallet(int position, Wallet wallet) {
-        mSelectWalletAdapter.updateArchiveWallet(position,wallet);
+        mSelectWalletAdapter.updateArchiveWallet(position, wallet);
+    }
+    
+    public void showTotal(boolean shouldShowTotal) {
+        mSelectWalletAdapter.setShouldShowTotal(shouldShowTotal);
+    }
+    
+    public void showFooter(boolean shouldShowFooter) {
+        mSelectWalletAdapter.setShouldShowFooter(shouldShowFooter);
+    }
+    
+    public void addWallet(Wallet wallet) {
+        if(mRecyclerView.getAdapter() instanceof EmptyAdapter){
+            mRecyclerView.setAdapter(mSelectWalletAdapter);
+        }
+        mSelectWalletAdapter.addWallet(wallet);
+    }
+    
+    public void updateWallet(Wallet wallet) {
+        mSelectWalletAdapter.updateWallet(wallet);
+    }
+    
+    public void showMenuWallet(boolean shouldMenuWallet) {
+        mSelectWalletAdapter.setShouldShowMenuWallet(shouldMenuWallet);
     }
 }

@@ -253,7 +253,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
     }
     
     
-    public class PersonAdapterViewHolder extends RecyclerView.ViewHolder {
+    static class PersonAdapterViewHolder extends RecyclerView.ViewHolder {
         
         @BindView(R.id.rounded_letter)
         RoundedLetterView mLetterView;
