@@ -2,12 +2,13 @@ package com.vn.hcmute.team.cortana.mymoney.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
 /**
  * Created by kunsubin on 8/23/2017.
  */
 
-public class Saving {
+public class Saving implements Serializable {
     
     @SerializedName("savingid")
     @Expose
@@ -147,5 +148,25 @@ public class Saving {
                ", status='" + status + '\'' +
                ", userid='" + userid + '\'' +
                '}';
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        
+        Saving saving = (Saving) o;
+    
+        return savingid != null ? savingid.equals(saving.savingid) : saving.savingid == null;
+    
+    }
+    
+    @Override
+    public int hashCode() {
+        return savingid != null ? savingid.hashCode() : 0;
     }
 }

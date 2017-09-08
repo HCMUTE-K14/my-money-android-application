@@ -22,7 +22,27 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
     
     @Override
     public void getSaving() {
-        
+        SavingRequest savingRequest = new SavingRequest(Action.ACTION_GET_SAVING,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().showListSaving((List<Saving>) value);
+                          
+                      }
+                      
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().showError(throwable.getMessage());
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, null, null);
+        mSavingUseCase.subscribe(savingRequest);
     }
     
     @Override
@@ -53,5 +73,10 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
     @Override
     public void takeOut(String idWallet, String idSaving, String money) {
         
+    }
+    
+    @Override
+    public void unSubscribe() {
+        mSavingUseCase.unSubscribe();
     }
 }

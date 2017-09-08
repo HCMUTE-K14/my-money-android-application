@@ -20,4 +20,5 @@
     android:layout_below="@+id/imageView"
     android:gravity="center"
     android:text="fdsfadfsafsdadsfsafdsa" />
+
 </RelativeLayout>
