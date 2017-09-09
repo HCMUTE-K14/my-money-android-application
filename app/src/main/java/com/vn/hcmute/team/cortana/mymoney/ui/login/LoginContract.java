@@ -25,8 +25,6 @@ public interface LoginContract {
         
         boolean isLogin();
         
-        void forgetPassword(String email);
-        
         void login(UserCredential userCredential);
         
         void loginWithFacebook();

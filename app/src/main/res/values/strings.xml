@@ -138,4 +138,6 @@
   <string name="txt_edit_wallet">Edit Wallet</string>
   <string name="txt_successful">Successful</string>
   <string name="action_transfer_money">Transfer Money</string>
+  <string name="message_warning_wrong_expression">Wrong expression</string>
+  <string name="message_warning_max_digit">Max 15 digit</string>
 </resources>

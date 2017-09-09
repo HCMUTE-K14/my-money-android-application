@@ -61,8 +61,6 @@ public class EditWalletActivity extends BaseActivity implements View {
     @BindView(R.id.txt_currency)
     EditText mEditTextCurrency;
     
-
-    
     @BindView(R.id.check_box_archive)
     CheckBox mCheckBoxArchive;
     
@@ -71,6 +69,7 @@ public class EditWalletActivity extends BaseActivity implements View {
     private String mIconWallet;
     
     private ProgressDialog mProgressDialog;
+    private String mCurrentBalance;
     
     
     public EditWalletActivity() {

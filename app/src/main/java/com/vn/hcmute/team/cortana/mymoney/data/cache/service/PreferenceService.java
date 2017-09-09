@@ -1,5 +1,6 @@
 package com.vn.hcmute.team.cortana.mymoney.data.cache.service;
 
+import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 
 /**
@@ -32,4 +33,9 @@ public interface PreferenceService {
     
     void removeLoginStage();
     
+    void putRealTimeCurrency(RealTimeCurrency realTimeCurrency);
+    
+    void removeRealTimeCurrency();
+    
+    RealTimeCurrency getRealTimeCurrency();
 }

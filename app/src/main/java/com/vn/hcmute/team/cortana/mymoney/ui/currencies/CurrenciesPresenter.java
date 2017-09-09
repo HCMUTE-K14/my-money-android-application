@@ -40,7 +40,6 @@ public class CurrenciesPresenter extends BasePresenter<CurrenciesContract.View> 
                               getView().showCurrencies((List<Currencies>) value);
                           }
                       }
-                      
                       @Override
                       public void onFailure(Throwable throwable) {
                           getView().loading(false);
@@ -51,7 +50,7 @@ public class CurrenciesPresenter extends BasePresenter<CurrenciesContract.View> 
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  });
+                  },null);
         
         mCurrenciesUseCase.subscribe(request);
     }

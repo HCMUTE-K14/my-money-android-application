@@ -4,6 +4,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.CurrenciesModule;
 import com.vn.hcmute.team.cortana.mymoney.di.scope.PerActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.main.TestFragment;
 import dagger.Component;
 
 /**
@@ -15,4 +16,6 @@ import dagger.Component;
 public interface CurrenciesComponent {
     
     void inject(CurrenciesActivity currenciesActivity);
+    
+    void inject(TestFragment testFragment);
 }

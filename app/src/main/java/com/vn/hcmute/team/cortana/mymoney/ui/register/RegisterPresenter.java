@@ -5,7 +5,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BasePresenter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager;
-import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager.RegisterRequest;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager.UserRequest;
 import javax.inject.Inject;
 
 /**
@@ -45,7 +45,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
     
     @Override
     public void register(User user) {
-        RegisterRequest registerRequest = new RegisterRequest(Action.ACTION_REGISTER, callBack,
+        UserRequest registerRequest = new UserRequest(Action.ACTION_REGISTER, callBack,
                   user);
         
         mUserManager.subscribe(registerRequest);

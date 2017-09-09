@@ -12,6 +12,7 @@ public class Constraints {
         public static final int CURRENCY_REQUEST_CODE = 2;
         public static final int ADD_WALLET_REQUEST_CODE = 3;
         public static final int EDIT_WALLET_REQUEST_CODE = 4;
+        public static final int CALCULATOR_REQUEST_CODE = 5;
     }
     
     public class ResultCode {

@@ -21,6 +21,8 @@ import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
+import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
+import com.vn.hcmute.team.cortana.mymoney.model.ResultConvert;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
@@ -397,6 +399,48 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
         
     }
     
+    @Override
+    public Observable<ResultConvert> convertCurrency(String amount, String from, String to) {
+        CurrenciesService currencies = mServiceGenerator.getService(CurrenciesService.class);
+        if (currencies == null) {
+            return null;
+        }
+        return currencies.convertCurrency(amount, from, to).map(
+                  new Function<JsonResponse<ResultConvert>, ResultConvert>() {
+                      @Override
+                      public ResultConvert apply(
+                                @NonNull JsonResponse<ResultConvert> resultConvertJsonResponse)
+                                throws Exception {
+                          if (resultConvertJsonResponse.getStatus().equals("success")) {
+                              return resultConvertJsonResponse.getData();
+                          } else {
+                              throw new Exception(resultConvertJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<RealTimeCurrency> getRealTimeCurrency() {
+        CurrenciesService currencies = mServiceGenerator.getService(CurrenciesService.class);
+        if (currencies == null) {
+            return null;
+        }
+        return currencies.getRealTimeCurrency().map(
+                  new Function<JsonResponse<RealTimeCurrency>, RealTimeCurrency>() {
+                      @Override
+                      public RealTimeCurrency apply(
+                                @NonNull JsonResponse<RealTimeCurrency> realTimeCurrencyJsonResponse)
+                                throws Exception {
+                          if (realTimeCurrencyJsonResponse.getStatus().equals("success")) {
+                              return realTimeCurrencyJsonResponse.getData();
+                          } else {
+                              throw new Exception(realTimeCurrencyJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
     //event
     @Override
     public Observable<List<Event>> getEvent(String uerid, String token) {
@@ -737,7 +781,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                       public List<Budget> apply(
                                 @NonNull JsonResponse<List<Budget>> listJsonResponse)
                                 throws Exception {
-                          MyLogger.d("bdosioiewr",listJsonResponse.getData().size());
+                          MyLogger.d("bdosioiewr", listJsonResponse.getData().size());
                           if (listJsonResponse.getStatus().equals("success")) {
                               return listJsonResponse.getData();
                           } else {

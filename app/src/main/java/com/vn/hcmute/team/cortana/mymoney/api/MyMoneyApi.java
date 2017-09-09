@@ -38,7 +38,8 @@ public class MyMoneyApi {
     /*Currency         */
     /*-----------------*/
     public static final String GET_CURRENCIES = "currency";
-    
+    public static final String CONVERT_CURRENCY = "converter";
+    public static final String GET_REAL_TIME_CURRENCY=CONVERT_CURRENCY+"/update";
     
     /*-----------------*/
     /*Event            */
@@ -74,4 +75,5 @@ public class MyMoneyApi {
     public static final String CREATE_BUDGET = "budget/createBudget";
     public static final String UPDATE_BUDGET = "budget/updateBudget";
     public static final String DELETE_BUDGET = "budget/deleteBudget";
+
 }

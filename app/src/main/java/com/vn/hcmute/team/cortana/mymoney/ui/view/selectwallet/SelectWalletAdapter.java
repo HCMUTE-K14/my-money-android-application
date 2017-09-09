@@ -109,15 +109,13 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
                       shouldHaveHeader() ? mWallets.get(position - 1) : mWallets.get(position);
             
             item.mImageViewSelectedWallet.setVisibility(
-                      isSelectedWallet(wallet.getWalletid()) ? View.VISIBLE : View.GONE);
+                      isSelectedWallet(wallet.getWalletid()) ? View.VISIBLE : View.INVISIBLE);
             item.itemView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mSelectWalletListener.onCLickWallet(wallet);
                 }
             });
-            
-            //item.mTextViewValueWallet.setText(value.toString());
             
             if (!shouldShowMenuWallet) {
                 item.itemView.setOnLongClickListener(new OnLongClickListener() {
@@ -221,7 +219,6 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
                     mSelectWalletListener.onClickAddWallet();
                 }
             });
-            
         }
     }
     

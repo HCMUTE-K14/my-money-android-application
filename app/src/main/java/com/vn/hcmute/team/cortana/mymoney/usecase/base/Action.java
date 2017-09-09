@@ -49,5 +49,8 @@ public class Action {
     public static final String ACTION_CREATE_BUDGET = "action_create_budget";
     public static final String ACTION_UPDATE_BUDGET = "action_update_budget";
     public static final String ACTION_DELETE_BUDGET = "action_delete_budget";
-
+    
+    public static final String ACTION_CONVERT_CURRENCY_ONLINE = "action_convert_currency_online";
+    public static final String ACTION_CONVERT_CURRENCY_OFFLINE = "action_convert_currency_offline";
+    public static final String ACTION_UPDATE_REAL_TIME_CURRENCY = "action_update_real_time_currency";
 }

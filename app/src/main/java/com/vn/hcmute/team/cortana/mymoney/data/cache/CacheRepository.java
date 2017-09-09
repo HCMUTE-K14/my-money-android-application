@@ -1,6 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.data.cache;
 
 import com.vn.hcmute.team.cortana.mymoney.data.cache.service.PreferenceService;
+import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import javax.inject.Inject;
 
@@ -84,5 +85,20 @@ public class CacheRepository implements PreferenceService {
         mPreferencesHelper.putUserId("");
         mPreferencesHelper.putUserToken("");
         mPreferencesHelper.putUser(null);
+    }
+    
+    @Override
+    public void putRealTimeCurrency(RealTimeCurrency realTimeCurrency) {
+        mPreferencesHelper.putRealTimeCurrency(realTimeCurrency);
+    }
+    
+    @Override
+    public void removeRealTimeCurrency() {
+        mPreferencesHelper.putRealTimeCurrency(null);
+    }
+    
+    @Override
+    public RealTimeCurrency getRealTimeCurrency() {
+        return mPreferencesHelper.getRealTimeCurrency();
     }
 }

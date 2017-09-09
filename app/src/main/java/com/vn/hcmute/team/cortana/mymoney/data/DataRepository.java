@@ -8,6 +8,8 @@ import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
+import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
+import com.vn.hcmute.team.cortana.mymoney.model.ResultConvert;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
@@ -153,6 +155,21 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
         mCacheRepository.removeLoginStage();
     }
     
+    @Override
+    public void putRealTimeCurrency(RealTimeCurrency realTimeCurrency) {
+        mCacheRepository.putRealTimeCurrency(realTimeCurrency);
+    }
+    
+    @Override
+    public void removeRealTimeCurrency() {
+        mCacheRepository.removeRealTimeCurrency();
+    }
+    
+    @Override
+    public RealTimeCurrency getRealTimeCurrency() {
+        return mCacheRepository.getRealTimeCurrency();
+    }
+    
     //wallet
     @Override
     public Observable<String> createWallet(Wallet wallet, String userid, String token) {
@@ -185,6 +202,16 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     public Observable<List<Currencies>> getCurrencies() {
         
         return mRemoteRepository.getCurrencies();
+    }
+    
+    @Override
+    public Observable<ResultConvert> convertCurrency(String amount, String from, String to) {
+        return mRemoteRepository.convertCurrency(amount, from, to);
+    }
+    
+    @Override
+    public Observable<RealTimeCurrency> updateRealTimeCurrency() {
+        return mRemoteRepository.getRealTimeCurrency();
     }
     
     //event

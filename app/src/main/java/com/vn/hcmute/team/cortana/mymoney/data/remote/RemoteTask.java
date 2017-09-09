@@ -5,6 +5,8 @@ import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
+import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
+import com.vn.hcmute.team.cortana.mymoney.model.ResultConvert;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
@@ -65,6 +67,10 @@ public interface RemoteTask {
     interface CurrenciesTask {
         
         Observable<List<Currencies>> getCurrencies();
+    
+        Observable<ResultConvert> convertCurrency(String amount,String from,String to);
+    
+        Observable<RealTimeCurrency> getRealTimeCurrency();
     }
     
     interface EventTask {

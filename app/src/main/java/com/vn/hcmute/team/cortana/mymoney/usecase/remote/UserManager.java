@@ -51,35 +51,32 @@ public class UserManager extends UseCase<UserRequest> {
         switch (action) {
             case Action.ACTION_LOGIN_NORMAL:
                 doLoginNormal(requestValues.getCallBack(),
-                          ((LoginRequest) requestValues).getData());
+                          requestValues.getUserCredential());
                 break;
             case Action.ACTION_REGISTER:
                 doRegister(requestValues.getCallBack(),
-                          ((RegisterRequest) requestValues).getData());
+                          requestValues.getUser());
                 break;
             case Action.ACTION_LOGOUT:
                 doLogout(requestValues.getCallBack());
                 break;
             case Action.ACTION_CHANGE_PASSWORD:
-                doChangePassword(requestValues.getCallBack(),
-                          ((ChangePasswordRequest) requestValues).getOldPassword(),
-                          ((ChangePasswordRequest) requestValues).getNewPassword());
+                doChangePassword(requestValues.getCallBack(), requestValues.getParams());
                 break;
             case Action.ACTION_FORGET_PASSWORD:
-                doForgotPassword(requestValues.getCallBack(),
-                          ((ForgetPasswordRequest) requestValues).getEmail());
+                doForgotPassword(requestValues.getCallBack(), requestValues.getParams());
                 break;
             case Action.ACTION_CHANGE_PROFILE:
-                doChangeProfile(requestValues.getCallBack(),
-                          ((ChangeProfileRequest) requestValues).getUser());
+                doChangeProfile(requestValues.getCallBack(), requestValues.getUser());
+                
                 break;
             default:
                 break;
         }
     }
     
-    public boolean isLogin(){
-        return mDataRepository.getUser()!=null;
+    public boolean isLogin() {
+        return mDataRepository.getUser() != null;
     }
     
     private void doChangeProfile(final BaseCallBack<Object> callBack, final User user) {
@@ -125,7 +122,8 @@ public class UserManager extends UseCase<UserRequest> {
         }
     }
     
-    private void doForgotPassword(final BaseCallBack<Object> callBack, final String email) {
+    private void doForgotPassword(final BaseCallBack<Object> callBack, final String[] params) {
+        String email = params[0];
         if (TextUtils.isEmpty(email)) {
             callBack.onFailure(new UserValidateException(
                       mContext.getString(R.string.message_email_cannot_be_empty)));
@@ -158,8 +156,9 @@ public class UserManager extends UseCase<UserRequest> {
         }
     }
     
-    private void doChangePassword(final BaseCallBack<Object> callBack, final String oldPassword,
-              final String newPassword) {
+    private void doChangePassword(final BaseCallBack<Object> callBack, final String[] params) {
+        String oldPassword = params[0];
+        String newPassword = params[1];
         
         if (TextUtils.isEmpty(oldPassword) || TextUtils.isEmpty(newPassword)) {
             callBack.onFailure(new UserValidateException(
@@ -303,10 +302,32 @@ public class UserManager extends UseCase<UserRequest> {
         
         private String action;
         private BaseCallBack<Object> callBack;
+        private User user;
+        private UserCredential userCredential;
+        private String[] params;
         
         public UserRequest(@NonNull String action, @NonNull BaseCallBack<Object> callBack) {
             this.action = action;
             this.callBack = callBack;
+        }
+        
+        public UserRequest(@NonNull String action, @NonNull BaseCallBack<Object> callBack,
+                  @NonNull User data) {
+            this(action, callBack);
+            this.user = data;
+        }
+        
+        
+        public UserRequest(@NonNull String action, @NonNull BaseCallBack<Object> callBack,
+                  @NonNull UserCredential userCredential) {
+            this(action, callBack);
+            this.userCredential = userCredential;
+        }
+        
+        public UserRequest(@NonNull String action, @NonNull BaseCallBack<Object> callBack,
+                  String[] params) {
+            this(action, callBack);
+            this.params = params;
         }
         
         public String getAction() {
@@ -325,106 +346,6 @@ public class UserManager extends UseCase<UserRequest> {
                   BaseCallBack<Object> callBack) {
             this.callBack = callBack;
         }
-    }
-    
-    
-    public static class RegisterRequest extends UserRequest {
-        
-        private User data;
-        
-        public RegisterRequest(@NonNull String action, @NonNull BaseCallBack<Object> callBack,
-                  @NonNull User data) {
-            super(action, callBack);
-            this.data = data;
-        }
-        
-        public User getData() {
-            return data;
-        }
-        
-        public void setData(User data) {
-            this.data = data;
-        }
-    }
-    
-    public static class LoginRequest extends UserRequest {
-        
-        private UserCredential userCredential;
-        
-        
-        public LoginRequest(@NonNull String action, @NonNull BaseCallBack<Object> callBack,
-                  @NonNull UserCredential userCredential) {
-            super(action, callBack);
-            this.userCredential = userCredential;
-        }
-        
-        public UserCredential getData() {
-            return userCredential;
-        }
-        
-        public void setData(UserCredential object) {
-            this.userCredential = object;
-        }
-    }
-    
-    public static class ChangePasswordRequest extends UserRequest {
-        
-        private String newPassword;
-        private String oldPassword;
-        
-        public ChangePasswordRequest(@NonNull String action, @NonNull BaseCallBack<Object> callBack,
-                  String oldPassword,
-                  String newPassword) {
-            super(action, callBack);
-            this.newPassword = newPassword;
-            this.oldPassword = oldPassword;
-        }
-        
-        public String getOldPassword() {
-            return oldPassword;
-        }
-        
-        public void setOldPassword(String oldPassword) {
-            this.oldPassword = oldPassword;
-        }
-        
-        public String getNewPassword() {
-            return newPassword;
-        }
-        
-        public void setNewPassword(String newPassword) {
-            this.newPassword = newPassword;
-        }
-    }
-    
-    public static class ForgetPasswordRequest extends UserRequest {
-        
-        private String email;
-        
-        public ForgetPasswordRequest(@NonNull String action,
-                  @NonNull BaseCallBack<Object> callBack, String email) {
-            super(action, callBack);
-            this.email = email;
-        }
-        
-        public String getEmail() {
-            return email;
-        }
-        
-        public void setEmail(String email) {
-            this.email = email;
-        }
-    }
-    
-    public static class ChangeProfileRequest extends UserRequest {
-        
-        private User user;
-        
-        public ChangeProfileRequest(@NonNull String action,
-                  @NonNull BaseCallBack<Object> callBack, User user) {
-            super(action, callBack);
-            this.user = user;
-        }
         
         public User getUser() {
             return user;
@@ -432,6 +353,22 @@ public class UserManager extends UseCase<UserRequest> {
         
         public void setUser(User user) {
             this.user = user;
+        }
+        
+        public UserCredential getUserCredential() {
+            return userCredential;
+        }
+        
+        public void setUserCredential(UserCredential userCredential) {
+            this.userCredential = userCredential;
+        }
+        
+        public String[] getParams() {
+            return params;
+        }
+        
+        public void setParams(String[] params) {
+            this.params = params;
         }
     }
 }

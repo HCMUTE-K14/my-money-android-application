@@ -24,8 +24,10 @@ import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletContract.View;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -48,13 +50,13 @@ public class AddWalletActivity extends BaseActivity implements View {
     
     @BindView(R.id.txt_balance)
     EditText mEditTextBalance;
-
     
     @Inject
     WalletPresenter mWalletPresenter;
     
     private Currencies mCurrentCurrency;
     private String mIconWallet;
+    private String mCurrentBalance;
     
     private ProgressDialog mProgressDialog;
     
@@ -113,9 +115,15 @@ public class AddWalletActivity extends BaseActivity implements View {
             switch (requestCode) {
                 case RequestCode.CURRENCY_REQUEST_CODE:
                     mCurrentCurrency = data.getParcelableExtra("currency");
-                    if(mCurrentCurrency != null){
+                    if (mCurrentCurrency != null) {
                         mEditTextCurrency.setText(mCurrentCurrency.getCurName());
                     }
+                    break;
+                case RequestCode.CALCULATOR_REQUEST_CODE:
+                    mCurrentBalance = data.getStringExtra("result");
+                    double amount = Double.parseDouble(mCurrentBalance);
+                    String result= NumberUtil.format(amount,"#,###.##");
+                    mEditTextBalance.setText(result);
                     break;
                 default:
                     break;
@@ -150,6 +158,17 @@ public class AddWalletActivity extends BaseActivity implements View {
     @OnClick({R.id.parent_text_2, R.id.txt_currency})
     public void onClickToChooseCurrency() {
         openCurrencyActivity();
+    }
+    
+    @OnClick(R.id.txt_balance)
+    public void onClickBalance() {
+        if (mCurrentCurrency == null) {
+            Toast.makeText(this, R.string.message_validate_currency_wallet, Toast.LENGTH_SHORT)
+                      .show();
+            return;
+        }
+        
+        openCalculator();
     }
     
     /*-----------------*/
@@ -252,5 +271,11 @@ public class AddWalletActivity extends BaseActivity implements View {
     private void openCurrencyActivity() {
         Intent intent = new Intent(this, CurrenciesActivity.class);
         startActivityForResult(intent, RequestCode.CURRENCY_REQUEST_CODE);
+    }
+    
+    private void openCalculator() {
+        Intent intent = new Intent(this, CalculatorActivity.class);
+        intent.putExtra("value", mCurrentBalance);
+        startActivityForResult(intent, RequestCode.CALCULATOR_REQUEST_CODE);
     }
 }

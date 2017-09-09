@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import com.google.gson.Gson;
+import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import javax.inject.Inject;
@@ -22,6 +23,7 @@ public class PreferencesHelper {
     private final String PREF_USER_TOKEN = "PREF_USER_TOKEN";
     private final String PREF_CURRENT_USER = "PREF_CURRENT_USER";
     private final String PREF_CURRENT_WALLET = "PREF_CURRENT_WALLET";
+    private final String PREF_CURRENT_REAL_TIME_CURRENCY = "PREF_CURRENT_REAL_TIME_CURRENCY";
     
     private SharedPreferences mSharedPreferences;
     private Gson mGson;
@@ -76,6 +78,20 @@ public class PreferencesHelper {
     public void putCurrentWallet(Wallet wallet) {
         String _wallet = mGson.toJson(wallet, Wallet.class);
         mSharedPreferences.edit().putString(PREF_CURRENT_WALLET, _wallet).apply();
+    }
+    
+    public void putRealTimeCurrency(RealTimeCurrency realTimeCurrency) {
+        String _realTimeCurrency = mGson.toJson(realTimeCurrency, RealTimeCurrency.class);
+        mSharedPreferences.edit().putString(PREF_CURRENT_REAL_TIME_CURRENCY, _realTimeCurrency)
+                  .apply();
+    }
+    
+    public RealTimeCurrency getRealTimeCurrency() {
+        String realTimeCurrency = mSharedPreferences.getString(PREF_CURRENT_REAL_TIME_CURRENCY, "");
+        if (TextUtils.isEmpty(realTimeCurrency)) {
+            return null;
+        }
+        return mGson.fromJson(realTimeCurrency, RealTimeCurrency.class);
     }
     
 }
