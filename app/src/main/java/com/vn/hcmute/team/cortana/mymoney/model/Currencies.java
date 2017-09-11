@@ -4,13 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.io.Serializable;
 
 /**
  * Created by kunsubin on 8/22/2017.
  */
 
-public class Currencies implements Parcelable{
+public class Currencies implements Parcelable {
     
     @SerializedName("cur_id")
     @Expose
@@ -34,6 +33,15 @@ public class Currencies implements Parcelable{
         this.curName = "";
         this.curSymbol = "";
         this.curDisplayType = "";
+    }
+    
+    public Currencies(String curId, String curName, String curSymbol,
+              String curDisplayType, String curCode) {
+        this.curId = curId;
+        this.curCode = curCode;
+        this.curName = curName;
+        this.curSymbol = curSymbol;
+        this.curDisplayType = curDisplayType;
     }
     
     protected Currencies(Parcel in) {
@@ -114,7 +122,7 @@ public class Currencies implements Parcelable{
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-    
+        
         dest.writeString(curId);
         dest.writeString(curCode);
         dest.writeString(curName);

@@ -30,7 +30,7 @@ public class PreferencesHelper {
     
     @Inject
     public PreferencesHelper(Context context) {
-        this.mSharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        this.mSharedPreferences = context.getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         this.mGson = new Gson();
     }
     

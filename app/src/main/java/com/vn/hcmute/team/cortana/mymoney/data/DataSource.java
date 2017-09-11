@@ -3,6 +3,7 @@ package com.vn.hcmute.team.cortana.mymoney.data;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
+import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
@@ -59,9 +60,9 @@ public interface DataSource {
                   String money);
         
         Observable<List<Currencies>> getCurrencies();
-    
-        Observable<ResultConvert> convertCurrency(String amount,String from,String to);
-    
+        
+        Observable<ResultConvert> convertCurrency(String amount, String from, String to);
+        
         Observable<RealTimeCurrency> updateRealTimeCurrency();
         
         Observable<List<Event>> getEvent(String uerid, String token);
@@ -92,9 +93,9 @@ public interface DataSource {
         
         Observable<String> removePerson(String userid, String token, String personid);
         
-        Observable<String> updatePerson(Person person,String userid,String token);
+        Observable<String> updatePerson(Person person, String userid, String token);
         
-        Observable<String> syncPerson(List<Person> persons,String userid,String token);
+        Observable<String> syncPerson(List<Person> persons, String userid, String token);
         
         Observable<List<Budget>> getBudget(String userid, String token);
         
@@ -103,8 +104,6 @@ public interface DataSource {
         Observable<String> updateBudget(Budget budget, String userid, String token);
         
         Observable<String> deleteBudget(String userid, String token, String budgetId);
-        
-        
     }
     
     public interface CacheDataSource {
@@ -132,15 +131,21 @@ public interface DataSource {
         void removeUser();
         
         void removeLoginStage();
-    
+        
         void putRealTimeCurrency(RealTimeCurrency realTimeCurrency);
-    
+        
         void removeRealTimeCurrency();
         
         RealTimeCurrency getRealTimeCurrency();
     }
     
     public interface LocalDataSource {
+        boolean doesDatabaseLocalExist();
         
+        void createNewLocalDatabase();
+        
+        Observable<List<Icon>> getListIcon();
+        
+        Observable<List<Currencies>> getLocalListCurrency();
     }
 }

@@ -1,8 +1,8 @@
 package com.vn.hcmute.team.cortana.mymoney.utils.sort.helper;
 
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
-import com.vn.hcmute.team.cortana.mymoney.utils.sort.Sort;
-import com.vn.hcmute.team.cortana.mymoney.utils.sort.modelsort.PersonSort;
+import com.vn.hcmute.team.cortana.mymoney.utils.sort.sortentity.Sort;
+import com.vn.hcmute.team.cortana.mymoney.utils.sort.sortentity.PersonSort;
 
 /**
  * Created by infamouSs on 8/23/17.

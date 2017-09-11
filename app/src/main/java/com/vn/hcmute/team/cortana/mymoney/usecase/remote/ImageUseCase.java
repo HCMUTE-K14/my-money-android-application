@@ -7,12 +7,11 @@ import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
 import com.vn.hcmute.team.cortana.mymoney.exception.ImageException;
 import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
-import com.vn.hcmute.team.cortana.mymoney.model.Image;
+import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.ImageUseCase.ImageRequest;
-import com.vn.hcmute.team.cortana.mymoney.utils.ObjectUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -21,7 +20,6 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -70,8 +68,36 @@ public class ImageUseCase extends UseCase<ImageRequest> {
             case Action.ACTION_UPDATE_IMAGE:
                 doUpdateImage(requestValues.getParams(), requestValues.getCallBack());
                 break;
+            case Action.ACTION_GET_LIST_ICON:
+                doGetListIcon(requestValues.getCallBack());
+                break;
             default:
                 break;
+        }
+    }
+    
+    private void doGetListIcon(final BaseCallBack<Object> callBack) {
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object o) {
+            
+                callBack.onSuccess((List<Icon>) o);
+            }
+        
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
+    
+        if (!this.mCompositeDisposable.isDisposed()) {
+        
+            mDisposable = mDataRepository.getListIcon()
+                      .subscribeOn(Schedulers.io())
+                      .observeOn(AndroidSchedulers.mainThread())
+                      .singleOrError()
+                      .subscribeWith(this.mDisposableSingleObserver);
+            this.mCompositeDisposable.add(mDisposable);
         }
     }
     
@@ -207,7 +233,7 @@ public class ImageUseCase extends UseCase<ImageRequest> {
         
         File image = new File(path_url);
         
-        if (ObjectUtil.isNull(image)) {
+        if (image == null) {
             callBack.onFailure(new ImageException("Cannot load image from " + path_url));
             return;
         }
@@ -267,18 +293,8 @@ public class ImageUseCase extends UseCase<ImageRequest> {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object o) {
+                callBack.onSuccess(o);
                 
-                List<Image> list = new ArrayList<>();
-                if (o instanceof List) {
-                    for (int i = 0; i < ((List<?>) o).size(); i++) {
-                        Object item = ((List<?>) o).get(i);
-                        if (item instanceof Image) {
-                            list.add((Image) item);
-                        }
-                    }
-                }
-                
-                callBack.onSuccess(list);
             }
             
             @Override

@@ -6,6 +6,7 @@ def getProperty(String filename, String propName) {
         def props = new Properties()
         props.load(new FileInputStream(propsFile))
         if (props[propName] != null) {
+            print("BUILD GRANDLE OK")
             return props[propName]
         } else {
             print("No such property " + propName + " in file " + filename);
@@ -26,7 +27,11 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        //buildConfigField "String", "TEST", "\"${getProperty("local.properties", "test")}\""
+        buildConfigField "String", "AES_KEY", "\"${getProperty("local.properties", "aes_key")}\""
+
+
+
+
 
     }
     buildTypes {

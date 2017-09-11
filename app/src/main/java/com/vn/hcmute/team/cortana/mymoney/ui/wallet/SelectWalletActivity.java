@@ -129,6 +129,13 @@ public class SelectWalletActivity extends BaseActivity implements
         
         getWalletData();
         
+//
+//        Wallet wallet =new Wallet();
+//        wallet.setUserid("26d01ac203c74d9d8eb0c610a33913eb");
+//        wallet.setWalletName("SDADSADSA");
+//        wallet.setCurrencyUnit(new Currencies());
+//
+//        mWalletPresenter.addWallet(wallet);
     }
     
     @Override

@@ -1,5 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.main;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.CurrenciesUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.CurrenciesUseCase.CurrenciesRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import javax.inject.Inject;
 
@@ -157,5 +160,16 @@ public class TestFragment extends BaseFragment {
     @Override
     protected void initializeActionBar(View rootView) {
         
+    }
+    
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            String cipher=SecurityUtil.encrypt("12345");
+            MyLogger.d(cipher);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

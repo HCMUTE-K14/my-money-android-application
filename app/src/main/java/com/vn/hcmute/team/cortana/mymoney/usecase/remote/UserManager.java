@@ -13,6 +13,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager.UserRequest;
+import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.validate.UserValidate;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -238,7 +239,8 @@ public class UserManager extends UseCase<UserRequest> {
             }
         };
         if (!this.mCompositeDisposable.isDisposed()) {
-            
+            String encryptPassword= SecurityUtil.encrypt(userCredential.getPassword());
+            userCredential.setPassword(encryptPassword);
             mDisposable = mDataRepository.login(userCredential)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())

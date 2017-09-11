@@ -28,7 +28,7 @@ public class CurrenciesPresenter extends BasePresenter<CurrenciesContract.View> 
     @Override
     public void getCurrencies() {
         
-        CurrenciesRequest request = new CurrenciesRequest(Action.ACTION_GET_CURRENCIES,
+        CurrenciesRequest request = new CurrenciesRequest(Action.ACTION_GET_CURRENCIES_FROM_LOCAL,
                   new BaseCallBack<Object>() {
                       
                       @Override

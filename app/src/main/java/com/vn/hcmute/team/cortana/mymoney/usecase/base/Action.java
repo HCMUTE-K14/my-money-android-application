@@ -18,6 +18,7 @@ public class Action {
     public static final String ACTION_REMOVE_IMAGE = "action_remove_image";
     public static final String ACTION_UPDATE_IMAGE = "action_update_image";
     public static final String ACTION_GET_IMAGE = "action_get_image";
+    public static final String ACTION_GET_LIST_ICON = "action_get_list_icon";
     
     public static final String ACTION_CREATE_WALLET = "action_create_wallet";
     public static final String ACTION_UPDATE_WALLET = "action_update_wallet";
@@ -25,7 +26,11 @@ public class Action {
     public static final String ACTION_GET_WALLET = "action_get_wallet";
     public static final String ACTION_MOVE_WALLET = "action_move_wallet";
     
-    public static final String ACTION_GET_CURRENCIES = "action_get_currencies";
+    public static final String ACTION_GET_CURRENCIES_FROM_REMOTE = "action_get_currencies_from_remote";
+    public static final String ACTION_GET_CURRENCIES_FROM_LOCAL = "action_get_currencies_from_local";
+    public static final String ACTION_CONVERT_CURRENCY_ONLINE = "action_convert_currency_online";
+    public static final String ACTION_CONVERT_CURRENCY_OFFLINE = "action_convert_currency_offline";
+    public static final String ACTION_UPDATE_REAL_TIME_CURRENCY = "action_update_real_time_currency";
     
     public static final String ACTION_GET_EVENT = "action_get_event";
     public static final String ACTION_CREATE_EVENT = "action_create_event";
@@ -43,14 +48,10 @@ public class Action {
     public static final String ACTION_ADD_PERSON = "action_add_person";
     public static final String ACTION_REMOVE_PERSON = "action_remove_person";
     public static final String ACTION_UPDATE_PERSON = "action_update_person";
-    public static final String ACTION_SYNC_PERSON="action_sync_person";
+    public static final String ACTION_SYNC_PERSON = "action_sync_person";
     
     public static final String ACTION_GET_BUDGET = "action_get_budget";
     public static final String ACTION_CREATE_BUDGET = "action_create_budget";
     public static final String ACTION_UPDATE_BUDGET = "action_update_budget";
     public static final String ACTION_DELETE_BUDGET = "action_delete_budget";
-    
-    public static final String ACTION_CONVERT_CURRENCY_ONLINE = "action_convert_currency_online";
-    public static final String ACTION_CONVERT_CURRENCY_OFFLINE = "action_convert_currency_offline";
-    public static final String ACTION_UPDATE_REAL_TIME_CURRENCY = "action_update_real_time_currency";
 }

@@ -21,8 +21,8 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.LoginModule;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.forgetpassword.ForgetPasswordActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.main.MainActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.register.RegisterActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.wallet.SelectWalletActivity;
 import javax.inject.Inject;
 
 /**
@@ -119,9 +119,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @OnClick(R.id.btn_login)
     public void onClickLogin(View view) {
         UserCredential userCredential = new UserCredential();
+        String username=mTextViewUsername.getText().toString();
+        String password=mTextViewPassword.getText().toString();
         
-        userCredential.setUsername(mTextViewUsername.getText().toString());
-        userCredential.setPassword(mTextViewPassword.getText().toString());
+        userCredential.setUsername(username);
+        userCredential.setPassword(password);
         
         mLoginPresenter.login(userCredential);
     }
@@ -191,7 +193,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     
     private void openMainActivity() {
         //TODO: CHANGE
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, SelectWalletActivity.class);
         startActivityForResult(intent, 1);
     }
 }

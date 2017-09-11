@@ -136,6 +136,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
             this.mCompositeDisposable.add(mDisposable);
             
         }
+        unSubscribe();
     }
     
     private void doUpdate(final BaseCallBack<Object> callBack, final Wallet wallet) {

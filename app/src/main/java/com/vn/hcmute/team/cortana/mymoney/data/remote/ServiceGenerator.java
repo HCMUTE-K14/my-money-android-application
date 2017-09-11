@@ -40,7 +40,7 @@ public class ServiceGenerator {
     
     @Inject
     public ServiceGenerator(Context context, Gson gson) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         mClient = new OkHttpClient.Builder()
                   //.cache(createDefaultCache(this.mContext))
                   .addInterceptor(createCacheControlInterceptor())

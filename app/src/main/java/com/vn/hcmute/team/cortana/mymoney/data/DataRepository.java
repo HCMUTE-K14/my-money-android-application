@@ -6,6 +6,7 @@ import com.vn.hcmute.team.cortana.mymoney.data.remote.RemoteRepository;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
+import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
@@ -197,7 +198,6 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
         return mRemoteRepository.moveWallet(userid, token, wallet1, wallet2, money);
     }
     
-    //currencies
     @Override
     public Observable<List<Currencies>> getCurrencies() {
         
@@ -315,4 +315,25 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     public Observable<String> deleteBudget(String userid, String token, String budgetId) {
         return mRemoteRepository.deleteBudget(userid, token, budgetId);
     }
+    
+    @Override
+    public boolean doesDatabaseLocalExist() {
+        return mLocalRepository.doesExistsDatabase();
+    }
+    
+    @Override
+    public void createNewLocalDatabase() {
+        mLocalRepository.createNewDatabase();
+    }
+    
+    @Override
+    public Observable<List<Icon>> getListIcon() {
+        return mLocalRepository.getListIcon();
+    }
+    
+    @Override
+    public Observable<List<Currencies>> getLocalListCurrency() {
+        return mLocalRepository.getListCurrency();
+    }
+    
 }

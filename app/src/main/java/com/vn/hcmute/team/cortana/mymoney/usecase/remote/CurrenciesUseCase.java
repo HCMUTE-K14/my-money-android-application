@@ -11,6 +11,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.CurrenciesUseCase.CurrenciesRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -48,8 +49,11 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
         String action = requestValues.getAction();
         
         switch (action) {
-            case Action.ACTION_GET_CURRENCIES:
-                doGetCurrencies(requestValues.getCallBack());
+            case Action.ACTION_GET_CURRENCIES_FROM_REMOTE:
+                doGetCurrenciesFromRemote(requestValues.getCallBack());
+                break;
+            case Action.ACTION_GET_CURRENCIES_FROM_LOCAL:
+                doGetCurrenciesFromLocal(requestValues.getCallBack());
                 break;
             case Action.ACTION_CONVERT_CURRENCY_ONLINE:
                 doConvert_Online(requestValues.getCallBack(), requestValues.getParams());
@@ -78,7 +82,7 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
             
             double value = rate * realTimeCurrency.get(to);
             
-            callBack.onSuccess(NumberUtil.round(value,3));
+            callBack.onSuccess(NumberUtil.round(value, 3));
         } catch (Exception e) {
             callBack.onFailure(e);
         }
@@ -117,6 +121,10 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
     }
     
     private void doConvert_Online(final BaseCallBack<Object> callBack, final String[] params) {
+        String amount = params[0];
+        String from = params[1];
+        String to = params[2];
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
@@ -128,10 +136,6 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
                 callBack.onFailure(e);
             }
         };
-        
-        String amount = params[0];
-        String from = params[1];
-        String to = params[2];
         
         if (!this.mCompositeDisposable.isDisposed()) {
             
@@ -158,7 +162,7 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
         }
     }
     
-    private void doGetCurrencies(final BaseCallBack<Object> callBack) {
+    private void doGetCurrenciesFromRemote(final BaseCallBack<Object> callBack) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -186,7 +190,40 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
+        }
+    }
+    
+    private void doGetCurrenciesFromLocal(final BaseCallBack<Object> callBack) {
+      // mDataRepository.createNewLocalDatabase();
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
+                MyLogger.d("Currencies Usecacse","OnSUCCESS");
+                callBack.onSuccess(currencies);
+            }
             
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                MyLogger.d("Currencies Usecacse","failure");
+                callBack.onFailure(e);
+            }
+        };
+        
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            mDisposable = mDataRepository.getLocalListCurrency()
+                      .subscribeOn(Schedulers.computation())
+                      .observeOn(AndroidSchedulers.mainThread())
+                      .doOnSubscribe(new Consumer<Disposable>() {
+                          @Override
+                          public void accept(Disposable disposable) throws Exception {
+                              MyLogger.d("Currencies Usecacse","loading");
+                              callBack.onLoading();
+                          }
+                      })
+                      .singleOrError()
+                      .subscribeWith(this.mDisposableSingleObserver);
+            this.mCompositeDisposable.add(mDisposable);
         }
     }
     

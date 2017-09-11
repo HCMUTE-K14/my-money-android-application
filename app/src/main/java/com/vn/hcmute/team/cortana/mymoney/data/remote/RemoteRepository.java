@@ -41,7 +41,6 @@ import okhttp3.RequestBody;
  * Created by infamouSs on 8/10/17.
  */
 
-
 public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTask,
                                          RemoteTask.WalletTask, RemoteTask.CurrenciesTask,
                                          RemoteTask.EventTask, RemoteTask.SavingTask,
@@ -52,6 +51,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     
     private ServiceGenerator mServiceGenerator;
     
+
     @Inject
     public RemoteRepository(ServiceGenerator serviceGenerator) {
         this.mServiceGenerator = serviceGenerator;
