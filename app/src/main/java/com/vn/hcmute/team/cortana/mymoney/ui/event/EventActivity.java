@@ -6,10 +6,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
@@ -132,7 +130,7 @@ public class EventActivity extends BaseActivity implements EventContract.View, M
     @Override
     public void onItemClick(View view, int position) {
         Toast.makeText(this,mEventList.get(position).toString(),Toast.LENGTH_LONG).show();
-        TextView textView= ButterKnife.findById(view,R.id.eventid);
-        mEventPresenter.deleteEvent(textView.getText().toString().trim());
+       // TextView textView= ButterKnife.findById(view,R.id.eventid);
+       // mEventPresenter.deleteEvent(textView.getText().toString().trim());
     }
 }

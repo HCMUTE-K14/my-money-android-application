@@ -53,6 +53,7 @@ android {
 }
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -97,6 +98,8 @@ dependencies {
 
 
     compile group: 'net.objecthunter', name: 'exp4j', version: '0.4.8'
+
+    compile 'com.github.markushi:circlebutton:1.1'
 
     testCompile 'junit:junit:4.12'
 }

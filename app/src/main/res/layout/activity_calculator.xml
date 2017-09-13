@@ -185,6 +185,8 @@
             android:gravity="center"
             android:onClick="onClick">
             <ImageButton
+              android:id="@+id/image_remove"
+              android:onClick="onClick"
               android:layout_width="28dp"
               android:layout_height="20dp"
               android:adjustViewBounds="true"

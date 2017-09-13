@@ -22,7 +22,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.forgetpassword.ForgetPasswordActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.register.RegisterActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.wallet.SelectWalletActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import javax.inject.Inject;
 
 /**
@@ -191,7 +191,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     
     private void openMainActivity() {
         //TODO: CHANGE
-        Intent intent = new Intent(this, SelectWalletActivity.class);
+        Intent intent = new Intent(this, MyWalletActivity.class);
         startActivityForResult(intent, 1);
     }
 }

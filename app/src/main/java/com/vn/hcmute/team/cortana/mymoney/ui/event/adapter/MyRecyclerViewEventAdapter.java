@@ -5,8 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
@@ -31,20 +29,20 @@ public class MyRecyclerViewEventAdapter extends RecyclerView.Adapter<MyRecyclerV
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.item_recycler_view_event, parent, false);
+        View view = mInflater.inflate(R.layout.item_event, parent, false);
         return new ViewHolder(view);
     }
     
     // binds the data to the textview in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.eventid.setText(mData.get(position).getEventid());
+       /* holder.eventid.setText(mData.get(position).getEventid());
         holder.name.setText(mData.get(position).getName());
         holder.money.setText(mData.get(position).getMoney());
         holder.date.setText(mData.get(position).getDate());
         holder.idWallet.setText(mData.get(position).getIdWallet());
         holder.status.setText(mData.get(position).getStatus());
-        holder.userid.setText(mData.get(position).getUserid());
+        holder.userid.setText(mData.get(position).getUserid());*/
         
     }
     
@@ -58,7 +56,7 @@ public class MyRecyclerViewEventAdapter extends RecyclerView.Adapter<MyRecyclerV
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         
-        @BindView(R.id.eventid)
+      /*  @BindView(R.id.eventid)
         TextView eventid;
         @BindView(R.id.name)
         TextView name;
@@ -71,7 +69,7 @@ public class MyRecyclerViewEventAdapter extends RecyclerView.Adapter<MyRecyclerV
         @BindView(R.id.status)
         TextView status;
         @BindView(R.id.userid)
-        TextView userid;
+        TextView userid;*/
         
         public ViewHolder(View itemView) {
             super(itemView);

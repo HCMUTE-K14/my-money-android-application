@@ -1,14 +1,18 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.saving;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout.OnTabSelectedListener;
 import android.support.design.widget.TabLayout.Tab;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
@@ -25,6 +29,8 @@ public class SavingActivity extends BaseActivity implements SavingContract.View 
     TabLayout mTabLayout;
     @BindView(R.id.pager)
     ViewPager mViewPager;
+    @BindView(R.id.btn_add_saving)
+    FloatingActionButton btn_add_saving;
     
     private PagerAdapter mPagerAdapter;
  
@@ -64,6 +70,26 @@ public class SavingActivity extends BaseActivity implements SavingContract.View 
         
         initTabLayout();
     
+    }
+    @OnClick(R.id.btn_add_saving)
+    public void onClickAddSaving(View view){
+        
+        Intent intent =new Intent(this,AddSavingActivity.class);
+        startActivityForResult(intent,12);
+        
+        
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==12){
+            if(resultCode == Activity.RESULT_OK){
+                Saving saving=data.getParcelableExtra("resultAdd");
+                if(saving!=null){
+                   
+                }
+            }
+        }
     }
     
     @Override

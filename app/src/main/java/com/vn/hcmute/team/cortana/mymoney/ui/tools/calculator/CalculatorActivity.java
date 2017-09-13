@@ -70,6 +70,15 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
                     txt_input.setText("0");
                 }
                 break;
+            case R.id.image_remove:
+                if(txt_input.length()>0){
+                    StringBuilder tmp=new StringBuilder(txt_input.getText().toString());
+                    tmp.delete(tmp.length()-1,tmp.length());
+                    txt_input.setText(tmp.toString());
+                }else{
+                    txt_input.setText("0");
+                }
+                break;
             case R.id.btn_equal:
                 try {
                     Double.parseDouble(txt_input.getText().toString().trim());
@@ -95,12 +104,19 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
                 }
                 txt_input.append(button.getText());
                 
-                /*  double ab=337747493838383.0d;
-                MyLogger.d("fist: ",String.valueOf(ab));
-                MyLogger.d("second: ", TextUtil.doubleToString(ab));*/
                 break;
         }
     }
+    /*@OnClick(R.id.image_remove)
+    public void onClickRemove(View view){
+        if(txt_input.length()>0){
+            StringBuilder tmp=new StringBuilder(txt_input.getText().toString());
+            tmp.delete(tmp.length()-1,tmp.length());
+            txt_input.setText(tmp.toString());
+        }else{
+            txt_input.setText("0");
+        }
+    }*/
     public void resultAndFinish(){
         if(txt_input.length()>15){
             Toast.makeText(this,"15 max digit",Toast.LENGTH_LONG).show();

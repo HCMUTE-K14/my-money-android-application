@@ -281,7 +281,6 @@
               android:layout_marginLeft="15dp"
               android:textColor="@color/black"
               android:textSize="@dimen/txt_wallet_saving"/>
-
           </LinearLayout>
 
         </LinearLayout>

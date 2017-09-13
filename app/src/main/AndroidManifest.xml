@@ -18,10 +18,12 @@
     <activity android:name=".ui.tools.calculator.CalculatorActivity"/>
     <activity android:name=".ui.saving.AddSavingActivity"/>
     <activity android:name=".ui.saving.TransferMoneySavingActivity"/>
+    <activity android:name=".ui.saving.InfoSavingActivity"/>
+    <activity android:name=".ui.saving.EditSavingActivity"/>
     <!-- User -->
     <activity
       android:launchMode="singleTop"
-      android:name=".ui.login.LoginActivity"
+      android:name=".ui.saving.SavingActivity"
       android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -57,7 +59,7 @@
 
     <activity android:name=".ui.wallet.MyWalletActivity"/>
     <!-- Saving -->
-    <activity android:name=".ui.saving.SavingActivity" />
+    <activity android:name=".ui.login.LoginActivity" />
 
     <!-- Person -->
     <activity android:name=".ui.person.PersonActivity"></activity>

@@ -138,4 +138,19 @@
   <string name="txt_edit_wallet">Edit Wallet</string>
   <string name="txt_successful">Successful</string>
   <string name="action_transfer_money">Transfer Money</string>
+  <string name="select_date">Select date</string>
+  <string name="name_saving">Name Saving</string>
+  <string name="input_money">Input money</string>
+  <string name="small_date">Smaller than the present day</string>
+  <string name="enter_currencies">Enter other currency</string>
+  <string name="cancel_currency">CANCEL</string>
+  <string name="transfer">TRANSFER</string>
+  <string name="spent">Spent</string>
+  <string name="mark_as_finished">MARK AS FINISHED</string>
+  <string name="edit_event">Edit Event</string>
+  <string name="add_event">Add Event</string>
+  <string name="all_wallet">All Wallet</string>
+  <string name="select_money">Select money</string>
+  <string name="deposit_success">Deposit success!</string>
+  <string name="withdraw_success">Withdraw success!</string>
 </resources>

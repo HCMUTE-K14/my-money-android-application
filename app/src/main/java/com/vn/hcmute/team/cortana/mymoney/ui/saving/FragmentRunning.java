@@ -28,10 +28,10 @@ import javax.inject.Inject;
 
 public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavingAdapter.ItemClickListener,SavingContract.View{
     
-    private List<Saving> mSavingList;
+    public List<Saving> mSavingList;
     @BindView(R.id.recycler_view_saving_running)
     RecyclerView mRecyclerView;
-    private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
+    public MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
     private EmptyAdapter mEmptyAdapter;
     
     @BindView(R.id.progress_bar_saving)
@@ -104,6 +104,7 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
                 mSavingPresenter.getSaving();
             }
         }
+       
     }
     
     @Override
@@ -178,7 +179,9 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
     
     @Override
     public void onItemClick(View view, List<Saving> savingList, int position, int process) {
-
+    
+       // MyLogger.d("deso===========",savingList.get(position).getName());
+        
         Saving saving=savingList.get(position);
         Intent intent=new Intent(getActivity(),InfoSavingActivity.class);
         if(saving!=null){
