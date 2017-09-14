@@ -123,8 +123,6 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     public void onClickDate(View view) {
         showDialog(DATE_DIALOG_ID);
         
-    
- 
     }
     @OnClick(R.id.txt_edit_saving)
     public void onClickSaving(View view){

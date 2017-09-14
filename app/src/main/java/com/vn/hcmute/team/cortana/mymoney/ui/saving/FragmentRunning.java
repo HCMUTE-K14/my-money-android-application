@@ -92,7 +92,7 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
                         }
                     }
                     if(mSavingList.isEmpty()){
-                        mEmptyAdapter=new EmptyAdapter(getContext(),"No Saving");
+                        mEmptyAdapter=new EmptyAdapter(getContext(),getString(R.string.nosaving));
                         mRecyclerView.setAdapter(mEmptyAdapter);
                     }
                 }

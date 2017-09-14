@@ -153,4 +153,8 @@
   <string name="select_money">Select money</string>
   <string name="deposit_success">Deposit success!</string>
   <string name="withdraw_success">Withdraw success!</string>
+<string name="no_event">No Event</string>
+  <string name="nosaving">No Saving</string>
+  <string name="txt_ok">OK</string>
+  <string name="enter_your_name">Enter your name</string>
 </resources>

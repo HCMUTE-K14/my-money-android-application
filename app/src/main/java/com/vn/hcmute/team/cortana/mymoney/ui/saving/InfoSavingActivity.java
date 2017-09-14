@@ -147,9 +147,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
                       }
                   },null,null);
         mWalletUseCase.subscribe(savingRequest);
-    
-       
-      
+        
     }
     @Override
     protected void initializeDagger() {

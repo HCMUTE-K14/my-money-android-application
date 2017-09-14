@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -42,6 +43,8 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     TextView txt_money;
     @BindView(R.id.txt_wallet_name)
     TextView txt_wallet_name;
+    @BindView(R.id.linear_wallet)
+    LinearLayout linear_wallet;
     
     @Inject
     SavingPresenter mSavingPresenter;
@@ -105,11 +108,12 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         if(mSaving.getIdWallet().equals("")){
             mWallet=mPreferencesHelper.getCurrentWallet();
             txt_wallet_name.setText(mWallet.getWalletName());
+            linear_wallet.setEnabled(true);
         }else {
             txt_wallet_name.setText(mWalleName);
             mWallet=new Wallet();
             mWallet.setWalletid(mSaving.getIdWallet());
-            
+            linear_wallet.setEnabled(false);
         }
         
     }
@@ -168,8 +172,10 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     
     @OnClick(R.id.linear_wallet)
     public void onClickSelectWallet(View view){
-        Intent intent=new Intent(this, MyWalletActivity.class);
-        startActivityForResult(intent,10);
+        if(mSaving.getIdWallet().equals("")){
+            Intent intent=new Intent(this, MyWalletActivity.class);
+            startActivityForResult(intent,10);
+        }
     }
     @OnClick(R.id.txt_save_transaction)
     public void onClickSave(View view){

@@ -24,24 +24,32 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
     }
     
     @Override
+    public void unSubscribe() {
+        mEventUseCase.unSubscribe();
+    }
+    
+    @Override
     public void getEvent() {
         
         BaseCallBack<Object> callBack = new BaseCallBack<Object>() {
             
             @Override
             public void onSuccess(Object value) {
+                getView().loading(false);
                 getView().onSuccessGetListEvent((List<Event>) value);
+                
                 
             }
             
             @Override
             public void onFailure(Throwable throwable) {
+                getView().loading(false);
                 getView().onFailure(throwable.getMessage());
             }
             
             @Override
             public void onLoading() {
-                
+                getView().loading(true);
             }
         };
         EventRequest eventRequest = new EventRequest(Action.ACTION_GET_EVENT, callBack, null, null);

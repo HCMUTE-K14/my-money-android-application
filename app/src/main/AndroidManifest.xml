@@ -14,16 +14,21 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-
+    <!--saving-->
     <activity android:name=".ui.tools.calculator.CalculatorActivity"/>
     <activity android:name=".ui.saving.AddSavingActivity"/>
     <activity android:name=".ui.saving.TransferMoneySavingActivity"/>
     <activity android:name=".ui.saving.InfoSavingActivity"/>
     <activity android:name=".ui.saving.EditSavingActivity"/>
+    <activity android:name=".ui.saving.SavingActivity"/>
+    <!--event-->
+    <activity android:name=".ui.event.ActivityInfoEvent"/>
+    <activity android:name=".ui.event.ActivityEditEvent"/>
+   <!-- <activity android:name=".ui.event.EventActivity"/>-->
     <!-- User -->
     <activity
       android:launchMode="singleTop"
-      android:name=".ui.saving.SavingActivity"
+      android:name=".ui.event.EventActivity"
       android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />

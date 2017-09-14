@@ -2,61 +2,32 @@ package com.vn.hcmute.team.cortana.mymoney.ui.event;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.design.widget.TabLayout.OnTabSelectedListener;
+import android.support.design.widget.TabLayout.Tab;
+import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 import butterknife.BindView;
-import butterknife.OnClick;
-import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
-import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerEventComponent;
-import com.vn.hcmute.team.cortana.mymoney.di.component.EventComponent;
-import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.EventModule;
-import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.event.adapter.MyRecyclerViewEventAdapter;
-import java.util.List;
-import javax.inject.Inject;
+import com.vn.hcmute.team.cortana.mymoney.ui.event.adapter.PagerAdapterEvent;
 
 /**
  * Created by kunsubin on 8/22/2017.
  */
 
-public class EventActivity extends BaseActivity implements EventContract.View, MyRecyclerViewEventAdapter.ItemClickListener {
+public class EventActivity extends BaseActivity {
     
-    @Inject
-    EventPresenter mEventPresenter;
     
-    @BindView(R.id.buttonClickEvent)
-    Button mButton;
+    @BindView(R.id.tab_layout)
+    TabLayout mTabLayout;
+    @BindView(R.id.pager)
+    ViewPager mViewPager;
+    @BindView(R.id.btn_add_event)
+    FloatingActionButton btn_add_event;
     
-    @BindView(R.id.recyclerViewEvent)
-    RecyclerView mRecyclerViewEvent;
-    
-    MyRecyclerViewEventAdapter mMyRecyclerViewEventAdapter;
-    
-    List<Event> mEventList;
-    
-    @OnClick(R.id.buttonClickEvent)
-    public void onClick() {
-      
-       // mEventPresenter.getEvent();
-       /* Event event=new Event();
-        event.setEventid(UUID.randomUUID().toString());
-        event.setUserid("e67757e090bb47bbbebf7db8b15e7c96");
-        mEventPresenter.createEvent(event);*/
-        Event event=new Event();
-        event.setEventid("a92d28ad72cd42aab0df732cb6344438");
-        event.setName("chieu lang thang ghe quan net");
-        event.setMoney("19039493");
-        event.setUserid("e67757e090bb47bbbebf7db8b15e7c96");
-        mEventPresenter.updateEvent(event);
-    }
-    
+    private PagerAdapterEvent mPagerAdapterEvent;
     
     @Override
     public int getLayoutId() {
@@ -65,72 +36,48 @@ public class EventActivity extends BaseActivity implements EventContract.View, M
     
     @Override
     protected void initializeDagger() {
-        ApplicationComponent applicationComponent = ((MyMoneyApplication) this.getApplication())
-                  .getAppComponent();
-        EventComponent eventComponent = DaggerEventComponent
-                  .builder()
-                  .applicationComponent(applicationComponent)
-                  .activityModule(new ActivityModule(this))
-                  .eventModule(new EventModule())
-                  .build();
-        eventComponent.inject(this);
     }
     
     @Override
     protected void initializePresenter() {
-        this.mPresenter = mEventPresenter;
-        mEventPresenter.setView(this);
+       
     }
     
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mEventPresenter.getEvent();
+    
+    
+        mPagerAdapterEvent=new PagerAdapterEvent(getSupportFragmentManager(),0);
+        mViewPager.setAdapter(mPagerAdapterEvent);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
+            }
+        
+            @Override
+            public void onTabUnselected(Tab tab) {
+            
+            }
+        
+            @Override
+            public void onTabReselected(Tab tab) {
+            
+            }
+        });
+    
+        initTablayout();
     }
     
     @Override
     protected void initializeActionBar(View rootView) {
         
     }
-    
-    
-    @Override
-    public void onSuccessCreateEvent(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        mEventPresenter.getEvent();
-    }
-    
-    @Override
-    public void onSuccessUpdateEvent(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        mEventPresenter.getEvent();
-    }
-    
-    @Override
-    public void onSuccessDeleteEvent(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        mEventPresenter.getEvent();
-    }
-    
-    @Override
-    public void onSuccessGetListEvent(List<Event> events) {
-        mEventList=events;
-        
-        mMyRecyclerViewEventAdapter = new MyRecyclerViewEventAdapter(this, events);
-        mRecyclerViewEvent.setLayoutManager(new GridLayoutManager(this, 1));
-        mMyRecyclerViewEventAdapter.setClickListener(this);
-        mRecyclerViewEvent.setAdapter(mMyRecyclerViewEventAdapter);
-    }
-    
-    @Override
-    public void onFailure(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
-    
-    @Override
-    public void onItemClick(View view, int position) {
-        Toast.makeText(this,mEventList.get(position).toString(),Toast.LENGTH_LONG).show();
-       // TextView textView= ButterKnife.findById(view,R.id.eventid);
-       // mEventPresenter.deleteEvent(textView.getText().toString().trim());
+    public void initTablayout(){
+        mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
+        mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));
+        mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
 }

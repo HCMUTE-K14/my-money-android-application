@@ -16,13 +16,12 @@ import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
-import java.util.List;
 
 /**
  * Created by infamouSs on 8/28/2017.
  */
 
-public class SavingActivity extends BaseActivity implements SavingContract.View {
+public class SavingActivity extends BaseActivity{
     
     
     @BindView(R.id.tab_layout)
@@ -111,52 +110,5 @@ public class SavingActivity extends BaseActivity implements SavingContract.View 
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-       
-    }
-    @Override
-    public void showListSaving(List<Saving> savings) {
-       
-     
-    }
-    
-    @Override
-    public void showSaving() {
-        
-    }
-    
-    @Override
-    public void onSuccessCreateSaving() {
-       
-    }
-    
-    @Override
-    public void onSuccessDeleteSaving() {
-     
-    }
-    
-    @Override
-    public void onSuccessUpdateSaving() {
-       
-    }
-    
-    @Override
-    public void onSuccessTakeIn() {
-      
-    }
-    
-    @Override
-    public void onSuccessTakeOut() {
-    
-    }
-    
-    @Override
-    public void showError(String message) {
-      
-    }
-    
-    @Override
-    public void loading(boolean isLoading) {
-        
     }
 }

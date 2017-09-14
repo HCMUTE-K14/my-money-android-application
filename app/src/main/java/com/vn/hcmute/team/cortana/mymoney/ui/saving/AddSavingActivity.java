@@ -137,13 +137,14 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
                                 Integer.parseInt(arr[2]));
             mSaving.setDate(String.valueOf(tmp));
         }
-        //chưa xử lý
+
         mSaving.setIdWallet(mWallet.getWalletid());
+        
         mSaving.setStatus("0");
         mSaving.setUserid(mPreferencesHelper.getUserId());
         mSaving.setIcon("");
         mSaving.setCurrencies(mCurrencies);
-        // mSaving.setGoalMoney();
+
     }
     
     @OnClick(R.id.cancel_button)
