@@ -7,7 +7,6 @@ import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
 import com.vn.hcmute.team.cortana.mymoney.exception.ImageException;
 import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
-import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
@@ -20,7 +19,6 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import java.io.File;
-import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import okhttp3.MediaType;
@@ -45,7 +43,7 @@ public class ImageUseCase extends UseCase<ImageRequest> {
     @Inject
     public ImageUseCase(Context context, DataRepository dataRepository) {
         this.mDataRepository = dataRepository;
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         this.mCompositeDisposable = new CompositeDisposable();
     }
     
@@ -77,23 +75,26 @@ public class ImageUseCase extends UseCase<ImageRequest> {
     }
     
     private void doGetListIcon(final BaseCallBack<Object> callBack) {
+//        if (!mDataRepository.doesDatabaseLocalExist()) {
+//            mDataRepository.createNewLocalDatabase();
+//        }
+//
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object o) {
-            
-                callBack.onSuccess((List<Icon>) o);
+                
+                callBack.onSuccess(o);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
-        if (!this.mCompositeDisposable.isDisposed()) {
         
+        if (!this.mCompositeDisposable.isDisposed()) {
             mDisposable = mDataRepository.getListIcon()
-                      .subscribeOn(Schedulers.io())
+                      .subscribeOn(Schedulers.computation())
                       .observeOn(AndroidSchedulers.mainThread())
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);

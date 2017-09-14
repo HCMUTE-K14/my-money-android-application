@@ -145,7 +145,6 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
     @Override
     public void showError(String message) {
-        
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
     

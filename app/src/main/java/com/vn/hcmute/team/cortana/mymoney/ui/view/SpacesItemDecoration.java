@@ -21,8 +21,6 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
               Rect outRect, View view,
               RecyclerView parent, RecyclerView.State state) {
         outRect.top = mSpace;
-        outRect.left = mSpace;
-        outRect.right = mSpace;
         outRect.bottom = mSpace;
     }
 }

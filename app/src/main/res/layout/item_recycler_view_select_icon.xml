@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
+  android:layout_width="60dp"
+  android:layout_height="60dp"
+  android:background="@drawable/layer_list"
+  android:clickable="true"
+  android:focusable="true"
   android:orientation="vertical">
-  <com.vn.hcmute.team.cortana.mymoney.ui.view.CircleImageView
+  <ImageView
     android:id="@+id/imageView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:src="@drawable/ic_logo"
-    app:civ_border_color="#FF000000"
-    app:civ_border_width="2dp" />
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true" />
 </LinearLayout>

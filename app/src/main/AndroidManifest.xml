@@ -15,15 +15,19 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
 
-    <activity android:name=".ui.tools.calculator.CalculatorActivity"/>
-    <activity android:name=".ui.saving.AddSavingActivity"/>
-    <activity android:name=".ui.saving.TransferMoneySavingActivity"/>
+    <activity android:name=".ui.tools.calculator.CalculatorActivity" />
+    <activity android:name=".ui.saving.AddSavingActivity" />
+    <activity android:name=".ui.saving.TransferMoneySavingActivity" />
     <!-- User -->
     <activity
       android:launchMode="singleTop"
       android:name=".ui.login.LoginActivity"
       android:screenOrientation="portrait">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
     </activity>
     <activity
       android:launchMode="singleTop"
@@ -43,6 +47,7 @@
     <!-- Wallet -->
     <activity android:name=".ui.wallet.SelectWalletActivity">
 
+
     </activity>
     <activity android:name=".ui.wallet.AddWalletActivity">
 
@@ -51,25 +56,21 @@
 
     </activity>
 
-    <activity android:name=".ui.wallet.MyWalletActivity"/>
+    <activity android:name=".ui.wallet.MyWalletActivity" />
     <!-- Saving -->
     <activity android:name=".ui.saving.SavingActivity" />
 
     <!-- Person -->
-    <activity android:name=".ui.person.PersonActivity"></activity>
+    <activity android:name=".ui.person.PersonActivity"/>
 
     <!-- Currency -->
-    <activity android:name=".ui.currencies.CurrenciesActivity" >
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
+    <activity android:name=".ui.currencies.CurrenciesActivity">
 
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
     </activity>
 
     <!-- Tool -->
     <activity android:name=".ui.tools.galleryloader.ui.GalleryLoaderActivity" />
-    
+    <activity android:name=".ui.iconshop.SelectIconActivity" />
   </application>
 
 </manifest>

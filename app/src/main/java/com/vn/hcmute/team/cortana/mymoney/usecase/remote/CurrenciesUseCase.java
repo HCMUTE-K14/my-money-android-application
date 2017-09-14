@@ -27,6 +27,8 @@ import javax.inject.Singleton;
 @Singleton
 public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
     
+    public static final String TAG = CurrenciesUseCase.class.getSimpleName();
+    
     private DataRepository mDataRepository;
     private Context mContext;
     
@@ -39,7 +41,7 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
     
     @Inject
     public CurrenciesUseCase(Context context, DataRepository dataRepository) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
     }
@@ -70,19 +72,14 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
     }
     
     private void doConvert_Offline(final BaseCallBack<Object> callBack, final String[] params) {
-        RealTimeCurrency realTimeCurrency = mDataRepository.getRealTimeCurrency();
         try {
             String amount = params[0];
             String from = params[1];
             String to = params[2];
             
-            double _1_usd_to_ = realTimeCurrency.get(from);
-            
-            double rate = Double.parseDouble(amount) / _1_usd_to_;
-            
-            double value = rate * realTimeCurrency.get(to);
-            
-            callBack.onSuccess(NumberUtil.round(value, 3));
+            double result = NumberUtil
+                      .exchangeMoney(mContext.getApplicationContext(), amount, from, to);
+            callBack.onSuccess(result);
         } catch (Exception e) {
             callBack.onFailure(e);
         }
@@ -94,6 +91,7 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
                 mDataRepository.putRealTimeCurrency((RealTimeCurrency) currencies);
+                MyLogger.d(TAG, (RealTimeCurrency) currencies, true);
                 callBack.onSuccess(currencies);
             }
             
@@ -124,7 +122,7 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
         String amount = params[0];
         String from = params[1];
         String to = params[2];
-        
+
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
@@ -194,17 +192,16 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
     }
     
     private void doGetCurrenciesFromLocal(final BaseCallBack<Object> callBack) {
+    
       // mDataRepository.createNewLocalDatabase();
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
-                MyLogger.d("Currencies Usecacse","OnSUCCESS");
                 callBack.onSuccess(currencies);
             }
             
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-                MyLogger.d("Currencies Usecacse","failure");
                 callBack.onFailure(e);
             }
         };
@@ -217,7 +214,7 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
                       .doOnSubscribe(new Consumer<Disposable>() {
                           @Override
                           public void accept(Disposable disposable) throws Exception {
-                              MyLogger.d("Currencies Usecacse","loading");
+                              MyLogger.d("Currencies Usecacse", "loading");
                               callBack.onLoading();
                           }
                       })

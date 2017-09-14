@@ -24,6 +24,8 @@ public interface SelectIconContract {
     interface Presenter {
         void getListIcon();
         
+        void getListIcon(int page);
+        
         void unSubscribe();
     }
 }

@@ -61,6 +61,8 @@ public class CurrencyService extends DbContentProvider implements
                         
                         lists.add(currencies);
                     }
+                    cursor.close();
+                    CurrencyService.this.close();
                     return lists;
                 }
             };

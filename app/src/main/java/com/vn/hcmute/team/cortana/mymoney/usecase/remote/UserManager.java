@@ -42,7 +42,7 @@ public class UserManager extends UseCase<UserRequest> {
     @Inject
     public UserManager(Context context, DataRepository dataRepository) {
         this.mDataRepository = dataRepository;
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         this.mCompositeDisposable = new CompositeDisposable();
     }
     

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import butterknife.BindView;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
@@ -53,10 +54,6 @@ public class SelectWalletActivity extends BaseActivity implements
         @Override
         public void onClickMyWallet() {
             openActivityMyWallet();
-        }
-        
-        @Override
-        public void onCLickTotal() {
         }
         
         @Override
@@ -128,14 +125,6 @@ public class SelectWalletActivity extends BaseActivity implements
         initializeView();
         
         getWalletData();
-        
-//
-//        Wallet wallet =new Wallet();
-//        wallet.setUserid("26d01ac203c74d9d8eb0c610a33913eb");
-//        wallet.setWalletName("SDADSADSA");
-//        wallet.setCurrencyUnit(new Currencies());
-//
-//        mWalletPresenter.addWallet(wallet);
     }
     
     @Override
@@ -214,7 +203,7 @@ public class SelectWalletActivity extends BaseActivity implements
     
     @Override
     public void onAddWalletSuccess(String message, Wallet wallet) {
-        
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
     
     /*-----------------*/
@@ -222,11 +211,6 @@ public class SelectWalletActivity extends BaseActivity implements
     /*-----------------*/
     private void getWalletData() {
         mWalletPresenter.getAllWallet();
-    }
-    
-    private void openAddWalletActivity() {
-        Intent intent = new Intent(this, AddWalletActivity.class);
-        startActivityForResult(intent, RequestCode.ADD_WALLET_REQUEST_CODE);
     }
     
     private void openEditWalletActivity(Wallet wallet) {
@@ -237,6 +221,11 @@ public class SelectWalletActivity extends BaseActivity implements
     
     private void removeWallet(int position, Wallet wallet) {
         mWalletPresenter.removeWallet(position, wallet);
+    }
+    
+    private void openAddWalletActivity() {
+        Intent intent = new Intent(this, AddWalletActivity.class);
+        startActivityForResult(intent, RequestCode.ADD_WALLET_REQUEST_CODE);
     }
     
     private void openActivityMyWallet() {

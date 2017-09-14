@@ -23,8 +23,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.CurrenciesUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.CurrenciesUseCase.CurrenciesRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import javax.inject.Inject;
 
 /**
@@ -69,7 +67,7 @@ public class TestFragment extends BaseFragment {
     
                       @Override
                       public void onFailure(Throwable throwable) {
-        
+                     
                       }
     
                       @Override
@@ -86,7 +84,6 @@ public class TestFragment extends BaseFragment {
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {
-                          MyLogger.d(mPreferencesHelper.getRealTimeCurrency().VND);
                       }
     
                       @Override
@@ -165,11 +162,5 @@ public class TestFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            String cipher=SecurityUtil.encrypt("12345");
-            MyLogger.d(cipher);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

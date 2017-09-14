@@ -42,7 +42,7 @@ public class PersonUseCase extends UseCase<PersonRequest> {
     
     @Inject
     public PersonUseCase(Context context, DataRepository dataRepository) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
     }
@@ -88,7 +88,6 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object obj) {
-                
                 callBack.onSuccess(obj);
             }
             

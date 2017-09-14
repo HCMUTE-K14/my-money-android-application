@@ -13,6 +13,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -40,7 +41,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
     
     @Inject
     public WalletUseCase(Context context, DataRepository dataRepository) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
     }
@@ -81,6 +82,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
     }
     
     private void doCreate(final BaseCallBack<Object> callBack, final Wallet wallet) {
+        
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         
@@ -108,12 +110,13 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
-                
+                MyLogger.d(TAG, "ONSUCCESS");
                 callBack.onSuccess(user);
             }
             
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                MyLogger.d(TAG, "onFAILURE");
                 callBack.onFailure(e);
             }
         };
@@ -136,7 +139,6 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
             this.mCompositeDisposable.add(mDisposable);
             
         }
-        unSubscribe();
     }
     
     private void doUpdate(final BaseCallBack<Object> callBack, final Wallet wallet) {
@@ -148,7 +150,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                       mContext.getString(R.string.message_warning_need_login)));
             return;
         }
-    
+        
         if (TextUtils.isEmpty(wallet.getWalletName())) {
             callBack.onFailure(new WalletException(
                       mContext.getString(R.string.message_validate_name_wallet)));
@@ -159,7 +161,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                       mContext.getString(R.string.message_validate_currency_wallet)));
             return;
         }
-    
+        
         if (TextUtils.isEmpty(wallet.getWalletImage())) {
             wallet.setWalletImage("ic_saving");
         }
@@ -191,7 +193,6 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                       .singleOrError()
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
-            
         }
     }
     

@@ -32,7 +32,7 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
-                          getView().onAddWalletSuccess((String) value,wallet);
+                          getView().onAddWalletSuccess((String) value, wallet);
                           
                       }
                       
@@ -126,18 +126,21 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
     
     @Override
     public void getAllWallet() {
+
         WalletUseCase.WalletRequest request = new WalletRequest(Action.ACTION_GET_WALLET,
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
                           List<Wallet> wallets = (List<Wallet>) value;
-                          
+
                           if (wallets.isEmpty()) {
                               getView().showEmpty();
                           } else {
                               getView().showListWallet(wallets);
                           }
+                          
+
                       }
                       
                       @Override

@@ -12,8 +12,6 @@ public interface SelectWalletListener {
     
     void onClickMyWallet();
     
-    void onCLickTotal();
-    
     void onCLickWallet(Wallet wallet);
     
     void onEditWallet(int position, Wallet wallet);

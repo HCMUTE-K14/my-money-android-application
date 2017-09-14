@@ -20,7 +20,7 @@ public abstract class BaseFragment extends Fragment {
     
     protected BasePresenter mPresenter;
     
-    private View view;
+    protected View view;
     
     private Unbinder unbinder;
     
@@ -33,7 +33,6 @@ public abstract class BaseFragment extends Fragment {
     protected abstract void initializeDagger();
     
     protected abstract void initializePresenter();
-    
     
     protected abstract void initializeActionBar(View rootView);
     
@@ -55,8 +54,6 @@ public abstract class BaseFragment extends Fragment {
         if (mPresenter != null) {
             mPresenter.initialize(getArguments());
         }
-       
-        unbinder = ButterKnife.bind(this, view);
         initializeActionBar(this.view);
         return view;
     }
@@ -64,6 +61,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        unbinder = ButterKnife.bind(this, view);
     }
     
     @Override

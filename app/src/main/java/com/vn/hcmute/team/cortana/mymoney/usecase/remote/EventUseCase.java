@@ -36,7 +36,7 @@ public class EventUseCase extends UseCase<EventRequest> {
     
     @Inject
     public EventUseCase(Context context, DataRepository dataRepository) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
     }

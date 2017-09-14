@@ -3,6 +3,7 @@ package com.vn.hcmute.team.cortana.mymoney.data.local;
 import android.content.Context;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.service.CurrencyService;
+import com.vn.hcmute.team.cortana.mymoney.data.local.service.ImageLocalService;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import io.reactivex.Observable;
@@ -28,33 +29,13 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
         this.mDatabaseHelper = DatabaseHelper.getInstance(context.getApplicationContext());
     }
     
-    public boolean doesExistsDatabase() {
-        return mDatabaseHelper.doesDatabaseExist();
-    }
-    
-    public void createNewDatabase() {
-        mDatabaseHelper.createNewDatabase();
-    }
-    
     @Override
     public Observable<List<Icon>> getListIcon() {
-        final Callable<List<Icon>> icon = new Callable<List<Icon>>() {
-            @Override
-            public List<Icon> call() throws Exception {
-                return null;
-            }
-        };
-        Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(@NonNull ObservableEmitter<Object> e) {
-                try {
-                    e.onNext(icon.call());
-                } catch (Exception ex) {
-                    e.onError(ex);
-                }
-            }
-        });
-        return null;
+        ImageLocalService imageLocalService = new ImageLocalService(mDatabaseHelper);
+        
+        Callable<List<Icon>> callable = imageLocalService.getListIcon();
+        
+        return makeObservable(callable);
     }
     
     @Override
@@ -62,10 +43,9 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
         CurrencyService currencyService = new CurrencyService(mDatabaseHelper);
         
         Callable<List<Currencies>> callable = currencyService.getListCurrency();
-
+        
         return makeObservable(callable);
     }
-    
     
     private <T> Observable<T> makeObservable(final Callable<T> callable) {
         return Observable.create(new ObservableOnSubscribe<T>() {

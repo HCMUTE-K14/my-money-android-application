@@ -141,4 +141,6 @@
   <string name="message_warning_wrong_expression">Wrong expression</string>
   <string name="message_warning_max_digit">Max 15 digit</string>
   <string name="txt_select_icon">Select Icon</string>
+  <string name="txt_show_value_wallet">%1$s %2$s</string>
+  <string name="message_finish_choosing_icon">Did you finish to choosing icon ?</string>
 </resources>

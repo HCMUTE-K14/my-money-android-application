@@ -140,9 +140,7 @@ public interface DataSource {
     }
     
     public interface LocalDataSource {
-        boolean doesDatabaseLocalExist();
-        
-        void createNewLocalDatabase();
+
         
         Observable<List<Icon>> getListIcon();
         

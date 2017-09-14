@@ -27,7 +27,9 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/28/2017.
  */
 
-public class FragmentFinished extends BaseFragment implements MyRecyclerViewSavingAdapter.ItemClickListener, SavingContract.View{
+public class FragmentFinished extends BaseFragment implements
+                                                   MyRecyclerViewSavingAdapter.ItemClickListener,
+                                                   SavingContract.View {
     
     private List<Saving> mSavingList;
     @BindView(R.id.recycler_view_saving_finished)
@@ -48,7 +50,8 @@ public class FragmentFinished extends BaseFragment implements MyRecyclerViewSavi
     
     @Override
     protected void initializeDagger() {
-        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity().getApplication())
+        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity()
+                  .getApplication())
                   .getAppComponent();
         SavingComponent savingComponent = DaggerSavingComponent
                   .builder()
@@ -61,7 +64,7 @@ public class FragmentFinished extends BaseFragment implements MyRecyclerViewSavi
     
     @Override
     protected void initializePresenter() {
-        mPresenter=this.mSavingPresenter;
+        mPresenter = this.mSavingPresenter;
         mSavingPresenter.setView(this);
     }
     
@@ -70,29 +73,31 @@ public class FragmentFinished extends BaseFragment implements MyRecyclerViewSavi
         init(rootView);
         mSavingPresenter.getSaving();
     }
-    public void init(View view){
+    
+    public void init(View view) {
         // mRecyclerView=(RecyclerView)view.findViewById(R.id.recycler_view_saving_running);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
-        mSavingList=new ArrayList<>();
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        mSavingList = new ArrayList<>();
     }
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
         if (requestCode == 2) {
-            if(resultCode == Activity.RESULT_OK){
-                String savingId=data.getStringExtra("result");
+            if (resultCode == Activity.RESULT_OK) {
+                String savingId = data.getStringExtra("result");
                 
-                if(!mSavingList.isEmpty()){
+                if (!mSavingList.isEmpty()) {
                     
-                    for (Saving saving:mSavingList) {
-                        if(saving.getSavingid().equals(savingId)){
+                    for (Saving saving : mSavingList) {
+                        if (saving.getSavingid().equals(savingId)) {
                             mSavingList.remove(saving);
                             mMyRecyclerViewSavingAdapter.setList(mSavingList);
                             break;
                         }
                     }
-                    if(mSavingList.isEmpty()){
-                        mEmptyAdapter=new EmptyAdapter(getContext(),"No Saving");
+                    if (mSavingList.isEmpty()) {
+                        mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
                         mRecyclerView.setAdapter(mEmptyAdapter);
                     }
                 }
@@ -105,6 +110,7 @@ public class FragmentFinished extends BaseFragment implements MyRecyclerViewSavi
             }
         }
     }
+    
     @Override
     public void onDestroy() {
         mSavingPresenter.unSubscribe();
@@ -113,17 +119,19 @@ public class FragmentFinished extends BaseFragment implements MyRecyclerViewSavi
     
     @Override
     public void showListSaving(List<Saving> savings) {
-        for (Saving saving:savings) {
-            if(saving.getStatus().equals("1"))
+        for (Saving saving : savings) {
+            if (saving.getStatus().equals("1")) {
                 mSavingList.add(saving);
+            }
         }
-    
-        if(!mSavingList.isEmpty()){
-            mMyRecyclerViewSavingAdapter=new MyRecyclerViewSavingAdapter(getContext(),mSavingList);
+        
+        if (!mSavingList.isEmpty()) {
+            mMyRecyclerViewSavingAdapter = new MyRecyclerViewSavingAdapter(getContext(),
+                      mSavingList);
             mMyRecyclerViewSavingAdapter.setClickListener(this);
             mRecyclerView.setAdapter(mMyRecyclerViewSavingAdapter);
-        }else{
-            mEmptyAdapter=new EmptyAdapter(getContext(),"No Saving");
+        } else {
+            mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
     }
@@ -165,17 +173,17 @@ public class FragmentFinished extends BaseFragment implements MyRecyclerViewSavi
     
     @Override
     public void loading(boolean isLoading) {
-        mProgressBar.setVisibility(isLoading?View.VISIBLE:View.GONE);
+        mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
     
     @Override
     public void onItemClick(View view, List<Saving> savingList, int position, int process) {
-        Saving saving=savingList.get(position);
-        Intent intent=new Intent(getActivity(),InfoSavingActivity.class);
-        if(saving!=null){
-            intent.putExtra("MySaving",saving);
-            intent.putExtra("process",String.valueOf(process));
+        Saving saving = savingList.get(position);
+        Intent intent = new Intent(getActivity(), InfoSavingActivity.class);
+        if (saving != null) {
+            intent.putExtra("MySaving", saving);
+            intent.putExtra("process", String.valueOf(process));
         }
-        startActivityForResult(intent,2);
+        startActivityForResult(intent, 2);
     }
 }

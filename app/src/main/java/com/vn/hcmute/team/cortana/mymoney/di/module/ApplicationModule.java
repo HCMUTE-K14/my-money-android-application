@@ -43,14 +43,20 @@ public class ApplicationModule {
     
     @Singleton
     @Provides
-    public PreferencesHelper providePreferenceHelper(){
-        return new PreferencesHelper(mMoneyApplication);
+    public PreferencesHelper providePreferenceHelper() {
+        return PreferencesHelper.getInstance(mMoneyApplication.getApplicationContext());
     }
     
     @Singleton
     @Provides
-    public RemoteRepository provideRemoteRepository(ServiceGenerator serviceGenerator){
+    public RemoteRepository provideRemoteRepository(ServiceGenerator serviceGenerator) {
         return new RemoteRepository(serviceGenerator);
+    }
+    
+    @Singleton
+    @Provides
+    public LocalRepository provideLocalRepository(Context context) {
+        return new LocalRepository(context.getApplicationContext());
     }
     
     @Singleton

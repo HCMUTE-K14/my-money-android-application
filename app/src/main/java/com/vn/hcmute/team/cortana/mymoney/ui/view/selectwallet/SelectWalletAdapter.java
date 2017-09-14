@@ -1,7 +1,6 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -52,7 +51,7 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
         if (wallets != null) {
             this.mWallets.addAll(wallets);
         }
-        this.mPreferencesHelper = new PreferencesHelper(this.mContext);
+        this.mPreferencesHelper = PreferencesHelper.getInstance(mContext);
         shouldShowTotal = true;
         shouldShowFooter = true;
         shouldShowMenuWallet = false;
@@ -88,21 +87,7 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
         if (mSelectWalletListener == null) {
             return;
         }
-        if (holder instanceof SelectWalletHeaderItemViewHolder) {
-            SelectWalletHeaderItemViewHolder header = (SelectWalletHeaderItemViewHolder) holder;
-            header.mCardViewTotal.setVisibility(shouldShowTotal ? View.VISIBLE : View.GONE);
-            if (shouldShowTotal) {
-                
-                header.itemView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mSelectWalletListener.onCLickTotal();
-                    }
-                });
-            }
-            
-            
-        } else if (holder instanceof SelectWalletItemViewHolder) {
+        if (holder instanceof SelectWalletItemViewHolder) {
             final SelectWalletItemViewHolder item = (SelectWalletItemViewHolder) holder;
             
             final Wallet wallet =
@@ -124,7 +109,6 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
                         
                         MenuPopupWithIcon menuPopupWithIcon = new MenuPopupWithIcon(mContext, v);
                         menuPopupWithIcon.inflate(R.menu.menu_popup_select_wallet);
-                        
                         menuPopupWithIcon.setMenuItemCLickListener(new OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
@@ -158,16 +142,16 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
                       .into(item.mImageViewIconWallet);
             
             item.mTextViewNameWallet.setText(wallet.getWalletName());
-    
-            String value = wallet.getCurrencyUnit().getCurSymbol() +
-                           " " +
-                           (TextUtils.isEmpty(wallet.getMoney()) ? "0" : wallet.getMoney());
+            
+            String value = mContext.getString(R.string.txt_show_value_wallet,
+                      wallet.getCurrencyUnit().getCurSymbol(),
+                      (TextUtils.isEmpty(wallet.getMoney()) ? "0" : wallet.getMoney()));
+            
             item.mTextViewValueWallet.setText(value);
             item.mImageViewArchive.setVisibility(wallet.isArchive() ? View.VISIBLE : View.GONE);
             item.mImageViewMenuWallet
                       .setVisibility(shouldShowMenuWallet ? View.VISIBLE : View.GONE);
             if (shouldShowMenuWallet) {
-                
                 item.mImageViewMenuWallet.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -250,7 +234,6 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
     
     private boolean isSelectedWallet(String walletId) {
         Wallet wallet = mPreferencesHelper.getCurrentWallet();
-        
         return wallet == null || walletId.equalsIgnoreCase(wallet.getWalletid());
     }
     
@@ -306,6 +289,7 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.mWallets.get(realPosition).setWalletName(wallet.getWalletName());
         this.mWallets.get(realPosition).setCurrencyUnit(wallet.getCurrencyUnit());
         this.mWallets.get(realPosition).setArchive(wallet.isArchive());
+        this.mWallets.get(realPosition).setMoney(wallet.getMoney());
         
         int updatePosition = shouldHaveHeader() ? realPosition + 1 : realPosition;
         notifyItemChanged(updatePosition);
@@ -338,12 +322,6 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
     
     static class SelectWalletHeaderItemViewHolder extends RecyclerView.ViewHolder {
-        
-        @BindView(R.id.view_total)
-        CardView mCardViewTotal;
-        
-        @BindView(R.id.txt_total_value_wallet)
-        TextView mTextViewTotalValue;
         
         private SelectWalletHeaderItemViewHolder(View itemView) {
             super(itemView);

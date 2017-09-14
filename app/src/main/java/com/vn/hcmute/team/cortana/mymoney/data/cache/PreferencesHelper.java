@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
-import javax.inject.Inject;
 
 /**
  * Created by infamouSs on 8/21/17.
@@ -28,9 +27,20 @@ public class PreferencesHelper {
     private SharedPreferences mSharedPreferences;
     private Gson mGson;
     
-    @Inject
-    public PreferencesHelper(Context context) {
-        this.mSharedPreferences = context.getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    public static PreferencesHelper sInstance;
+    
+    public static PreferencesHelper getInstance(Context context) {
+        if (sInstance == null) {
+            synchronized (PreferencesHelper.class) {
+                sInstance = new PreferencesHelper(context.getApplicationContext());
+            }
+        }
+        return sInstance;
+    }
+    
+    private PreferencesHelper(Context context) {
+        this.mSharedPreferences = context.getApplicationContext()
+                  .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         this.mGson = new Gson();
     }
     

@@ -38,7 +38,6 @@ public class CacheRepository implements PreferenceService {
     
     @Override
     public void putLoginState(User user) {
-        
         mPreferencesHelper.putUserId(user.getUserid());
         mPreferencesHelper.putUserToken(user.getToken());
         mPreferencesHelper.putUser(user);

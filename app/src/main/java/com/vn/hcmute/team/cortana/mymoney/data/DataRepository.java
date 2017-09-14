@@ -317,16 +317,6 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
-    public boolean doesDatabaseLocalExist() {
-        return mLocalRepository.doesExistsDatabase();
-    }
-    
-    @Override
-    public void createNewLocalDatabase() {
-        mLocalRepository.createNewDatabase();
-    }
-    
-    @Override
     public Observable<List<Icon>> getListIcon() {
         return mLocalRepository.getListIcon();
     }

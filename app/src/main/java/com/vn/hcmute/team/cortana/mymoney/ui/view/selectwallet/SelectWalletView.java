@@ -99,7 +99,7 @@ public class SelectWalletView extends RelativeLayout {
     }
     
     public void addWallet(Wallet wallet) {
-        if(mRecyclerView.getAdapter() instanceof EmptyAdapter){
+        if (mRecyclerView.getAdapter() instanceof EmptyAdapter) {
             mRecyclerView.setAdapter(mSelectWalletAdapter);
         }
         mSelectWalletAdapter.addWallet(wallet);
@@ -111,5 +111,9 @@ public class SelectWalletView extends RelativeLayout {
     
     public void showMenuWallet(boolean shouldMenuWallet) {
         mSelectWalletAdapter.setShouldShowMenuWallet(shouldMenuWallet);
+    }
+    
+    public void notifyDataSetChanged() {
+        mSelectWalletAdapter.notifyDataSetChanged();
     }
 }

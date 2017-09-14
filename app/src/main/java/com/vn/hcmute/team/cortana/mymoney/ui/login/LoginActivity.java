@@ -119,8 +119,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @OnClick(R.id.btn_login)
     public void onClickLogin(View view) {
         UserCredential userCredential = new UserCredential();
-        String username=mTextViewUsername.getText().toString();
-        String password=mTextViewPassword.getText().toString();
+        String username = mTextViewUsername.getText().toString();
+        String password = mTextViewPassword.getText().toString();
         
         userCredential.setUsername(username);
         userCredential.setPassword(password);

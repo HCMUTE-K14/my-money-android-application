@@ -58,7 +58,8 @@ public class SelectIconAdapter extends RecyclerView.Adapter<SelectIconViewHolder
                   .error(R.drawable.folder_placeholder)
                   .dontAnimate()
                   .into(holder.mImageView);
-        holder.itemView.setOnClickListener(new OnClickListener() {
+        
+        holder.mImageView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onClickIcon(position, icon);
@@ -72,6 +73,9 @@ public class SelectIconAdapter extends RecyclerView.Adapter<SelectIconViewHolder
     }
     
     public void setData(List<Icon> icons) {
+        if (mIcons == null) {
+            mIcons = new ArrayList<>();
+        }
         mIcons.clear();
         mIcons.addAll(icons);
         notifyDataSetChanged();
