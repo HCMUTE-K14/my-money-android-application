@@ -16,4 +16,6 @@
   <color name="color_background_login">#EFEFEF</color>
   <color name="color_gray_calculator">#EEEEEE</color>
   <color name="color_gray_cal">#BBBBBB</color>
+  <color name="color_gray">#5c5c5c</color>
+  <color name="color_orange">#947902</color>
 </resources>

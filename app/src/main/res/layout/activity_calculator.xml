@@ -54,13 +54,13 @@
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="5">
 
       </LinearLayout>
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:weightSum="2">
 
@@ -81,13 +81,14 @@
             <TextView
               android:layout_width="wrap_content"
               android:layout_height="match_parent"
-              android:gravity="center|left"
+              android:gravity="center|bottom"
               android:text="đ"
               android:textColor="@color/black"
               android:textSize="25dp" />
             <ImageView
               android:layout_width="20dp"
-              android:layout_height="match_parent"
+              android:layout_height="20dp"
+              android:layout_gravity="bottom"
               android:src="@drawable/abc_spinner"
               android:tint="@color/black" />
 
@@ -98,9 +99,10 @@
             android:layout_weight="1">
             <TextView
               android:id="@+id/txt_input"
-              android:layout_width="wrap_content"
+              android:scrollbars="vertical"
+              android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:gravity="center|left"
+              android:gravity="left|bottom"
               android:text="0"
               android:textColor="@color/black"
               android:textSize="25dp" />

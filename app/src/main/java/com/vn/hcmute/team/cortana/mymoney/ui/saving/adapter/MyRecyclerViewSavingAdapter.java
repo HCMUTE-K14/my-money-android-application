@@ -115,6 +115,7 @@ public class MyRecyclerViewSavingAdapter extends RecyclerView.Adapter<MyRecycler
         void onItemClick(View view,List<Saving> savingList, int position,int process);
     }
     public void setList(List<Saving> list){
+       // mData.clear();
         mData=new ArrayList<>();
         mData.addAll(list);
         notifyDataSetChanged();

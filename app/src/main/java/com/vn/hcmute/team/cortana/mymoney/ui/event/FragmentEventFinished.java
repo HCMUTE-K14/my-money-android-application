@@ -120,9 +120,15 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
                     mEventList.add(event);
                 }
             }
-            mMyRecyclerViewEventAdapter=new MyRecyclerViewEventAdapter(getActivity(),mEventList);
-            mMyRecyclerViewEventAdapter.setClickListener(this);
-            mRecyclerView.setAdapter(mMyRecyclerViewEventAdapter);
+            if(!mEventList.isEmpty()){
+                mMyRecyclerViewEventAdapter=new MyRecyclerViewEventAdapter(getActivity(),mEventList);
+                mMyRecyclerViewEventAdapter.setClickListener(this);
+                mRecyclerView.setAdapter(mMyRecyclerViewEventAdapter);
+            }else {
+                mEmptyAdapter=new EmptyAdapter(getActivity(),getString(R.string.no_event));
+                mRecyclerView.setAdapter(mEmptyAdapter);
+            }
+            
         }else {
             mEmptyAdapter=new EmptyAdapter(getActivity(),getString(R.string.no_event));
             mRecyclerView.setAdapter(mEmptyAdapter);
@@ -144,7 +150,7 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
     public void onItemClick(Event event) {
         Intent intent=new Intent(getActivity(),ActivityInfoEvent.class);
         intent.putExtra("event",event);
-        startActivityForResult(intent,16);
+        getActivity().startActivityForResult(intent,16);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -175,7 +181,13 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
                 mEventPresenter.getEvent();
             }
         }
-        
+        if(requestCode==15){
+            if(resultCode==Activity.RESULT_CANCELED){
+                mEventList.clear();
+                mMyRecyclerViewEventAdapter.notifyDataSetChanged();
+                mEventPresenter.getEvent();
+            }
+        }
         
     }
 }

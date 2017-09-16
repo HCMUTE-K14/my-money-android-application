@@ -291,7 +291,6 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         Intent returnIntent = new Intent();
         returnIntent.putExtra("saving",mSaving);
         returnIntent.putExtra("name_wallet",txt_wallet_saving.getText().toString().trim());
-       // returnIntent.putExtra("currencies",mCurrencies);
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }

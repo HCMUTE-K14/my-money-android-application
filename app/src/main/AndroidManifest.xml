@@ -20,15 +20,16 @@
     <activity android:name=".ui.saving.TransferMoneySavingActivity"/>
     <activity android:name=".ui.saving.InfoSavingActivity"/>
     <activity android:name=".ui.saving.EditSavingActivity"/>
-    <activity android:name=".ui.saving.SavingActivity"/>
+    <!--<activity android:name=".ui.saving.SavingActivity"/>-->
     <!--event-->
     <activity android:name=".ui.event.ActivityInfoEvent"/>
     <activity android:name=".ui.event.ActivityEditEvent"/>
+    <activity android:name=".ui.event.ActivityAddEvent"/>
    <!-- <activity android:name=".ui.event.EventActivity"/>-->
     <!-- User -->
     <activity
       android:launchMode="singleTop"
-      android:name=".ui.event.EventActivity"
+      android:name=".ui.saving.SavingActivity"
       android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />

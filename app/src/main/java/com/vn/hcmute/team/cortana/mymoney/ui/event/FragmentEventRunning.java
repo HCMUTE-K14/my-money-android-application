@@ -120,9 +120,15 @@ public class FragmentEventRunning extends BaseFragment implements EventContract.
                     mEventList.add(event);
                 }
             }
-            mMyRecyclerViewEventAdapter=new MyRecyclerViewEventAdapter(getActivity(),mEventList);
-            mMyRecyclerViewEventAdapter.setClickListener(this);
-            mRecyclerView.setAdapter(mMyRecyclerViewEventAdapter);
+            if(!mEventList.isEmpty()){
+                mMyRecyclerViewEventAdapter=new MyRecyclerViewEventAdapter(getActivity(),mEventList);
+                mMyRecyclerViewEventAdapter.setClickListener(this);
+                mRecyclerView.setAdapter(mMyRecyclerViewEventAdapter);
+            }else {
+                mEmptyAdapter=new EmptyAdapter(getActivity(),getString(R.string.no_event));
+                mRecyclerView.setAdapter(mEmptyAdapter);
+            }
+          
         }else {
             mEmptyAdapter=new EmptyAdapter(getActivity(),getString(R.string.no_event));
             mRecyclerView.setAdapter(mEmptyAdapter);
@@ -143,9 +149,11 @@ public class FragmentEventRunning extends BaseFragment implements EventContract.
     public void onItemClick(Event event) {
         Intent intent=new Intent(getActivity(),ActivityInfoEvent.class);
         intent.putExtra("event",event);
-        startActivityForResult(intent,15);
+        getActivity().startActivityForResult(intent,15);
     }
-    @Override
+    
+   
+     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
         if (requestCode == 15) {
@@ -153,7 +161,6 @@ public class FragmentEventRunning extends BaseFragment implements EventContract.
                 String eventId=data.getStringExtra("result");
                 
                 if(!mEventList.isEmpty()){
-                    
                     for (Event event:mEventList) {
                         if(event.getEventid().equals(eventId)){
                             mEventList.remove(event);
@@ -174,7 +181,13 @@ public class FragmentEventRunning extends BaseFragment implements EventContract.
                 mEventPresenter.getEvent();
             }
         }
-        
+        if(requestCode==22){
+            if(resultCode==Activity.RESULT_OK){
+                Event event=data.getParcelableExtra("event");
+                mEventList.add(event);
+                mMyRecyclerViewEventAdapter.setList(mEventList);
+            }
+        }
     }
     
 }

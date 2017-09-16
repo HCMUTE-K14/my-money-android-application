@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
+import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerEventComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.EventComponent;
@@ -28,40 +29,44 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import java.util.Calendar;
 import java.util.List;
 import javax.inject.Inject;
 
 /**
- * Created by kunsubin on 9/14/2017.
+ * Created by kunsubin on 9/15/2017.
  */
 
-public class ActivityEditEvent extends BaseActivity implements EventContract.View{
+public class ActivityAddEvent extends BaseActivity implements EventContract.View{
     
     @BindView(R.id.edit_text_name_event)
     EditText edit_text_name_event;
     @BindView(R.id.txt_date_event)
     TextView txt_date_event;
+    @BindView(R.id.ic_clear_date)
+    ImageView ic_clear_date;
     @BindView(R.id.txt_currencies)
     TextView txt_currencies;
     @BindView(R.id.txt_wallet_event)
     TextView txt_wallet_event;
-    @BindView(R.id.ic_clear_date)
-    ImageView ic_clear_date;
     
     static final int DATE_DIALOG_ID = 999;
     int day, month, year;
-    private Event mEvent;
-    private String mWalletName;
-    private Wallet mWallet;
     private Currencies mCurrencies;
+    private Wallet mWallet;
+    private Event mEvent;
+    
     @Inject
     EventPresenter mEventPresenter;
+    @Inject
+    PreferencesHelper mPreferencesHelper;
     
     @Override
     public int getLayoutId() {
-        return R.layout.activity_edit_event;
+        return R.layout.activity_add_event;
     }
+    
     @Override
     protected void initializeDagger() {
         ApplicationComponent applicationComponent = ((MyMoneyApplication) this.getApplication())
@@ -79,38 +84,94 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
     protected void initializePresenter() {
         mPresenter=mEventPresenter;
         mEventPresenter.setView(this);
-    }
-    
-    @Override
-    protected void onDestroy() {
-        mEventPresenter.unSubscribe();
-        super.onDestroy();
+        
     }
     
     @Override
     protected void initializeActionBar(View rootView) {
-        getData();
-        showData();
         initDatePicker();
+        init();
+        initView();
     }
-    public void getData(){
-        Intent intent=getIntent();
-        mEvent=intent.getParcelableExtra("event");
-        mWalletName=intent.getStringExtra("wallet_name");
+    
+    public void init(){
+        
+        mEvent=new Event();
+        mCurrencies=new Currencies();
+        setCurrenciesDefault();
         mWallet=new Wallet();
-        mWallet.setWalletid(mEvent.getIdWallet());
-        mCurrencies=mEvent.getCurrencies();
     }
-    public void showData(){
-        edit_text_name_event.setText(mEvent.getName());
-        txt_date_event.setText(DateUtil.convertTimeMillisToDate(mEvent.getDate()));
-        txt_currencies.setText(mEvent.getCurrencies().getCurName());
-        if(mEvent.getIdWallet().equals("")){
-            txt_wallet_event.setText(getString(R.string.all_wallet));
-        }else {
-            txt_wallet_event.setText(mWalletName);
+    public void initView(){
+        txt_date_event.setText(getString(R.string.ending_date));
+        txt_date_event.setTextColor(ContextCompat.getColor(this, R.color.gray));
+        ic_clear_date.setVisibility(View.GONE);
+    }
+    public void setCurrenciesDefault() {
+        mCurrencies.setCurId("4");
+        mCurrencies.setCurName("Việt Nam Đồng");
+        mCurrencies.setCurCode("VND");
+        mCurrencies.setCurSymbol("₫");
+        mCurrencies.setCurDisplayType("cur_display_type");
+    }
+    @OnClick(R.id.ic_cancel_event)
+    public void onClickCancel(View view){
+        finish();
+    }
+    @OnClick(R.id.txt_date_event)
+    public void onClickDate(View view){
+        showDialog(DATE_DIALOG_ID);
+    }
+    @OnClick(R.id.txt_currencies)
+    public void onClickSelectCurrency(View view){
+        Intent intent = new Intent(this, CurrenciesActivity.class);
+        startActivityForResult(intent, 20);
+    }
+    @OnClick(R.id.txt_wallet_event)
+    public void onClickSelectWallet(View view){
+        Intent intent=new Intent(this, MyWalletActivity.class);
+        startActivityForResult(intent,21);
+    }
+    @OnClick(R.id.txt_edit_event)
+    public void onClickSaveAddEvent(){
+        if(edit_text_name_event.getText().toString().trim().equals("")){
+            alertDiaglog(getString(R.string.enter_your_name));
+            return;
         }
+        if(txt_date_event.getText().toString().trim().equals(getString(R.string.ending_date))){
+            alertDiaglog(getString(R.string.select_date));
+            return;
+        }
+        //set event
+        setEvent();
+        
+        mEventPresenter.createEvent(mEvent);
     }
+    public void setEvent(){
+        mEvent.setEventid(SecurityUtil.getRandomUUID());
+        mEvent.setName(edit_text_name_event.getText().toString().trim());
+        mEvent.setCurrencies(mCurrencies);
+        mEvent.setDate(getDate());
+        mEvent.setIdWallet(mWallet.getWalletid());
+        mEvent.setUserid(mPreferencesHelper.getUserId());
+        mEvent.setMoney("0");
+        mEvent.setStatus("0");
+    }
+    public String getDate(){
+        String [] arr=txt_date_event.getText().toString().trim().split("/");
+        int a=Integer.parseInt(arr[0]);
+        int b=Integer.parseInt(arr[1]);
+        int c=Integer.parseInt(arr[2]);
+        long timeTimeMillis= DateUtil.getLongAsDate(a,b,c);
+        return String.valueOf(timeTimeMillis);
+    }
+    
+    @OnClick(R.id.ic_clear_date)
+    public void onClickClearDate(View view){
+        txt_date_event.setText(getString(R.string.ending_date));
+        txt_date_event.setTextColor(ContextCompat.getColor(this, R.color.gray));
+        ic_clear_date.setVisibility(View.GONE);
+    }
+    
     
     public void initDatePicker() {
         final Calendar c = Calendar.getInstance();
@@ -118,7 +179,6 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
         month = c.get(Calendar.MONTH);
         day = c.get(Calendar.DAY_OF_MONTH);
     }
-    
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -149,36 +209,6 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
         txt_date_event.setTextColor(ContextCompat.getColor(this, R.color.black));
         ic_clear_date.setVisibility(View.VISIBLE);
     }
-    
-    @OnClick(R.id.back_button_saving)
-    public void onClickBack(View view){
-        finish();
-    }
-    @OnClick(R.id.txt_edit_event)
-    public void onClickSaveEditEvent(View view){
-        
-        if(edit_text_name_event.getText().toString().trim().equals("")){
-            alertDiaglog(getString(R.string.enter_your_name));
-            return;
-        }
-        
-        mEvent.setCurrencies(mCurrencies);
-        mEvent.setIdWallet(mWallet.getWalletid());
-        mEvent.setName(edit_text_name_event.getText().toString().trim());
-        mEvent.setDate(getDate());
-        
-        
-        mEventPresenter.updateEvent(mEvent);
-        
-    }
-    public String getDate(){
-        String [] arr=txt_date_event.getText().toString().trim().split("/");
-        int a=Integer.parseInt(arr[0]);
-        int b=Integer.parseInt(arr[1]);
-        int c=Integer.parseInt(arr[2]);
-        long timeTimeMillis=DateUtil.getLongAsDate(a,b,c);
-        return String.valueOf(timeTimeMillis);
-    }
     public void alertDiaglog(String message){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage(message);
@@ -193,39 +223,19 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
         
         AlertDialog alert11 = builder1.create();
         alert11.show();
-    }
-    
-    @OnClick(R.id.txt_date_event)
-    public void onClickDate(View view){
-        showDialog(DATE_DIALOG_ID);
-    }
-    @OnClick(R.id.txt_currencies)
-    public void onClickSelectCurrency(View view){
-        Intent intent = new Intent(this, CurrenciesActivity.class);
-        startActivityForResult(intent, 18);
-    }
-    @OnClick(R.id.txt_wallet_event)
-    public void onClickSelectWallet(View view){
-        Intent intent=new Intent(this, MyWalletActivity.class);
-        startActivityForResult(intent,19);
-    }
-    @OnClick(R.id.ic_clear_date)
-    public void onClickClearDate(View view){
-        txt_date_event.setText(getString(R.string.ending_date));
-        txt_date_event.setTextColor(ContextCompat.getColor(this, R.color.gray));
-        ic_clear_date.setVisibility(View.GONE);
+      
     }
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==18){
+        if(requestCode==20){
             if(resultCode == Activity.RESULT_OK){
                 mCurrencies=data.getParcelableExtra("currency");
                 txt_currencies.setText(mCurrencies.getCurName());
             }
         }
-        if(requestCode==19){
-            if(resultCode==Activity.RESULT_OK){
+        if(requestCode==21){
+            if(resultCode == Activity.RESULT_OK){
                 mWallet=data.getParcelableExtra("wallet");
                 txt_wallet_event.setText(mWallet.getWalletName());
             }
@@ -235,15 +245,15 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
     @Override
     public void onSuccessCreateEvent(String message) {
         
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("event",mEvent);
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
     }
     
     @Override
     public void onSuccessUpdateEvent(String message) {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("event",mEvent);
-        returnIntent.putExtra("name_wallet",txt_wallet_event.getText().toString().trim());
-        setResult(Activity.RESULT_OK,returnIntent);
-        finish();
+        
     }
     
     @Override
@@ -265,5 +275,4 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
     public void loading(boolean isLoading) {
         
     }
-    
 }

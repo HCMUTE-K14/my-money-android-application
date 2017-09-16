@@ -157,4 +157,18 @@
   <string name="nosaving">No Saving</string>
   <string name="txt_ok">OK</string>
   <string name="enter_your_name">Enter your name</string>
+  <string name="content_delete_event">Do you want to delete this event?</string>
+  <string name="max15digit">15 max digit!</string>
+  <string name="erro_negative">Value must >0</string>
+  <string name="add_budget">Add Budget</string>
+  <string name="txt_repeat_budget">Repeat this budget</string>
+  <string name="txt_info_repeat_budget">Budget will renew automatically.</string>
+  <string name="left">Left</string>
+  <string name="txt_no_chart">No chart data avaliable</string>
+  <string name="txt_recommend_budget">Recommended daily spending</string>
+  <string name="txt_project_budget">Project spending</string>
+  <string name="txt_actual_daily_spending">Actual daily spending</string>
+  <string name="turn_on_notification">Turn on notification</string>
+  <string name="turn_off_notification">Turn off notification</string>
+  <string name="edit_budget">Edit Budget</string>
 </resources>

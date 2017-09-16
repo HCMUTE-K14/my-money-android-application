@@ -14,8 +14,8 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 
 /**
  * Created by infamouSs on 8/28/2017.
@@ -33,6 +33,8 @@ public class SavingActivity extends BaseActivity{
     
     private PagerAdapter mPagerAdapter;
  
+    private int currentFragmet=0;
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_saving;
@@ -54,6 +56,9 @@ public class SavingActivity extends BaseActivity{
             @Override
             public void onTabSelected(Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
+                currentFragmet=tab.getPosition();
+                MyLogger.d("qeqeww",tab.getPosition());
+                
             }
         
             @Override
@@ -83,11 +88,15 @@ public class SavingActivity extends BaseActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==12){
             if(resultCode == Activity.RESULT_OK){
-                Saving saving=data.getParcelableExtra("resultAdd");
-                if(saving!=null){
-                   
-                }
+               // Saving saving=data.getParcelableExtra("resultAdd");
+                mPagerAdapter.getFragment(0).onActivityResult(requestCode,resultCode,data);
             }
+        }
+        if(requestCode==1){
+            mPagerAdapter.getFragment(currentFragmet).onActivityResult(requestCode,resultCode,data);
+        }
+        if(requestCode==2){
+            mPagerAdapter.getFragment(currentFragmet).onActivityResult(requestCode,resultCode,data);
         }
     }
     

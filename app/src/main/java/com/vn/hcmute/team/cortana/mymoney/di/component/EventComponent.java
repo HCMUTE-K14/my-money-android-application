@@ -4,6 +4,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.EventModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.WalletModule;
 import com.vn.hcmute.team.cortana.mymoney.di.scope.PerActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.event.ActivityAddEvent;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.ActivityEditEvent;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.ActivityInfoEvent;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.EventActivity;
@@ -23,4 +24,5 @@ public interface EventComponent {
     void inject(FragmentEventFinished fragmentEventFinished);
     void inject(ActivityInfoEvent activityInfoEvent);
     void inject(ActivityEditEvent activityEditEvent);
+    void inject(ActivityAddEvent activityAddEvent);
 }

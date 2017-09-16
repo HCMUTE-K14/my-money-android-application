@@ -9,6 +9,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -46,6 +47,9 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     TextView txt_time_rest;
     @BindView(R.id.txt_name_wallet)
     TextView txt_name_wallet;
+    @BindView(R.id.linear_mark_as_finished)
+    LinearLayout linear_mark_as_finished;
+    
     
     @Inject
     EventPresenter mEventPresenter;
@@ -97,6 +101,12 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
        
     }
     
+    @Override
+    protected void onDestroy() {
+        mEventPresenter.unSubscribe();
+        super.onDestroy();
+    }
+    
     public void getData(){
         Intent intent=getIntent();
         mEvent=intent.getParcelableExtra("event");
@@ -112,10 +122,16 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
         if(mEvent.getIdWallet().trim().equals("")){
             txt_name_wallet.setText(getString(R.string.all_wallet));
         }
+        if(mEvent.getStatus().equals("0")){
+            linear_mark_as_finished.setVisibility(View.VISIBLE);
+        }else {
+            linear_mark_as_finished.setVisibility(View.GONE);
+        }
     }
     @OnClick(R.id.btn_mark_as_finished)
     public void onClickMarkAsFinished(View view){
-        
+        mEvent.setStatus("1");
+        mEventPresenter.updateEvent(mEvent);
     }
     @OnClick(R.id.btn_list_transaction)
     public void onClickListTransaction(View view){
@@ -218,7 +234,7 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     
     @Override
     public void onSuccessUpdateEvent(String message) {
-        
+        linear_mark_as_finished.setVisibility(View.GONE);
     }
     
     @Override

@@ -150,9 +150,9 @@
   </LinearLayout>
 
   <LinearLayout
+    android:id="@+id/linear_mark_as_finished"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:orientation="vertical">
+    android:layout_height="60dp">
     <Button
       android:id="@+id/btn_mark_as_finished"
       android:layout_width="wrap_content"
@@ -165,6 +165,11 @@
       android:paddingLeft="10dp"
       android:paddingRight="10dp"
       />
+
+  </LinearLayout>
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
     <Button
       android:id="@+id/btn_list_transaction"
       android:layout_width="wrap_content"
@@ -178,6 +183,5 @@
       android:paddingRight="10dp"
       />
   </LinearLayout>
-
 
 </LinearLayout>
