@@ -171,4 +171,16 @@
   <string name="turn_on_notification">Turn on notification</string>
   <string name="turn_off_notification">Turn off notification</string>
   <string name="edit_budget">Edit Budget</string>
+  <string name="txt_add_transaction">Add Transaction</string>
+  <string name="txt_select_category">Select Category</string>
+  <string name="txt_note">Note</string>
+  <string name="txt_add_more_detail">ADD MORE DETAILS</string>
+  <string name="txt_with">With</string>
+  <string name="txt_set_loacation">Set location</string>
+  <string name="txt_select_event">Select event</string>
+  <string name="txt_no_remind">No remind</string>
+  <string name="txt_report_transaction">Exclude from report</string>
+  <string name="txt_dont_include_transaction">Don\'t include this transaction in reports such as Overview</string>
+  <string name="budget">Budget</string>
+  <string name="txt_info_budget_transaction">This transaction is under these budgets.</string>
 </resources>
