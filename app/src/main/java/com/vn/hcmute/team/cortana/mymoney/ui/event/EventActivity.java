@@ -28,7 +28,8 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/22/2017.
  */
 
-public class EventActivity extends BaseActivity implements EventContract.View, MyRecyclerViewEventAdapter.ItemClickListener {
+public class EventActivity extends BaseActivity implements EventContract.View,
+                                                           MyRecyclerViewEventAdapter.ItemClickListener {
     
     @Inject
     EventPresenter mEventPresenter;
@@ -45,13 +46,13 @@ public class EventActivity extends BaseActivity implements EventContract.View, M
     
     @OnClick(R.id.buttonClickEvent)
     public void onClick() {
-      
-       // mEventPresenter.getEvent();
+
+        // mEventPresenter.getEvent();
        /* Event event=new Event();
         event.setEventid(UUID.randomUUID().toString());
         event.setUserid("e67757e090bb47bbbebf7db8b15e7c96");
         mEventPresenter.createEvent(event);*/
-        Event event=new Event();
+        Event event = new Event();
         event.setEventid("a92d28ad72cd42aab0df732cb6344438");
         event.setName("chieu lang thang ghe quan net");
         event.setMoney("19039493");
@@ -116,7 +117,7 @@ public class EventActivity extends BaseActivity implements EventContract.View, M
     
     @Override
     public void onSuccessGetListEvent(List<Event> events) {
-        mEventList=events;
+        mEventList = events;
         
         mMyRecyclerViewEventAdapter = new MyRecyclerViewEventAdapter(this, events);
         mRecyclerViewEvent.setLayoutManager(new GridLayoutManager(this, 1));
@@ -131,8 +132,8 @@ public class EventActivity extends BaseActivity implements EventContract.View, M
     
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this,mEventList.get(position).toString(),Toast.LENGTH_LONG).show();
-        TextView textView= ButterKnife.findById(view,R.id.eventid);
+        Toast.makeText(this, mEventList.get(position).toString(), Toast.LENGTH_LONG).show();
+        TextView textView = ButterKnife.findById(view, R.id.eventid);
         mEventPresenter.deleteEvent(textView.getText().toString().trim());
     }
 }

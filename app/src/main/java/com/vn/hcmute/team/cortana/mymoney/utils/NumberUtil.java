@@ -44,7 +44,7 @@ public class NumberUtil {
         double rate = Double.parseDouble(amount.replaceAll(",", "")) / _1_usd_to_;
         
         double value = rate * realTimeCurrency.get(to);
-        MyLogger.d(amount+ "  " +from + "-"+ to,value);
+        MyLogger.d(amount + "  " + from + "-" + to, value);
         return NumberUtil.round(value, 3);
     }
 }

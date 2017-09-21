@@ -26,19 +26,19 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/28/2017.
  */
 
-public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavingAdapter.ItemClickListener,SavingContract.View{
+public class FragmentRunning extends BaseFragment implements
+                                                  MyRecyclerViewSavingAdapter.ItemClickListener,
+                                                  SavingContract.View {
     
-    private List<Saving> mSavingList;
     @BindView(R.id.recycler_view_saving_running)
     RecyclerView mRecyclerView;
-    private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
-    private EmptyAdapter mEmptyAdapter;
-    
     @BindView(R.id.progress_bar_saving)
     ProgressBar mProgressBar;
-    
     @Inject
     SavingPresenter mSavingPresenter;
+    private List<Saving> mSavingList;
+    private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
+    private EmptyAdapter mEmptyAdapter;
     
     @Override
     protected int getLayoutId() {
@@ -47,7 +47,8 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
     
     @Override
     protected void initializeDagger() {
-        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity().getApplication())
+        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity()
+                  .getApplication())
                   .getAppComponent();
         SavingComponent savingComponent = DaggerSavingComponent
                   .builder()
@@ -60,7 +61,7 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
     
     @Override
     protected void initializePresenter() {
-        mPresenter=this.mSavingPresenter;
+        mPresenter = this.mSavingPresenter;
         mSavingPresenter.setView(this);
     }
     
@@ -71,28 +72,29 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
 
     }
     
-    public void init(View view){
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
-        mSavingList=new ArrayList<>();
+    public void init(View view) {
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        mSavingList = new ArrayList<>();
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
         if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK){
-                String savingId=data.getStringExtra("result");
+            if (resultCode == Activity.RESULT_OK) {
+                String savingId = data.getStringExtra("result");
                 
-                if(!mSavingList.isEmpty()){
+                if (!mSavingList.isEmpty()) {
                     
-                    for (Saving saving:mSavingList) {
-                        if(saving.getSavingid().equals(savingId)){
+                    for (Saving saving : mSavingList) {
+                        if (saving.getSavingid().equals(savingId)) {
                             mSavingList.remove(saving);
                             mMyRecyclerViewSavingAdapter.setList(mSavingList);
                             break;
                         }
                     }
-                    if(mSavingList.isEmpty()){
-                        mEmptyAdapter=new EmptyAdapter(getContext(),"No Saving");
+                    if (mSavingList.isEmpty()) {
+                        mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
                         mRecyclerView.setAdapter(mEmptyAdapter);
                     }
                 }
@@ -108,22 +110,23 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
     
     @Override
     public void showListSaving(List<Saving> savings) {
-       // mSavingList=savings;
-       
-        
-        if(!savings.isEmpty()){
+        // mSavingList=savings;
+
+        if (!savings.isEmpty()) {
             
-            for (Saving saving:savings) {
-                if(saving.getStatus().equals("0"))
+            for (Saving saving : savings) {
+                if (saving.getStatus().equals("0")) {
                     mSavingList.add(saving);
+                }
             }
             
-            mMyRecyclerViewSavingAdapter=new MyRecyclerViewSavingAdapter(getContext(),mSavingList);
+            mMyRecyclerViewSavingAdapter = new MyRecyclerViewSavingAdapter(getContext(),
+                      mSavingList);
             mMyRecyclerViewSavingAdapter.setClickListener(this);
             mRecyclerView.setAdapter(mMyRecyclerViewSavingAdapter);
             
-        }else{
-            mEmptyAdapter=new EmptyAdapter(getContext(),"No Saving");
+        } else {
+            mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
     }
@@ -166,8 +169,8 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
     @Override
     public void loading(boolean isLoading) {
         
-        mProgressBar.setVisibility(isLoading?View.VISIBLE:View.GONE);
-       
+        mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+
     }
     
     @Override
@@ -179,14 +182,14 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
     @Override
     public void onItemClick(View view, List<Saving> savingList, int position, int process) {
 
-        Saving saving=savingList.get(position);
-        Intent intent=new Intent(getActivity(),InfoSavingActivity.class);
-        if(saving!=null){
-            intent.putExtra("MySaving",saving);
-            intent.putExtra("process",String.valueOf(process));
-           
+        Saving saving = savingList.get(position);
+        Intent intent = new Intent(getActivity(), InfoSavingActivity.class);
+        if (saving != null) {
+            intent.putExtra("MySaving", saving);
+            intent.putExtra("process", String.valueOf(process));
+
         }
-        startActivityForResult(intent,1);
+        startActivityForResult(intent, 1);
         
         //Toast.makeText(getContext(),position+"",Toast.LENGTH_LONG).show();
     }

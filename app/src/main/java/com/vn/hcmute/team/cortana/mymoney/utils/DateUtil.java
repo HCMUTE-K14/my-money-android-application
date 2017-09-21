@@ -22,7 +22,7 @@ public class DateUtil {
         int mYear = calendar.get(Calendar.YEAR);
         int mMonth = calendar.get(Calendar.MONTH) + 1;
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-    
+
         return mDay + "/" + mMonth + "/" + mYear;
     }
     

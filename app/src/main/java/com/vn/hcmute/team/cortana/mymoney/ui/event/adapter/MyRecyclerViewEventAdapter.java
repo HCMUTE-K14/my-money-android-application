@@ -17,7 +17,9 @@ import java.util.List;
  * Created by kunsubin on 8/24/2017.
  */
 
-public class MyRecyclerViewEventAdapter extends RecyclerView.Adapter<MyRecyclerViewEventAdapter.ViewHolder>{
+public class MyRecyclerViewEventAdapter extends
+                                        RecyclerView.Adapter<MyRecyclerViewEventAdapter.ViewHolder> {
+
     private List<Event> mData = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
@@ -54,10 +56,25 @@ public class MyRecyclerViewEventAdapter extends RecyclerView.Adapter<MyRecyclerV
         return mData.size();
     }
     
+    // convenience method for getting data at click position
+    public Event getItem(int id) {
+        return mData.get(id);
+    }
+    
+    // allows clicks events to be caught
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+    
+    // parent activity will implement this method to respond to click events
+    public interface ItemClickListener {
+
+        void onItemClick(View view, int position);
+    }
     
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        
+
         @BindView(R.id.eventid)
         TextView eventid;
         @BindView(R.id.name)
@@ -72,34 +89,18 @@ public class MyRecyclerViewEventAdapter extends RecyclerView.Adapter<MyRecyclerV
         TextView status;
         @BindView(R.id.userid)
         TextView userid;
-        
+
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
-        
+
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
                 mClickListener.onItemClick(view, getAdapterPosition());
             }
         }
-    }
-    
-    // convenience method for getting data at click position
-    public Event getItem(int id) {
-        return mData.get(id);
-    }
-    
-    // allows clicks events to be caught
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-    
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        
-        void onItemClick(View view, int position);
     }
 }

@@ -21,10 +21,16 @@ import dagger.Component;
 public interface SavingComponent {
     
     void inject(SavingActivity savingActivity);
+
     void inject(FragmentRunning fragmentRunning);
+
     void inject(FragmentFinished fragmentFinished);
+
     void inject(InfoSavingActivity infoSavingActivity);
+
     void inject(EditSavingActivity editSavingActivity);
+
     void inject(AddSavingActivity addSavingActivity);
+
     void inject(TransferMoneySavingActivity transferMoneySavingActivity);
 }

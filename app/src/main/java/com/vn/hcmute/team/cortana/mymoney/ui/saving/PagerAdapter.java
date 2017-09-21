@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  */
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
+
     private FragmentRunning mFragmentRunning;
     private FragmentFinished mFragmentFinished;
     private int mNumOfTabs;
@@ -26,10 +27,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         
         switch (position) {
             case 0:
-                mFragmentRunning=new FragmentRunning();
+                mFragmentRunning = new FragmentRunning();
                 return mFragmentRunning;
             case 1:
-                mFragmentFinished=new FragmentFinished();
+                mFragmentFinished = new FragmentFinished();
                 return mFragmentFinished;
             default:
                 return null;

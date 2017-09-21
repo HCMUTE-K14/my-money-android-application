@@ -1,43 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical">
-  <android.support.v7.widget.CardView
+  <com.vn.hcmute.team.cortana.mymoney.ui.view.CardViewActionBar
+    android:id="@+id/card_view_action_bar"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
-    <RelativeLayout
-      android:id="@+id/layout_top_bar"
-      android:layout_width="fill_parent"
-      android:layout_height="match_parent"
-      android:background="@color/color_background_login"
-      android:gravity="center_vertical">
-
-      <LinearLayout
-        android:id="@+id/btn_close"
-        android:layout_width="50.0dip"
-        android:layout_height="fill_parent"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
-
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:padding="10.0dip"
-          android:src="@drawable/ic_cancel" />
-      </LinearLayout>
-
-      <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_toRightOf="@id/btn_close"
-        android:gravity="center_vertical"
-        android:text="@string/txt_select_wallet"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
-    </RelativeLayout>
-  </android.support.v7.widget.CardView>
+    android:layout_height="wrap_content"
+    app:hideAction="true"
+    app:iconBack="@drawable/ic_back"
+    app:textTitle="@string/txt_select_wallet" />
   <com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletView
     android:id="@id/select_wallet"
     android:layout_width="wrap_content"

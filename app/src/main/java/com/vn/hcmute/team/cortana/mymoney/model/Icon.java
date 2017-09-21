@@ -9,6 +9,17 @@ import android.os.Parcelable;
 
 public class Icon implements Parcelable {
     
+    public static final Creator<Icon> CREATOR = new Creator<Icon>() {
+        @Override
+        public Icon createFromParcel(Parcel in) {
+            return new Icon(in);
+        }
+        
+        @Override
+        public Icon[] newArray(int size) {
+            return new Icon[size];
+        }
+    };
     private String id;
     private String image;
     
@@ -26,18 +37,6 @@ public class Icon implements Parcelable {
         id = in.readString();
         image = in.readString();
     }
-    
-    public static final Creator<Icon> CREATOR = new Creator<Icon>() {
-        @Override
-        public Icon createFromParcel(Parcel in) {
-            return new Icon(in);
-        }
-        
-        @Override
-        public Icon[] newArray(int size) {
-            return new Icon[size];
-        }
-    };
     
     @Override
     public int describeContents() {

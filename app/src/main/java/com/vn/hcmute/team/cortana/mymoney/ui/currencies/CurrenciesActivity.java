@@ -129,7 +129,6 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
     @Override
     public void showCurrencies(List<Currencies> list) {
-        MyLogger.d(TAG, list.size());
         mCurrenciesList = list;
         
         mCurrenciesAdapter = new CurrenciesAdapter(this.getApplicationContext(), list);

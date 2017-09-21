@@ -8,6 +8,7 @@ import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.CurrenciesUseCase.CurrenciesRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
@@ -28,13 +29,10 @@ import javax.inject.Singleton;
 public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
     
     public static final String TAG = CurrenciesUseCase.class.getSimpleName();
-    
-    private DataRepository mDataRepository;
-    private Context mContext;
-    
     @Inject
     PreferencesHelper mPreferencesHelper;
-    
+    private DataRepository mDataRepository;
+    private Context mContext;
     private Disposable mDisposable;
     private CompositeDisposable mCompositeDisposable;
     private DisposableSingleObserver<Object> mDisposableSingleObserver;
@@ -51,11 +49,8 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
         String action = requestValues.getAction();
         
         switch (action) {
-            case Action.ACTION_GET_CURRENCIES_FROM_REMOTE:
-                doGetCurrenciesFromRemote(requestValues.getCallBack());
-                break;
-            case Action.ACTION_GET_CURRENCIES_FROM_LOCAL:
-                doGetCurrenciesFromLocal(requestValues.getCallBack());
+            case Action.ACTION_GET_CURRENCIES:
+                doGetCurrencies(requestValues.getCallBack(), requestValues.getTypeRepository());
                 break;
             case Action.ACTION_CONVERT_CURRENCY_ONLINE:
                 doConvert_Online(requestValues.getCallBack(), requestValues.getParams());
@@ -68,6 +63,62 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
                 break;
             default:
                 break;
+        }
+    }
+    
+    @Override
+    public void unSubscribe() {
+        if (mCompositeDisposable != null && !mCompositeDisposable.isDisposed() &&
+            mDisposable != null) {
+            mCompositeDisposable.remove(mDisposable);
+        }
+    }
+    
+    private void doGetCurrencies(final BaseCallBack<Object> callBack,
+              TypeRepository typeRepository) {
+        
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
+                callBack.onSuccess(currencies);
+            }
+            
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
+        
+        if (!this.mCompositeDisposable.isDisposed()) {
+            if (typeRepository == TypeRepository.LOCAL) {
+                mDisposable = mDataRepository.getLocalListCurrency()
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  MyLogger.d("Currencies Usecacse", "loading");
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            } else if (typeRepository == TypeRepository.REMOTE) {
+                mDisposable = mDataRepository.getCurrencies()
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  MyLogger.d("Currencies Usecacse", "loading");
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
+            
+            this.mCompositeDisposable.add(mDisposable);
         }
     }
     
@@ -122,7 +173,7 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
         String amount = params[0];
         String from = params[1];
         String to = params[2];
-
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
@@ -152,90 +203,24 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
         }
     }
     
-    @Override
-    public void unSubscribe() {
-        if (mCompositeDisposable != null && !mCompositeDisposable.isDisposed() &&
-            mDisposable != null) {
-            mCompositeDisposable.remove(mDisposable);
-        }
-    }
-    
-    private void doGetCurrenciesFromRemote(final BaseCallBack<Object> callBack) {
-        
-        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
-            @Override
-            public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
-                callBack.onSuccess(currencies);
-            }
-            
-            @Override
-            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-                callBack.onFailure(e);
-            }
-        };
-        
-        if (!this.mCompositeDisposable.isDisposed()) {
-            
-            mDisposable = mDataRepository.getCurrencies()
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              callBack.onLoading();
-                          }
-                      })
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
-            this.mCompositeDisposable.add(mDisposable);
-        }
-    }
-    
-    private void doGetCurrenciesFromLocal(final BaseCallBack<Object> callBack) {
-    
-      // mDataRepository.createNewLocalDatabase();
-        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
-            @Override
-            public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
-                callBack.onSuccess(currencies);
-            }
-            
-            @Override
-            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-                callBack.onFailure(e);
-            }
-        };
-        
-        if (!this.mCompositeDisposable.isDisposed()) {
-            
-            mDisposable = mDataRepository.getLocalListCurrency()
-                      .subscribeOn(Schedulers.computation())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              MyLogger.d("Currencies Usecacse", "loading");
-                              callBack.onLoading();
-                          }
-                      })
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
-            this.mCompositeDisposable.add(mDisposable);
-        }
-    }
-    
     
     public static class CurrenciesRequest implements UseCase.RequestValue {
         
         private String action;
         private BaseCallBack<Object> callBack;
         private String[] params;
+        private TypeRepository typeRepository;
+        
+        public CurrenciesRequest(String action, BaseCallBack<Object> callBack, String[] params) {
+            this(action, callBack, params, TypeRepository.LOCAL);
+        }
         
         public CurrenciesRequest(@NonNull String action, @Nullable BaseCallBack<Object> callBack,
-                  String[] params) {
+                  String[] params, TypeRepository typeRepository) {
             this.action = action;
             this.callBack = callBack;
             this.params = params;
+            this.typeRepository = typeRepository;
         }
         
         public String getAction() {
@@ -260,6 +245,15 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
         
         public void setParams(String[] params) {
             this.params = params;
+        }
+        
+        public TypeRepository getTypeRepository() {
+            return typeRepository;
+        }
+        
+        public void setTypeRepository(
+                  TypeRepository typeRepository) {
+            this.typeRepository = typeRepository;
         }
     }
 }

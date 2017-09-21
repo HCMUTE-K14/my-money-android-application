@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class ResultConvert {
+    
     @SerializedName("amount")
     @Expose
     public String amount;

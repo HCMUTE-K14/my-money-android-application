@@ -31,17 +31,15 @@ public class FragmentFinished extends BaseFragment implements
                                                    MyRecyclerViewSavingAdapter.ItemClickListener,
                                                    SavingContract.View {
     
-    private List<Saving> mSavingList;
     @BindView(R.id.recycler_view_saving_finished)
     RecyclerView mRecyclerView;
-    private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
-    private EmptyAdapter mEmptyAdapter;
-    
     @BindView(R.id.progress_bar_saving)
     ProgressBar mProgressBar;
-    
     @Inject
     SavingPresenter mSavingPresenter;
+    private List<Saving> mSavingList;
+    private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
+    private EmptyAdapter mEmptyAdapter;
     
     @Override
     protected int getLayoutId() {

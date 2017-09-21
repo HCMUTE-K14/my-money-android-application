@@ -10,10 +10,14 @@ import java.util.concurrent.Callable;
  */
 
 public interface LocalService {
-    interface CurrencyLocalRepository{
+    
+    interface CurrencyLocalRepository {
+        
         Callable<List<Currencies>> getListCurrency();
     }
-    interface ImageLocalService{
+    
+    interface ImageLocalService {
+        
         Callable<List<Icon>> getListIcon();
     }
 }

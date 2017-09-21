@@ -6,7 +6,7 @@
   <color name="white">#FFFF</color>
 
   <color name="black">#000000</color>
-
+  <color name="transparent">#00000000</color>
   <color name="green">#2DB84C</color>
   <color name="gray_boder_item_saving">#c9c5c5</color>
 
@@ -16,4 +16,7 @@
   <color name="color_background_login">#EFEFEF</color>
   <color name="color_gray_calculator">#EEEEEE</color>
   <color name="color_gray_cal">#BBBBBB</color>
+  <color name="color_1e000000">#1e000000</color>
+  <color name="press_highlight_darken_medium">#40000000</color>
+
 </resources>

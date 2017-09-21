@@ -31,7 +31,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     }
     
 
-    
     @Override
     public void login(UserCredential userCredential) {
         UserRequest loginRequest = new UserRequest(Action.ACTION_LOGIN_NORMAL,

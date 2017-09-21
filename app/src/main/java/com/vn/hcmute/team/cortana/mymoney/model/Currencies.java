@@ -11,6 +11,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class Currencies implements Parcelable {
     
+    public static final Creator<Currencies> CREATOR = new Creator<Currencies>() {
+        @Override
+        public Currencies createFromParcel(Parcel in) {
+            return new Currencies(in);
+        }
+        
+        @Override
+        public Currencies[] newArray(int size) {
+            return new Currencies[size];
+        }
+    };
     @SerializedName("cur_id")
     @Expose
     private String curId;
@@ -51,18 +62,6 @@ public class Currencies implements Parcelable {
         curSymbol = in.readString();
         curDisplayType = in.readString();
     }
-    
-    public static final Creator<Currencies> CREATOR = new Creator<Currencies>() {
-        @Override
-        public Currencies createFromParcel(Parcel in) {
-            return new Currencies(in);
-        }
-        
-        @Override
-        public Currencies[] newArray(int size) {
-            return new Currencies[size];
-        }
-    };
     
     public String getCurId() {
         return curId;

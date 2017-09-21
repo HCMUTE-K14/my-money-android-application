@@ -4,6 +4,7 @@ import com.vn.hcmute.team.cortana.mymoney.data.cache.CacheRepository;
 import com.vn.hcmute.team.cortana.mymoney.data.local.LocalRepository;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.RemoteRepository;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
+import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
@@ -314,6 +315,36 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     @Override
     public Observable<String> deleteBudget(String userid, String token, String budgetId) {
         return mRemoteRepository.deleteBudget(userid, token, budgetId);
+    }
+    
+    @Override
+    public Observable<List<Category>> getListCategory(String userid, String token, String type) {
+        return mRemoteRepository.getListCategory(userid, token, type);
+    }
+    
+    @Override
+    public Observable<List<Category>> getListCategoryByType(String userid, String token,
+              String type, String transType) {
+        
+        return mRemoteRepository.getListCategoryByType(userid, token, type, transType);
+    }
+    
+    @Override
+    public Observable<String> createCategory(String userid, String token, String parentId,
+              Category category) {
+        return mRemoteRepository.createCategory(userid, token, parentId, category);
+    }
+    
+    @Override
+    public Observable<String> updateCategory(String userid, String token, String oldParentId,
+              String newParentId, Category category) {
+        return mRemoteRepository.updateCategory(userid, token, oldParentId, newParentId, category);
+    }
+    
+    @Override
+    public Observable<String> deleteCategory(String userid, String token, String parentId,
+              Category category) {
+        return mRemoteRepository.deleteCategory(userid, token, parentId, category);
     }
     
     @Override

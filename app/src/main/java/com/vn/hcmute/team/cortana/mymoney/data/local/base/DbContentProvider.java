@@ -11,9 +11,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 public abstract class DbContentProvider {
     
+    protected DatabaseHelper mDatabaseHelper;
     private SQLiteDatabase mDatabase;
     private Context mContext;
-    protected DatabaseHelper mDatabaseHelper;
     
     public DbContentProvider(DatabaseHelper mDatabaseHelper) {
         this.mDatabaseHelper = mDatabaseHelper;
@@ -31,7 +31,7 @@ public abstract class DbContentProvider {
         mDatabase.close();
     }
     
-
+    
     protected abstract String[] getAllColumns();
     
     

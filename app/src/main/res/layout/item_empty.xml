@@ -19,6 +19,6 @@
     android:layout_height="wrap_content"
     android:layout_below="@+id/imageView"
     android:gravity="center"
-    android:text="fdsfadfsafsdadsfsafdsa" />
+    android:text="@string/txt_no_data" />
 
 </RelativeLayout>

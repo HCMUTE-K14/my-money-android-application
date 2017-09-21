@@ -39,7 +39,7 @@ public class MyMoneyApi {
     /*-----------------*/
     public static final String GET_CURRENCIES = "currency";
     public static final String CONVERT_CURRENCY = "converter";
-    public static final String GET_REAL_TIME_CURRENCY=CONVERT_CURRENCY+"/update";
+    public static final String GET_REAL_TIME_CURRENCY = CONVERT_CURRENCY + "/update";
     
     /*-----------------*/
     /*Event            */
@@ -65,15 +65,25 @@ public class MyMoneyApi {
     public static final String GET_PERSON = "person/getPerson";
     public static final String ADD_PERSON = "person/add";
     public static final String REMOVE_PERSON = "person/remove";
-    public static final String UPDATE_PERSON ="person/update";
+    public static final String UPDATE_PERSON = "person/update";
     public static final String SYNC_PERSON = "person/sync";
     
     /*-----------------*/
-    /*Budget         */
+    /*Budget           */
     /*-----------------*/
     public static final String GET_BUDGET = "budget/getBudget";
     public static final String CREATE_BUDGET = "budget/createBudget";
     public static final String UPDATE_BUDGET = "budget/updateBudget";
     public static final String DELETE_BUDGET = "budget/deleteBudget";
-
+    
+    /*-----------------*/
+    /*Category         */
+    /*-----------------*/
+    public static final String GET_CATEGORY = "category/get";
+    public static final String GET_CATEGORY_BY_TYPE = "category/getByType";
+    public static final String ADD_CATEGORY = "category/add";
+    public static final String UPDATE_CATEGORY = "category/update";
+    public static final String DELETE_CATEGORY = "category/remove";
+    public static final String SYNC_CATEGORY = "category/sync";
+    
 }

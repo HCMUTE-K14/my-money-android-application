@@ -30,9 +30,9 @@ public interface PersonService {
     
     @POST(MyMoneyApi.UPDATE_PERSON + "/{userid}/{token}")
     Observable<JsonResponse<String>> updatePerson(@Path("userid") String userid,
-              @Path("token") String token,@Body Person person);
+              @Path("token") String token, @Body Person person);
     
-    @POST(MyMoneyApi.SYNC_PERSON+"/{userid}/{token}")
+    @POST(MyMoneyApi.SYNC_PERSON + "/{userid}/{token}")
     Observable<JsonResponse<String>> synchPerson(@Path("userid") String userid,
-              @Path("token") String token,@Body List<Person> person);
+              @Path("token") String token, @Body List<Person> person);
 }

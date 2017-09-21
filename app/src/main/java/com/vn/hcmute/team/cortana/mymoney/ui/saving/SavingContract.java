@@ -30,7 +30,7 @@ public interface SavingContract {
         void showError(String message);
         
         void loading(boolean isLoading);
-
+        
     }
     
     public interface Presenter {
@@ -48,7 +48,7 @@ public interface SavingContract {
         void takeIn(String idWallet, String idSaving, String money);
         
         void takeOut(String idWallet, String idSaving, String money);
-    
+        
         void unSubscribe();
         
     }

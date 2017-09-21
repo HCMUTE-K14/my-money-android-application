@@ -30,7 +30,7 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/28/2017.
  */
 
-public class InfoSavingActivity extends BaseActivity implements SavingContract.View{
+public class InfoSavingActivity extends BaseActivity implements SavingContract.View {
     
     @BindView(R.id.txt_saving_name)
     TextView txt_saving_name;
@@ -109,7 +109,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
                   .build();
         savingComponent.inject(this);
         
-      
+
     }
     
     @Override
@@ -167,7 +167,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
             if (resultCode == Activity.RESULT_OK) {
                 
                 mSaving = (Saving) data.getSerializableExtra("saving");
-                mCurrencies=(Currencies)data.getSerializableExtra("currencies");
+                mCurrencies = (Currencies) data.getSerializableExtra("currencies");
                 
                 double tmp = (Double.parseDouble(mSaving.getCurrentMoney()) /
                               Double.parseDouble(mSaving.getGoalMoney())) * 100;
@@ -231,20 +231,21 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     public void loading(boolean isLoading) {
         
     }
+
     @OnClick(R.id.image_view_take_in)
-    public void onClickTakeIn(View view){
-        Intent intent=new Intent(this,TransferMoneySavingActivity.class);
-        intent.putExtra("saving",mSaving);
-        intent.putExtra("value","1");
-        startActivityForResult(intent,7);
+    public void onClickTakeIn(View view) {
+        Intent intent = new Intent(this, TransferMoneySavingActivity.class);
+        intent.putExtra("saving", mSaving);
+        intent.putExtra("value", "1");
+        startActivityForResult(intent, 7);
     }
+
     @OnClick(R.id.image_view_take_out)
-    public void onClickTakeOut(View view)
-    {
-        Intent intent=new Intent(this,TransferMoneySavingActivity.class);
-        intent.putExtra("saving",mSaving);
-        intent.putExtra("value","2");
-        startActivityForResult(intent,8);
+    public void onClickTakeOut(View view) {
+        Intent intent = new Intent(this, TransferMoneySavingActivity.class);
+        intent.putExtra("saving", mSaving);
+        intent.putExtra("value", "2");
+        startActivityForResult(intent, 8);
     }
-   
+
 }

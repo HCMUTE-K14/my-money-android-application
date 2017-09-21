@@ -28,6 +28,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.iconshop.SelectIconActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.CardViewActionBar;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletContract.View;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
@@ -42,6 +43,9 @@ import javax.inject.Inject;
 public class AddWalletActivity extends BaseActivity implements View {
     
     public static final String TAG = AddWalletActivity.class.getSimpleName();
+    
+    @BindView(R.id.card_view_action_bar)
+    CardViewActionBar mCardViewActionBar;
     
     @BindView(R.id.image_view_icon)
     ImageView mImageViewIcon;
@@ -61,9 +65,22 @@ public class AddWalletActivity extends BaseActivity implements View {
     private Currencies mCurrentCurrency;
     private String mIconWallet;
     private String mCurrentBalance;
-    private Icon mIcon;
     
     private ProgressDialog mProgressDialog;
+    
+    private android.view.View.OnClickListener mOnBackClick = new android.view.View.OnClickListener() {
+        @Override
+        public void onClick(android.view.View v) {
+            showConfirmQuitDialog();
+        }
+    };
+    
+    private android.view.View.OnClickListener mOnDoneClick = new android.view.View.OnClickListener() {
+        @Override
+        public void onClick(android.view.View v) {
+            addWallet();
+        }
+    };
     
     public AddWalletActivity() {
         
@@ -131,15 +148,16 @@ public class AddWalletActivity extends BaseActivity implements View {
                     mEditTextBalance.setText(result);
                     break;
                 case RequestCode.SELECT_ICON_REQUEST_CODE:
-                    mIcon = data.getParcelableExtra("icon");
-                    if(mIcon == null){
+                    Icon icon = data.getParcelableExtra("icon");
+                    if (icon == null) {
                         return;
                     }
                     GlideApp.with(this)
-                              .load(DrawableUtil.getDrawable(this,mIcon.getImage()))
+                              .load(DrawableUtil.getDrawable(this, icon.getImage()))
                               .placeholder(R.drawable.folder_placeholder)
                               .error(R.drawable.folder_placeholder)
                               .into(mImageViewIcon);
+                    mIconWallet = icon.getImage();
                 default:
                     break;
             }
@@ -154,16 +172,6 @@ public class AddWalletActivity extends BaseActivity implements View {
     /*-----------------*/
     /*OnClick          */
     /*-----------------*/
-    
-    @OnClick(R.id.btn_close)
-    public void onClickClose() {
-        showConfirmQuitDialog();
-    }
-    
-    @OnClick(R.id.txt_done)
-    public void onClickDone() {
-        addWallet();
-    }
     
     @OnClick(R.id.image_view_icon)
     public void onClickToChangeIconWallet() {
@@ -191,6 +199,9 @@ public class AddWalletActivity extends BaseActivity implements View {
     /*-----------------*/
     @Override
     public void initializeView() {
+        mCardViewActionBar.setOnClickBack(mOnBackClick);
+        mCardViewActionBar.setOnClickAction(mOnDoneClick);
+        
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getString(R.string.txt_creating_wallet));
         mImageViewIcon.setOnClickListener(new android.view.View.OnClickListener() {

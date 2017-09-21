@@ -20,7 +20,8 @@ public interface CurrenciesService {
     Observable<JsonResponse<List<Currencies>>> getCurrencies();
     
     @GET(MyMoneyApi.CONVERT_CURRENCY)
-    Observable<JsonResponse<ResultConvert>> convertCurrency(@Query("a") String amount,@Query("from") String from,@Query("to") String to);
+    Observable<JsonResponse<ResultConvert>> convertCurrency(@Query("a") String amount,
+              @Query("from") String from, @Query("to") String to);
     
     @GET(MyMoneyApi.GET_REAL_TIME_CURRENCY)
     Observable<JsonResponse<RealTimeCurrency>> getRealTimeCurrency();

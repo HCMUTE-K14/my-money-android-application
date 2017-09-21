@@ -143,4 +143,27 @@
   <string name="txt_select_icon">Select Icon</string>
   <string name="txt_show_value_wallet">%1$s %2$s</string>
   <string name="message_finish_choosing_icon">Did you finish to choosing icon ?</string>
+  <string name="txt_select_category">Select Category</string>
+  <string name="txt_expense">Expense</string>
+  <string name="txt_incoming">Incoming</string>
+  <string name="txt_debt_loan"><![CDATA[Debt & Loan]]></string>
+  <string name="message_warning_wrong_type_category">Wrong type category</string>
+  <string name="txt_new_incoming_cate">NEW INCOMING CATEGORY</string>
+  <string name="txt_new_expense_cate">NEW EXPENSE CATEGORY</string>
+  <string name="txt_new_debt_loan_cate"><![CDATA[NEW DEBT & LOAN CATEGORY]]></string>
+  <string name="txt_num_of_sub_cate">%1$d Subcategory</string>
+  <string name="action_collapse_expand">Collapse or Expand</string>
+  <string name="txt_add_category">Add Category</string>
+  <string name="txt_hint_new_category">Category Name</string>
+  <string name="txt_income">Income</string>
+  <string name="txt_hint_parent_category">Parent Category</string>
+  <string name="txt_edit_category">Edit Category</string>
+  <string name="txt_select_parent_category">Select Parent Category</string>
+  <string name="message_warning_choose_type_category">Please choose type category !</string>
+  <string name="message_warning_choose_icon">Please choose icon !</string>
+  <string name="message_finish">Did you finish yet ?</string>
+  <string name="message_touch_to_select_category">Touch to select category</string>
+  <string name="action_remove">Remove</string>
+  <string name="txt_warning">Warning</string>
+  <string name="message_delete_category_success">Category %1$s deleted</string>
 </resources>

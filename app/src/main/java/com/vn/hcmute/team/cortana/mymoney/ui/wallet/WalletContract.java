@@ -31,8 +31,6 @@ public interface WalletContract {
         void loading(boolean isLoading);
     }
     
-
-    
     interface Presenter {
         
         void addWallet(Wallet wallet);

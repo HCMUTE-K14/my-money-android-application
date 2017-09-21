@@ -2,7 +2,7 @@ package com.vn.hcmute.team.cortana.mymoney.data.local;
 
 import android.content.Context;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
-import com.vn.hcmute.team.cortana.mymoney.data.local.service.CurrencyService;
+import com.vn.hcmute.team.cortana.mymoney.data.local.service.CurrencyLocalService;
 import com.vn.hcmute.team.cortana.mymoney.data.local.service.ImageLocalService;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
@@ -40,9 +40,9 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<List<Currencies>> getListCurrency() {
-        CurrencyService currencyService = new CurrencyService(mDatabaseHelper);
+        CurrencyLocalService currencyLocalService = new CurrencyLocalService(mDatabaseHelper);
         
-        Callable<List<Currencies>> callable = currencyService.getListCurrency();
+        Callable<List<Currencies>> callable = currencyLocalService.getListCurrency();
         
         return makeObservable(callable);
     }

@@ -1,6 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.data.remote;
 
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
+import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
@@ -67,9 +68,9 @@ public interface RemoteTask {
     interface CurrenciesTask {
         
         Observable<List<Currencies>> getCurrencies();
-    
-        Observable<ResultConvert> convertCurrency(String amount,String from,String to);
-    
+        
+        Observable<ResultConvert> convertCurrency(String amount, String from, String to);
+        
         Observable<RealTimeCurrency> getRealTimeCurrency();
     }
     
@@ -110,9 +111,9 @@ public interface RemoteTask {
         
         Observable<String> removePerson(String userid, String token, String personid);
         
-        Observable<String> updatePerson(Person person,String userid,String token);
+        Observable<String> updatePerson(Person person, String userid, String token);
         
-        Observable<String> syncPerson(List<Person> persons,String userid,String token);
+        Observable<String> syncPerson(List<Person> persons, String userid, String token);
     }
     
     interface BudgetTask {
@@ -124,5 +125,22 @@ public interface RemoteTask {
         Observable<String> updateBudget(Budget budget, String userid, String token);
         
         Observable<String> deleteBudget(String userid, String token, String budgetId);
+    }
+    
+    interface CategoryTask {
+        
+        Observable<List<Category>> getListCategory(String userid, String token, String type);
+        
+        Observable<List<Category>> getListCategoryByType(String userid, String token, String type,
+                  String transType);
+        
+        Observable<String> createCategory(String userid, String token, String parentId,
+                  Category category);
+        
+        Observable<String> updateCategory(String userid, String token, String oldParentId,
+                  String newParentId, Category category);
+        
+        Observable<String> deleteCategory(String userid, String token, String parentId,
+                  Category category);
     }
 }

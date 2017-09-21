@@ -1,6 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.data;
 
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
+import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
@@ -104,6 +105,22 @@ public interface DataSource {
         Observable<String> updateBudget(Budget budget, String userid, String token);
         
         Observable<String> deleteBudget(String userid, String token, String budgetId);
+        
+        Observable<List<Category>> getListCategory(String userid, String token, String type);
+        
+        Observable<List<Category>> getListCategoryByType(String userid, String token, String type,
+                  String transType);
+        
+        Observable<String> createCategory(String userid, String token, String parentId,
+                  Category category);
+        
+        Observable<String> updateCategory(String userid, String token, String oldParentId,
+                  String newParentId, Category category);
+        
+        Observable<String> deleteCategory(String userid, String token, String parentId,
+                  Category category);
+        
+        
     }
     
     public interface CacheDataSource {
@@ -140,7 +157,7 @@ public interface DataSource {
     }
     
     public interface LocalDataSource {
-
+        
         
         Observable<List<Icon>> getListIcon();
         

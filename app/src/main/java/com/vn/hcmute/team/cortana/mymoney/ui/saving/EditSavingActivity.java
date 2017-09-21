@@ -23,8 +23,8 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import java.util.Calendar;
 import java.util.List;
@@ -36,6 +36,7 @@ import javax.inject.Inject;
 
 public class EditSavingActivity extends BaseActivity implements SavingContract.View {
     
+    static final int DATE_DIALOG_ID = 999;
     @BindView(R.id.back_button_saving)
     LinearLayout back_button_saving;
     @BindView(R.id.txt_edit_saving)
@@ -44,7 +45,6 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     ImageView image_view_icon_saving;
     @BindView(R.id.ic_clear_date)
     ImageView ic_clear_date;
-    
     @BindView(R.id.edit_text_name_saving)
     EditText edit_text_name_saving;
     @BindView(R.id.txt_goal_money)
@@ -55,15 +55,25 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     TextView txt_currencies;
     @BindView(R.id.txt_wallet_saving)
     TextView txt_wallet_saving;
-
-    
-    private Currencies mCurrencies;
-    static final int DATE_DIALOG_ID = 999;
     int day, month, year;
-    private Saving mSaving;
-    
     @Inject
     SavingPresenter mSavingPresenter;
+    private Currencies mCurrencies;
+    private Saving mSaving;
+    private DatePickerDialog.OnDateSetListener datePickerListener
+              = new DatePickerDialog.OnDateSetListener() {
+        
+        // when dialog box is closed, below method will be called.
+        public void onDateSet(DatePicker view, int selectedYear,
+                  int selectedMonth, int selectedDay) {
+            year = selectedYear;
+            month = selectedMonth;
+            day = selectedDay;
+            
+            updateDate();
+            
+        }
+    };
     
     @Override
     public int getLayoutId() {
@@ -119,17 +129,18 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         
         /*String a=String.valueOf(DateUtil.getLongAsDate(12,12,2017));
         MyLogger.d("bómdkss",a);*/
-    
- 
+        
     }
+    
     @OnClick(R.id.txt_edit_saving)
-    public void onClickSaving(View view){
+    public void onClickSaving(View view) {
         mSaving.setName(edit_text_name_saving.getText().toString().trim());
-        String goalMoney=txt_goal_money.getText().toString().trim().substring(1);
+        String goalMoney = txt_goal_money.getText().toString().trim().substring(1);
         mSaving.setGoalMoney(goalMoney);
-        if(!txt_date_saving.getText().toString().trim().equals(getString(R.string.ending_date))){
-            String[] arr=txt_date_saving.getText().toString().trim().split("/");
-            long tmp=DateUtil.getLongAsDate(Integer.parseInt(arr[0]),Integer.parseInt(arr[1]),Integer.parseInt(arr[2]));
+        if (!txt_date_saving.getText().toString().trim().equals(getString(R.string.ending_date))) {
+            String[] arr = txt_date_saving.getText().toString().trim().split("/");
+            long tmp = DateUtil.getLongAsDate(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]),
+                      Integer.parseInt(arr[2]));
             mSaving.setDate(String.valueOf(tmp));
         }
         
@@ -137,12 +148,14 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         mSavingPresenter.updateSaving(mSaving);
         
     }
+    
     @OnClick(R.id.txt_goal_money)
-    public void onClickGoalMoney(View view){
-        Intent intent=new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money",txt_goal_money.getText());
-        startActivityForResult(intent,5);
+    public void onClickGoalMoney(View view) {
+        Intent intent = new Intent(this, CalculatorActivity.class);
+        intent.putExtra("goal_money", txt_goal_money.getText());
+        startActivityForResult(intent, 5);
     }
+    
     @Override
     protected void initializeActionBar(View rootView) {
         getData();
@@ -167,21 +180,6 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         return null;
     }
     
-    private DatePickerDialog.OnDateSetListener datePickerListener
-              = new DatePickerDialog.OnDateSetListener() {
-        
-        // when dialog box is closed, below method will be called.
-        public void onDateSet(DatePicker view, int selectedYear,
-                  int selectedMonth, int selectedDay) {
-            year = selectedYear;
-            month = selectedMonth;
-            day = selectedDay;
-            
-            updateDate();
-           
-        }
-    };
-    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
@@ -200,30 +198,34 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         }
         if (requestCode == 5) {
             if (resultCode == Activity.RESULT_OK) {
-                String goalMoney=data.getStringExtra("result");
-                txt_goal_money.setText("+"+goalMoney);
+                String goalMoney = data.getStringExtra("result");
+                txt_goal_money.setText("+" + goalMoney);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-            
+                
             }
         }
     }
-    public void updateDate(){
+    
+    public void updateDate() {
         txt_date_saving.setText(new StringBuilder().append(day)
                   .append("/").append(month + 1).append("/").append(year));
         txt_date_saving.setTextColor(ContextCompat.getColor(this, R.color.black));
         ic_clear_date.setVisibility(View.VISIBLE);
     }
-    public void getData(){
-        Intent intent=getIntent();
-        mSaving=(Saving)intent.getSerializableExtra("saving");
+    
+    public void getData() {
+        Intent intent = getIntent();
+        mSaving = (Saving) intent.getSerializableExtra("saving");
     }
-    public void showData(){
+    
+    public void showData() {
         edit_text_name_saving.setText(mSaving.getName());
-        txt_goal_money.setText("+"+mSaving.getGoalMoney());
+        txt_goal_money.setText("+" + mSaving.getGoalMoney());
         txt_date_saving.setText(DateUtil.convertTimeMillisToDate(mSaving.getDate()));
         
     }
+    
     @Override
     public void showListSaving(List<Saving> savings) {
         
@@ -247,9 +249,9 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     @Override
     public void onSuccessUpdateSaving() {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("saving",mSaving);
-        returnIntent.putExtra("currencies",mCurrencies);
-        setResult(Activity.RESULT_OK,returnIntent);
+        returnIntent.putExtra("saving", mSaving);
+        returnIntent.putExtra("currencies", mCurrencies);
+        setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
     

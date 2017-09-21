@@ -7,5 +7,6 @@ import com.vn.hcmute.team.cortana.mymoney.model.Icon;
  */
 
 public interface SelectIconListener {
-   void onClickIcon(int position,Icon icon);
+    
+    void onClickIcon(int position, Icon icon);
 }

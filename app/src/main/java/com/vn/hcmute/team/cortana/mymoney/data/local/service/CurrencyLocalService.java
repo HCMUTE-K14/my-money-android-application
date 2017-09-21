@@ -12,10 +12,10 @@ import java.util.concurrent.Callable;
  * Created by infamouSs on 9/11/17.
  */
 
-public class CurrencyService extends DbContentProvider implements
-                                                       LocalService.CurrencyLocalRepository {
+public class CurrencyLocalService extends DbContentProvider implements
+                                                            LocalService.CurrencyLocalRepository {
     
-    public static final String TAG = CurrencyService.class.getSimpleName();
+    public static final String TAG = CurrencyLocalService.class.getSimpleName();
     
     private final String TABLE_NAME = "tbl_currency";
     private final String COLUMN_ID = "cur_id";
@@ -24,7 +24,7 @@ public class CurrencyService extends DbContentProvider implements
     private final String COLUMN_DISPLAY_TYPE = "cur_display_type";
     private final String COLUMN_CODE = "cur_code";
     
-    public CurrencyService(DatabaseHelper databaseHelper) {
+    public CurrencyLocalService(DatabaseHelper databaseHelper) {
         super(databaseHelper);
     }
     
@@ -41,7 +41,7 @@ public class CurrencyService extends DbContentProvider implements
             return new Callable<List<Currencies>>() {
                 @Override
                 public List<Currencies> call() throws Exception {
-                    Cursor cursor = CurrencyService.this
+                    Cursor cursor = CurrencyLocalService.this
                               .query(TABLE_NAME, getAllColumns(), null, null, null);
                     if (cursor == null) {
                         return null;
@@ -62,7 +62,7 @@ public class CurrencyService extends DbContentProvider implements
                         lists.add(currencies);
                     }
                     cursor.close();
-                    CurrencyService.this.close();
+                    CurrencyLocalService.this.close();
                     return lists;
                 }
             };

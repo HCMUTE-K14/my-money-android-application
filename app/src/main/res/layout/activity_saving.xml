@@ -6,8 +6,6 @@
   android:layout_height="match_parent">
 
 
-
-
   <android.support.design.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -31,7 +29,7 @@
       android:layout_alignParentBottom="true"
       android:layout_alignParentRight="true"
       android:src="@drawable/ic_add_white"
-      app:backgroundTint="#69ef87"
+      app:backgroundTint="@color/green"
       app:elevation="5dp" />
     </android.support.design.widget.CoordinatorLayout>
 

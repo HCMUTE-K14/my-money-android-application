@@ -10,10 +10,14 @@ import java.util.List;
  */
 
 public interface LocalTask {
-    interface IconTask{
+    
+    interface IconTask {
+        
         Observable<List<Icon>> getListIcon();
     }
-    interface CurrencyTask{
+    
+    interface CurrencyTask {
+        
         Observable<List<Currencies>> getListCurrency();
     }
 }

@@ -25,7 +25,8 @@ import javax.inject.Inject;
  * Created by kunsubin on 9/8/2017.
  */
 
-public class TransferMoneySavingActivity extends BaseActivity{
+public class TransferMoneySavingActivity extends BaseActivity {
+    
     @BindView(R.id.txt_name_saving)
     TextView txt_name_saving;
     @BindView(R.id.txt_remainin)
@@ -39,9 +40,9 @@ public class TransferMoneySavingActivity extends BaseActivity{
     @Inject
     SavingPresenter mSavingPresenter;
     
-    private   String value="-1";
+    private String value = "-1";
     private Saving mSaving;
-
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_transaction_saving;
@@ -64,28 +65,32 @@ public class TransferMoneySavingActivity extends BaseActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    
+        
         getData();
         showData();
         
         
     }
-    public void getData(){
-        Intent intent=getIntent();
-        value=intent.getStringExtra("value");
-        mSaving=(Saving)intent.getSerializableExtra("saving");
+    
+    public void getData() {
+        Intent intent = getIntent();
+        value = intent.getStringExtra("value");
+        mSaving = (Saving) intent.getSerializableExtra("saving");
         
     }
-    public void showData(){
+    
+    public void showData() {
         txt_name_saving.setText(mSaving.getName());
-        double remainin=Double.parseDouble(mSaving.getGoalMoney())-Double.parseDouble(mSaving.getCurrentMoney());
-        txt_remainin.setText("+"+remainin);
-        if(value.equals("1")){
+        double remainin = Double.parseDouble(mSaving.getGoalMoney()) -
+                          Double.parseDouble(mSaving.getCurrentMoney());
+        txt_remainin.setText("+" + remainin);
+        if (value.equals("1")) {
             edit_describe.setText(getString(R.string.deposit));
-        }else {
+        } else {
             edit_describe.setText(getString(R.string.withdraw));
         }
     }
+    
     @Override
     protected void onDestroy() {
         mSavingPresenter.unSubscribe();
@@ -94,7 +99,7 @@ public class TransferMoneySavingActivity extends BaseActivity{
     
     @Override
     protected void initializePresenter() {
-        mPresenter=mSavingPresenter;
+        mPresenter = mSavingPresenter;
         
     }
     
@@ -102,19 +107,21 @@ public class TransferMoneySavingActivity extends BaseActivity{
     protected void initializeActionBar(View rootView) {
         
     }
+    
     @OnClick(R.id.linear_money)
-    public void onClickLinearMoney(View view){
-        Intent intent=new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money","0");
-        startActivityForResult(intent,9);
+    public void onClickLinearMoney(View view) {
+        Intent intent = new Intent(this, CalculatorActivity.class);
+        intent.putExtra("goal_money", "0");
+        startActivityForResult(intent, 9);
     }
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
         if (requestCode == 9) {
             if (resultCode == Activity.RESULT_OK) {
                 
-                String result=data.getStringExtra("result");
+                String result = data.getStringExtra("result");
                 
                 txt_money.setText(result);
                 
@@ -124,8 +131,9 @@ public class TransferMoneySavingActivity extends BaseActivity{
             }
         }
     }
+    
     @OnClick(R.id.back_button_saving)
-    public void onClickBack(View view){
+    public void onClickBack(View view) {
         finish();
     }
 }

@@ -24,17 +24,6 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     protected static DatabaseHelper sInstance = null;
     private Context mContext;
     
-    public static DatabaseHelper getInstance(Context context) {
-        if (sInstance == null) {
-            synchronized (DatabaseHelper.class) {
-                if (sInstance == null) {
-                    sInstance = new DatabaseHelper(context.getApplicationContext());
-                }
-            }
-        }
-        return sInstance;
-    }
-    
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
         mContext = context.getApplicationContext();
@@ -48,16 +37,27 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         }, 500);
     }
     
+    public static DatabaseHelper getInstance(Context context) {
+        if (sInstance == null) {
+            synchronized (DatabaseHelper.class) {
+                if (sInstance == null) {
+                    sInstance = new DatabaseHelper(context.getApplicationContext());
+                }
+            }
+        }
+        return sInstance;
+    }
+    
     private void initExchangeRate() {
         InputStream inputStream = mContext.getResources().openRawResource(R.raw.exchange_rate);
-    
+        
         InputStreamReader reader = new InputStreamReader(inputStream);
-    
+        
         Gson gson = new Gson();
         RealTimeCurrency realTimeCurrency = gson.fromJson(reader, RealTimeCurrency.class);
         PreferencesHelper preferencesHelper = PreferencesHelper
                   .getInstance(mContext.getApplicationContext());
-    
+        
         preferencesHelper.putRealTimeCurrency(realTimeCurrency);
     }
 }

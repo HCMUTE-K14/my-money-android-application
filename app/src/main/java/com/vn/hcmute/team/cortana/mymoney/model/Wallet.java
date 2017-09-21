@@ -11,6 +11,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class Wallet implements Parcelable {
     
+    public static final Creator<Wallet> CREATOR = new Creator<Wallet>() {
+        @Override
+        public Wallet createFromParcel(Parcel in) {
+            return new Wallet(in);
+        }
+        
+        @Override
+        public Wallet[] newArray(int size) {
+            return new Wallet[size];
+        }
+    };
     @SerializedName("walletid")
     @Expose
     private String walletid;
@@ -29,7 +40,6 @@ public class Wallet implements Parcelable {
     @SerializedName("walletImage")
     @Expose
     private String walletImage;
-    
     @SerializedName("archive")
     @Expose
     private boolean archive;
@@ -44,7 +54,6 @@ public class Wallet implements Parcelable {
         this.walletImage = "";
     }
     
-    
     protected Wallet(Parcel in) {
         walletid = in.readString();
         userid = in.readString();
@@ -54,18 +63,6 @@ public class Wallet implements Parcelable {
         walletImage = in.readString();
         archive = in.readByte() != 0;
     }
-    
-    public static final Creator<Wallet> CREATOR = new Creator<Wallet>() {
-        @Override
-        public Wallet createFromParcel(Parcel in) {
-            return new Wallet(in);
-        }
-        
-        @Override
-        public Wallet[] newArray(int size) {
-            return new Wallet[size];
-        }
-    };
     
     public String getWalletid() {
         return walletid;
@@ -155,7 +152,7 @@ public class Wallet implements Parcelable {
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-    
+        
         dest.writeString(walletid);
         dest.writeString(userid);
         dest.writeString(walletName);

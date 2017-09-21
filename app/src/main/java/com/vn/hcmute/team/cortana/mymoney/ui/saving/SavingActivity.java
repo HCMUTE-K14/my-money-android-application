@@ -27,7 +27,7 @@ public class SavingActivity extends BaseActivity implements SavingContract.View 
     ViewPager mViewPager;
     
     private PagerAdapter mPagerAdapter;
- 
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_saving;
@@ -35,14 +35,14 @@ public class SavingActivity extends BaseActivity implements SavingContract.View 
     
     @Override
     protected void initializeDagger() {
-     
+
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       
-    
-        mPagerAdapter=new PagerAdapter(getSupportFragmentManager(),0);
+
+        mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), 0);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
@@ -50,48 +50,49 @@ public class SavingActivity extends BaseActivity implements SavingContract.View 
             public void onTabSelected(Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
             }
-        
+
             @Override
             public void onTabUnselected(Tab tab) {
-            
+
             }
-        
+
             @Override
             public void onTabReselected(Tab tab) {
-            
+
             }
         });
         
         initTabLayout();
-    
+
     }
     
     @Override
     protected void onDestroy() {
-     
+
         super.onDestroy();
     }
     
     @Override
     protected void initializePresenter() {
-      
+
     }
     
     @Override
     protected void initializeActionBar(View rootView) {
-       
+
     }
-    private void initTabLayout(){
+
+    private void initTabLayout() {
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-       
+
     }
+
     @Override
     public void showListSaving(List<Saving> savings) {
-       
-     
+
     }
     
     @Override
@@ -101,32 +102,32 @@ public class SavingActivity extends BaseActivity implements SavingContract.View 
     
     @Override
     public void onSuccessCreateSaving() {
-       
+
     }
     
     @Override
     public void onSuccessDeleteSaving() {
-     
+
     }
     
     @Override
     public void onSuccessUpdateSaving() {
-       
+
     }
     
     @Override
     public void onSuccessTakeIn() {
-      
+
     }
     
     @Override
     public void onSuccessTakeOut() {
-    
+
     }
     
     @Override
     public void showError(String message) {
-      
+
     }
     
     @Override

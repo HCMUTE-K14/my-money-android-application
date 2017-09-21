@@ -239,7 +239,7 @@ public class UserManager extends UseCase<UserRequest> {
             }
         };
         if (!this.mCompositeDisposable.isDisposed()) {
-            String encryptPassword= SecurityUtil.encrypt(userCredential.getPassword());
+            String encryptPassword = SecurityUtil.encrypt(userCredential.getPassword());
             userCredential.setPassword(encryptPassword);
             mDisposable = mDataRepository.login(userCredential)
                       .subscribeOn(Schedulers.io())

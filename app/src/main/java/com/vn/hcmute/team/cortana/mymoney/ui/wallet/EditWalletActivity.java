@@ -29,6 +29,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.iconshop.SelectIconActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.CardViewActionBar;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletContract.View;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
@@ -48,6 +49,9 @@ public class EditWalletActivity extends BaseActivity implements View {
     
     @Inject
     WalletPresenter mWalletPresenter;
+    
+    @BindView(R.id.card_view_action_bar)
+    CardViewActionBar mCardViewActionBar;
     
     @BindView(R.id.parent_text_1)
     RelativeLayout mParentTextNameWallet;
@@ -74,7 +78,19 @@ public class EditWalletActivity extends BaseActivity implements View {
     private ProgressDialog mProgressDialog;
     private String mCurrentBalance;
     
-    private Icon mIcon;
+    private android.view.View.OnClickListener mOnBackClick = new android.view.View.OnClickListener() {
+        @Override
+        public void onClick(android.view.View v) {
+            showConfirmQuitDialog();
+        }
+    };
+    
+    private android.view.View.OnClickListener mOnDoneClick = new android.view.View.OnClickListener() {
+        @Override
+        public void onClick(android.view.View v) {
+            editWallet();
+        }
+    };
     
     public EditWalletActivity() {
         
@@ -146,17 +162,18 @@ public class EditWalletActivity extends BaseActivity implements View {
                     }
                     break;
                 case RequestCode.SELECT_ICON_REQUEST_CODE:
-                    mIcon = data.getParcelableExtra("icon");
+                    Icon icon = data.getParcelableExtra("icon");
                     
-                    if (mIcon == null) {
+                    if (icon == null) {
                         return;
                     }
                     
                     GlideApp.with(this)
-                              .load(DrawableUtil.getDrawable(this, mIcon.getImage()))
+                              .load(DrawableUtil.getDrawable(this, icon.getImage()))
                               .placeholder(R.drawable.folder_placeholder)
                               .error(R.drawable.folder_placeholder)
                               .into(mImageViewIcon);
+                    mIconWallet = icon.getImage();
                 default:
                     break;
             }
@@ -171,17 +188,6 @@ public class EditWalletActivity extends BaseActivity implements View {
     /*-----------------*/
     /*OnClick          */
     /*-----------------*/
-    @OnClick(R.id.btn_close)
-    public void onCLickClose() {
-        showConfirmQuitDialog();
-    }
-    
-    @OnClick(R.id.txt_done)
-    public void onClickDone() {
-        editWallet();
-    }
-    
-    
     @OnClick(R.id.image_view_icon)
     public void onClickChooseIcon() {
         Toast.makeText(this, "CHOOSE ICON", Toast.LENGTH_SHORT).show();
@@ -203,6 +209,9 @@ public class EditWalletActivity extends BaseActivity implements View {
     /*-----------------*/
     @Override
     public void initializeView() {
+        mCardViewActionBar.setOnClickBack(mOnBackClick);
+        mCardViewActionBar.setOnClickAction(mOnDoneClick);
+        
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getString(R.string.txt_updating_wallet));
         
@@ -304,7 +313,7 @@ public class EditWalletActivity extends BaseActivity implements View {
         boolean isArchive = mCheckBoxArchive.isChecked();
         
         mCurrentWallet.setWalletName(name);
-       
+        
         mCurrentWallet.setWalletImage(mIconWallet);
         mCurrentWallet.setArchive(isArchive);
         double money = 0;

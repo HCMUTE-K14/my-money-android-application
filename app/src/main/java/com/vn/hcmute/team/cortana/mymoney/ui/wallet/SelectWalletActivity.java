@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.View.OnClickListener;
 import android.widget.Toast;
 import butterknife.BindView;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
@@ -17,6 +17,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.WalletModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.CardViewActionBar;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletListener;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletView;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
@@ -36,8 +37,8 @@ public class SelectWalletActivity extends BaseActivity implements
     @BindView(R.id.select_wallet)
     SelectWalletView mSelectWalletView;
     
-    @BindView(R.id.btn_close)
-    LinearLayout mButtonClose;
+    @BindView(R.id.card_view_action_bar)
+    CardViewActionBar mCardViewActionBar;
     
     @Inject
     WalletPresenter mWalletPresenter;
@@ -163,6 +164,12 @@ public class SelectWalletActivity extends BaseActivity implements
     /*-----------------*/
     @Override
     public void initializeView() {
+        mCardViewActionBar.setOnClickBack(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mSelectWalletView.setSelectWalletListener(mSelectWalletListener);
     }
     

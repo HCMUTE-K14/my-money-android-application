@@ -1,6 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.data.remote;
 
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.BudgetService;
+import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.CategoryService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.CurrenciesService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.EventService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.ImageService;
@@ -9,6 +10,7 @@ import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.SavingService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.UserService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.WalletService;
 import com.vn.hcmute.team.cortana.mymoney.exception.BudgetException;
+import com.vn.hcmute.team.cortana.mymoney.exception.CategoryException;
 import com.vn.hcmute.team.cortana.mymoney.exception.EventException;
 import com.vn.hcmute.team.cortana.mymoney.exception.ImageException;
 import com.vn.hcmute.team.cortana.mymoney.exception.PersonException;
@@ -17,6 +19,7 @@ import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
 import com.vn.hcmute.team.cortana.mymoney.exception.UserRegisterException;
 import com.vn.hcmute.team.cortana.mymoney.exception.WalletException;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
+import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
@@ -44,14 +47,15 @@ import okhttp3.RequestBody;
 public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTask,
                                          RemoteTask.WalletTask, RemoteTask.CurrenciesTask,
                                          RemoteTask.EventTask, RemoteTask.SavingTask,
-                                         RemoteTask.PersonTask, RemoteTask.BudgetTask {
+                                         RemoteTask.PersonTask, RemoteTask.BudgetTask,
+                                         RemoteTask.CategoryTask {
     
     
     public static final String TAG = RemoteRepository.class.getSimpleName();
     
     private ServiceGenerator mServiceGenerator;
     
-
+    
     @Inject
     public RemoteRepository(ServiceGenerator serviceGenerator) {
         this.mServiceGenerator = serviceGenerator;
@@ -858,4 +862,118 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                   });
     }
     
+    @Override
+    public Observable<List<Category>> getListCategory(String userid, String token, String type) {
+        CategoryService categoryService = mServiceGenerator.getService(CategoryService.class);
+        if (categoryService == null) {
+            return null;
+        }
+        
+        return categoryService.getListCategory(userid, token, type)
+                  .map(new Function<JsonResponse<List<Category>>, List<Category>>() {
+                      @Override
+                      public List<Category> apply(
+                                @NonNull JsonResponse<List<Category>> listJsonResponse)
+                                throws Exception {
+                          if (listJsonResponse.getStatus().equals("success")) {
+                              return listJsonResponse.getData();
+                              
+                          } else {
+                              throw new CategoryException(listJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<List<Category>> getListCategoryByType(String userid, String token,
+              String type, String transType) {
+        CategoryService categoryService = mServiceGenerator.getService(CategoryService.class);
+        if (categoryService == null) {
+            return null;
+        }
+        
+        return categoryService.getListCategoryByType(userid, token, type, transType)
+                  .map(new Function<JsonResponse<List<Category>>, List<Category>>() {
+                      @Override
+                      public List<Category> apply(
+                                @NonNull JsonResponse<List<Category>> listJsonResponse)
+                                throws Exception {
+                          if (listJsonResponse.getStatus().equals("success")) {
+                              return listJsonResponse.getData();
+                          } else {
+                              throw new CategoryException(listJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> createCategory(String userid, String token, String parentId,
+              Category category) {
+        CategoryService categoryService = mServiceGenerator.getService(CategoryService.class);
+        if (categoryService == null) {
+            return null;
+        }
+        
+        return categoryService.addCategory(userid, token, parentId, category)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getMessage();
+                              
+                          } else {
+                              throw new BudgetException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> updateCategory(String userid, String token, String oldParentId,
+              String newParentId, Category category) {
+        CategoryService categoryService = mServiceGenerator.getService(CategoryService.class);
+        if (categoryService == null) {
+            return null;
+        }
+        
+        return categoryService.updateCategory(userid, token, oldParentId, newParentId, category)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getMessage();
+                              
+                          } else {
+                              throw new BudgetException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> deleteCategory(String userid, String token, String parentId,
+              Category category) {
+        CategoryService categoryService = mServiceGenerator.getService(CategoryService.class);
+        if (categoryService == null) {
+            return null;
+        }
+        
+        return categoryService.deleteCategory(userid, token, parentId, category)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getMessage();
+                              
+                          } else {
+                              throw new BudgetException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
 }

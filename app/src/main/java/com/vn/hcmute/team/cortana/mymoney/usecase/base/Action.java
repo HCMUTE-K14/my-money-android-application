@@ -26,8 +26,7 @@ public class Action {
     public static final String ACTION_GET_WALLET = "action_get_wallet";
     public static final String ACTION_MOVE_WALLET = "action_move_wallet";
     
-    public static final String ACTION_GET_CURRENCIES_FROM_REMOTE = "action_get_currencies_from_remote";
-    public static final String ACTION_GET_CURRENCIES_FROM_LOCAL = "action_get_currencies_from_local";
+    public static final String ACTION_GET_CURRENCIES = "action_get_currencies";
     public static final String ACTION_CONVERT_CURRENCY_ONLINE = "action_convert_currency_online";
     public static final String ACTION_CONVERT_CURRENCY_OFFLINE = "action_convert_currency_offline";
     public static final String ACTION_UPDATE_REAL_TIME_CURRENCY = "action_update_real_time_currency";
@@ -54,4 +53,14 @@ public class Action {
     public static final String ACTION_CREATE_BUDGET = "action_create_budget";
     public static final String ACTION_UPDATE_BUDGET = "action_update_budget";
     public static final String ACTION_DELETE_BUDGET = "action_delete_budget";
+    
+    public static final String ACTION_GET_CATEGORY = "action_get_category";
+    public static final String ACTION_GET_INCOMING_CATEGORY = "action_get_incoming_category";
+    public static final String ACTION_GET_EXPENSE_CATEGORY = "action_get_expense_category";
+    public static final String ACTION_GET_DEBT_LOAN_CATEGORY = "action_get_debt_loan_category";
+    public static final String ACTION_ADD_CATEGORY = "action_add_category";
+    public static final String ACTION_UPDATE_CATEGORY = "action_update_category";
+    public static final String ACTION_DELETE_CATEGORY = "action_delete_category";
+    public static final String ACTION_SYNC_CATEGORY = "action_sync_category";
+    public static final String ACTION_GET_CATEGORY_BY_TYPE = "action_get_category_by_type";
 }

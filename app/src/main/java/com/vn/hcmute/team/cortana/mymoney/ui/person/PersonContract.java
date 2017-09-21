@@ -20,7 +20,7 @@ public interface PersonContract {
         
         void onSuccessAddPerson(String message, Person person);
         
-        void onSuccessUpdatePerson(String message,int position,Person person);
+        void onSuccessUpdatePerson(String message, int position, Person person);
         
         void onSuccessRemovePerson(String message, int position, Person person);
         
@@ -41,7 +41,7 @@ public interface PersonContract {
         
         void finishChoosePerson(List<Person> selectedPersons);
         
-        void updatePerson(int position,Person person);
+        void updatePerson(int position, Person person);
         
         void unSubscribe();
     }

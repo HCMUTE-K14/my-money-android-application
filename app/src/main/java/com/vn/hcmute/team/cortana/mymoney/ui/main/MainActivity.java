@@ -132,7 +132,15 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
             }
         }
     };
-    
+    private Runnable runnableAttachTestFragment = new Runnable() {
+        @Override
+        public void run() {
+            mNavigationView.getMenu().findItem(R.id.navigation_item_cashbook).setChecked(true);
+            TestFragment fragment = new TestFragment();
+            getSupportFragmentManager().beginTransaction()
+                      .replace(R.id.container_fragment, fragment).commit();
+        }
+    };
     
     @Override
     public int getLayoutId() {
@@ -210,7 +218,6 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         setupNavigationView();
     }
     
-    
     @Override
     public void showEmpty() {
         showEmptyData(getString(R.string.txt_no_data));
@@ -233,12 +240,10 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         mSelectWalletView.updateArchiveWallet(position, wallet);
     }
     
-    
     @Override
     public void onRemoveWalletSuccess(String message, int position, Wallet wallet) {
         
     }
-    
     
     @Override
     public void onMoveMoneySuccess(String message) {
@@ -254,7 +259,6 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     public void loading(boolean isLoading) {
         mSelectWalletView.loading(isLoading);
     }
-    
     
     private void initializeHeaderNavView() {
         mSelectWalletView = (SelectWalletView) mNavigationView.findViewById(R.id.select_wallet);
@@ -343,16 +347,6 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         shouldShowMenuWallet = false;
     }
     
-    private Runnable runnableAttachTestFragment = new Runnable() {
-        @Override
-        public void run() {
-            mNavigationView.getMenu().findItem(R.id.navigation_item_cashbook).setChecked(true);
-            TestFragment fragment = new TestFragment();
-            getSupportFragmentManager().beginTransaction()
-                      .replace(R.id.container_fragment, fragment).commit();
-        }
-    };
-    
     private void openLoginActivity() {
         //splash
         Intent intent = new Intent(this, LoginActivity.class);
@@ -388,7 +382,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                   (TextUtils.isEmpty(wallet.getMoney()) ? "0" : wallet.getMoney()));
         
         mTextViewValueWallet.setText(value);
-
+        
     }
 }
 

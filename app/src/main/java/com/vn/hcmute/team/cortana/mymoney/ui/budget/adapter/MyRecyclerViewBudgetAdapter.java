@@ -58,10 +58,25 @@ public class MyRecyclerViewBudgetAdapter extends
         return mData.size();
     }
     
+    // convenience method for getting data at click position
+    public Budget getItem(int id) {
+        return mData.get(id);
+    }
+    
+    // allows clicks events to be caught
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+    
+    // parent activity will implement this method to respond to click events
+    public interface ItemClickListener {
+
+        void onItemClick(View view, int position);
+    }
     
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        
+
         @BindView(R.id.budgetId)
         TextView budgetId;
         @BindView(R.id.categoryId)
@@ -78,35 +93,19 @@ public class MyRecyclerViewBudgetAdapter extends
         TextView userid;
         @BindView(R.id.moneyExpense)
         TextView moneyExpense;
-        
-        
+
+
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
-        
+
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
                 mClickListener.onItemClick(view, getAdapterPosition());
             }
         }
-    }
-    
-    // convenience method for getting data at click position
-    public Budget getItem(int id) {
-        return mData.get(id);
-    }
-    
-    // allows clicks events to be caught
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-    
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        
-        void onItemClick(View view, int position);
     }
 }

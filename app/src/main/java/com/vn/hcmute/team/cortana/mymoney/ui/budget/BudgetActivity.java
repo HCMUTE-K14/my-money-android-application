@@ -42,13 +42,14 @@ public class BudgetActivity extends BaseActivity implements BudgetContract.View,
     
     MyRecyclerViewBudgetAdapter mMyRecyclerViewBudgetAdapter;
     List<Budget> mBudgetList;
+
     //boolean f=true;
     @OnClick(R.id.buttonClick)
     public void onClick(View view) {
-        MyLogger.d("mmmmmmmm","ksdgjdfkgjdf");
-     
+        MyLogger.d("mmmmmmmm", "ksdgjdfkgjdf");
+
         mBudgetPresenter.getBudget();
-       
+
     }
     
     
@@ -92,15 +93,15 @@ public class BudgetActivity extends BaseActivity implements BudgetContract.View,
     public void onSuccessGetListBudget(List<Budget> list) {
         //Toast.makeText(this, list.get(0).getBudgetId(), Toast.LENGTH_LONG).show();
         mBudgetList = list;
-        MyLogger.d("Deso",list.size()+"");
-        MyLogger.d("sfd","sdgdfwiruqo");
-       // if (list != null) {
-            mMyRecyclerViewBudgetAdapter = new MyRecyclerViewBudgetAdapter(this, list);
-            mRecyclerViewBudget.setLayoutManager(new GridLayoutManager(this, 1));
-            mMyRecyclerViewBudgetAdapter.setClickListener(this);
-            mRecyclerViewBudget.setAdapter(mMyRecyclerViewBudgetAdapter);
+        MyLogger.d("Deso", list.size() + "");
+        MyLogger.d("sfd", "sdgdfwiruqo");
+        // if (list != null) {
+        mMyRecyclerViewBudgetAdapter = new MyRecyclerViewBudgetAdapter(this, list);
+        mRecyclerViewBudget.setLayoutManager(new GridLayoutManager(this, 1));
+        mMyRecyclerViewBudgetAdapter.setClickListener(this);
+        mRecyclerViewBudget.setAdapter(mMyRecyclerViewBudgetAdapter);
         //}
-       // MyLogger.d("Deso",list.size()+"");
+        // MyLogger.d("Deso",list.size()+"");
     }
     
     @Override
@@ -123,7 +124,7 @@ public class BudgetActivity extends BaseActivity implements BudgetContract.View,
     
     @Override
     public void onFailure(String message) {
-        MyLogger.d("fail","sdgdfwiruqo");
+        MyLogger.d("fail", "sdgdfwiruqo");
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
     
@@ -134,7 +135,7 @@ public class BudgetActivity extends BaseActivity implements BudgetContract.View,
     
     @Override
     public void onItemClick(View view, int position) {
-        TextView textView= ButterKnife.findById(view,R.id.budgetId);
+        TextView textView = ButterKnife.findById(view, R.id.budgetId);
         mBudgetPresenter.deleteBudget(textView.getText().toString().trim());
         //Toast.makeText(this, textView.getText(), Toast.LENGTH_LONG).show();
     }

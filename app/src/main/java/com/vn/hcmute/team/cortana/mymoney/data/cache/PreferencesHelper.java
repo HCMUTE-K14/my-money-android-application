@@ -17,17 +17,20 @@ public class PreferencesHelper {
     public static final String TAG = PreferencesHelper.class.getSimpleName();
     
     private static final String PREF_NAME = "my_money_pref";
-    
+    public static PreferencesHelper sInstance;
     private final String PREF_USER_ID = "PREF_USER_ID";
     private final String PREF_USER_TOKEN = "PREF_USER_TOKEN";
     private final String PREF_CURRENT_USER = "PREF_CURRENT_USER";
     private final String PREF_CURRENT_WALLET = "PREF_CURRENT_WALLET";
     private final String PREF_CURRENT_REAL_TIME_CURRENCY = "PREF_CURRENT_REAL_TIME_CURRENCY";
-    
     private SharedPreferences mSharedPreferences;
     private Gson mGson;
     
-    public static PreferencesHelper sInstance;
+    private PreferencesHelper(Context context) {
+        this.mSharedPreferences = context.getApplicationContext()
+                  .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        this.mGson = new Gson();
+    }
     
     public static PreferencesHelper getInstance(Context context) {
         if (sInstance == null) {
@@ -36,12 +39,6 @@ public class PreferencesHelper {
             }
         }
         return sInstance;
-    }
-    
-    private PreferencesHelper(Context context) {
-        this.mSharedPreferences = context.getApplicationContext()
-                  .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        this.mGson = new Gson();
     }
     
     public void clear() {

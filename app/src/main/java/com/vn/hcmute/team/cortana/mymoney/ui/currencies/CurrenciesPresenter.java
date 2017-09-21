@@ -28,18 +28,20 @@ public class CurrenciesPresenter extends BasePresenter<CurrenciesContract.View> 
     @Override
     public void getCurrencies() {
         
-        CurrenciesRequest request = new CurrenciesRequest(Action.ACTION_GET_CURRENCIES_FROM_LOCAL,
+        CurrenciesRequest request = new CurrenciesRequest(Action.ACTION_GET_CURRENCIES,
                   new BaseCallBack<Object>() {
                       
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
-                          if (value == null) {
+                          List<Currencies> lists = (List<Currencies>) value;
+                          if (lists != null && lists.size() == 0) {
                               getView().showEmpty();
-                          } else {
-                              getView().showCurrencies((List<Currencies>) value);
+                          } else if (lists != null) {
+                              getView().showCurrencies(lists);
                           }
                       }
+                      
                       @Override
                       public void onFailure(Throwable throwable) {
                           getView().loading(false);
@@ -50,7 +52,7 @@ public class CurrenciesPresenter extends BasePresenter<CurrenciesContract.View> 
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  },null);
+                  }, null);
         
         mCurrenciesUseCase.subscribe(request);
     }

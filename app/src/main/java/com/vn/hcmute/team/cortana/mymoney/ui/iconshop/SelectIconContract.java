@@ -9,11 +9,13 @@ import java.util.List;
  */
 
 public interface SelectIconContract {
-    interface View extends BaseView{
+    
+    interface View extends BaseView {
+        
         void initializeView();
         
         void showListIcon(List<Icon> icons);
-    
+        
         void showEmpty(String message);
         
         void onFailure(String message);
@@ -22,6 +24,7 @@ public interface SelectIconContract {
     }
     
     interface Presenter {
+        
         void getListIcon();
         
         void getListIcon(int page);

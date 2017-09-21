@@ -282,12 +282,9 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
             
             FilterResults results = new FilterResults();
             
-            int count = mPersons.size();
-            
             final ArrayList<Person> tempFilterList = new ArrayList<>();
             
-            for (int i = 0; i < count; i++) {
-                Person person = mPersons.get(i);
+            for (Person person : mPersons) {
                 String name = person.getName().toLowerCase();
                 String describe = person.getDescribe().toLowerCase();
                 if (name.contains(filterString) || describe.contains(filterString)) {

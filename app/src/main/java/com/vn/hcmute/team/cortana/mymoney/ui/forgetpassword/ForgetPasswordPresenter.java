@@ -26,7 +26,7 @@ public class ForgetPasswordPresenter extends BasePresenter<ForgetPasswordContrac
     
     @Override
     public void forgetPassword(String email) {
-        String[] params={email};
+        String[] params = {email};
         UserRequest request = new UserRequest(Action.ACTION_FORGET_PASSWORD,
                   new BaseCallBack<Object>() {
                       @Override

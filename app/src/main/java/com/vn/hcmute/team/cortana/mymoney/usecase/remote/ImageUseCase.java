@@ -75,10 +75,10 @@ public class ImageUseCase extends UseCase<ImageRequest> {
     }
     
     private void doGetListIcon(final BaseCallBack<Object> callBack) {
-//        if (!mDataRepository.doesDatabaseLocalExist()) {
-//            mDataRepository.createNewLocalDatabase();
-//        }
-//
+        //        if (!mDataRepository.doesDatabaseLocalExist()) {
+        //            mDataRepository.createNewLocalDatabase();
+        //        }
+        //
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object o) {

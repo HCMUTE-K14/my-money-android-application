@@ -49,88 +49,93 @@ public class TestFragment extends BaseFragment {
     @Inject
     PreferencesHelper mPreferencesHelper;
     
-    @OnClick(R.id.button_1)
-    public void onClick1(){
-        String amount=mEditTextAmount.getText().toString();
-        String from=mEditTextFrom.getText().toString();
-        String to=mEditTextTo.getText().toString();
+    public TestFragment() {
         
-        String[] params={amount,from,to};
-        CurrenciesRequest currenciesRequest=new CurrenciesRequest(Action.ACTION_CONVERT_CURRENCY_ONLINE,
+    }
+    
+    @OnClick(R.id.button_1)
+    public void onClick1() {
+        String amount = mEditTextAmount.getText().toString();
+        String from = mEditTextFrom.getText().toString();
+        String to = mEditTextTo.getText().toString();
+        
+        String[] params = {amount, from, to};
+        CurrenciesRequest currenciesRequest = new CurrenciesRequest(
+                  Action.ACTION_CONVERT_CURRENCY_ONLINE,
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {
-                          ResultConvert convert=(ResultConvert)value;
+                          ResultConvert convert = (ResultConvert) value;
                           
                           result.setText(convert.getValue());
                       }
-    
+                      
                       @Override
                       public void onFailure(Throwable throwable) {
-                     
+                          
                       }
-    
+                      
                       @Override
                       public void onLoading() {
-        
+                          
                       }
-                  },params);
+                  }, params);
         
         mCurrenciesUseCase.subscribe(currenciesRequest);
     }
+    
     @OnClick(R.id.button_2)
-    public void onClick2(){
-        CurrenciesRequest request=new CurrenciesRequest(Action.ACTION_UPDATE_REAL_TIME_CURRENCY,
+    public void onClick2() {
+        CurrenciesRequest request = new CurrenciesRequest(Action.ACTION_UPDATE_REAL_TIME_CURRENCY,
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {
                       }
-    
+                      
                       @Override
                       public void onFailure(Throwable throwable) {
-        
+                          
                       }
-    
+                      
                       @Override
                       public void onLoading() {
-        
+                          
                       }
-                  },null);
+                  }, null);
         
         mCurrenciesUseCase.subscribe(request);
     }
-    @OnClick(R.id.button_3)
-    public void onClick3(){
-        String amount=mEditTextAmount.getText().toString();
-        String from=mEditTextFrom.getText().toString();
-        String to=mEditTextTo.getText().toString();
     
-        String[] params={amount,from,to};
-        CurrenciesRequest currenciesRequest=new CurrenciesRequest(Action.ACTION_CONVERT_CURRENCY_OFFLINE,
+    @OnClick(R.id.button_3)
+    public void onClick3() {
+        String amount = mEditTextAmount.getText().toString();
+        String from = mEditTextFrom.getText().toString();
+        String to = mEditTextTo.getText().toString();
+        
+        String[] params = {amount, from, to};
+        CurrenciesRequest currenciesRequest = new CurrenciesRequest(
+                  Action.ACTION_CONVERT_CURRENCY_OFFLINE,
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {
-                          String _result= NumberUtil.format((double)value,"#,###.###");
+                          String _result = NumberUtil.format((double) value, "#,###.###");
                           result.setText(_result);
                       }
                       
-                  
+                      
                       @Override
                       public void onFailure(Throwable throwable) {
-                          Toast.makeText(TestFragment.this.getContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                          Toast.makeText(TestFragment.this.getContext(), throwable.getMessage(),
+                                    Toast.LENGTH_SHORT).show();
                       }
-                  
+                      
                       @Override
                       public void onLoading() {
-                      
+                          
                       }
-                  },params);
-    
-        mCurrenciesUseCase.subscribe(currenciesRequest);
-    }
-    
-    public TestFragment(){
+                  }, params);
         
+        mCurrenciesUseCase.subscribe(currenciesRequest);
     }
     
     @Override
@@ -140,8 +145,9 @@ public class TestFragment extends BaseFragment {
     
     @Override
     protected void initializeDagger() {
-        ApplicationComponent applicationComponent=((MyMoneyApplication)this.getActivity().getApplication()).getAppComponent();
-        CurrenciesComponent currenciesComponent= DaggerCurrenciesComponent.builder()
+        ApplicationComponent applicationComponent = ((MyMoneyApplication) this.getActivity()
+                  .getApplication()).getAppComponent();
+        CurrenciesComponent currenciesComponent = DaggerCurrenciesComponent.builder()
                   .applicationComponent(applicationComponent)
                   .activityModule(new ActivityModule(this.getActivity()))
                   .currenciesModule(new CurrenciesModule())
