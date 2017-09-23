@@ -36,7 +36,7 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/28/2017.
  */
 
-public class InfoSavingActivity extends BaseActivity implements SavingContract.View{
+public class InfoSavingActivity extends BaseActivity implements SavingContract.View {
     
     @BindView(R.id.txt_saving_name)
     TextView txt_saving_name;
@@ -162,7 +162,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
                   .build();
         savingComponent.inject(this);
         
-      
+
     }
     
     @Override
@@ -220,10 +220,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         
         if (requestCode == 3) {
             if (resultCode == Activity.RESULT_OK) {
-                
                 mSaving = (Saving) data.getParcelableExtra("saving");
-              
-                
                 double tmp = (Double.parseDouble(mSaving.getCurrentMoney()) /
                               Double.parseDouble(mSaving.getGoalMoney())) * 100;
                 int temp = (int) tmp;
@@ -304,6 +301,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     public void loading(boolean isLoading) {
         
     }
+
     @OnClick(R.id.image_view_take_in)
     public void onClickTakeIn(View view){
         Intent intent=new Intent(this,TransferMoneySavingActivity.class);
@@ -312,6 +310,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         intent.putExtra("value","1");
         startActivityForResult(intent,7);
     }
+
     @OnClick(R.id.image_view_take_out)
     public void onClickTakeOut(View view)
     {
@@ -321,5 +320,4 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         intent.putExtra("value","2");
         startActivityForResult(intent,8);
     }
-   
 }

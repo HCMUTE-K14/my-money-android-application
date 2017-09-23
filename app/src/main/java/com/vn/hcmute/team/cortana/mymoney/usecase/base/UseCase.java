@@ -11,6 +11,7 @@ package com.vn.hcmute.team.cortana.mymoney.usecase.base;
  */
 public abstract class UseCase<Q extends UseCase.RequestValue> {
     
+    
     private Q mRequestValues;
     
     public Q getRequestValues() {
@@ -28,5 +29,4 @@ public abstract class UseCase<Q extends UseCase.RequestValue> {
     public interface RequestValue {
         
     }
-    
 }

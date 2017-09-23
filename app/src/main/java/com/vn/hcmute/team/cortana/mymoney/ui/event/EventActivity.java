@@ -20,9 +20,10 @@ import com.vn.hcmute.team.cortana.mymoney.ui.event.adapter.PagerAdapterEvent;
  * Created by kunsubin on 8/22/2017.
  */
 
+
 public class EventActivity extends BaseActivity {
     
-    
+
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
     @BindView(R.id.pager)
@@ -86,13 +87,11 @@ public class EventActivity extends BaseActivity {
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
-    
     @OnClick(R.id.btn_add_event)
     public void onClickAddEvent(View view){
         Intent intent=new Intent(this,ActivityAddEvent.class);
         startActivityForResult(intent,22);
     }
-    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==22){
@@ -108,7 +107,6 @@ public class EventActivity extends BaseActivity {
         }
         if(requestCode==16){
             mPagerAdapterEvent.getFragment(currentPositionFragment).onActivityResult(requestCode,resultCode,data);
-        }
-        
+        }    
     }
 }

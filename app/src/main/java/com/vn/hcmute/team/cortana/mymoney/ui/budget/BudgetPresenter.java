@@ -32,7 +32,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
-                MyLogger.d("bommm",((List<Budget>)value).get(0).getBudgetId());
+                MyLogger.d("bommm", ((List<Budget>) value).get(0).getBudgetId());
                 getView().onSuccessGetListBudget((List<Budget>) value);
             }
             

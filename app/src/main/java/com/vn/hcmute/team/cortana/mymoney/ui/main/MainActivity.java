@@ -10,6 +10,7 @@ import android.support.design.widget.NavigationView.OnNavigationItemSelectedList
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,9 +33,12 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.login.LoginActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletListener;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletView;
+import com.vn.hcmute.team.cortana.mymoney.ui.wallet.AddWalletActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletContract;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletPresenter;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
+import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import java.util.List;
 import javax.inject.Inject;
@@ -76,23 +80,19 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     private SelectWalletListener mSelectWalletListener = new SelectWalletListener() {
         @Override
         public void onClickAddWallet() {
-            
+            openAddWalletActivity();
         }
         
         @Override
         public void onClickMyWallet() {
-            
+            openActivityMyWallet();
         }
         
-        @Override
-        public void onCLickTotal() {
-            
-        }
         
         @Override
         public void onCLickWallet(Wallet wallet) {
-            Toast.makeText(MainActivity.this, wallet.getWalletImage() + "", Toast.LENGTH_SHORT)
-                      .show();
+            chooseWallet(wallet);
+            mDrawerLayout.closeDrawers();
         }
         
         @Override
@@ -111,12 +111,12 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
             wallet.setArchive(!isArchive);
             mWalletPresenter.updateWallet(position, wallet);
         }
-    
+        
         @Override
         public void onTransferMoneyWallet(int position, Wallet wallet) {
-        
+            
         }
-    
+        
     };
     
     private OnClickListener mOnHeaderClickListener = new OnClickListener() {
@@ -132,7 +132,15 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
             }
         }
     };
-    
+    private Runnable runnableAttachTestFragment = new Runnable() {
+        @Override
+        public void run() {
+            mNavigationView.getMenu().findItem(R.id.navigation_item_cashbook).setChecked(true);
+            TestFragment fragment = new TestFragment();
+            getSupportFragmentManager().beginTransaction()
+                      .replace(R.id.container_fragment, fragment).commit();
+        }
+    };
     
     @Override
     public int getLayoutId() {
@@ -195,11 +203,20 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     }
     
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RequestCode.CHOOSE_WALLET_REQUEST_CODE && data != null) {
+                Wallet wallet = data.getParcelableExtra("wallet");
+                chooseWallet(wallet);
+            }
+        }
+    }
+    
+    @Override
     public void initializeView() {
         initializeHeaderNavView();
         setupNavigationView();
     }
-    
     
     @Override
     public void showEmpty() {
@@ -223,12 +240,10 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         mSelectWalletView.updateArchiveWallet(position, wallet);
     }
     
-    
     @Override
     public void onRemoveWalletSuccess(String message, int position, Wallet wallet) {
         
     }
-    
     
     @Override
     public void onMoveMoneySuccess(String message) {
@@ -244,7 +259,6 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     public void loading(boolean isLoading) {
         mSelectWalletView.loading(isLoading);
     }
-    
     
     private void initializeHeaderNavView() {
         mSelectWalletView = (SelectWalletView) mNavigationView.findViewById(R.id.select_wallet);
@@ -333,16 +347,6 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         shouldShowMenuWallet = false;
     }
     
-    private Runnable runnableAttachTestFragment = new Runnable() {
-        @Override
-        public void run() {
-            mNavigationView.getMenu().findItem(R.id.navigation_item_cashbook).setChecked(true);
-            TestFragment fragment = new TestFragment();
-            getSupportFragmentManager().beginTransaction()
-                      .replace(R.id.container_fragment, fragment).commit();
-        }
-    };
-    
     private void openLoginActivity() {
         //splash
         Intent intent = new Intent(this, LoginActivity.class);
@@ -350,5 +354,35 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         startActivityForResult(intent, Constraints.RequestCode.LOGIN_REQUEST_CODE);
     }
     
+    private void openAddWalletActivity() {
+        Intent intent = new Intent(this, AddWalletActivity.class);
+        startActivityForResult(intent, RequestCode.ADD_WALLET_REQUEST_CODE);
+        mDrawerLayout.closeDrawers();
+    }
+    
+    private void openActivityMyWallet() {
+        Intent intent = new Intent(this, MyWalletActivity.class);
+        intent.putExtra("mode", MyWalletActivity.MODE_OPEN_FROM_ANOTHER);
+        startActivityForResult(intent, RequestCode.CHOOSE_WALLET_REQUEST_CODE);
+        mDrawerLayout.closeDrawers();
+    }
+    
+    private void chooseWallet(Wallet wallet) {
+        mPreferenceHelper.putCurrentWallet(wallet);
+        mSelectWalletView.notifyDataSetChanged();
+        GlideApp.with(MainActivity.this)
+                  .load(DrawableUtil
+                            .getDrawable(MainActivity.this, wallet.getWalletImage()))
+                  .placeholder(R.drawable.folder_placeholder)
+                  .error(R.drawable.folder_placeholder)
+                  .into(mImageViewIconWallet);
+        mTextViewNameWallet.setText(wallet.getWalletName());
+        String value = getString(R.string.txt_show_value_wallet,
+                  wallet.getCurrencyUnit().getCurSymbol(),
+                  (TextUtils.isEmpty(wallet.getMoney()) ? "0" : wallet.getMoney()));
+        
+        mTextViewValueWallet.setText(value);
+        
+    }
 }
 

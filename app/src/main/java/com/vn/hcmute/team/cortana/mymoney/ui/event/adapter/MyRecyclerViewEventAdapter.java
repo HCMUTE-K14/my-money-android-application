@@ -18,7 +18,9 @@ import java.util.List;
  * Created by kunsubin on 8/24/2017.
  */
 
-public class MyRecyclerViewEventAdapter extends RecyclerView.Adapter<MyRecyclerViewEventAdapter.ViewHolder>{
+public class MyRecyclerViewEventAdapter extends
+                                        RecyclerView.Adapter<MyRecyclerViewEventAdapter.ViewHolder> {
+
     private List<Event> mData = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
@@ -38,8 +40,6 @@ public class MyRecyclerViewEventAdapter extends RecyclerView.Adapter<MyRecyclerV
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
        holder.bindView(getItem(position));
-       
-        
     }
     
 
@@ -48,9 +48,25 @@ public class MyRecyclerViewEventAdapter extends RecyclerView.Adapter<MyRecyclerV
         return mData.size();
     }
     
+    // convenience method for getting data at click position
+    public Event getItem(int id) {
+        return mData.get(id);
+    }
+    
+    // allows clicks events to be caught
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+    
+    // parent activity will implement this method to respond to click events
+    public interface ItemClickListener {
+
+        void onItemClick(View view, int position);
+    }
     
  
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
         
         @BindView(R.id.txt_name_event)
         TextView txt_name_event;
@@ -75,17 +91,12 @@ public class MyRecyclerViewEventAdapter extends RecyclerView.Adapter<MyRecyclerV
             }
         }
     }
-
     public Event getItem(int id) {
         return mData.get(id);
     }
-    
-
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
-    
-
     public interface ItemClickListener {
         
         void onItemClick(Event event);

@@ -37,6 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         setContentView(getLayoutId());
         
         unbinder = ButterKnife.bind(this);
@@ -75,8 +76,15 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
     
     @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+    }
+    
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        
         unbinder.unbind();
     }
 }

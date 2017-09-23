@@ -5,9 +5,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BasePresenter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager;
-import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager.ForgetPasswordRequest;
-import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager.LoginRequest;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager.UserRequest;
 import javax.inject.Inject;
 
 /**
@@ -32,32 +30,10 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         return mUserManager.isLogin();
     }
     
-    @Override
-    public void forgetPassword(String email) {
-        ForgetPasswordRequest forgetPasswordRequest = new ForgetPasswordRequest(
-                  Action.ACTION_FORGET_PASSWORD, new BaseCallBack<Object>() {
-            @Override
-            public void onSuccess(Object value) {
-                MyLogger.d("Success");
-            }
-            
-            @Override
-            public void onFailure(Throwable throwable) {
-                
-            }
-            
-            @Override
-            public void onLoading() {
-                
-            }
-        }, email);
-        
-        mUserManager.subscribe(forgetPasswordRequest);
-    }
-    
+
     @Override
     public void login(UserCredential userCredential) {
-        LoginRequest loginRequest = new LoginRequest(Action.ACTION_LOGIN_NORMAL,
+        UserRequest loginRequest = new UserRequest(Action.ACTION_LOGIN_NORMAL,
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {

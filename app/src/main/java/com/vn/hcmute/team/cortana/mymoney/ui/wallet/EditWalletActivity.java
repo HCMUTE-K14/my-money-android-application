@@ -24,13 +24,17 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.di.module.WalletModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.iconshop.SelectIconActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.CardViewActionBar;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletContract.View;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -45,6 +49,9 @@ public class EditWalletActivity extends BaseActivity implements View {
     
     @Inject
     WalletPresenter mWalletPresenter;
+    
+    @BindView(R.id.card_view_action_bar)
+    CardViewActionBar mCardViewActionBar;
     
     @BindView(R.id.parent_text_1)
     RelativeLayout mParentTextNameWallet;
@@ -61,8 +68,6 @@ public class EditWalletActivity extends BaseActivity implements View {
     @BindView(R.id.txt_currency)
     EditText mEditTextCurrency;
     
-
-    
     @BindView(R.id.check_box_archive)
     CheckBox mCheckBoxArchive;
     
@@ -71,7 +76,21 @@ public class EditWalletActivity extends BaseActivity implements View {
     private String mIconWallet;
     
     private ProgressDialog mProgressDialog;
+    private String mCurrentBalance;
     
+    private android.view.View.OnClickListener mOnBackClick = new android.view.View.OnClickListener() {
+        @Override
+        public void onClick(android.view.View v) {
+            showConfirmQuitDialog();
+        }
+    };
+    
+    private android.view.View.OnClickListener mOnDoneClick = new android.view.View.OnClickListener() {
+        @Override
+        public void onClick(android.view.View v) {
+            editWallet();
+        }
+    };
     
     public EditWalletActivity() {
         
@@ -138,12 +157,23 @@ public class EditWalletActivity extends BaseActivity implements View {
             switch (requestCode) {
                 case RequestCode.CURRENCY_REQUEST_CODE:
                     mCurrentCurrency = data.getParcelableExtra("currency");
-                    
                     if (mCurrentCurrency != null) {
                         mEditTextCurrency.setText(mCurrentCurrency.getCurName());
                     }
-                    
                     break;
+                case RequestCode.SELECT_ICON_REQUEST_CODE:
+                    Icon icon = data.getParcelableExtra("icon");
+                    
+                    if (icon == null) {
+                        return;
+                    }
+                    
+                    GlideApp.with(this)
+                              .load(DrawableUtil.getDrawable(this, icon.getImage()))
+                              .placeholder(R.drawable.folder_placeholder)
+                              .error(R.drawable.folder_placeholder)
+                              .into(mImageViewIcon);
+                    mIconWallet = icon.getImage();
                 default:
                     break;
             }
@@ -158,17 +188,6 @@ public class EditWalletActivity extends BaseActivity implements View {
     /*-----------------*/
     /*OnClick          */
     /*-----------------*/
-    @OnClick(R.id.btn_close)
-    public void onCLickClose() {
-        showConfirmQuitDialog();
-    }
-    
-    @OnClick(R.id.txt_done)
-    public void onClickDone() {
-        editWallet();
-    }
-    
-    
     @OnClick(R.id.image_view_icon)
     public void onClickChooseIcon() {
         Toast.makeText(this, "CHOOSE ICON", Toast.LENGTH_SHORT).show();
@@ -190,11 +209,21 @@ public class EditWalletActivity extends BaseActivity implements View {
     /*-----------------*/
     @Override
     public void initializeView() {
+        mCardViewActionBar.setOnClickBack(mOnBackClick);
+        mCardViewActionBar.setOnClickAction(mOnDoneClick);
+        
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getString(R.string.txt_updating_wallet));
         
         mCurrentCurrency = mCurrentWallet.getCurrencyUnit();
         mIconWallet = mCurrentWallet.getWalletImage();
+        
+        mImageViewIcon.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                openSelectIconActivity();
+            }
+        });
         
         GlideApp.with(this).load(DrawableUtil.getDrawable(this, mCurrentWallet.getWalletImage()))
                   .placeholder(R.drawable.folder_placeholder)
@@ -206,7 +235,14 @@ public class EditWalletActivity extends BaseActivity implements View {
         
         mEditTextCurrency.setText(mCurrentCurrency.getCurName());
     }
-
+    
+    private void openSelectIconActivity() {
+        Intent intent = new Intent(this, SelectIconActivity.class);
+        startActivityForResult(intent, RequestCode.SELECT_ICON_REQUEST_CODE);
+        
+        
+    }
+    
     
     @Override
     public void onFailure(String message) {
@@ -277,9 +313,16 @@ public class EditWalletActivity extends BaseActivity implements View {
         boolean isArchive = mCheckBoxArchive.isChecked();
         
         mCurrentWallet.setWalletName(name);
-        mCurrentWallet.setCurrencyUnit(mCurrentCurrency);
+        
         mCurrentWallet.setWalletImage(mIconWallet);
         mCurrentWallet.setArchive(isArchive);
+        double money = 0;
+        try {
+            money = exchangeMoney();
+        } catch (Exception e) {
+        }
+        mCurrentWallet.setMoney(String.valueOf(money));
+        mCurrentWallet.setCurrencyUnit(mCurrentCurrency);
         
         mWalletPresenter.updateWallet(0, mCurrentWallet);
     }
@@ -290,6 +333,14 @@ public class EditWalletActivity extends BaseActivity implements View {
         
         setResult(resultCode, intent);
         finish();
+    }
+    
+    private double exchangeMoney() {
+        String from = mCurrentWallet.getCurrencyUnit().getCurCode();
+        String to = mCurrentCurrency.getCurCode();
+        String amount = mCurrentWallet.getMoney();
+        
+        return NumberUtil.exchangeMoney(this, amount, from, to);
     }
     
     

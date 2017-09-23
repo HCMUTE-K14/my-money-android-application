@@ -27,19 +27,19 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/28/2017.
  */
 
-public class FragmentFinished extends BaseFragment implements MyRecyclerViewSavingAdapter.ItemClickListener, SavingContract.View{
+public class FragmentFinished extends BaseFragment implements
+                                                   MyRecyclerViewSavingAdapter.ItemClickListener,
+                                                   SavingContract.View {
     
-    private List<Saving> mSavingList;
     @BindView(R.id.recycler_view_saving_finished)
     RecyclerView mRecyclerView;
-    private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
-    private EmptyAdapter mEmptyAdapter;
-    
     @BindView(R.id.progress_bar_saving)
     ProgressBar mProgressBar;
-    
     @Inject
     SavingPresenter mSavingPresenter;
+    private List<Saving> mSavingList;
+    private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
+    private EmptyAdapter mEmptyAdapter;
     
     @Override
     protected int getLayoutId() {
@@ -48,7 +48,8 @@ public class FragmentFinished extends BaseFragment implements MyRecyclerViewSavi
     
     @Override
     protected void initializeDagger() {
-        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity().getApplication())
+        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity()
+                  .getApplication())
                   .getAppComponent();
         SavingComponent savingComponent = DaggerSavingComponent
                   .builder()
@@ -61,7 +62,7 @@ public class FragmentFinished extends BaseFragment implements MyRecyclerViewSavi
     
     @Override
     protected void initializePresenter() {
-        mPresenter=this.mSavingPresenter;
+        mPresenter = this.mSavingPresenter;
         mSavingPresenter.setView(this);
     }
     
@@ -75,17 +76,18 @@ public class FragmentFinished extends BaseFragment implements MyRecyclerViewSavi
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
         mSavingList=new ArrayList<>();
     }
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
         if (requestCode == 2) {
-            if(resultCode == Activity.RESULT_OK){
-                String savingId=data.getStringExtra("result");
+            if (resultCode == Activity.RESULT_OK) {
+                String savingId = data.getStringExtra("result");
                 
-                if(!mSavingList.isEmpty()){
+                if (!mSavingList.isEmpty()) {
                     
-                    for (Saving saving:mSavingList) {
-                        if(saving.getSavingid().equals(savingId)){
+                    for (Saving saving : mSavingList) {
+                        if (saving.getSavingid().equals(savingId)) {
                             mSavingList.remove(saving);
                             mMyRecyclerViewSavingAdapter.setList(mSavingList);
                             break;
@@ -105,6 +107,7 @@ public class FragmentFinished extends BaseFragment implements MyRecyclerViewSavi
             }
         }
     }
+    
     @Override
     public void onDestroy() {
         mSavingPresenter.unSubscribe();
@@ -171,7 +174,7 @@ public class FragmentFinished extends BaseFragment implements MyRecyclerViewSavi
     
     @Override
     public void loading(boolean isLoading) {
-        mProgressBar.setVisibility(isLoading?View.VISIBLE:View.GONE);
+        mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
     
     @Override

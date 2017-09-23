@@ -12,8 +12,6 @@ public interface SelectWalletListener {
     
     void onClickMyWallet();
     
-    void onCLickTotal();
-    
     void onCLickWallet(Wallet wallet);
     
     void onEditWallet(int position, Wallet wallet);
@@ -22,5 +20,5 @@ public interface SelectWalletListener {
     
     void onArchiveWallet(int position, Wallet wallet);
     
-    void onTransferMoneyWallet(int position,Wallet wallet);
+    void onTransferMoneyWallet(int position, Wallet wallet);
 }

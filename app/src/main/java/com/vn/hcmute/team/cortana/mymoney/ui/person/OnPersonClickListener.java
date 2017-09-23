@@ -12,5 +12,5 @@ public interface OnPersonClickListener {
     
     void onRemoveClick(int position, Person person);
     
-    void onEditClick(int position,Person person);
+    void onEditClick(int position, Person person);
 }

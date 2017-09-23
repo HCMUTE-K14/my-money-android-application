@@ -53,11 +53,10 @@ public class MyRecyclerViewBudgetAdapter extends
     public int getItemCount() {
         return mData.size();
     }
-    
  
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         
-       /* @BindView(R.id.budgetId)
+        /*@BindView(R.id.budgetId)
         TextView budgetId;
         @BindView(R.id.categoryId)
         TextView categoryId;
@@ -73,14 +72,13 @@ public class MyRecyclerViewBudgetAdapter extends
         TextView userid;
         @BindView(R.id.moneyExpense)
         TextView moneyExpense;*/
-        
-        
+
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
-        
+
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
@@ -97,8 +95,7 @@ public class MyRecyclerViewBudgetAdapter extends
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
-    
-
+   
     public interface ItemClickListener {
         
         void onItemClick(View view, int position);

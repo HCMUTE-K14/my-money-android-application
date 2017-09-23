@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="match_parent"
+  android:gravity="center"
+  android:layout_height="match_parent">
+  <EditText
+    android:id="@+id/edit_text_1"
+    android:hint="amount"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+  <EditText
+    android:id="@+id/edit_text_2"
+    android:hint="from"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+  <EditText
+    android:id="@+id/edit_text_3"
+    android:hint="to"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+  <Button
+    android:id="@+id/button_1"
+    android:text="convert online"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+  <Button
+    android:id="@+id/button_2"
+    android:text="update exchanger"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+  <Button
+    android:id="@+id/button_3"
+    android:text="convert offline"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+  <TextView
+    android:id="@+id/result"
+    android:textSize="20dp"
+    android:text="sdafsafdsafdsa"
+    android:layout_width="match_parent"
+    android:layout_height="50dp" />
+</LinearLayout>

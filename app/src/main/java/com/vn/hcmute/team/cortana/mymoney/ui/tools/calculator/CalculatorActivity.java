@@ -26,7 +26,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
  */
 
 public class CalculatorActivity extends BaseActivity implements OnTouchListener {
-    
+
     @BindView(R.id.txt_input)
     TextView txt_input;
     /*@BindView(R.id.scrollView)
@@ -60,7 +60,6 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
         String goalMoney = intent.getStringExtra("goal_money");
         //txt_input.setText(goalMoney.substring(1));
         txt_input.setText("0");
-        
     }
     
     public void onClick(View view) {
@@ -93,7 +92,6 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
                     Double.parseDouble(txt_input.getText().toString().trim());
                     resultAndFinish();
                 } catch (Exception ex) {
-                    //Toast.makeText(this,"Bom",Toast.LENGTH_LONG).show();
                     try {
                         String tmp = txt_input.getText().toString().replace("x", "*");
                         tmp = tmp.replace("÷", "/");
@@ -113,7 +111,6 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
                     txt_input.setText("");
                 }
                 txt_input.append(button.getText());
-                
                 break;
         }
     }

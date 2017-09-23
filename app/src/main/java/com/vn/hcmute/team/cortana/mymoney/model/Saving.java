@@ -199,9 +199,9 @@ public class Saving implements Parcelable {
         }
         
         Saving saving = (Saving) o;
-    
+        
         return savingid != null ? savingid.equals(saving.savingid) : saving.savingid == null;
-    
+        
     }
     
     @Override

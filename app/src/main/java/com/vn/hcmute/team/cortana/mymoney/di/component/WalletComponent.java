@@ -18,7 +18,6 @@ import dagger.Component;
           WalletModule.class}, dependencies = ApplicationComponent.class)
 public interface WalletComponent {
     
-    
     void inject(MainActivity mainActivity);
     
     void inject(SelectWalletActivity selectWalletActivity);

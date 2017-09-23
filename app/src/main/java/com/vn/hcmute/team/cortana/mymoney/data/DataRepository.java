@@ -4,10 +4,14 @@ import com.vn.hcmute.team.cortana.mymoney.data.cache.CacheRepository;
 import com.vn.hcmute.team.cortana.mymoney.data.local.LocalRepository;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.RemoteRepository;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
+import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
+import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
+import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
+import com.vn.hcmute.team.cortana.mymoney.model.ResultConvert;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
@@ -153,6 +157,21 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
         mCacheRepository.removeLoginStage();
     }
     
+    @Override
+    public void putRealTimeCurrency(RealTimeCurrency realTimeCurrency) {
+        mCacheRepository.putRealTimeCurrency(realTimeCurrency);
+    }
+    
+    @Override
+    public void removeRealTimeCurrency() {
+        mCacheRepository.removeRealTimeCurrency();
+    }
+    
+    @Override
+    public RealTimeCurrency getRealTimeCurrency() {
+        return mCacheRepository.getRealTimeCurrency();
+    }
+    
     //wallet
     @Override
     public Observable<String> createWallet(Wallet wallet, String userid, String token) {
@@ -180,11 +199,20 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
         return mRemoteRepository.moveWallet(userid, token, wallet1, wallet2, money);
     }
     
-    //currencies
     @Override
     public Observable<List<Currencies>> getCurrencies() {
         
         return mRemoteRepository.getCurrencies();
+    }
+    
+    @Override
+    public Observable<ResultConvert> convertCurrency(String amount, String from, String to) {
+        return mRemoteRepository.convertCurrency(amount, from, to);
+    }
+    
+    @Override
+    public Observable<RealTimeCurrency> updateRealTimeCurrency() {
+        return mRemoteRepository.getRealTimeCurrency();
     }
     
     //event
@@ -288,4 +316,45 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     public Observable<String> deleteBudget(String userid, String token, String budgetId) {
         return mRemoteRepository.deleteBudget(userid, token, budgetId);
     }
+    
+    @Override
+    public Observable<List<Category>> getListCategory(String userid, String token, String type) {
+        return mRemoteRepository.getListCategory(userid, token, type);
+    }
+    
+    @Override
+    public Observable<List<Category>> getListCategoryByType(String userid, String token,
+              String type, String transType) {
+        
+        return mRemoteRepository.getListCategoryByType(userid, token, type, transType);
+    }
+    
+    @Override
+    public Observable<String> createCategory(String userid, String token, String parentId,
+              Category category) {
+        return mRemoteRepository.createCategory(userid, token, parentId, category);
+    }
+    
+    @Override
+    public Observable<String> updateCategory(String userid, String token, String oldParentId,
+              String newParentId, Category category) {
+        return mRemoteRepository.updateCategory(userid, token, oldParentId, newParentId, category);
+    }
+    
+    @Override
+    public Observable<String> deleteCategory(String userid, String token, String parentId,
+              Category category) {
+        return mRemoteRepository.deleteCategory(userid, token, parentId, category);
+    }
+    
+    @Override
+    public Observable<List<Icon>> getListIcon() {
+        return mLocalRepository.getListIcon();
+    }
+    
+    @Override
+    public Observable<List<Currencies>> getLocalListCurrency() {
+        return mLocalRepository.getListCurrency();
+    }
+    
 }

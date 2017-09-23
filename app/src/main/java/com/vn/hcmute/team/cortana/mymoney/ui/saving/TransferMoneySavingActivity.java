@@ -57,7 +57,6 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     private   String value="-1";
     private Saving mSaving;
     private  String mWalleName;
-
     @Override
     public int getLayoutId() {
         return R.layout.activity_transaction_saving;
@@ -80,7 +79,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    
+        
         getData();
         showData();
         
@@ -91,17 +90,17 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         value=intent.getStringExtra("value");
         mSaving=intent.getParcelableExtra("saving");
         mWalleName=intent.getStringExtra("wallet_name");
-        
-        
-        
+
     }
-    public void showData(){
+    
+    public void showData() {
         txt_name_saving.setText(mSaving.getName());
-        double remainin=Double.parseDouble(mSaving.getGoalMoney())-Double.parseDouble(mSaving.getCurrentMoney());
-        txt_remainin.setText("+"+remainin);
-        if(value.equals("1")){
+        double remainin = Double.parseDouble(mSaving.getGoalMoney()) -
+                          Double.parseDouble(mSaving.getCurrentMoney());
+        txt_remainin.setText("+" + remainin);
+        if (value.equals("1")) {
             edit_describe.setText(getString(R.string.deposit));
-        }else {
+        } else {
             edit_describe.setText(getString(R.string.withdraw));
         }
         //wallet
@@ -117,6 +116,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         }
         
     }
+    
     @Override
     protected void onDestroy() {
         mSavingPresenter.unSubscribe();
@@ -126,27 +126,28 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     @Override
     protected void initializePresenter() {
         mPresenter=mSavingPresenter;
-        mSavingPresenter.setView(this);
-        
+        mSavingPresenter.setView(this);   
     }
     
     @Override
     protected void initializeActionBar(View rootView) {
         
     }
+    
     @OnClick(R.id.linear_money)
-    public void onClickLinearMoney(View view){
-        Intent intent=new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money","0");
-        startActivityForResult(intent,9);
+    public void onClickLinearMoney(View view) {
+        Intent intent = new Intent(this, CalculatorActivity.class);
+        intent.putExtra("goal_money", "0");
+        startActivityForResult(intent, 9);
     }
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
         if (requestCode == 9) {
             if (resultCode == Activity.RESULT_OK) {
                 
-                String result=data.getStringExtra("result");
+                String result = data.getStringExtra("result");
                 
                 txt_money.setText(result);
                 
@@ -165,8 +166,9 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
             }
         }
     }
+    
     @OnClick(R.id.back_button_saving)
-    public void onClickBack(View view){
+    public void onClickBack(View view) {
         finish();
     }
     

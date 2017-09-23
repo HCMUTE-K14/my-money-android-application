@@ -24,6 +24,6 @@ public interface ApplicationComponent {
     MyMoneyApplication myMoneyApplication();
     
     ServiceGenerator serviceGenerator();
-   
+    
     PreferencesHelper prefenencesHelper();
 }

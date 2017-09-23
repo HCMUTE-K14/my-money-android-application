@@ -13,6 +13,4 @@ public class ApplicationConfig {
     public static final int CACHE_MAX_AGE = 31536000; //1 year
     
     public static final int CACHE_MAX_STALE = 31536000; //1 year
-    
-
 }

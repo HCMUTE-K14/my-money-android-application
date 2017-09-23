@@ -4,14 +4,24 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.io.Serializable;
 
 /**
  * Created by kunsubin on 8/22/2017.
  */
 
-public class Currencies implements Parcelable{
+public class Currencies implements Parcelable {
     
+    public static final Creator<Currencies> CREATOR = new Creator<Currencies>() {
+        @Override
+        public Currencies createFromParcel(Parcel in) {
+            return new Currencies(in);
+        }
+        
+        @Override
+        public Currencies[] newArray(int size) {
+            return new Currencies[size];
+        }
+    };
     @SerializedName("cur_id")
     @Expose
     private String curId;
@@ -36,6 +46,15 @@ public class Currencies implements Parcelable{
         this.curDisplayType = "";
     }
     
+    public Currencies(String curId, String curName, String curSymbol,
+              String curDisplayType, String curCode) {
+        this.curId = curId;
+        this.curCode = curCode;
+        this.curName = curName;
+        this.curSymbol = curSymbol;
+        this.curDisplayType = curDisplayType;
+    }
+    
     protected Currencies(Parcel in) {
         curId = in.readString();
         curCode = in.readString();
@@ -43,18 +62,6 @@ public class Currencies implements Parcelable{
         curSymbol = in.readString();
         curDisplayType = in.readString();
     }
-    
-    public static final Creator<Currencies> CREATOR = new Creator<Currencies>() {
-        @Override
-        public Currencies createFromParcel(Parcel in) {
-            return new Currencies(in);
-        }
-        
-        @Override
-        public Currencies[] newArray(int size) {
-            return new Currencies[size];
-        }
-    };
     
     public String getCurId() {
         return curId;
@@ -114,7 +121,7 @@ public class Currencies implements Parcelable{
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-    
+        
         dest.writeString(curId);
         dest.writeString(curCode);
         dest.writeString(curName);

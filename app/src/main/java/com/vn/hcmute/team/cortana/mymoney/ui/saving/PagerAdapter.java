@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  */
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
+
     private FragmentRunning mFragmentRunning;
     private FragmentFinished mFragmentFinished;
     private int mNumOfTabs;
@@ -52,6 +53,4 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public int getNumOfTabs() {
         return mNumOfTabs;
     }
-    
-    
 }

@@ -42,14 +42,14 @@ public class SavingActivity extends BaseActivity{
     
     @Override
     protected void initializeDagger() {
-     
+
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       
-    
-        mPagerAdapter=new PagerAdapter(getSupportFragmentManager(),0);
+
+        mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), 0);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
@@ -60,20 +60,20 @@ public class SavingActivity extends BaseActivity{
                 MyLogger.d("qeqeww",tab.getPosition());
                 
             }
-        
+
             @Override
             public void onTabUnselected(Tab tab) {
-            
+
             }
-        
+
             @Override
             public void onTabReselected(Tab tab) {
-            
+
             }
         });
         
         initTabLayout();
-    
+
     }
     @OnClick(R.id.btn_add_saving)
     public void onClickAddSaving(View view){
@@ -102,20 +102,21 @@ public class SavingActivity extends BaseActivity{
     
     @Override
     protected void onDestroy() {
-     
+
         super.onDestroy();
     }
     
     @Override
     protected void initializePresenter() {
-      
+
     }
     
     @Override
     protected void initializeActionBar(View rootView) {
-       
+
     }
-    private void initTabLayout(){
+
+    private void initTabLayout() {
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);

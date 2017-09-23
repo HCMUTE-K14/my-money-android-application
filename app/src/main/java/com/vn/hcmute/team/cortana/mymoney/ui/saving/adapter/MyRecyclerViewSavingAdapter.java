@@ -20,7 +20,9 @@ import java.util.List;
  * Created by kunsubin on 8/25/2017.
  */
 
-public class MyRecyclerViewSavingAdapter extends RecyclerView.Adapter<MyRecyclerViewSavingAdapter.ViewHolder>{
+public class MyRecyclerViewSavingAdapter extends
+                                         RecyclerView.Adapter<MyRecyclerViewSavingAdapter.ViewHolder> {
+
     private List<Saving> mData = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
@@ -29,7 +31,7 @@ public class MyRecyclerViewSavingAdapter extends RecyclerView.Adapter<MyRecycler
     public MyRecyclerViewSavingAdapter(Context context, List<Saving> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
-        this.mContext=context;
+        this.mContext = context;
     }
     
 
@@ -52,8 +54,27 @@ public class MyRecyclerViewSavingAdapter extends RecyclerView.Adapter<MyRecycler
         return mData.size();
     }
     
+    public Saving getItem(int id) {
+        return mData.get(id);
+    }
+    
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+    
+    public void setList(List<Saving> list) {
+        mData = new ArrayList<>();
+        mData.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public interface ItemClickListener {
+
+        void onItemClick(View view, List<Saving> savingList, int position, int process);
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
         @BindView(R.id.txt_saving_name)
         TextView txt_saving_name;
         @BindView(R.id.txt_money_goal)
@@ -62,47 +83,49 @@ public class MyRecyclerViewSavingAdapter extends RecyclerView.Adapter<MyRecycler
         TextView txt_time_rest;
         @BindView(R.id.seek_bar_saving)
         SeekBar seek_bar_saving;
-       
-   
-        
+
+
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
-        public void bind(Saving saving){
+
+        public void bind(Saving saving) {
             txt_saving_name.setText(saving.getName());
             txt_money_goal.setText(saving.getGoalMoney());
-            
-            txt_time_rest.setText(mContext.getString(R.string.days_left,getDateRest(saving.getDate())+""));
-            int t=getProgress(saving.getCurrentMoney(),saving.getGoalMoney());
+
+            txt_time_rest.setText(mContext
+                      .getString(R.string.days_left, getDateRest(saving.getDate()) + ""));
+            int t = getProgress(saving.getCurrentMoney(), saving.getGoalMoney());
             seek_bar_saving.setProgress(t);
             seek_bar_saving.setEnabled(false);
-            
-            
+
+
         }
-        public int getDateRest(String milisecond){
-            long dateMilisecond=Long.parseLong(milisecond);
+
+        public int getDateRest(String milisecond) {
+            long dateMilisecond = Long.parseLong(milisecond);
             return DateUtil.getDateLeft(dateMilisecond);
         }
-        
-        public int getProgress(String a, String b){
-            double current=Double.parseDouble(a);
-            double goal=Double.parseDouble(b);
-            
-            double proportion=(current/goal)*100;
-            
-            return (int)proportion;
+
+        public int getProgress(String a, String b) {
+            double current = Double.parseDouble(a);
+            double goal = Double.parseDouble(b);
+
+            double proportion = (current / goal) * 100;
+
+            return (int) proportion;
         }
+
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
-                mClickListener.onItemClick(view,mData, getAdapterPosition(),seek_bar_saving.getProgress());
+                mClickListener.onItemClick(view, mData, getAdapterPosition(),
+                          seek_bar_saving.getProgress());
             }
         }
     }
-    
-
     public Saving getItem(int id) {
         return mData.get(id);
     }

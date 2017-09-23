@@ -6,6 +6,7 @@ def getProperty(String filename, String propName) {
         def props = new Properties()
         props.load(new FileInputStream(propsFile))
         if (props[propName] != null) {
+            print("BUILD GRANDLE OK")
             return props[propName]
         } else {
             print("No such property " + propName + " in file " + filename);
@@ -26,7 +27,11 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        //buildConfigField "String", "TEST", "\"${getProperty("local.properties", "test")}\""
+        buildConfigField "String", "AES_KEY", "\"${getProperty("local.properties", "aes_key")}\""
+
+
+
+
 
     }
     buildTypes {
@@ -78,6 +83,8 @@ dependencies {
      *  4.RxJava 2.1.2
      *  5.RxAndroid 2.0.1
      *  6.Glide 4.0
+     *  7.SQLiteAsset
+     *  8.Exp4j
      */
 
     compile 'com.jakewharton:butterknife:8.8.1'
@@ -96,7 +103,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:4.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
 
-
+    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile group: 'net.objecthunter', name: 'exp4j', version: '0.4.8'
 
     compile 'com.github.markushi:circlebutton:1.1'

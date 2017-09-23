@@ -19,13 +19,20 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerWalletComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.WalletComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
+import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.di.module.WalletModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.iconshop.SelectIconActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.CardViewActionBar;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletContract.View;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
+import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -36,6 +43,9 @@ import javax.inject.Inject;
 public class AddWalletActivity extends BaseActivity implements View {
     
     public static final String TAG = AddWalletActivity.class.getSimpleName();
+    
+    @BindView(R.id.card_view_action_bar)
+    CardViewActionBar mCardViewActionBar;
     
     @BindView(R.id.image_view_icon)
     ImageView mImageViewIcon;
@@ -48,15 +58,29 @@ public class AddWalletActivity extends BaseActivity implements View {
     
     @BindView(R.id.txt_balance)
     EditText mEditTextBalance;
-
     
     @Inject
     WalletPresenter mWalletPresenter;
     
     private Currencies mCurrentCurrency;
     private String mIconWallet;
+    private String mCurrentBalance;
     
     private ProgressDialog mProgressDialog;
+    
+    private android.view.View.OnClickListener mOnBackClick = new android.view.View.OnClickListener() {
+        @Override
+        public void onClick(android.view.View v) {
+            showConfirmQuitDialog();
+        }
+    };
+    
+    private android.view.View.OnClickListener mOnDoneClick = new android.view.View.OnClickListener() {
+        @Override
+        public void onClick(android.view.View v) {
+            addWallet();
+        }
+    };
     
     public AddWalletActivity() {
         
@@ -113,10 +137,27 @@ public class AddWalletActivity extends BaseActivity implements View {
             switch (requestCode) {
                 case RequestCode.CURRENCY_REQUEST_CODE:
                     mCurrentCurrency = data.getParcelableExtra("currency");
-                    if(mCurrentCurrency != null){
+                    if (mCurrentCurrency != null) {
                         mEditTextCurrency.setText(mCurrentCurrency.getCurName());
                     }
                     break;
+                case RequestCode.CALCULATOR_REQUEST_CODE:
+                    mCurrentBalance = data.getStringExtra("result");
+                    double amount = Double.parseDouble(mCurrentBalance);
+                    String result = NumberUtil.format(amount, "#,###.##");
+                    mEditTextBalance.setText(result);
+                    break;
+                case RequestCode.SELECT_ICON_REQUEST_CODE:
+                    Icon icon = data.getParcelableExtra("icon");
+                    if (icon == null) {
+                        return;
+                    }
+                    GlideApp.with(this)
+                              .load(DrawableUtil.getDrawable(this, icon.getImage()))
+                              .placeholder(R.drawable.folder_placeholder)
+                              .error(R.drawable.folder_placeholder)
+                              .into(mImageViewIcon);
+                    mIconWallet = icon.getImage();
                 default:
                     break;
             }
@@ -132,16 +173,6 @@ public class AddWalletActivity extends BaseActivity implements View {
     /*OnClick          */
     /*-----------------*/
     
-    @OnClick(R.id.btn_close)
-    public void onClickClose() {
-        showConfirmQuitDialog();
-    }
-    
-    @OnClick(R.id.txt_done)
-    public void onClickDone() {
-        addWallet();
-    }
-    
     @OnClick(R.id.image_view_icon)
     public void onClickToChangeIconWallet() {
         Toast.makeText(this, "ICON", Toast.LENGTH_SHORT).show();
@@ -152,14 +183,35 @@ public class AddWalletActivity extends BaseActivity implements View {
         openCurrencyActivity();
     }
     
+    @OnClick(R.id.txt_balance)
+    public void onClickBalance() {
+        if (mCurrentCurrency == null) {
+            Toast.makeText(this, R.string.message_validate_currency_wallet, Toast.LENGTH_SHORT)
+                      .show();
+            return;
+        }
+        
+        openCalculator();
+    }
+    
     /*-----------------*/
     /*TaskView         */
     /*-----------------*/
     @Override
     public void initializeView() {
+        mCardViewActionBar.setOnClickBack(mOnBackClick);
+        mCardViewActionBar.setOnClickAction(mOnDoneClick);
+        
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getString(R.string.txt_creating_wallet));
+        mImageViewIcon.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                openSelectIconActivity();
+            }
+        });
     }
+    
     
     @Override
     public void showEmpty() {
@@ -170,6 +222,7 @@ public class AddWalletActivity extends BaseActivity implements View {
     public void showListWallet(List<Wallet> wallets) {
         
     }
+    
     
     @Override
     public void onAddWalletSuccess(String message, Wallet wallet) {
@@ -252,5 +305,16 @@ public class AddWalletActivity extends BaseActivity implements View {
     private void openCurrencyActivity() {
         Intent intent = new Intent(this, CurrenciesActivity.class);
         startActivityForResult(intent, RequestCode.CURRENCY_REQUEST_CODE);
+    }
+    
+    private void openCalculator() {
+        Intent intent = new Intent(this, CalculatorActivity.class);
+        intent.putExtra("value", mCurrentBalance);
+        startActivityForResult(intent, RequestCode.CALCULATOR_REQUEST_CODE);
+    }
+    
+    private void openSelectIconActivity() {
+        Intent intent = new Intent(this, SelectIconActivity.class);
+        startActivityForResult(intent, RequestCode.SELECT_ICON_REQUEST_CODE);
     }
 }

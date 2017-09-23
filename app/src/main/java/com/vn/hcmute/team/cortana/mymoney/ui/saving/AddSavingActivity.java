@@ -30,6 +30,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
+
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
@@ -65,6 +66,7 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
     SavingPresenter mSavingPresenter;
     @Inject
     PreferencesHelper mPreferencesHelper;
+
     
     @Override
     public int getLayoutId() {
@@ -248,7 +250,7 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
                 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-            
+                
             }
         }
     }

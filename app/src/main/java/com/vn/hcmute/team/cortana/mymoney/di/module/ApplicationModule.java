@@ -8,6 +8,7 @@ import com.vn.hcmute.team.cortana.mymoney.data.cache.CacheRepository;
 import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.LocalRepository;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.RemoteRepository;
+import com.vn.hcmute.team.cortana.mymoney.data.remote.ServiceGenerator;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -27,7 +28,7 @@ public class ApplicationModule {
     
     @Provides
     public Context provideApplicationContext() {
-        return mMoneyApplication;
+        return mMoneyApplication.getApplicationContext();
     }
     
     @Provides
@@ -42,8 +43,20 @@ public class ApplicationModule {
     
     @Singleton
     @Provides
-    public PreferencesHelper providePreferenceHelper(){
-        return new PreferencesHelper(mMoneyApplication);
+    public PreferencesHelper providePreferenceHelper() {
+        return PreferencesHelper.getInstance(mMoneyApplication.getApplicationContext());
+    }
+    
+    @Singleton
+    @Provides
+    public RemoteRepository provideRemoteRepository(ServiceGenerator serviceGenerator) {
+        return new RemoteRepository(serviceGenerator);
+    }
+    
+    @Singleton
+    @Provides
+    public LocalRepository provideLocalRepository(Context context) {
+        return new LocalRepository(context.getApplicationContext());
     }
     
     @Singleton

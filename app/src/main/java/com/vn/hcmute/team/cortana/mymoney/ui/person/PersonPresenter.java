@@ -82,7 +82,7 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
             }
         };
         PersonRequest personRequest = new CRUDPersonRequest(Action.ACTION_ADD_PERSON,
-                  mObjectBaseCallBack,person);
+                  mObjectBaseCallBack, person);
         
         mPersonUseCase.subscribe(personRequest);
     }
@@ -125,13 +125,13 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
     }
     
     @Override
-    public void updatePerson(final int position,final Person person) {
+    public void updatePerson(final int position, final Person person) {
         PersonRequest request = new CRUDPersonRequest(Action.ACTION_UPDATE_PERSON,
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
-                          getView().onSuccessUpdatePerson((String)value,position,person);
+                          getView().onSuccessUpdatePerson((String) value, position, person);
                       }
                       
                       @Override

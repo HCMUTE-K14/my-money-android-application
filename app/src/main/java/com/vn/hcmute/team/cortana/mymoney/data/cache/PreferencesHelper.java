@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import com.google.gson.Gson;
+import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
-import javax.inject.Inject;
 
 /**
  * Created by infamouSs on 8/21/17.
@@ -17,19 +17,28 @@ public class PreferencesHelper {
     public static final String TAG = PreferencesHelper.class.getSimpleName();
     
     private static final String PREF_NAME = "my_money_pref";
-    
+    public static PreferencesHelper sInstance;
     private final String PREF_USER_ID = "PREF_USER_ID";
     private final String PREF_USER_TOKEN = "PREF_USER_TOKEN";
     private final String PREF_CURRENT_USER = "PREF_CURRENT_USER";
     private final String PREF_CURRENT_WALLET = "PREF_CURRENT_WALLET";
-    
+    private final String PREF_CURRENT_REAL_TIME_CURRENCY = "PREF_CURRENT_REAL_TIME_CURRENCY";
     private SharedPreferences mSharedPreferences;
     private Gson mGson;
     
-    @Inject
-    public PreferencesHelper(Context context) {
-        this.mSharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    private PreferencesHelper(Context context) {
+        this.mSharedPreferences = context.getApplicationContext()
+                  .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         this.mGson = new Gson();
+    }
+    
+    public static PreferencesHelper getInstance(Context context) {
+        if (sInstance == null) {
+            synchronized (PreferencesHelper.class) {
+                sInstance = new PreferencesHelper(context.getApplicationContext());
+            }
+        }
+        return sInstance;
     }
     
     public void clear() {
@@ -76,6 +85,20 @@ public class PreferencesHelper {
     public void putCurrentWallet(Wallet wallet) {
         String _wallet = mGson.toJson(wallet, Wallet.class);
         mSharedPreferences.edit().putString(PREF_CURRENT_WALLET, _wallet).apply();
+    }
+    
+    public void putRealTimeCurrency(RealTimeCurrency realTimeCurrency) {
+        String _realTimeCurrency = mGson.toJson(realTimeCurrency, RealTimeCurrency.class);
+        mSharedPreferences.edit().putString(PREF_CURRENT_REAL_TIME_CURRENCY, _realTimeCurrency)
+                  .apply();
+    }
+    
+    public RealTimeCurrency getRealTimeCurrency() {
+        String realTimeCurrency = mSharedPreferences.getString(PREF_CURRENT_REAL_TIME_CURRENCY, "");
+        if (TextUtils.isEmpty(realTimeCurrency)) {
+            return null;
+        }
+        return mGson.fromJson(realTimeCurrency, RealTimeCurrency.class);
     }
     
 }

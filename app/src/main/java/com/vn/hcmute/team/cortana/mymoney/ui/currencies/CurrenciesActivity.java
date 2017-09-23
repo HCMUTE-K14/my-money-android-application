@@ -24,6 +24,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.CurrenciesModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -130,7 +131,7 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     public void showCurrencies(List<Currencies> list) {
         mCurrenciesList = list;
         
-        mCurrenciesAdapter = new CurrenciesAdapter(this, list);
+        mCurrenciesAdapter = new CurrenciesAdapter(this.getApplicationContext(), list);
         mRecyclerViewCurrencies.setLayoutManager(new GridLayoutManager(this, 1));
         mCurrenciesAdapter.setClickListener(this);
         mRecyclerViewCurrencies.setAdapter(mCurrenciesAdapter);
@@ -138,7 +139,7 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
     @Override
     public void showEmpty() {
-        
+        MyLogger.d(TAG, "empty");
     }
     
     @Override

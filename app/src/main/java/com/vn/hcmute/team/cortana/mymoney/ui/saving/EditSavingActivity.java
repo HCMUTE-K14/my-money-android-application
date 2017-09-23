@@ -40,6 +40,7 @@ import javax.inject.Inject;
 
 public class EditSavingActivity extends BaseActivity implements SavingContract.View {
     
+    static final int DATE_DIALOG_ID = 999;
     @BindView(R.id.back_button_saving)
     LinearLayout back_button_saving;
     @BindView(R.id.txt_edit_saving)
@@ -48,7 +49,6 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     ImageView image_view_icon_saving;
     @BindView(R.id.ic_clear_date)
     ImageView ic_clear_date;
-    
     @BindView(R.id.edit_text_name_saving)
     EditText edit_text_name_saving;
     @BindView(R.id.txt_goal_money)
@@ -59,17 +59,28 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     TextView txt_currencies;
     @BindView(R.id.txt_wallet_saving)
     TextView txt_wallet_saving;
-
-    
-    private Currencies mCurrencies;
-    static final int DATE_DIALOG_ID = 999;
     int day, month, year;
     private Saving mSaving;
     private String mWalletName;
     private Wallet mWallet;
-    
     @Inject
     SavingPresenter mSavingPresenter;
+    private Currencies mCurrencies;
+    private Saving mSaving;
+    private DatePickerDialog.OnDateSetListener datePickerListener
+              = new DatePickerDialog.OnDateSetListener() {
+        
+        // when dialog box is closed, below method will be called.
+        public void onDateSet(DatePicker view, int selectedYear,
+                  int selectedMonth, int selectedDay) {
+            year = selectedYear;
+            month = selectedMonth;
+            day = selectedDay;
+            
+            updateDate();
+            
+        }
+    };
     
     @Override
     public int getLayoutId() {
@@ -122,8 +133,8 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     @OnClick(R.id.txt_date_saving)
     public void onClickDate(View view) {
         showDialog(DATE_DIALOG_ID);
-        
     }
+    
     @OnClick(R.id.txt_edit_saving)
     public void onClickSaving(View view){
         if(!edit_text_name_saving.getText().toString().trim().equals("")){
@@ -152,12 +163,14 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         MyLogger.d("ksdfj","Lnag thang co nha nha");
         
     }
+    
     @OnClick(R.id.txt_goal_money)
-    public void onClickGoalMoney(View view){
-        Intent intent=new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money",txt_goal_money.getText());
-        startActivityForResult(intent,5);
+    public void onClickGoalMoney(View view) {
+        Intent intent = new Intent(this, CalculatorActivity.class);
+        intent.putExtra("goal_money", txt_goal_money.getText());
+        startActivityForResult(intent, 5);
     }
+    
     @Override
     protected void initializeActionBar(View rootView) {
         
@@ -183,21 +196,6 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         return null;
     }
     
-    private DatePickerDialog.OnDateSetListener datePickerListener
-              = new DatePickerDialog.OnDateSetListener() {
-        
-        // when dialog box is closed, below method will be called.
-        public void onDateSet(DatePicker view, int selectedYear,
-                  int selectedMonth, int selectedDay) {
-            year = selectedYear;
-            month = selectedMonth;
-            day = selectedDay;
-            
-            updateDate();
-           
-        }
-    };
-    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
@@ -216,11 +214,11 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         }
         if (requestCode == 5) {
             if (resultCode == Activity.RESULT_OK) {
-                String goalMoney=data.getStringExtra("result");
-                txt_goal_money.setText("+"+goalMoney);
+                String goalMoney = data.getStringExtra("result");
+                txt_goal_money.setText("+" + goalMoney);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-            
+                
             }
         }
         if (requestCode == 14) {
@@ -233,7 +231,8 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
             }
         }
     }
-    public void updateDate(){
+    
+    public void updateDate() {
         txt_date_saving.setText(new StringBuilder().append(day)
                   .append("/").append(month + 1).append("/").append(year));
         txt_date_saving.setTextColor(ContextCompat.getColor(this, R.color.black));
@@ -249,7 +248,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     //set defaut
     public void showData(){
         edit_text_name_saving.setText(mSaving.getName());
-        txt_goal_money.setText("+"+mSaving.getGoalMoney());
+        txt_goal_money.setText("+" + mSaving.getGoalMoney());
         txt_date_saving.setText(DateUtil.convertTimeMillisToDate(mSaving.getDate()));
         txt_currencies.setText(mSaving.getCurrencies().getCurName());
         txt_wallet_saving.setText(mWalletName);
@@ -264,6 +263,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         Intent intent=new Intent(this, MyWalletActivity.class);
         startActivityForResult(intent,14);
     }
+    
     @Override
     public void showListSaving(List<Saving> savings) {
         

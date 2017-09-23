@@ -66,6 +66,24 @@ public class CurrenciesAdapter extends
         return mData.size();
     }
     
+    public Currencies getItem(int id) {
+        return mData.get(id);
+    }
+    
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+    
+    public void setFilter(List<Currencies> list) {
+        mData = new ArrayList<>();
+        mData.addAll(list);
+        notifyDataSetChanged();
+    }
+    
+    public interface ItemClickListener {
+        
+        void onItemClick(View view, Currencies currencies, int position);
+    }
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         
@@ -89,24 +107,5 @@ public class CurrenciesAdapter extends
                           .onItemClick(view, getItem(getAdapterPosition()), getAdapterPosition());
             }
         }
-    }
-    
-    public Currencies getItem(int id) {
-        return mData.get(id);
-    }
-    
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-    
-    public interface ItemClickListener {
-        
-        void onItemClick(View view, Currencies currencies, int position);
-    }
-    
-    public void setFilter(List<Currencies> list) {
-        mData = new ArrayList<>();
-        mData.addAll(list);
-        notifyDataSetChanged();
     }
 }

@@ -7,15 +7,27 @@ import java.math.BigDecimal;
  */
 
 public class TextUtil {
+    
     public static String doubleToString(Double d) {
-        if (d == null)
+        if (d == null) {
             return null;
-        if (d.isNaN() || d.isInfinite())
+        }
+        if (d.isNaN() || d.isInfinite()) {
             return d.toString();
+        }
         
         // pre java 8, a value of 0 would yield "0.0" below
-        if (d.doubleValue() == 0)
+        if (d.doubleValue() == 0) {
             return "0";
+        }
         return new BigDecimal(d.toString()).stripTrailingZeros().toPlainString();
+    }
+    
+    public static boolean isEmpty(String str) {
+        if (str == null || str.length() == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

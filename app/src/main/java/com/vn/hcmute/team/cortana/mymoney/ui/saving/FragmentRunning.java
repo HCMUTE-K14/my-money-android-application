@@ -28,19 +28,23 @@ import javax.inject.Inject;
  * Created by kunsubin on 8/28/2017.
  */
 
-public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavingAdapter.ItemClickListener,SavingContract.View{
+public class FragmentRunning extends BaseFragment implements
+                                                  MyRecyclerViewSavingAdapter.ItemClickListener,
+                                                  SavingContract.View {
     
+
     public List<Saving> mSavingList;
     @BindView(R.id.recycler_view_saving_running)
     RecyclerView mRecyclerView;
     public MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
     private EmptyAdapter mEmptyAdapter;
-    
     @BindView(R.id.progress_bar_saving)
     ProgressBar mProgressBar;
-    
     @Inject
     SavingPresenter mSavingPresenter;
+    private List<Saving> mSavingList;
+    private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
+    private EmptyAdapter mEmptyAdapter;
     
     @Override
     protected int getLayoutId() {
@@ -49,7 +53,8 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
     
     @Override
     protected void initializeDagger() {
-        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity().getApplication())
+        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity()
+                  .getApplication())
                   .getAppComponent();
         SavingComponent savingComponent = DaggerSavingComponent
                   .builder()
@@ -62,7 +67,7 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
     
     @Override
     protected void initializePresenter() {
-        mPresenter=this.mSavingPresenter;
+        mPresenter = this.mSavingPresenter;
         mSavingPresenter.setView(this);
     }
     
@@ -73,18 +78,16 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
 
     }
     
-    public void init(View view){
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
-        mSavingList=new ArrayList<>();
+    public void init(View view) {
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        mSavingList = new ArrayList<>();
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
        
      
         if (requestCode == 1) {
-            
-            
-            
             if(resultCode == Activity.RESULT_OK){
                 String savingId=data.getStringExtra("result");
                
@@ -123,14 +126,14 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
     
     @Override
     public void showListSaving(List<Saving> savings) {
-       // mSavingList=savings;
-       
-        
-        if(!savings.isEmpty()){
+        // mSavingList=savings;
+
+        if (!savings.isEmpty()) {
             
-            for (Saving saving:savings) {
-                if(saving.getStatus().equals("0"))
+            for (Saving saving : savings) {
+                if (saving.getStatus().equals("0")) {
                     mSavingList.add(saving);
+                }
             }
             if(!mSavingList.isEmpty()){
                 mMyRecyclerViewSavingAdapter=new MyRecyclerViewSavingAdapter(getContext(),mSavingList);
@@ -140,9 +143,8 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
                 mEmptyAdapter=new EmptyAdapter(getContext(),"No Saving");
                 mRecyclerView.setAdapter(mEmptyAdapter);
             }
-            
-        }else{
-            mEmptyAdapter=new EmptyAdapter(getContext(),"No Saving");
+        } else {
+            mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
     }
@@ -185,8 +187,8 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
     @Override
     public void loading(boolean isLoading) {
         
-        mProgressBar.setVisibility(isLoading?View.VISIBLE:View.GONE);
-       
+        mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+
     }
     
     @Override
@@ -197,7 +199,6 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
     
     @Override
     public void onItemClick(View view, List<Saving> savingList, int position, int process) {
-    
        MyLogger.d("deso===========",savingList.get(position).getName());
         
         Saving saving=savingList.get(position);
@@ -208,7 +209,7 @@ public class FragmentRunning extends BaseFragment implements MyRecyclerViewSavin
            
         }
         getActivity().startActivityForResult(intent,1);
-        
+       
         Toast.makeText(getContext(),position+"", Toast.LENGTH_LONG).show();
     }
 }

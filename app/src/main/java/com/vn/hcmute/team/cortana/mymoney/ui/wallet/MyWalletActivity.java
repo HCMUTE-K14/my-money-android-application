@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -55,11 +56,6 @@ public class MyWalletActivity extends BaseActivity implements View {
         
         @Override
         public void onClickMyWallet() {
-            
-        }
-        
-        @Override
-        public void onCLickTotal() {
             
         }
         
@@ -138,6 +134,16 @@ public class MyWalletActivity extends BaseActivity implements View {
         initializeView();
         
         getWalletData();
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        
+        return super.onOptionsItemSelected(item);
     }
     
     @Override

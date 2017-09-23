@@ -26,6 +26,7 @@ public class MenuPopupWithIcon {
     }
     
     public void inflate(@MenuRes int menures) {
+        
         popupMenu.inflate(menures);
     }
     
@@ -46,6 +47,7 @@ public class MenuPopupWithIcon {
     
     private void init() {
         popupMenu = new PopupMenu(mContext, view);
+        
         try {
             Field[] fields = popupMenu.getClass().getDeclaredFields();
             for (Field field : fields) {

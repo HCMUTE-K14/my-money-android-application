@@ -4,7 +4,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BasePresenter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager;
-import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager.ForgetPasswordRequest;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager.UserRequest;
 import javax.inject.Inject;
 
 /**
@@ -26,7 +26,8 @@ public class ForgetPasswordPresenter extends BasePresenter<ForgetPasswordContrac
     
     @Override
     public void forgetPassword(String email) {
-        ForgetPasswordRequest request = new ForgetPasswordRequest(Action.ACTION_FORGET_PASSWORD,
+        String[] params = {email};
+        UserRequest request = new UserRequest(Action.ACTION_FORGET_PASSWORD,
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {
@@ -44,7 +45,7 @@ public class ForgetPasswordPresenter extends BasePresenter<ForgetPasswordContrac
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, email);
+                  }, params);
         
         mUserManager.subscribe(request);
     }
