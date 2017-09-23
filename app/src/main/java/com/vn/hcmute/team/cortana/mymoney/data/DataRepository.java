@@ -357,4 +357,29 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
         return mLocalRepository.getListCurrency();
     }
     
+    @Override
+    public Observable<List<Category>> getListLocalCategory(String transType) {
+        return mLocalRepository.getListCategory(transType);
+    }
+    
+    @Override
+    public Observable<List<Category>> getListLocalCategoryByType(String type,String transType) {
+        return mLocalRepository.getListCategoryByType(type,transType);
+    }
+    
+    @Override
+    public Observable<String> addLocalCategory(Category category) {
+        return mLocalRepository.addCategory(category);
+    }
+    
+    @Override
+    public Observable<String> updateLocalCategory(Category category) {
+        return mLocalRepository.updateCategory(category);
+    }
+    
+    @Override
+    public Observable<String> deleteLocalCategory(Category category) {
+        return mLocalRepository.deleteCategory(category);
+    }
+    
 }

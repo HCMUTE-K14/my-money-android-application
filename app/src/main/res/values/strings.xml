@@ -166,4 +166,8 @@
   <string name="action_remove">Remove</string>
   <string name="txt_warning">Warning</string>
   <string name="message_delete_category_success">Category %1$s deleted</string>
+  <string name="message_add_category_success">Category inserted</string>
+  <string name="message_category_fail">Opps ! Failed</string>
+  <string name="message_update_category_success">Category Updated</string>
+  <string name="message_warning_name_category">Name can\'t be empty</string>
 </resources>

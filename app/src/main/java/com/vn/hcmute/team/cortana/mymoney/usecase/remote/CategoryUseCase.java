@@ -12,7 +12,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.CategoryUseCase.CategoryRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
@@ -97,8 +96,8 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
               TypeRepository typeRepository) {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
-            public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
-                callBack.onSuccess(currencies);
+            public void onSuccess(@io.reactivex.annotations.NonNull Object result) {
+                callBack.onSuccess(result);
             }
             
             @Override
@@ -129,18 +128,17 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.get()
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  MyLogger.d("Currencies Usecacse", "loading");
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository.getListLocalCategory(type)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
@@ -172,8 +170,8 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
               TypeRepository typeRepository) {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
-            public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
-                callBack.onSuccess(currencies);
+            public void onSuccess(@io.reactivex.annotations.NonNull Object result) {
+                callBack.onSuccess(result);
             }
             
             @Override
@@ -182,42 +180,41 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
             }
         };
         
+        String type = params[0];
+        String transType = params[1];
+        if (!type.equals("income") && !type.equals("expense")) {
+            callBack.onFailure(new Throwable(
+                      mContext.getString(R.string.message_warning_wrong_type_category)));
+            return;
+        }
+        
+        if (!transType.equals("income") && !transType.equals("expense") &&
+            !transType.equals("debt_loan")) {
+            callBack.onFailure(new Throwable(
+                      mContext.getString(R.string.message_warning_wrong_type_category)));
+            return;
+        }
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.get()
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  MyLogger.d("Currencies Usecacse", "loading");
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                
+                mDisposable = mDataRepository.getListLocalCategoryByType(type, transType)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-                String type = params[0];
-                String transType = params[1];
                 
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
-                    return;
-                }
-                
-                if (!type.equals("income") && !type.equals("expense")) {
-                    callBack.onFailure(new Throwable(
-                              mContext.getString(R.string.message_warning_wrong_type_category)));
-                    return;
-                }
-                
-                if (!transType.equals("income") && !transType.equals("expense") &&
-                    !transType.equals("debt_loan")) {
-                    callBack.onFailure(new Throwable(
-                              mContext.getString(R.string.message_warning_wrong_type_category)));
                     return;
                 }
                 
@@ -232,7 +229,6 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-                
             }
             
             this.mCompositeDisposable.add(mDisposable);
@@ -244,8 +240,8 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
               TypeRepository typeRepository) {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
-            public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
-                callBack.onSuccess(currencies);
+            public void onSuccess(@io.reactivex.annotations.NonNull Object result) {
+                callBack.onSuccess(result);
             }
             
             @Override
@@ -256,18 +252,17 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.get()
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  MyLogger.d("Currencies Usecacse", "loading");
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository.deleteLocalCategory(category)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
@@ -301,8 +296,8 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
               TypeRepository typeRepository) {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
-            public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
-                callBack.onSuccess(currencies);
+            public void onSuccess(@io.reactivex.annotations.NonNull Object result) {
+                callBack.onSuccess(result);
             }
             
             @Override
@@ -313,18 +308,17 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.get()
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  MyLogger.d("Currencies Usecacse", "loading");
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository.updateLocalCategory(category)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
@@ -337,7 +331,7 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
                               mContext.getString(R.string.message_warning_need_login)));
                     return;
                 }
-                MyLogger.d(oldParentId + newParentId);
+
                 mDisposable = mDataRepository
                           .updateCategory(userid, token, oldParentId, newParentId, category)
                           .subscribeOn(Schedulers.io())
@@ -362,8 +356,8 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
               TypeRepository typeRepository) {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
-            public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
-                callBack.onSuccess(currencies);
+            public void onSuccess(@io.reactivex.annotations.NonNull Object result) {
+                callBack.onSuccess(result);
             }
             
             @Override
@@ -371,27 +365,24 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
                 callBack.onFailure(e);
             }
         };
-        
+        category.setId(SecurityUtil.getRandomUUID());
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.get()
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  MyLogger.d("Currencies Usecacse", "loading");
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository.addLocalCategory(category)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
                 String parentId = params[0];
-                
-                category.setId(SecurityUtil.getRandomUUID());
                 category.setUserid(userid);
                 
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {

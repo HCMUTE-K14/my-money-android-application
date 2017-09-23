@@ -112,6 +112,7 @@ public class CategoryActivity extends BaseActivity {
                   getString(R.string.txt_incoming));
         
         mViewPager.setAdapter(viewPagerAdapter);
+        mViewPager.setOffscreenPageLimit(0);
         
         mTabLayout.setupWithViewPager(mViewPager);
     }

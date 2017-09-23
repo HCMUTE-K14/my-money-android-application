@@ -10,7 +10,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.CategoryUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.CategoryUseCase.CategoryRequest;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -56,14 +55,13 @@ public class CategoryPresenter extends BasePresenter<CategoryContract.View> impl
             public void onLoading() {
                 getView().loading(true);
             }
-        }, null, null, TypeRepository.REMOTE);
+        }, null, null, TypeRepository.LOCAL);
         
         mCategoryUseCase.subscribe(categoryRequest);
     }
     
     @Override
     public void getCategoryByType(String type, String transType) {
-        MyLogger.d(TAG, type + transType);
         CategoryRequest categoryRequest = new CategoryRequest(Action.ACTION_GET_CATEGORY_BY_TYPE,
                   new BaseCallBack<Object>() {
                       @Override
@@ -87,7 +85,7 @@ public class CategoryPresenter extends BasePresenter<CategoryContract.View> impl
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, null, new String[]{type, transType}, TypeRepository.REMOTE);
+                  }, null, new String[]{type, transType}, TypeRepository.LOCAL);
         
         mCategoryUseCase.subscribe(categoryRequest);
     }
@@ -118,7 +116,7 @@ public class CategoryPresenter extends BasePresenter<CategoryContract.View> impl
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, category, new String[]{parentId}, TypeRepository.REMOTE);
+                  }, category, new String[]{parentId}, TypeRepository.LOCAL);
         
         mCategoryUseCase.subscribe(categoryRequest);
     }
@@ -143,7 +141,7 @@ public class CategoryPresenter extends BasePresenter<CategoryContract.View> impl
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, category, new String[]{oldParentId, newParentId}, TypeRepository.REMOTE);
+                  }, category, new String[]{oldParentId, newParentId}, TypeRepository.LOCAL);
         
         mCategoryUseCase.subscribe(categoryRequest);
     }
@@ -175,7 +173,7 @@ public class CategoryPresenter extends BasePresenter<CategoryContract.View> impl
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, category, new String[]{parentId}, TypeRepository.REMOTE);
+                  }, category, new String[]{parentId}, TypeRepository.LOCAL);
         
         mCategoryUseCase.subscribe(categoryRequest);
     }

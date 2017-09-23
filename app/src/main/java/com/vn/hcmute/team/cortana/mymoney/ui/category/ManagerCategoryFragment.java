@@ -376,21 +376,38 @@ public class ManagerCategoryFragment extends BaseFragment implements AddEditView
             return;
         }
         
+        String name = mEditTextNameCategory.getText().toString().trim();
+        
+        if (TextUtil.isEmpty(name)) {
+            Toast.makeText(this.getContext(), R.string.message_warning_name_category,
+                      Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
         Category category = new Category();
         if (mCurrentParentCategory != null) {
             category.setParent(mCurrentParentCategory);
         }
+        
         category.setTransType(mTransType);
         category.setType(mTypeCategory);
-        category.setName(mEditTextNameCategory.getText().toString().trim());
+        category.setName(name);
         category.setIcon(mIcon);
         
         mCategoryPresenter.addCategory(category);
     }
     
     private void updateCategory() {
+        
+        String name = mEditTextNameCategory.getText().toString().trim();
+        if (TextUtil.isEmpty(name)) {
+            Toast.makeText(this.getContext(), R.string.message_warning_name_category,
+                      Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mCurrentCategory.setName(name);
         mCurrentCategory.setIcon(mIcon);
-        mCurrentCategory.setName(mEditTextNameCategory.getText().toString().trim());
+        
         String oldParentId = null;
         String newParentId = null;
         

@@ -158,9 +158,18 @@ public interface DataSource {
     
     public interface LocalDataSource {
         
-        
         Observable<List<Icon>> getListIcon();
         
         Observable<List<Currencies>> getLocalListCurrency();
+        
+        Observable<List<Category>> getListLocalCategory(String transType);
+        
+        Observable<List<Category>> getListLocalCategoryByType(String type, String transType);
+        
+        Observable<String> addLocalCategory(Category category);
+        
+        Observable<String> updateLocalCategory(Category category);
+        
+        Observable<String> deleteLocalCategory(Category category);
     }
 }

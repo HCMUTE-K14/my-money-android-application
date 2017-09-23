@@ -1,5 +1,6 @@
 package com.vn.hcmute.team.cortana.mymoney.data.local.service;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
@@ -12,7 +13,7 @@ import java.util.concurrent.Callable;
  * Created by infamouSs on 9/11/17.
  */
 
-public class CurrencyLocalService extends DbContentProvider implements
+public class CurrencyLocalService extends DbContentProvider<Currencies> implements
                                                             LocalService.CurrencyLocalRepository {
     
     public static final String TAG = CurrencyLocalService.class.getSimpleName();
@@ -35,9 +36,13 @@ public class CurrencyLocalService extends DbContentProvider implements
     }
     
     @Override
+    protected ContentValues createContentValues(Currencies values) {
+        return null;
+    }
+    
+    @Override
     public Callable<List<Currencies>> getListCurrency() {
         try {
-            this.open();
             return new Callable<List<Currencies>>() {
                 @Override
                 public List<Currencies> call() throws Exception {
@@ -62,7 +67,6 @@ public class CurrencyLocalService extends DbContentProvider implements
                         lists.add(currencies);
                     }
                     cursor.close();
-                    CurrencyLocalService.this.close();
                     return lists;
                 }
             };

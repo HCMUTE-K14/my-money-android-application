@@ -9,14 +9,15 @@ import android.database.sqlite.SQLiteDatabase;
  * Created by infamouSs on 9/11/17.
  */
 
-public abstract class DbContentProvider {
+public abstract class DbContentProvider<T> {
     
     protected DatabaseHelper mDatabaseHelper;
-    private SQLiteDatabase mDatabase;
+    protected SQLiteDatabase mDatabase;
     private Context mContext;
     
     public DbContentProvider(DatabaseHelper mDatabaseHelper) {
         this.mDatabaseHelper = mDatabaseHelper;
+        this.open();
     }
     
     protected boolean isOpen() {
@@ -31,9 +32,9 @@ public abstract class DbContentProvider {
         mDatabase.close();
     }
     
-    
     protected abstract String[] getAllColumns();
     
+    protected abstract ContentValues createContentValues(T values);
     
     protected int delete(String tableName, String selection,
               String[] selectionArgs) {

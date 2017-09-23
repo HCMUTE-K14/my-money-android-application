@@ -1,9 +1,11 @@
 package com.vn.hcmute.team.cortana.mymoney.data.local.service;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
+import com.vn.hcmute.team.cortana.mymoney.model.Image;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -12,7 +14,7 @@ import java.util.concurrent.Callable;
  * Created by infamouSs on 9/13/17.
  */
 
-public class ImageLocalService extends DbContentProvider implements LocalService.ImageLocalService {
+public class ImageLocalService extends DbContentProvider<Image> implements LocalService.ImageLocalService {
     
     private final String TABLE_NAME = "tbl_icon";
     private final String COLUMN_ID = "id";
@@ -25,6 +27,11 @@ public class ImageLocalService extends DbContentProvider implements LocalService
     @Override
     protected String[] getAllColumns() {
         return new String[]{COLUMN_ID, COLUMN_IMAGE};
+    }
+    
+    @Override
+    protected ContentValues createContentValues(Image values) {
+        return null;
     }
     
     @Override

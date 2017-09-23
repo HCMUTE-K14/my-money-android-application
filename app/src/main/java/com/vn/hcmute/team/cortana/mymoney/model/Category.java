@@ -47,6 +47,11 @@ public class Category implements Parcelable {
     private String userid;
     private Category parent;
     
+    
+    public Category(String id) {
+        this.id = id;
+    }
+    
     public Category(String id, String name) {
         this.id = id;
         this.name = name;

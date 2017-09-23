@@ -23,11 +23,7 @@
       android:launchMode="singleTop"
       android:name=".ui.login.LoginActivity"
       android:screenOrientation="portrait">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
 
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
     </activity>
     <activity
       android:launchMode="singleTop"
@@ -73,7 +69,13 @@
     <activity android:name=".ui.iconshop.SelectIconActivity" />
 
     <!-- Category -->
-    <activity android:name=".ui.category.CategoryActivity" />
+    <activity android:name=".ui.category.CategoryActivity" >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
     <activity android:name=".ui.category.ManagerCategoryActivity" />
     <activity android:name=".ui.category.ListParentCategoryActivity" />
   </application>
