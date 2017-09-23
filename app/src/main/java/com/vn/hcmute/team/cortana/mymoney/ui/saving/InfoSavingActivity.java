@@ -19,10 +19,16 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerSavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.SavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
-import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
+import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase.WalletRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -53,11 +59,13 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     
     @Inject
     SavingPresenter mSavingPresenter;
-
+    
+    @Inject
+    WalletUseCase mWalletUseCase;
     
     private Saving mSaving;
     private String mProcess;
-    private Currencies mCurrencies;
+    private List<Wallet> mWalletList;
     
     @Override
     public int getLayoutId() {
@@ -73,7 +81,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     
     public void getData() {
         Intent intent = getIntent();
-        mSaving = (Saving) intent.getSerializableExtra("MySaving");
+        mSaving = (Saving) intent.getParcelableExtra("MySaving");
         mProcess = intent.getStringExtra("process");
     }
     
@@ -91,9 +99,58 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
                   DateUtil.getDateLeft(Long.parseLong(mSaving.getDate())) + ""));
         
         //txt_name_wallet.setText("");
+        if (mSaving.getIdWallet().equals("")) {
+            txt_name_wallet.setText(getString(R.string.all_wallet));
+        }
+        
+        txt_unit.setText(mSaving.getCurrencies().getCurSymbol());
         
         seek_bar_saving_info.setProgress(Integer.parseInt(mProcess));
         seek_bar_saving_info.setEnabled(false);
+    }
+    
+    public String getNameWallet(List<Wallet> wallets) {
+        String name = "";
+        
+        for (Wallet wallet : wallets) {
+            if (wallet.getWalletid().equals(mSaving.getIdWallet())) {
+                name = wallet.getWalletName();
+                break;
+            }
+        }
+        return name;
+    }
+    
+    public void getWallet() {
+        mWalletList = new ArrayList<>();
+        WalletRequest savingRequest = new WalletRequest(Action.ACTION_GET_WALLET,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          List<Wallet> wallets = (List<Wallet>) value;
+                          mWalletList.addAll(wallets);
+                          String tmp = getNameWallet(wallets);
+                          if (tmp.equals("")) {
+                              txt_name_wallet.setText(getString(R.string.all_wallet));
+                          } else {
+                              txt_name_wallet.setText(tmp);
+                          }
+                          
+                          
+                      }
+                      
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          MyLogger.d("erro get wallet");
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          
+                      }
+                  }, null, null);
+        mWalletUseCase.subscribe(savingRequest);
+        
     }
     
     @Override
@@ -109,19 +166,20 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
                   .build();
         savingComponent.inject(this);
         
-
+        
     }
     
     @Override
     protected void initializePresenter() {
         mPresenter = mSavingPresenter;
         mSavingPresenter.setView(this);
-
+        
     }
     
     @Override
     protected void initializeActionBar(View rootView) {
         getData();
+        getWallet();
         showData();
     }
     
@@ -157,6 +215,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     public void onClickEdit(View view) {
         Intent intent = new Intent(this, EditSavingActivity.class);
         intent.putExtra("saving", mSaving);
+        intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
         startActivityForResult(intent, 3);
     }
     
@@ -165,15 +224,13 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         
         if (requestCode == 3) {
             if (resultCode == Activity.RESULT_OK) {
-                
-                mSaving = (Saving) data.getSerializableExtra("saving");
-                mCurrencies = (Currencies) data.getSerializableExtra("currencies");
-                
+                mSaving = (Saving) data.getParcelableExtra("saving");
                 double tmp = (Double.parseDouble(mSaving.getCurrentMoney()) /
                               Double.parseDouble(mSaving.getGoalMoney())) * 100;
                 int temp = (int) tmp;
                 mProcess = String.valueOf(temp);
-                txt_unit.setText(mCurrencies.getCurSymbol());
+                txt_unit.setText(mSaving.getCurrencies().getCurSymbol());
+                txt_name_wallet.setText(data.getStringExtra("name_wallet"));
                 
                 showData();
                 
@@ -182,6 +239,25 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
                 
             }
         }
+        if (requestCode == 7) {
+            if (resultCode == Activity.RESULT_OK) {
+                doTransferMoneySaving(data);
+            }
+        }
+        if (requestCode == 8) {
+            if (resultCode == Activity.RESULT_OK) {
+                doTransferMoneySaving(data);
+            }
+        }
+    }
+    
+    public void doTransferMoneySaving(Intent data) {
+        mSaving = data.getParcelableExtra("saving");
+        double tmp = (Double.parseDouble(mSaving.getCurrentMoney()) /
+                      Double.parseDouble(mSaving.getGoalMoney())) * 100;
+        int temp = (int) tmp;
+        mProcess = String.valueOf(temp);
+        showData();
     }
     
     @Override
@@ -231,21 +307,22 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     public void loading(boolean isLoading) {
         
     }
-
+    
     @OnClick(R.id.image_view_take_in)
     public void onClickTakeIn(View view) {
         Intent intent = new Intent(this, TransferMoneySavingActivity.class);
         intent.putExtra("saving", mSaving);
+        intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
         intent.putExtra("value", "1");
         startActivityForResult(intent, 7);
     }
-
+    
     @OnClick(R.id.image_view_take_out)
     public void onClickTakeOut(View view) {
         Intent intent = new Intent(this, TransferMoneySavingActivity.class);
         intent.putExtra("saving", mSaving);
+        intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
         intent.putExtra("value", "2");
         startActivityForResult(intent, 8);
     }
-
 }

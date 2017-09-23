@@ -4,12 +4,11 @@ import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
 
 /**
- * Created by infamouSs on 8/11/17.
+ * Created by infamouSs on 9/23/17.
  */
 
 @GlideModule
 public class MyGlideModule extends AppGlideModule {
     
-    private static final String TAG = MyGlideModule.class.getSimpleName();
+    public static final String TAG = MyGlideModule.class.getSimpleName();
 }
-

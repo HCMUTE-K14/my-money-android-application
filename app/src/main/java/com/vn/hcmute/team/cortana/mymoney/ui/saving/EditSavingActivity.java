@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
@@ -22,10 +23,13 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
+import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.Calendar;
 import java.util.List;
 import javax.inject.Inject;
@@ -58,6 +62,8 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     int day, month, year;
     @Inject
     SavingPresenter mSavingPresenter;
+    private String mWalletName;
+    private Wallet mWallet;
     private Currencies mCurrencies;
     private Saving mSaving;
     private DatePickerDialog.OnDateSetListener datePickerListener
@@ -126,26 +132,39 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     @OnClick(R.id.txt_date_saving)
     public void onClickDate(View view) {
         showDialog(DATE_DIALOG_ID);
-        
-        /*String a=String.valueOf(DateUtil.getLongAsDate(12,12,2017));
-        MyLogger.d("bómdkss",a);*/
-        
     }
     
     @OnClick(R.id.txt_edit_saving)
     public void onClickSaving(View view) {
-        mSaving.setName(edit_text_name_saving.getText().toString().trim());
-        String goalMoney = txt_goal_money.getText().toString().trim().substring(1);
-        mSaving.setGoalMoney(goalMoney);
-        if (!txt_date_saving.getText().toString().trim().equals(getString(R.string.ending_date))) {
-            String[] arr = txt_date_saving.getText().toString().trim().split("/");
-            long tmp = DateUtil.getLongAsDate(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]),
-                      Integer.parseInt(arr[2]));
-            mSaving.setDate(String.valueOf(tmp));
+        if (!edit_text_name_saving.getText().toString().trim().equals("")) {
+            mSaving.setName(edit_text_name_saving.getText().toString().trim());
+            String goalMoney = txt_goal_money.getText().toString().trim().substring(1);
+            mSaving.setGoalMoney(goalMoney);
+            mSaving.setCurrencies(mCurrencies);
+            mSaving.setIdWallet(mWallet.getWalletid());
+            
+            if (!txt_date_saving.getText().toString().trim()
+                      .equals(getString(R.string.ending_date))) {
+                String[] arr = txt_date_saving.getText().toString().trim().split("/");
+                long tmp = DateUtil
+                          .getLongAsDate(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]),
+                                    Integer.parseInt(arr[2]));
+                mSaving.setDate(String.valueOf(tmp));
+                
+                //saving
+                mSavingPresenter.updateSaving(mSaving);
+            } else {
+                Toast.makeText(this, getString(R.string.select_date), Toast.LENGTH_LONG).show();
+            }
+            
+            
+        } else {
+            Toast.makeText(this, getString(R.string.name_saving), Toast.LENGTH_LONG).show();
         }
         
-        //saving
-        mSavingPresenter.updateSaving(mSaving);
+        MyLogger.d("ksdfj", "Lnag thang co nha nha");
+        
+        MyLogger.d("ksdfj", "Lnag thang co nha nha");
         
     }
     
@@ -158,6 +177,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     
     @Override
     protected void initializeActionBar(View rootView) {
+        
         getData();
         showData();
         initDatePicker();
@@ -185,8 +205,8 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         
         if (requestCode == 4) {
             if (resultCode == Activity.RESULT_OK) {
-                mCurrencies = (Currencies) data.getSerializableExtra("MyCurrencies");
-                
+                mCurrencies = (Currencies) data.getParcelableExtra("currency");
+                //MyLogger.d("currencies",mCurrencies.getCurName());
                 if (mCurrencies != null) {
                     txt_currencies.setText(mCurrencies.getCurName());
                     mSaving.setIdCurrencies(mCurrencies.getCurId());
@@ -205,6 +225,15 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
                 
             }
         }
+        if (requestCode == 14) {
+            if (resultCode == Activity.RESULT_OK) {
+                mWallet = data.getParcelableExtra("wallet");
+                txt_wallet_saving.setText(mWallet.getWalletName());
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                
+            }
+        }
     }
     
     public void updateDate() {
@@ -216,14 +245,30 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     
     public void getData() {
         Intent intent = getIntent();
-        mSaving = (Saving) intent.getSerializableExtra("saving");
+        mSaving = (Saving) intent.getParcelableExtra("saving");
+        mWalletName = intent.getStringExtra("wallet_name");
+        mCurrencies = new Currencies();
+        mWallet = new Wallet();
     }
     
+    //set defaut
     public void showData() {
         edit_text_name_saving.setText(mSaving.getName());
         txt_goal_money.setText("+" + mSaving.getGoalMoney());
         txt_date_saving.setText(DateUtil.convertTimeMillisToDate(mSaving.getDate()));
+        txt_currencies.setText(mSaving.getCurrencies().getCurName());
+        txt_wallet_saving.setText(mWalletName);
+        //init defaut
+        mWallet.setWalletid(mSaving.getIdWallet());
+        mCurrencies = mSaving.getCurrencies();
         
+        
+    }
+    
+    @OnClick(R.id.txt_wallet_saving)
+    public void onClickSelectWallet(View view) {
+        Intent intent = new Intent(this, MyWalletActivity.class);
+        startActivityForResult(intent, 14);
     }
     
     @Override
@@ -248,9 +293,11 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     
     @Override
     public void onSuccessUpdateSaving() {
+        MyLogger.d("ksdfj", "Lnag thang khong nha");
+        Toast.makeText(this, "sdjkfdsk", Toast.LENGTH_LONG).show();
         Intent returnIntent = new Intent();
         returnIntent.putExtra("saving", mSaving);
-        returnIntent.putExtra("currencies", mCurrencies);
+        returnIntent.putExtra("name_wallet", txt_wallet_saving.getText().toString().trim());
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }

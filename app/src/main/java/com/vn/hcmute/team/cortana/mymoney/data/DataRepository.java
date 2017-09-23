@@ -363,8 +363,8 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
-    public Observable<List<Category>> getListLocalCategoryByType(String type,String transType) {
-        return mLocalRepository.getListCategoryByType(type,transType);
+    public Observable<List<Category>> getListLocalCategoryByType(String type, String transType) {
+        return mLocalRepository.getListCategoryByType(type, transType);
     }
     
     @Override

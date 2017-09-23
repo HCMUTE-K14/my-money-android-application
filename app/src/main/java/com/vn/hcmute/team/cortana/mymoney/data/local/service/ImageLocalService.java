@@ -14,7 +14,8 @@ import java.util.concurrent.Callable;
  * Created by infamouSs on 9/13/17.
  */
 
-public class ImageLocalService extends DbContentProvider<Image> implements LocalService.ImageLocalService {
+public class ImageLocalService extends DbContentProvider<Image> implements
+                                                                LocalService.ImageLocalService {
     
     private final String TABLE_NAME = "tbl_icon";
     private final String COLUMN_ID = "id";

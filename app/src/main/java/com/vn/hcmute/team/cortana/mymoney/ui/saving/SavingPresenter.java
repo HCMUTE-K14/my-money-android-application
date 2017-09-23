@@ -56,27 +56,130 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
     
     @Override
     public void createSaving(Saving saving) {
-        
+        SavingRequest savingRequest = new SavingRequest(Action.ACTION_CREATE_SAVING,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().onSuccessCreateSaving();
+
+                      }
+
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().showError(throwable.getMessage());
+                      }
+
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, saving, null);
+        mSavingUseCase.subscribe(savingRequest);
     }
     
     @Override
     public void updateSaving(Saving saving) {
-        
+        SavingRequest savingRequest = new SavingRequest(Action.ACTION_UPDATE_SAVING,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().onSuccessUpdateSaving();
+
+                      }
+
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().showError(throwable.getMessage());
+                      }
+
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, saving, null);
+        mSavingUseCase.subscribe(savingRequest);
     }
     
     @Override
     public void deleteSaving(String idSaving) {
-        
+        String[] params = {idSaving};
+        SavingRequest savingRequest = new SavingRequest(Action.ACTION_DELETE_SAVING,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().onSuccessDeleteSaving();
+
+                      }
+
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().showError(throwable.getMessage());
+                      }
+
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, null, params);
+        mSavingUseCase.subscribe(savingRequest);
     }
-    
+
     @Override
     public void takeIn(String idWallet, String idSaving, String money) {
-        
+        String[] params = {idWallet, idSaving, money};
+        SavingRequest savingRequest = new SavingRequest(Action.ACTION_TAKE_IN_SAVING,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().onSuccessTakeIn();
+
+                      }
+
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().showError(throwable.getMessage());
+                      }
+
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, null, params);
+        mSavingUseCase.subscribe(savingRequest);
     }
     
     @Override
     public void takeOut(String idWallet, String idSaving, String money) {
-        
+        String[] params = {idWallet, idSaving, money};
+        SavingRequest savingRequest = new SavingRequest(Action.ACTION_TAKE_OUT_SAVING,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().onSuccessTakeOut();
+
+                      }
+
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().showError(throwable.getMessage());
+                      }
+
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, null, params);
+        mSavingUseCase.subscribe(savingRequest);
     }
     
     @Override

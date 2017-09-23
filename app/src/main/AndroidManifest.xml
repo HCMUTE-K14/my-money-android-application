@@ -15,16 +15,8 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
 
-    <activity android:name=".ui.tools.calculator.CalculatorActivity" />
-    <activity android:name=".ui.saving.AddSavingActivity" />
-    <activity android:name=".ui.saving.TransferMoneySavingActivity" />
     <!-- User -->
-    <activity
-      android:launchMode="singleTop"
-      android:name=".ui.login.LoginActivity"
-      android:screenOrientation="portrait">
-
-    </activity>
+    <activity android:name=".ui.login.LoginActivity" />
     <activity
       android:launchMode="singleTop"
       android:name=".ui.register.RegisterActivity"
@@ -37,7 +29,11 @@
 
     <!-- Main -->
     <activity android:name=".ui.main.MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
     </activity>
 
     <!-- Wallet -->
@@ -55,26 +51,31 @@
     <activity android:name=".ui.wallet.MyWalletActivity" />
     <!-- Saving -->
     <activity android:name=".ui.saving.SavingActivity" />
+    <activity android:name=".ui.tools.calculator.CalculatorActivity" />
+    <activity android:name=".ui.saving.AddSavingActivity" />
+    <activity android:name=".ui.saving.TransferMoneySavingActivity" />
+    <activity android:name=".ui.saving.InfoSavingActivity" />
+    <activity android:name=".ui.saving.EditSavingActivity" />
+
+    <!-- Event -->
+    <activity android:name=".ui.event.ActivityInfoEvent" />
+    <activity android:name=".ui.event.ActivityEditEvent" />
+    <activity android:name=".ui.event.ActivityAddEvent" />
+    <activity android:name=".ui.event.EventActivity" />
 
     <!-- Person -->
     <activity android:name=".ui.person.PersonActivity" />
 
     <!-- Currency -->
-    <activity android:name=".ui.currencies.CurrenciesActivity">
-
-    </activity>
+    <activity android:name=".ui.currencies.CurrenciesActivity"></activity>
 
     <!-- Tool -->
     <activity android:name=".ui.tools.galleryloader.ui.GalleryLoaderActivity" />
     <activity android:name=".ui.iconshop.SelectIconActivity" />
 
     <!-- Category -->
-    <activity android:name=".ui.category.CategoryActivity" >
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
+    <activity android:name=".ui.category.CategoryActivity">
 
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
     </activity>
     <activity android:name=".ui.category.ManagerCategoryActivity" />
     <activity android:name=".ui.category.ListParentCategoryActivity" />

@@ -22,19 +22,19 @@ import java.util.List;
 
 public class MyRecyclerViewSavingAdapter extends
                                          RecyclerView.Adapter<MyRecyclerViewSavingAdapter.ViewHolder> {
-
+    
     private List<Saving> mData = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private Context mContext;
-
+    
     public MyRecyclerViewSavingAdapter(Context context, List<Saving> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.mContext = context;
     }
     
-
+    
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item_saving, parent, false);
@@ -42,12 +42,12 @@ public class MyRecyclerViewSavingAdapter extends
         return viewHolder;
     }
     
-
+    
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(getItem(position));
     }
-
+    
     
     @Override
     public int getItemCount() {
@@ -67,14 +67,14 @@ public class MyRecyclerViewSavingAdapter extends
         mData.addAll(list);
         notifyDataSetChanged();
     }
-
+    
     public interface ItemClickListener {
-
+        
         void onItemClick(View view, List<Saving> savingList, int position, int process);
     }
-
+    
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
+        
         @BindView(R.id.txt_saving_name)
         TextView txt_saving_name;
         @BindView(R.id.txt_money_goal)
@@ -83,41 +83,41 @@ public class MyRecyclerViewSavingAdapter extends
         TextView txt_time_rest;
         @BindView(R.id.seek_bar_saving)
         SeekBar seek_bar_saving;
-
-
+        
+        
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
-
+        
         public void bind(Saving saving) {
             txt_saving_name.setText(saving.getName());
             txt_money_goal.setText(saving.getGoalMoney());
-
+            
             txt_time_rest.setText(mContext
                       .getString(R.string.days_left, getDateRest(saving.getDate()) + ""));
             int t = getProgress(saving.getCurrentMoney(), saving.getGoalMoney());
             seek_bar_saving.setProgress(t);
             seek_bar_saving.setEnabled(false);
-
-
+            
+            
         }
-
+        
         public int getDateRest(String milisecond) {
             long dateMilisecond = Long.parseLong(milisecond);
             return DateUtil.getDateLeft(dateMilisecond);
         }
-
+        
         public int getProgress(String a, String b) {
             double current = Double.parseDouble(a);
             double goal = Double.parseDouble(b);
-
+            
             double proportion = (current / goal) * 100;
-
+            
             return (int) proportion;
         }
-
+        
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
@@ -126,4 +126,5 @@ public class MyRecyclerViewSavingAdapter extends
             }
         }
     }
+    
 }

@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import butterknife.BindView;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
@@ -18,6 +19,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.EmptyAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.adapter.MyRecyclerViewSavingAdapter;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -29,6 +31,7 @@ import javax.inject.Inject;
 public class FragmentRunning extends BaseFragment implements
                                                   MyRecyclerViewSavingAdapter.ItemClickListener,
                                                   SavingContract.View {
+    
     
     @BindView(R.id.recycler_view_saving_running)
     RecyclerView mRecyclerView;
@@ -69,23 +72,22 @@ public class FragmentRunning extends BaseFragment implements
     protected void initializeActionBar(View rootView) {
         init(rootView);
         mSavingPresenter.getSaving();
-
+        
     }
     
     public void init(View view) {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         mSavingList = new ArrayList<>();
     }
-
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        
+
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 String savingId = data.getStringExtra("result");
-                
+
                 if (!mSavingList.isEmpty()) {
-                    
                     for (Saving saving : mSavingList) {
                         if (saving.getSavingid().equals(savingId)) {
                             mSavingList.remove(saving);
@@ -94,24 +96,34 @@ public class FragmentRunning extends BaseFragment implements
                         }
                     }
                     if (mSavingList.isEmpty()) {
-                        mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
+                        mEmptyAdapter = new EmptyAdapter(getContext(),
+                                  getString(R.string.nosaving));
                         mRecyclerView.setAdapter(mEmptyAdapter);
                     }
                 }
                 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
+                MyLogger.d("cancel", "saving");
                 mSavingList.clear();
                 mMyRecyclerViewSavingAdapter.notifyDataSetChanged();
                 mSavingPresenter.getSaving();
             }
         }
+        if (requestCode == 12) {
+            if (resultCode == Activity.RESULT_OK) {
+                Saving saving = data.getParcelableExtra("resultAdd");
+                mSavingList.add(saving);
+                mMyRecyclerViewSavingAdapter.setList(mSavingList);
+            }
+        }
+        
     }
     
     @Override
     public void showListSaving(List<Saving> savings) {
         // mSavingList=savings;
-
+        
         if (!savings.isEmpty()) {
             
             for (Saving saving : savings) {
@@ -119,12 +131,15 @@ public class FragmentRunning extends BaseFragment implements
                     mSavingList.add(saving);
                 }
             }
-            
-            mMyRecyclerViewSavingAdapter = new MyRecyclerViewSavingAdapter(getContext(),
-                      mSavingList);
-            mMyRecyclerViewSavingAdapter.setClickListener(this);
-            mRecyclerView.setAdapter(mMyRecyclerViewSavingAdapter);
-            
+            if (!mSavingList.isEmpty()) {
+                mMyRecyclerViewSavingAdapter = new MyRecyclerViewSavingAdapter(getContext(),
+                          mSavingList);
+                mMyRecyclerViewSavingAdapter.setClickListener(this);
+                mRecyclerView.setAdapter(mMyRecyclerViewSavingAdapter);
+            } else {
+                mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
+                mRecyclerView.setAdapter(mEmptyAdapter);
+            }
         } else {
             mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
             mRecyclerView.setAdapter(mEmptyAdapter);
@@ -170,7 +185,7 @@ public class FragmentRunning extends BaseFragment implements
     public void loading(boolean isLoading) {
         
         mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-
+        
     }
     
     @Override
@@ -181,16 +196,17 @@ public class FragmentRunning extends BaseFragment implements
     
     @Override
     public void onItemClick(View view, List<Saving> savingList, int position, int process) {
-
+        MyLogger.d("deso===========", savingList.get(position).getName());
+        
         Saving saving = savingList.get(position);
-        Intent intent = new Intent(getActivity(), InfoSavingActivity.class);
+        Intent intent = new Intent(this.getContext(), InfoSavingActivity.class);
         if (saving != null) {
             intent.putExtra("MySaving", saving);
             intent.putExtra("process", String.valueOf(process));
-
+            
         }
-        startActivityForResult(intent, 1);
+        getActivity().startActivityForResult(intent, 1);
         
-        //Toast.makeText(getContext(),position+"",Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), position + "", Toast.LENGTH_LONG).show();
     }
 }

@@ -69,13 +69,13 @@
       android:src="@drawable/ic_parent_category" />
     <EditText
       android:id="@+id/txt_parent_category"
-      android:focusable="false"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginStart="10dp"
       android:layout_marginLeft="10dp"
       android:layout_toEndOf="@id/image_view_parent"
       android:layout_toRightOf="@id/image_view_parent"
+      android:focusable="false"
       android:hint="@string/txt_hint_parent_category" />
   </RelativeLayout>
 </LinearLayout>

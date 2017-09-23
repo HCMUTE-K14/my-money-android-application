@@ -77,8 +77,8 @@
       android:layout_height="30dp"
       android:layout_alignParentRight="true"
       android:layout_centerVertical="true"
-      android:visibility="gone"
-      android:src="@drawable/ic_three_dot" />
+      android:src="@drawable/ic_three_dot"
+      android:visibility="gone" />
 
 
   </RelativeLayout>

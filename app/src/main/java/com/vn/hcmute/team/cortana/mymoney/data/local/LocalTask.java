@@ -26,7 +26,7 @@ public interface LocalTask {
         
         Observable<List<Category>> getListCategory(String transType);
         
-        Observable<List<Category>> getListCategoryByType(String type,String transType);
+        Observable<List<Category>> getListCategoryByType(String type, String transType);
         
         Observable<String> addCategory(Category category);
         

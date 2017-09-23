@@ -1,5 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,8 +9,19 @@ import com.google.gson.annotations.SerializedName;
  * Created by kunsubin on 8/22/2017.
  */
 
-public class Event {
+public class Event implements Parcelable {
     
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
     @SerializedName("eventid")
     @Expose
     private String eventid;
@@ -30,6 +43,9 @@ public class Event {
     @SerializedName("userid")
     @Expose
     private String userid;
+    @SerializedName("currencies")
+    @Expose
+    private Currencies currencies;
     
     public Event() {
         this.eventid = "";
@@ -39,8 +55,28 @@ public class Event {
         this.idWallet = "";
         this.status = "";
         this.userid = "";
+        currencies = new Currencies();
     }
     
+    protected Event(Parcel in) {
+        eventid = in.readString();
+        name = in.readString();
+        money = in.readString();
+        date = in.readString();
+        idWallet = in.readString();
+        status = in.readString();
+        userid = in.readString();
+        currencies = in.readParcelable(Currencies.class.getClassLoader());
+    }
+
+    public Currencies getCurrencies() {
+        return currencies;
+    }
+    
+    public void setCurrencies(Currencies currencies) {
+        this.currencies = currencies;
+    }
+
     public String getEventid() {
         return eventid;
     }
@@ -108,5 +144,22 @@ public class Event {
                ", status='" + status + '\'' +
                ", userid='" + userid + '\'' +
                '}';
+    }
+    
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(eventid);
+        dest.writeString(name);
+        dest.writeString(money);
+        dest.writeString(date);
+        dest.writeString(idWallet);
+        dest.writeString(status);
+        dest.writeString(userid);
+        dest.writeParcelable(currencies, flags);
     }
 }

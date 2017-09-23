@@ -1,15 +1,27 @@
 package com.vn.hcmute.team.cortana.mymoney.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.io.Serializable;
 
 /**
  * Created by kunsubin on 8/23/2017.
  */
 
-public class Saving implements Serializable {
+public class Saving implements Parcelable {
     
+    public static final Creator<Saving> CREATOR = new Creator<Saving>() {
+        @Override
+        public Saving createFromParcel(Parcel in) {
+            return new Saving(in);
+        }
+
+        @Override
+        public Saving[] newArray(int size) {
+            return new Saving[size];
+        }
+    };
     @SerializedName("savingid")
     @Expose
     private String savingid;
@@ -40,6 +52,12 @@ public class Saving implements Serializable {
     @SerializedName("userid")
     @Expose
     private String userid;
+    @SerializedName("currencies")
+    @Expose
+    private Currencies currencies;
+    @SerializedName("icon")
+    @Expose
+    private String icon;
     
     public Saving() {
         this.savingid = "";
@@ -52,6 +70,37 @@ public class Saving implements Serializable {
         this.idCurrencies = "";
         this.status = "";
         this.userid = "";
+        this.currencies = new Currencies();
+    }
+    
+    public Saving(Parcel in) {
+        savingid = in.readString();
+        name = in.readString();
+        goalMoney = in.readString();
+        startMoney = in.readString();
+        currentMoney = in.readString();
+        date = in.readString();
+        idWallet = in.readString();
+        idCurrencies = in.readString();
+        status = in.readString();
+        userid = in.readString();
+        currencies = in.readParcelable(Currencies.class.getClassLoader());
+    }
+    
+    public String getIcon() {
+        return icon;
+    }
+    
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public Currencies getCurrencies() {
+        return currencies;
+    }
+
+    public void setCurrencies(Currencies currencies) {
+        this.currencies = currencies;
     }
     
     public String getSavingid() {
@@ -158,15 +207,35 @@ public class Saving implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        
+
         Saving saving = (Saving) o;
-        
+
         return savingid != null ? savingid.equals(saving.savingid) : saving.savingid == null;
-        
+
     }
     
     @Override
     public int hashCode() {
         return savingid != null ? savingid.hashCode() : 0;
+    }
+    
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(savingid);
+        dest.writeString(name);
+        dest.writeString(goalMoney);
+        dest.writeString(startMoney);
+        dest.writeString(currentMoney);
+        dest.writeString(date);
+        dest.writeString(idWallet);
+        dest.writeString(idCurrencies);
+        dest.writeString(status);
+        dest.writeString(userid);
+        dest.writeParcelable(currencies, flags);
     }
 }

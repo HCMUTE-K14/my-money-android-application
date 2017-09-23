@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <declare-styleable name="CardViewActionBar">
-    <attr name="textTitle" format="string" />
-    <attr name="textAction" format="string" />
-    <attr name="iconBack" format="integer" />
-    <attr name="hideAction" format="boolean"/>
+    <attr format="string" name="textTitle" />
+    <attr format="string" name="textAction" />
+    <attr format="integer" name="iconBack" />
+    <attr format="boolean" name="hideAction" />
   </declare-styleable>
 </resources>

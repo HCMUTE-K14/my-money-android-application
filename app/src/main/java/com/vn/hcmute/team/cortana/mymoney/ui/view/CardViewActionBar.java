@@ -33,15 +33,18 @@ public class CardViewActionBar extends RelativeLayout {
     String mActionText = DEFAULT_TEXT_ACTION;
     Drawable mIconBack;
     boolean isHideAction;
+    
     public CardViewActionBar(Context context) {
         super(context);
         init(null, 0);
     }
+    
     public CardViewActionBar(Context context,
               @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
+    
     public CardViewActionBar(Context context,
               @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);

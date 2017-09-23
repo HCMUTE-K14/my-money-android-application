@@ -22,8 +22,8 @@
   <com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletView
     android:id="@+id/select_wallet"
     android:layout_width="match_parent"
-    android:layout_below="@id/appbar"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:layout_below="@id/appbar" />
 
   <android.support.design.widget.FloatingActionButton
     android:id="@+id/btn_add_wallet"

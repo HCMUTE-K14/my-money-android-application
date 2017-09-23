@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:orientation="vertical"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:orientation="vertical">
   <android.support.v7.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="50dp">
@@ -47,14 +46,13 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
-        android:clickable="true"
-        android:gravity="center|right"
         android:paddingLeft="15.0dip"
         android:paddingRight="15.0dip"
-        android:textSize="20sp"
+        android:clickable="true"
+        android:gravity="center|right"
         android:text="@string/save"
         android:textColor="@color/black"
-        />
+        android:textSize="20sp" />
     </RelativeLayout>
   </android.support.v7.widget.CardView>
 
@@ -78,17 +76,17 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="5"
-          android:orientation="vertical"
-          android:gravity="center">
+          android:gravity="center"
+          android:orientation="vertical">
           <ImageView
             android:id="@+id/image_view_icon_saving"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_saving"/>
+            android:src="@drawable/ic_saving" />
           <View
-            android:layout_marginTop="2dp"
             android:layout_width="48dp"
             android:layout_height="2dp"
+            android:layout_marginTop="2dp"
             android:background="@color/gray" />
         </LinearLayout>
         <LinearLayout
@@ -100,18 +98,18 @@
             android:id="@+id/edit_text_name_saving"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:backgroundTint="@android:color/holo_red_light"
             android:text="anh ky"
             android:textColor="@color/black"
             android:textSize="@dimen/txt_name_saving"
-            android:layout_marginLeft="8dp"
-            android:backgroundTint="@android:color/holo_red_light"
 
             />
           <View
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="10dp"
             android:background="@color/green" />
         </LinearLayout>
 
@@ -137,22 +135,21 @@
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/goal"
             android:paddingLeft="10dp"
-            />
+            android:text="@string/goal" />
           <TextView
             android:id="@+id/txt_goal_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:textSize="@dimen/txt_name_saving"
             android:text="+150000"
-            android:textColor="@color/green"/>
+            android:textColor="@color/green"
+            android:textSize="@dimen/txt_name_saving" />
           <View
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="10dp"
             android:background="@color/gray" />
         </LinearLayout>
 
@@ -161,8 +158,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:weightSum="6"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="6">
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="match_parent"
@@ -171,15 +168,14 @@
           <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/ic_calendar"
-            />
+            android:src="@drawable/ic_calendar" />
         </LinearLayout>
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
-          android:orientation="vertical"
-          android:gravity="center">
+          android:gravity="center"
+          android:orientation="vertical">
           <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -187,26 +183,24 @@
               android:id="@+id/txt_date_saving"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:textColor="@color/black"
               android:paddingLeft="10dp"
-              android:textSize="@dimen/item_name_saving"
-              android:text="bomka"/>
+              android:text="bomka"
+              android:textColor="@color/black"
+              android:textSize="@dimen/item_name_saving" />
             <ImageView
               android:id="@+id/ic_clear_date"
               android:layout_width="30dp"
               android:layout_height="30dp"
-              android:layout_gravity="right"
               android:layout_alignParentRight="true"
-              android:src="@drawable/ic_input_clear"
-              />
+              android:layout_gravity="right"
+              android:src="@drawable/ic_input_clear" />
           </RelativeLayout>
           <View
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="8dp"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/gray"
-            />
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="8dp"
+            android:background="@color/gray" />
 
         </LinearLayout>
       </LinearLayout>
@@ -214,8 +208,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:weightSum="6"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="6">
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="match_parent"
@@ -230,21 +224,21 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
-          android:orientation="vertical"
-          android:gravity="center|left">
+          android:gravity="center|left"
+          android:orientation="vertical">
           <TextView
             android:id="@+id/txt_currencies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:textSize="@dimen/item_name_saving"
             android:text="Việt nam đồng"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="@dimen/item_name_saving" />
           <View
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="10dp"
             android:background="@color/gray" />
         </LinearLayout>
       </LinearLayout>
@@ -252,8 +246,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:weightSum="6"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="6">
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="match_parent"
@@ -268,21 +262,21 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
-          android:orientation="vertical"
-          android:gravity="center|left">
+          android:gravity="center|left"
+          android:orientation="vertical">
           <TextView
             android:id="@+id/txt_wallet_saving"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:textSize="@dimen/item_name_saving"
             android:text="All Wallet"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="@dimen/item_name_saving" />
           <View
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="10dp"
             android:background="@color/gray" />
         </LinearLayout>
       </LinearLayout>

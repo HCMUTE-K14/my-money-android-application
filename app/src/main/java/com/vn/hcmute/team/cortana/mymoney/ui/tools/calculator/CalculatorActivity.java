@@ -1,8 +1,12 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -23,10 +27,10 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class CalculatorActivity extends BaseActivity implements OnTouchListener {
     
-    private final int MAX_DIGIT = 15;
-    
     @BindView(R.id.txt_input)
     TextView txt_input;
+    /*@BindView(R.id.scrollView)
+    ScrollView scrollView;*/
     
     @Override
     public int getLayoutId() {
@@ -45,7 +49,7 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
     
     @Override
     protected void initializeActionBar(View rootView) {
-        
+        txt_input.setMovementMethod(new ScrollingMovementMethod());
     }
     
     @Override
@@ -53,8 +57,9 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
         super.onCreate(savedInstanceState);
         
         Intent intent = getIntent();
-        String goalMoney = intent.getStringExtra("value");
-        txt_input.setText(goalMoney);
+        String goalMoney = intent.getStringExtra("goal_money");
+        //txt_input.setText(goalMoney.substring(1));
+        txt_input.setText("0");
     }
     
     public void onClick(View view) {
@@ -70,6 +75,17 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
                 } else {
                     txt_input.setText("0");
                 }
+                
+                break;
+            case R.id.image_remove:
+                if (txt_input.length() > 0) {
+                    StringBuilder tmp = new StringBuilder(txt_input.getText().toString());
+                    tmp.delete(tmp.length() - 1, tmp.length());
+                    txt_input.setText(tmp.toString());
+                } else {
+                    txt_input.setText("0");
+                }
+                
                 break;
             case R.id.btn_equal:
                 try {
@@ -84,10 +100,10 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
                         txt_input.setText(TextUtil.doubleToString(result));
                         
                     } catch (Exception e) {
-                        Toast.makeText(this, R.string.message_warning_wrong_expression,
-                                  Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Not Input", Toast.LENGTH_LONG).show();
                     }
                 }
+                
                 break;
             default:
                 Button button = (Button) view;
@@ -100,15 +116,37 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
     }
     
     public void resultAndFinish() {
-        if (txt_input.length() > MAX_DIGIT) {
-            Toast.makeText(this, R.string.message_warning_max_digit, Toast.LENGTH_SHORT).show();
-        } else {
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("result", txt_input.getText().toString());
-            setResult(RESULT_OK, returnIntent);
-            finish();
+        if (txt_input.length() > 15) {
+            alertDiaglog(getString(R.string.max15digit));
+            return;
+        }
+        if (Double.parseDouble(txt_input.getText().toString().trim()) < 0) {
+            alertDiaglog(getString(R.string.erro_negative));
+            return;
         }
         
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result", txt_input.getText().toString());
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+        
+        
+    }
+    
+    public void alertDiaglog(String message) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(message);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                  getString(R.string.txt_ok),
+                  new DialogInterface.OnClickListener() {
+                      public void onClick(DialogInterface dialog, int id) {
+                          dialog.cancel();
+                      }
+                  });
+        
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
     
     @Override
@@ -124,12 +162,11 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
             
             if (!txt_input.getText().toString().equals("")) {
                 resultAndFinish();
-                return;
+            } else {
+                Toast.makeText(this, "Not", Toast.LENGTH_LONG).show();
             }
-            Toast.makeText(this, R.string.message_warning_max_digit, Toast.LENGTH_SHORT).show();
         } catch (Exception ex) {
-            Toast.makeText(this, R.string.message_warning_wrong_expression, Toast.LENGTH_SHORT)
-                      .show();
+            Toast.makeText(this, "Not", Toast.LENGTH_LONG).show();
         }
         
     }

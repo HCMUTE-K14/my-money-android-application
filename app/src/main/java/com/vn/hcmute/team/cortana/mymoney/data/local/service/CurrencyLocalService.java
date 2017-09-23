@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
  */
 
 public class CurrencyLocalService extends DbContentProvider<Currencies> implements
-                                                            LocalService.CurrencyLocalRepository {
+                                                                        LocalService.CurrencyLocalRepository {
     
     public static final String TAG = CurrencyLocalService.class.getSimpleName();
     

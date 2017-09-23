@@ -3,7 +3,10 @@ package com.vn.hcmute.team.cortana.mymoney.di.component;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.BudgetModule;
 import com.vn.hcmute.team.cortana.mymoney.di.scope.PerActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.budget.AddBudgetActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.budget.BudgetActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.budget.EditBudgetActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.budget.InfoBudgetActivity;
 import dagger.Component;
 
 /**
@@ -13,6 +16,8 @@ import dagger.Component;
 @Component(modules = {ActivityModule.class,
           BudgetModule.class}, dependencies = ApplicationComponent.class)
 public interface BudgetComponent {
-    
     void inject(BudgetActivity budgetActivity);
+    void inject(EditBudgetActivity editBudgetActivity);
+    void inject(AddBudgetActivity addBudgetActivity);
+    void inject(InfoBudgetActivity infoBudgetActivity);
 }

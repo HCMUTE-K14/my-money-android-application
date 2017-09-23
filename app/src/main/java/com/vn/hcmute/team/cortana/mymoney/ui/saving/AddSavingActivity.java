@@ -13,10 +13,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
+import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerSavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.SavingComponent;
@@ -24,9 +26,12 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
+import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
+import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import java.util.Calendar;
 import java.util.List;
@@ -55,7 +60,10 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
     int day, month, year;
     @Inject
     SavingPresenter mSavingPresenter;
+    @Inject
+    PreferencesHelper mPreferencesHelper;
     private Currencies mCurrencies;
+    private Wallet mWallet;
     private DatePickerDialog.OnDateSetListener datePickerListener
               = new DatePickerDialog.OnDateSetListener() {
         
@@ -106,6 +114,19 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
         
         //
         mSaving = new Saving();
+        mCurrencies = new Currencies();
+        mWallet = new Wallet();
+        setCurrenciesDefault();
+        txt_currencies.setText(mCurrencies.getCurName());
+        
+    }
+    
+    public void setCurrenciesDefault() {
+        mCurrencies.setCurId("4");
+        mCurrencies.setCurName("Việt Nam Đồng");
+        mCurrencies.setCurCode("VND");
+        mCurrencies.setCurSymbol("₫");
+        mCurrencies.setCurDisplayType("cur_display_type");
     }
     
     @Override
@@ -118,7 +139,25 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
         
         mSaving.setSavingid(SecurityUtil.getRandomUUID());
         mSaving.setName(edit_text_name_saving.getText().toString().trim());
-        // mSaving.setGoalMoney();
+        mSaving.setGoalMoney(txt_goal_money.getText().toString().substring(1));
+        mSaving.setCurrentMoney("0");
+        mSaving.setStartMoney("0");
+        
+        if (!txt_date_saving.getText().toString().trim().equals(getString(R.string.ending_date))) {
+            String[] arr = txt_date_saving.getText().toString().trim().split("/");
+            long tmp = DateUtil
+                      .getLongAsDate(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]),
+                                Integer.parseInt(arr[2]));
+            mSaving.setDate(String.valueOf(tmp));
+        }
+        
+        mSaving.setIdWallet(mWallet.getWalletid());
+        
+        mSaving.setStatus("0");
+        mSaving.setUserid(mPreferencesHelper.getUserId());
+        mSaving.setIcon("");
+        mSaving.setCurrencies(mCurrencies);
+        
     }
     
     @OnClick(R.id.cancel_button)
@@ -180,7 +219,7 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
         
         if (requestCode == 6) {
             if (resultCode == Activity.RESULT_OK) {
-                mCurrencies = (Currencies) data.getSerializableExtra("MyCurrencies");
+                mCurrencies = (Currencies) data.getParcelableExtra("currency");
                 
                 if (mCurrencies != null) {
                     txt_currencies.setText(mCurrencies.getCurName());
@@ -200,8 +239,51 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
                 
             }
         }
+        if (requestCode == 13) {
+            if (resultCode == Activity.RESULT_OK) {
+                mWallet = data.getParcelableExtra("wallet");
+                txt_wallet_saving.setText(mWallet.getWalletName());
+                
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                
+            }
+        }
     }
     
+    @OnClick(R.id.txt_edit_saving)
+    public void onClickSaveAdd(View view) {
+        if (edit_text_name_saving.getText().toString().trim().equals("")) {
+            Toast.makeText(this, getString(R.string.name_saving), Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (txt_date_saving.getText().toString().trim().equals(getString(R.string.ending_date))) {
+            Toast.makeText(this, getString(R.string.select_date), Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (txt_goal_money.getText().toString().substring(1).trim().equals("0")) {
+            Toast.makeText(this, getString(R.string.input_money), Toast.LENGTH_LONG).show();
+            return;
+        }
+        //check date
+        String[] arr = txt_date_saving.getText().toString().trim().split("/");
+        long tmp = DateUtil
+                  .getLongAsDate(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]),
+                            Integer.parseInt(arr[2]));
+        if (System.currentTimeMillis() >= tmp) {
+            Toast.makeText(this, getString(R.string.small_date), Toast.LENGTH_LONG).show();
+            return;
+        }
+        setSaving();
+        mSavingPresenter.createSaving(mSaving);
+        
+    }
+    
+    @OnClick(R.id.linear_select_wallet)
+    public void onClickSelectWallet(View view) {
+        Intent intent = new Intent(this, MyWalletActivity.class);
+        startActivityForResult(intent, 13);
+    }
     
     @Override
     public void showListSaving(List<Saving> savings) {
@@ -215,6 +297,10 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
     
     @Override
     public void onSuccessCreateSaving() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("resultAdd", mSaving);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
         
     }
     

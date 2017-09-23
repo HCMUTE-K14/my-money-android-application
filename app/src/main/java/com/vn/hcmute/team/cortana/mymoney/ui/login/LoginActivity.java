@@ -211,5 +211,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         Intent intent = new Intent(this, CategoryActivity.class);
         intent.putExtra("cate_id", "1");
         startActivityForResult(intent, Constraints.RequestCode.CHOOSE_CATEGORY_REQUEST_CODE);
+        
     }
 }
