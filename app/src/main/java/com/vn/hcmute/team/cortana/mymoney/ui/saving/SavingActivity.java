@@ -1,33 +1,40 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.saving;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout.OnTabSelectedListener;
 import android.support.design.widget.TabLayout.Tab;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
-import java.util.List;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 
 /**
  * Created by infamouSs on 8/28/2017.
  */
 
-public class SavingActivity extends BaseActivity implements SavingContract.View {
+public class SavingActivity extends BaseActivity{
     
     
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
     @BindView(R.id.pager)
     ViewPager mViewPager;
+    @BindView(R.id.btn_add_saving)
+    FloatingActionButton btn_add_saving;
     
     private PagerAdapter mPagerAdapter;
-
+ 
+    private int currentFragmet=0;
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_saving;
@@ -49,6 +56,9 @@ public class SavingActivity extends BaseActivity implements SavingContract.View 
             @Override
             public void onTabSelected(Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
+                currentFragmet=tab.getPosition();
+                MyLogger.d("qeqeww",tab.getPosition());
+                
             }
 
             @Override
@@ -64,6 +74,30 @@ public class SavingActivity extends BaseActivity implements SavingContract.View 
         
         initTabLayout();
 
+    }
+    @OnClick(R.id.btn_add_saving)
+    public void onClickAddSaving(View view){
+        
+        Intent intent =new Intent(this,AddSavingActivity.class);
+        startActivityForResult(intent,12);
+        
+        
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==12){
+            if(resultCode == Activity.RESULT_OK){
+               // Saving saving=data.getParcelableExtra("resultAdd");
+                mPagerAdapter.getFragment(0).onActivityResult(requestCode,resultCode,data);
+            }
+        }
+        if(requestCode==1){
+            mPagerAdapter.getFragment(currentFragmet).onActivityResult(requestCode,resultCode,data);
+        }
+        if(requestCode==2){
+            mPagerAdapter.getFragment(currentFragmet).onActivityResult(requestCode,resultCode,data);
+        }
     }
     
     @Override
@@ -86,52 +120,5 @@ public class SavingActivity extends BaseActivity implements SavingContract.View 
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-
-    }
-
-    @Override
-    public void showListSaving(List<Saving> savings) {
-
-    }
-    
-    @Override
-    public void showSaving() {
-        
-    }
-    
-    @Override
-    public void onSuccessCreateSaving() {
-
-    }
-    
-    @Override
-    public void onSuccessDeleteSaving() {
-
-    }
-    
-    @Override
-    public void onSuccessUpdateSaving() {
-
-    }
-    
-    @Override
-    public void onSuccessTakeIn() {
-
-    }
-    
-    @Override
-    public void onSuccessTakeOut() {
-
-    }
-    
-    @Override
-    public void showError(String message) {
-
-    }
-    
-    @Override
-    public void loading(boolean isLoading) {
-        
     }
 }

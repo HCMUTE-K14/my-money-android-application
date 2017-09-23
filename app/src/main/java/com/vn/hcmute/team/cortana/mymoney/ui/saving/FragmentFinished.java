@@ -71,11 +71,10 @@ public class FragmentFinished extends BaseFragment implements
         init(rootView);
         mSavingPresenter.getSaving();
     }
-    
-    public void init(View view) {
-        // mRecyclerView=(RecyclerView)view.findViewById(R.id.recycler_view_saving_running);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        mSavingList = new ArrayList<>();
+    public void init(View view){
+        
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
+        mSavingList=new ArrayList<>();
     }
     
     @Override
@@ -94,8 +93,8 @@ public class FragmentFinished extends BaseFragment implements
                             break;
                         }
                     }
-                    if (mSavingList.isEmpty()) {
-                        mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
+                    if(mSavingList.isEmpty()){
+                        mEmptyAdapter=new EmptyAdapter(getContext(),getString(R.string.nosaving));
                         mRecyclerView.setAdapter(mEmptyAdapter);
                     }
                 }
@@ -117,21 +116,25 @@ public class FragmentFinished extends BaseFragment implements
     
     @Override
     public void showListSaving(List<Saving> savings) {
-        for (Saving saving : savings) {
-            if (saving.getStatus().equals("1")) {
-                mSavingList.add(saving);
+        if(!savings.isEmpty()){
+            for (Saving saving:savings) {
+                if(saving.getStatus().equals("1"))
+                    mSavingList.add(saving);
             }
-        }
-        
-        if (!mSavingList.isEmpty()) {
-            mMyRecyclerViewSavingAdapter = new MyRecyclerViewSavingAdapter(getContext(),
-                      mSavingList);
-            mMyRecyclerViewSavingAdapter.setClickListener(this);
-            mRecyclerView.setAdapter(mMyRecyclerViewSavingAdapter);
-        } else {
-            mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
+    
+            if(!mSavingList.isEmpty()){
+                mMyRecyclerViewSavingAdapter=new MyRecyclerViewSavingAdapter(getContext(),mSavingList);
+                mMyRecyclerViewSavingAdapter.setClickListener(this);
+                mRecyclerView.setAdapter(mMyRecyclerViewSavingAdapter);
+            }else{
+                mEmptyAdapter=new EmptyAdapter(getContext(),"No Saving");
+                mRecyclerView.setAdapter(mEmptyAdapter);
+            }
+        }else{
+            mEmptyAdapter=new EmptyAdapter(getContext(),"No Saving");
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
+       
     }
     
     @Override
@@ -176,12 +179,12 @@ public class FragmentFinished extends BaseFragment implements
     
     @Override
     public void onItemClick(View view, List<Saving> savingList, int position, int process) {
-        Saving saving = savingList.get(position);
-        Intent intent = new Intent(getActivity(), InfoSavingActivity.class);
-        if (saving != null) {
-            intent.putExtra("MySaving", saving);
-            intent.putExtra("process", String.valueOf(process));
+        Saving saving=savingList.get(position);
+        Intent intent=new Intent(this.getContext(),InfoSavingActivity.class);
+        if(saving!=null){
+            intent.putExtra("MySaving",saving);
+            intent.putExtra("process",String.valueOf(process));
         }
-        startActivityForResult(intent, 2);
+        getActivity().startActivityForResult(intent,2);
     }
 }

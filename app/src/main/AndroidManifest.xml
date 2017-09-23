@@ -15,13 +15,28 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
 
+    <!--saving-->
+    <activity android:name=".ui.tools.calculator.CalculatorActivity"/>
+    <activity android:name=".ui.saving.AddSavingActivity"/>
+    <activity android:name=".ui.saving.TransferMoneySavingActivity"/>
+    <activity android:name=".ui.saving.InfoSavingActivity"/>
+    <activity android:name=".ui.saving.EditSavingActivity"/>
+    <!--<activity android:name=".ui.saving.SavingActivity"/>-->
+    <!--event-->
+    <activity android:name=".ui.event.ActivityInfoEvent"/>
+    <activity android:name=".ui.event.ActivityEditEvent"/>
+    <activity android:name=".ui.event.ActivityAddEvent"/>
+   <!-- <activity android:name=".ui.event.EventActivity"/>-->
+
+
     <activity android:name=".ui.tools.calculator.CalculatorActivity" />
     <activity android:name=".ui.saving.AddSavingActivity" />
     <activity android:name=".ui.saving.TransferMoneySavingActivity" />
+
     <!-- User -->
     <activity
       android:launchMode="singleTop"
-      android:name=".ui.login.LoginActivity"
+      android:name=".ui.saving.SavingActivity"
       android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -58,7 +73,7 @@
 
     <activity android:name=".ui.wallet.MyWalletActivity" />
     <!-- Saving -->
-    <activity android:name=".ui.saving.SavingActivity" />
+    <activity android:name=".ui.login.LoginActivity" />
 
     <!-- Person -->
     <activity android:name=".ui.person.PersonActivity" />

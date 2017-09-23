@@ -24,9 +24,11 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.category.CategoryActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.forgetpassword.ForgetPasswordActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.register.RegisterActivity;
+
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
+
 import javax.inject.Inject;
 
 /**
@@ -211,5 +213,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         Intent intent = new Intent(this, CategoryActivity.class);
         intent.putExtra("cate_id", "1");
         startActivityForResult(intent, Constraints.RequestCode.CHOOSE_CATEGORY_REQUEST_CODE);
+
     }
 }

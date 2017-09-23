@@ -2,6 +2,7 @@ package com.vn.hcmute.team.cortana.mymoney.di.component;
 
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
+import com.vn.hcmute.team.cortana.mymoney.di.module.WalletModule;
 import com.vn.hcmute.team.cortana.mymoney.di.scope.PerActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.AddSavingActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.EditSavingActivity;
@@ -17,7 +18,7 @@ import dagger.Component;
  */
 @PerActivity
 @Component(modules = {ActivityModule.class,
-          SavingModule.class}, dependencies = ApplicationComponent.class)
+          SavingModule.class, WalletModule.class}, dependencies = ApplicationComponent.class)
 public interface SavingComponent {
     
     void inject(SavingActivity savingActivity);

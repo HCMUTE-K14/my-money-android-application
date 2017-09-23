@@ -10,6 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,33 +25,24 @@ public class MyRecyclerViewEventAdapter extends
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     
-    // data is passed into the constructor
+
     public MyRecyclerViewEventAdapter(Context context, List<Event> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
-    
-    // inflates the row layout from xml when needed
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.item_recycler_view_event, parent, false);
+        View view = mInflater.inflate(R.layout.item_event, parent, false);
         return new ViewHolder(view);
     }
     
-    // binds the data to the textview in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.eventid.setText(mData.get(position).getEventid());
-        holder.name.setText(mData.get(position).getName());
-        holder.money.setText(mData.get(position).getMoney());
-        holder.date.setText(mData.get(position).getDate());
-        holder.idWallet.setText(mData.get(position).getIdWallet());
-        holder.status.setText(mData.get(position).getStatus());
-        holder.userid.setText(mData.get(position).getUserid());
-        
+       holder.bindView(getItem(position));
     }
     
-    // total number of rows
+
     @Override
     public int getItemCount() {
         return mData.size();
@@ -72,35 +64,47 @@ public class MyRecyclerViewEventAdapter extends
         void onItemClick(View view, int position);
     }
     
-    // stores and recycles views as they are scrolled off screen
+ 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.eventid)
-        TextView eventid;
-        @BindView(R.id.name)
-        TextView name;
-        @BindView(R.id.money)
-        TextView money;
-        @BindView(R.id.date)
-        TextView date;
-        @BindView(R.id.idWallet)
-        TextView idWallet;
-        @BindView(R.id.status)
-        TextView status;
-        @BindView(R.id.userid)
-        TextView userid;
-
+        
+        @BindView(R.id.txt_name_event)
+        TextView txt_name_event;
+        @BindView(R.id.txt_money)
+        TextView txt_money;
+        @BindView(R.id.txt_currency)
+        TextView txt_currency;
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
-
+        public void bindView(Event event){
+            txt_name_event.setText(event.getName());
+            txt_money.setText(event.getMoney());
+            txt_currency.setText(event.getCurrencies().getCurSymbol());
+        }
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
-                mClickListener.onItemClick(view, getAdapterPosition());
+                mClickListener.onItemClick(getItem(getAdapterPosition()));
             }
         }
+    }
+    public Event getItem(int id) {
+        return mData.get(id);
+    }
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+    public interface ItemClickListener {
+        
+        void onItemClick(Event event);
+    }
+    
+    public void setList(List<Event> eventList){
+        mData=new ArrayList<>();
+        mData.addAll(eventList);
+        notifyDataSetChanged();
     }
 }

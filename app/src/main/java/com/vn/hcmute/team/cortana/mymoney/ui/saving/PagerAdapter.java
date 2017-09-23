@@ -19,7 +19,8 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
-
+        mFragmentRunning=new FragmentRunning();
+        mFragmentFinished=new FragmentFinished();
     }
     
     @Override
@@ -27,16 +28,23 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         
         switch (position) {
             case 0:
-                mFragmentRunning = new FragmentRunning();
                 return mFragmentRunning;
             case 1:
-                mFragmentFinished = new FragmentFinished();
                 return mFragmentFinished;
             default:
                 return null;
         }
     }
-    
+    public  Fragment getFragment(int position){
+        switch (position){
+            case 0:
+                return mFragmentRunning;
+            case 1:
+                return mFragmentFinished;
+            default:
+                return null;
+        }
+    }
     @Override
     public int getCount() {
         return 2;

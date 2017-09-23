@@ -1,14 +1,15 @@
 package com.vn.hcmute.team.cortana.mymoney.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.io.Serializable;
 
 /**
  * Created by kunsubin on 8/23/2017.
  */
 
-public class Saving implements Serializable {
+public class Saving implements Parcelable {
     
     @SerializedName("savingid")
     @Expose
@@ -40,6 +41,31 @@ public class Saving implements Serializable {
     @SerializedName("userid")
     @Expose
     private String userid;
+    @SerializedName("currencies")
+    @Expose
+    private Currencies currencies;
+    
+    public String getIcon() {
+        return icon;
+    }
+    
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+    
+    @SerializedName("icon")
+    @Expose
+    private String icon;
+    
+    public Currencies getCurrencies() {
+        return currencies;
+    }
+    
+    public void setCurrencies(Currencies currencies) {
+        this.currencies = currencies;
+    }
+    
+   
     
     public Saving() {
         this.savingid = "";
@@ -52,8 +78,21 @@ public class Saving implements Serializable {
         this.idCurrencies = "";
         this.status = "";
         this.userid = "";
+        this.currencies=new Currencies();
     }
-    
+    public Saving(Parcel in){
+        savingid=in.readString();
+        name=in.readString();
+        goalMoney=in.readString();
+        startMoney=in.readString();
+        currentMoney=in.readString();
+        date=in.readString();
+        idWallet=in.readString();
+        idCurrencies=in.readString();
+        status=in.readString();
+        userid=in.readString();
+        currencies=in.readParcelable(Currencies.class.getClassLoader());
+    }
     public String getSavingid() {
         return savingid;
     }
@@ -168,5 +207,39 @@ public class Saving implements Serializable {
     @Override
     public int hashCode() {
         return savingid != null ? savingid.hashCode() : 0;
+    }
+    
+    
+    
+    public static final Creator<Saving> CREATOR = new Creator<Saving>() {
+        @Override
+        public Saving createFromParcel(Parcel in) {
+            return new Saving(in);
+        }
+        
+        @Override
+        public Saving[] newArray(int size) {
+            return new Saving[size];
+        }
+    };
+    
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(savingid);
+        dest.writeString(name);
+        dest.writeString(goalMoney);
+        dest.writeString(startMoney);
+        dest.writeString(currentMoney);
+        dest.writeString(date);
+        dest.writeString(idWallet);
+        dest.writeString(idCurrencies);
+        dest.writeString(status);
+        dest.writeString(userid);
+        dest.writeParcelable(currencies, flags);
     }
 }

@@ -21,6 +21,8 @@ public interface EventContract {
         void onSuccessGetListEvent(List<Event> events);
         
         void onFailure(String message);
+        
+        void loading(boolean isLoading);
     }
     
     interface Presenter {
@@ -32,7 +34,8 @@ public interface EventContract {
         void updateEvent(Event event);
         
         void deleteEvent(String idEvent);
-        
+    
+        void unSubscribe();
         
     }
 }

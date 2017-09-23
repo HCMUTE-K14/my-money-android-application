@@ -126,4 +126,21 @@ public class MyRecyclerViewSavingAdapter extends
             }
         }
     }
+    public Saving getItem(int id) {
+        return mData.get(id);
+    }
+    
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view,List<Saving> savingList, int position,int process);
+    }
+    public void setList(List<Saving> list){
+       // mData.clear();
+        mData=new ArrayList<>();
+        mData.addAll(list);
+        notifyDataSetChanged();
+    }
 }

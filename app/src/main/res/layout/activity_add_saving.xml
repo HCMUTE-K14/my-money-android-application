@@ -144,9 +144,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:text="0"
-            android:textColor="@color/green"
-            android:textSize="@dimen/txt_name_saving" />
+            android:textSize="@dimen/txt_name_saving"
+            android:text="+0"
+            android:textColor="@color/green"/>
           <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -262,6 +262,7 @@
             android:src="@drawable/ic_cashbook" />
         </LinearLayout>
         <LinearLayout
+          android:id="@+id/linear_select_wallet"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
@@ -272,9 +273,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:text="All Wallet"
-            android:textColor="@color/black"
-            android:textSize="@dimen/item_name_saving" />
+            android:textSize="@dimen/item_name_saving"
+            android:text="@string/all_wallet"
+            android:textColor="@color/black"/>
           <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
