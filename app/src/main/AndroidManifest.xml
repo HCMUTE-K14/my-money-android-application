@@ -29,11 +29,7 @@
 
     <!-- Main -->
     <activity android:name=".ui.main.MainActivity">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
 
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
     </activity>
 
     <!-- Wallet -->
@@ -75,7 +71,11 @@
 
     <!-- Category -->
     <activity android:name=".ui.category.CategoryActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
     </activity>
     <activity android:name=".ui.category.ManagerCategoryActivity" />
     <activity android:name=".ui.category.ListParentCategoryActivity" />

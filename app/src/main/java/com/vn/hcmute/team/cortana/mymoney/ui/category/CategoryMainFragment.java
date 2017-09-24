@@ -55,6 +55,7 @@ public class CategoryMainFragment extends BaseFragment implements CategoryContra
     CategoryPresenter mCategoryPresenter;
     
     private CategoryMainAdapter mCategoryMainAdapter;
+    private CategoryEmptyAdapter mEmptyAdapter;
     private String mCurrentCategoryId;
     private String mAction;
     private String mTransType;
@@ -211,6 +212,8 @@ public class CategoryMainFragment extends BaseFragment implements CategoryContra
                   null);
         mCategoryMainAdapter.setCategorySelected(mCurrentCategoryId);
         
+        mEmptyAdapter = new CategoryEmptyAdapter(this.getContext());
+        
         View footer = LayoutInflater.from(this.getActivity())
                   .inflate(R.layout.item_view_footer_category, null);
         TextView textViewAddAction = (TextView) footer.findViewById(R.id.text_view);
@@ -223,6 +226,7 @@ public class CategoryMainFragment extends BaseFragment implements CategoryContra
     
     @Override
     public void showCategory(List<Category> categories) {
+        
         mCategoryMainAdapter.setData(categories);
         
         mExpandableListView.setAdapter(mCategoryMainAdapter);
@@ -241,6 +245,8 @@ public class CategoryMainFragment extends BaseFragment implements CategoryContra
     
     @Override
     public void showEmpty() {
+        
+        mExpandableListView.setAdapter(mEmptyAdapter);
         Snackbar.make(this.view, getString(R.string.txt_no_data), Snackbar.LENGTH_SHORT).show();
     }
     

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +101,6 @@ class SubCategoryLocalService extends DbContentProvider<Category> {
     }
     
     int deleteSubCategory(Category category) {
-        ContentValues contentValues = createContentValues(category);
         
         String selection = "id = ?";
         String[] selectionArg = new String[]{category.getId()};
