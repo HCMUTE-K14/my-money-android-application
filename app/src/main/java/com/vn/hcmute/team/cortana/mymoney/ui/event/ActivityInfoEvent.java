@@ -214,8 +214,6 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
                           } else {
                               txt_name_wallet.setText(tmp);
                           }
-                          
-                          
                       }
                       
                       @Override

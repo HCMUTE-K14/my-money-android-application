@@ -102,6 +102,7 @@ dependencies {
     compile group: 'net.objecthunter', name: 'exp4j', version: '0.4.8'
 
     //compile 'com.github.markushi:circlebutton:1.1'
+    compile 'com.borax12.materialdaterangepicker:library:1.9'
 
 
     testCompile 'junit:junit:4.12'

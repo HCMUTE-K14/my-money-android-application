@@ -16,7 +16,7 @@
     android:theme="@style/AppTheme">
 
     <!-- User -->
-    <activity android:name=".ui.login.LoginActivity" />
+    <!--<activity android:name=".ui.login.LoginActivity" />-->
     <activity
       android:launchMode="singleTop"
       android:name=".ui.register.RegisterActivity"
@@ -28,7 +28,7 @@
       android:screenOrientation="portrait" />
 
     <!-- Main -->
-    <activity android:name=".ui.event.EventActivity">
+    <activity android:name=".ui.budget.BudgetActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
@@ -61,7 +61,7 @@
     <activity android:name=".ui.event.ActivityInfoEvent" />
     <activity android:name=".ui.event.ActivityEditEvent" />
     <activity android:name=".ui.event.ActivityAddEvent" />
-    <!--<activity android:name=".ui.event.EventActivity" />-->
+    <activity android:name=".ui.event.EventActivity" />
 
     <!-- Person -->
     <activity android:name=".ui.person.PersonActivity" />
@@ -74,9 +74,8 @@
     <activity android:name=".ui.iconshop.SelectIconActivity" />
 
     <!-- Category -->
-    <activity android:name=".ui.category.CategoryActivity">
+    <!--<activity android:name=".ui.category.CategoryActivity"/>-->
 
-    </activity>
     <activity android:name=".ui.category.ManagerCategoryActivity" />
     <activity android:name=".ui.category.ListParentCategoryActivity" />
   </application>
