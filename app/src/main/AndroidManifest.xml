@@ -28,7 +28,7 @@
       android:screenOrientation="portrait" />
 
     <!-- Main -->
-    <activity android:name=".ui.main.MainActivity">
+    <activity android:name=".ui.event.EventActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
@@ -61,7 +61,7 @@
     <activity android:name=".ui.event.ActivityInfoEvent" />
     <activity android:name=".ui.event.ActivityEditEvent" />
     <activity android:name=".ui.event.ActivityAddEvent" />
-    <activity android:name=".ui.event.EventActivity" />
+    <!--<activity android:name=".ui.event.EventActivity" />-->
 
     <!-- Person -->
     <activity android:name=".ui.person.PersonActivity" />

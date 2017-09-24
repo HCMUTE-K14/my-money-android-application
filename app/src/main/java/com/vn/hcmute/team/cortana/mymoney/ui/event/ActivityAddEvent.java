@@ -22,13 +22,17 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerEventComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.EventComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.EventModule;
+import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
+import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.iconshop.SelectIconActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import java.util.Calendar;
 import java.util.List;
@@ -51,7 +55,11 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
     TextView txt_currencies;
     @BindView(R.id.txt_wallet_event)
     TextView txt_wallet_event;
+    @BindView(R.id.image_view_icon_event)
+    ImageView image_view_icon_event;
+              
     int day, month, year;
+    private String icon_event_defaut;
     @Inject
     EventPresenter mEventPresenter;
     @Inject
@@ -104,6 +112,7 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
         initDatePicker();
         init();
         initView();
+        showIcon();
     }
     
     public void init() {
@@ -112,14 +121,23 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
         mCurrencies = new Currencies();
         setCurrenciesDefault();
         mWallet = new Wallet();
+        icon_event_defaut="icon_travel";
     }
     
     public void initView() {
         txt_date_event.setText(getString(R.string.ending_date));
         txt_date_event.setTextColor(ContextCompat.getColor(this, R.color.gray));
         ic_clear_date.setVisibility(View.GONE);
+        
     }
-    
+    public void showIcon(){
+        GlideApp.with(this)
+                  .load(DrawableUtil.getDrawable(this, icon_event_defaut))
+                  .placeholder(R.drawable.folder_placeholder)
+                  .error(R.drawable.folder_placeholder)
+                  .dontAnimate()
+                  .into(image_view_icon_event);
+    }
     public void setCurrenciesDefault() {
         mCurrencies.setCurId("4");
         mCurrencies.setCurName("Việt Nam Đồng");
@@ -165,7 +183,11 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
         
         mEventPresenter.createEvent(mEvent);
     }
-    
+    @OnClick(R.id.linear_icon_event)
+    public void onClickLinearIcon(View view){
+        Intent intent=new Intent(this, SelectIconActivity.class);
+        startActivityForResult(intent,27);
+    }
     public void setEvent() {
         mEvent.setEventid(SecurityUtil.getRandomUUID());
         mEvent.setName(edit_text_name_event.getText().toString().trim());
@@ -175,6 +197,7 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
         mEvent.setUserid(mPreferencesHelper.getUserId());
         mEvent.setMoney("0");
         mEvent.setStatus("0");
+        mEvent.setIcon(icon_event_defaut);
     }
     
     public String getDate() {
@@ -246,6 +269,16 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
             if (resultCode == Activity.RESULT_OK) {
                 mWallet = data.getParcelableExtra("wallet");
                 txt_wallet_event.setText(mWallet.getWalletName());
+            }
+        }
+        if(requestCode==27){
+            if(resultCode==Activity.RESULT_OK){
+                Icon icon=data.getParcelableExtra("icon");
+                if(icon!=null){
+                    icon_event_defaut=icon.getImage();
+                    showIcon();
+                }
+                
             }
         }
     }

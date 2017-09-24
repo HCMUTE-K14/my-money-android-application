@@ -5,11 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
+import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
+import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,11 +27,12 @@ public class MyRecyclerViewEventAdapter extends
     private List<Event> mData = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    
+    private Context mContext;
     
     public MyRecyclerViewEventAdapter(Context context, List<Event> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+        this.mContext=context;
     }
     
     @Override
@@ -76,6 +80,8 @@ public class MyRecyclerViewEventAdapter extends
         TextView txt_money;
         @BindView(R.id.txt_currency)
         TextView txt_currency;
+        @BindView(R.id.image_event)
+        ImageView image_event;
         
         public ViewHolder(View itemView) {
             super(itemView);
@@ -87,6 +93,13 @@ public class MyRecyclerViewEventAdapter extends
             txt_name_event.setText(event.getName());
             txt_money.setText(event.getMoney());
             txt_currency.setText(event.getCurrencies().getCurSymbol());
+            
+            GlideApp.with(mContext)
+                      .load(DrawableUtil.getDrawable(mContext, event.getIcon()))
+                      .placeholder(R.drawable.folder_placeholder)
+                      .error(R.drawable.folder_placeholder)
+                      .dontAnimate()
+                      .into(image_event);
         }
         
         @Override

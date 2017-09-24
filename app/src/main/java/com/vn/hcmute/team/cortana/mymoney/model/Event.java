@@ -47,6 +47,11 @@ public class Event implements Parcelable {
     @Expose
     private Currencies currencies;
     
+   
+    @SerializedName("icon")
+    @Expose
+    private String icon;
+    
     public Event() {
         this.eventid = "";
         this.name = "";
@@ -55,6 +60,7 @@ public class Event implements Parcelable {
         this.idWallet = "";
         this.status = "";
         this.userid = "";
+        this.icon="";
         currencies = new Currencies();
     }
     
@@ -66,9 +72,17 @@ public class Event implements Parcelable {
         idWallet = in.readString();
         status = in.readString();
         userid = in.readString();
+        icon=in.readString();
         currencies = in.readParcelable(Currencies.class.getClassLoader());
     }
-
+    public String getIcon() {
+        return icon;
+    }
+    
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+    
     public Currencies getCurrencies() {
         return currencies;
     }
@@ -145,7 +159,6 @@ public class Event implements Parcelable {
                ", userid='" + userid + '\'' +
                '}';
     }
-    
     @Override
     public int describeContents() {
         return 0;
@@ -160,6 +173,7 @@ public class Event implements Parcelable {
         dest.writeString(idWallet);
         dest.writeString(status);
         dest.writeString(userid);
+        dest.writeString(icon);
         dest.writeParcelable(currencies, flags);
     }
 }

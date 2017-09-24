@@ -113,6 +113,7 @@ public class FragmentRunning extends BaseFragment implements
         if (requestCode == 12) {
             if (resultCode == Activity.RESULT_OK) {
                 Saving saving = data.getParcelableExtra("resultAdd");
+              
                 mSavingList.add(saving);
                 mMyRecyclerViewSavingAdapter.setList(mSavingList);
             }
