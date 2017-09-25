@@ -107,7 +107,6 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
     }
     
     public void init() {
-        
         mEvent = new Event();
         mCurrencies = new Currencies();
         setCurrenciesDefault();

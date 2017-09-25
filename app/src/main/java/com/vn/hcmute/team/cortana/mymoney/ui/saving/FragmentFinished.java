@@ -51,6 +51,7 @@ public class FragmentFinished extends BaseFragment implements
         ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity()
                   .getApplication())
                   .getAppComponent();
+        
         SavingComponent savingComponent = DaggerSavingComponent
                   .builder()
                   .applicationComponent(applicationComponent)
@@ -100,7 +101,6 @@ public class FragmentFinished extends BaseFragment implements
                         mRecyclerView.setAdapter(mEmptyAdapter);
                     }
                 }
-                
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 mSavingList.clear();

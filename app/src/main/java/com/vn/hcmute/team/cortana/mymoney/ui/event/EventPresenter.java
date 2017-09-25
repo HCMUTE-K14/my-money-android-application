@@ -16,7 +16,7 @@ import javax.inject.Inject;
 public class EventPresenter extends BasePresenter<EventContract.View> implements
                                                                       EventContract.Presenter {
     
-    EventUseCase mEventUseCase;
+    private EventUseCase mEventUseCase;
     
     @Inject
     public EventPresenter(EventUseCase mEventUseCase) {
@@ -37,7 +37,6 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
             public void onSuccess(Object value) {
                 getView().loading(false);
                 getView().onSuccessGetListEvent((List<Event>) value);
-                
                 
             }
             

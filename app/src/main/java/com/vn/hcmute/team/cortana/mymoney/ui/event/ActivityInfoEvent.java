@@ -110,8 +110,6 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     public void getData() {
         Intent intent = getIntent();
         mEvent = intent.getParcelableExtra("event");
-        
-        MyLogger.d("Lang Tang", mEvent.getDate());
     }
     
     public void showData() {

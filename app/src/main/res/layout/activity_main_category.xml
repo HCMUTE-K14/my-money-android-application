@@ -4,20 +4,8 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical">
-
   <include layout="@layout/include_top_bar" />
 
-  <android.support.design.widget.TabLayout
-    android:id="@+id/tab_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="4.0dip"
-    app:tabBackground="?selectableItemBackgroundBorderless"
-    app:tabMode="fixed" />
+  <include layout="@layout/include_main_category_fragment"/>
 
-  <android.support.v4.view.ViewPager
-    android:id="@+id/viewpager"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </LinearLayout>

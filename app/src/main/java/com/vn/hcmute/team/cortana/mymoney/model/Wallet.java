@@ -130,19 +130,14 @@ public class Wallet implements Parcelable {
         }
         
         Wallet wallet = (Wallet) o;
-        
-        if (walletid != null ? !walletid.equals(wallet.walletid) : wallet.walletid != null) {
-            return false;
-        }
-        return userid != null ? userid.equals(wallet.userid) : wallet.userid == null;
-        
+    
+        return walletid != null ? walletid.equals(wallet.walletid) : wallet.walletid == null;
+    
     }
     
     @Override
     public int hashCode() {
-        int result = walletid != null ? walletid.hashCode() : 0;
-        result = 31 * result + (userid != null ? userid.hashCode() : 0);
-        return result;
+        return walletid != null ? walletid.hashCode() : 0;
     }
     
     @Override

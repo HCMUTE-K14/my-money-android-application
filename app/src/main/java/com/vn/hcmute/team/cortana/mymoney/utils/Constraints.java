@@ -20,12 +20,14 @@ public class Constraints {
         public static final int ADD_CATEGORY_REQUEST_CODE = 9;
         public static final int CHOOSE_PARENT_CATEGORY_REQUEST_CODE = 10;
         public static final int UPDATE_CATEGORY_REQUEST_CODE = 11;
+        public static final int CHANGE_CATEGORY_REQUEST_CODE = 99 ;
     }
     
     public class ResultCode {
         
-        public static final int EDIT_WALLET_RESULT_CODE = -1;
-        public static final int REMOVE_WALLET_RESULT_CODE = -2;
+        public static final int EDIT_WALLET_RESULT_CODE = -5;
+        public static final int REMOVE_WALLET_RESULT_CODE = -6;
+        public static final int ADD_WALLET_RESULT_CODE = -7;
     }
     
 }

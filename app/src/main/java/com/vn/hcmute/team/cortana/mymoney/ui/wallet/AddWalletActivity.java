@@ -31,6 +31,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity
 import com.vn.hcmute.team.cortana.mymoney.ui.view.CardViewActionBar;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletContract.View;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
+import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.List;
@@ -298,7 +299,7 @@ public class AddWalletActivity extends BaseActivity implements View {
     private void finishAddWallet(Wallet wallet) {
         Intent intent = new Intent();
         intent.putExtra("wallet", wallet);
-        setResult(RESULT_OK, intent);
+        setResult(ResultCode.ADD_WALLET_RESULT_CODE, intent);
         finish();
     }
     

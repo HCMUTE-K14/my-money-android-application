@@ -15,7 +15,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 
 /**
  * Created by infamouSs on 8/28/2017.
@@ -26,8 +25,10 @@ public class SavingActivity extends BaseActivity {
     
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
+
     @BindView(R.id.pager)
     ViewPager mViewPager;
+
     @BindView(R.id.btn_add_saving)
     FloatingActionButton btn_add_saving;
     
@@ -52,15 +53,14 @@ public class SavingActivity extends BaseActivity {
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), 0);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+
         mTabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
             public void onTabSelected(Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
                 currentFragmet = tab.getPosition();
-                MyLogger.d("qeqeww", tab.getPosition());
-                
             }
-            
+
             @Override
             public void onTabUnselected(Tab tab) {
                 
@@ -73,23 +73,18 @@ public class SavingActivity extends BaseActivity {
         });
         
         initTabLayout();
-        
     }
     
     @OnClick(R.id.btn_add_saving)
     public void onClickAddSaving(View view) {
-        
         Intent intent = new Intent(this, AddSavingActivity.class);
         startActivityForResult(intent, 12);
-        
-        
     }
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 12) {
             if (resultCode == Activity.RESULT_OK) {
-                // Saving saving=data.getParcelableExtra("resultAdd");
                 mPagerAdapter.getFragment(0).onActivityResult(requestCode, resultCode, data);
             }
         }
@@ -105,7 +100,6 @@ public class SavingActivity extends BaseActivity {
     
     @Override
     protected void onDestroy() {
-        
         super.onDestroy();
     }
     
@@ -116,7 +110,6 @@ public class SavingActivity extends BaseActivity {
     
     @Override
     protected void initializeActionBar(View rootView) {
-        
     }
     
     private void initTabLayout() {

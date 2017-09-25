@@ -121,12 +121,9 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
         
     }
     
+    //Get Default Currency from current Wallet
     public void setCurrenciesDefault() {
-        mCurrencies.setCurId("4");
-        mCurrencies.setCurName("Việt Nam Đồng");
-        mCurrencies.setCurCode("VND");
-        mCurrencies.setCurSymbol("₫");
-        mCurrencies.setCurDisplayType("cur_display_type");
+//        mCurrencies = mPreferencesHelper.getCurrentWallet().getCurrencyUnit();
     }
     
     @Override

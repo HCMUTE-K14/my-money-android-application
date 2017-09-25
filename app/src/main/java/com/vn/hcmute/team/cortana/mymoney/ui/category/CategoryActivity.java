@@ -97,22 +97,22 @@ public class CategoryActivity extends BaseActivity {
     public void initializeView() {
         CategoryViewPagerAdapter viewPagerAdapter = new CategoryViewPagerAdapter(
                   this.getSupportFragmentManager());
-        
+        int mode = CategoryByTypeFragment.MODE_ENABLE_CHOOSE_CATEGORY;
         viewPagerAdapter
-                  .add(CategoryMainFragment
-                                      .newInstance(Action.ACTION_GET_DEBT_LOAN_CATEGORY, mCategoryIdSelected),
+                  .add(CategoryByTypeFragment
+                                      .newInstance(mode,Action.ACTION_GET_DEBT_LOAN_CATEGORY, mCategoryIdSelected),
                             getString(R.string.txt_debt_loan));
         
-        viewPagerAdapter.add(CategoryMainFragment
-                            .newInstance(Action.ACTION_GET_EXPENSE_CATEGORY, mCategoryIdSelected),
+        viewPagerAdapter.add(CategoryByTypeFragment
+                            .newInstance(mode,Action.ACTION_GET_EXPENSE_CATEGORY, mCategoryIdSelected),
                   getString(R.string.txt_expense));
         
-        viewPagerAdapter.add(CategoryMainFragment
-                            .newInstance(Action.ACTION_GET_INCOMING_CATEGORY, mCategoryIdSelected),
+        viewPagerAdapter.add(CategoryByTypeFragment
+                            .newInstance(mode,Action.ACTION_GET_INCOMING_CATEGORY, mCategoryIdSelected),
                   getString(R.string.txt_incoming));
         
         mViewPager.setAdapter(viewPagerAdapter);
-        mViewPager.setOffscreenPageLimit(0);
+        mViewPager.setOffscreenPageLimit(2);
         
         mTabLayout.setupWithViewPager(mViewPager);
     }
