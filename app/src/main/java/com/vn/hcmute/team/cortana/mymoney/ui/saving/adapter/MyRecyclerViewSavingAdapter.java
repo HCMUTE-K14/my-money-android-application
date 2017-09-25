@@ -5,13 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
+import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -82,7 +85,8 @@ public class MyRecyclerViewSavingAdapter extends
         TextView txt_time_rest;
         @BindView(R.id.seek_bar_saving)
         SeekBar seek_bar_saving;
-        
+        @BindView(R.id.image_icon_saving)
+        ImageView image_icon_saving;
         
         public ViewHolder(View itemView) {
             super(itemView);
@@ -100,6 +104,12 @@ public class MyRecyclerViewSavingAdapter extends
             seek_bar_saving.setProgress(t);
             seek_bar_saving.setEnabled(false);
             
+            GlideApp.with(mContext)
+                      .load(DrawableUtil.getDrawable(mContext, saving.getIcon()))
+                      .placeholder(R.drawable.folder_placeholder)
+                      .error(R.drawable.folder_placeholder)
+                      .dontAnimate()
+                      .into(image_icon_saving);
             
         }
         

@@ -70,6 +70,7 @@ public class Saving implements Parcelable {
         this.idCurrencies = "";
         this.status = "";
         this.userid = "";
+        this.icon="";
         this.currencies = new Currencies();
     }
     
@@ -84,6 +85,7 @@ public class Saving implements Parcelable {
         idCurrencies = in.readString();
         status = in.readString();
         userid = in.readString();
+        icon=in.readString();
         currencies = in.readParcelable(Currencies.class.getClassLoader());
     }
     
@@ -236,6 +238,7 @@ public class Saving implements Parcelable {
         dest.writeString(idCurrencies);
         dest.writeString(status);
         dest.writeString(userid);
+        dest.writeString(icon);
         dest.writeParcelable(currencies, flags);
     }
 }

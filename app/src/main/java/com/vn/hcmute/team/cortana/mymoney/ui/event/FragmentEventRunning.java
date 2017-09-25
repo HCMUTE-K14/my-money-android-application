@@ -188,8 +188,19 @@ public class FragmentEventRunning extends BaseFragment implements EventContract.
         if (requestCode == 22) {
             if (resultCode == Activity.RESULT_OK) {
                 Event event = data.getParcelableExtra("event");
-                mEventList.add(event);
-                mMyRecyclerViewEventAdapter.setList(mEventList);
+                if(mEventList.isEmpty()){
+                    
+                    mEventList.add(event);
+                    mMyRecyclerViewEventAdapter = new MyRecyclerViewEventAdapter(getActivity(),
+                              mEventList);
+                    mMyRecyclerViewEventAdapter.setClickListener(this);
+                    mRecyclerView.setAdapter(mMyRecyclerViewEventAdapter);
+                    
+                }else {
+                    mEventList.add(event);
+                    mMyRecyclerViewEventAdapter.setList(mEventList);
+                }
+                
             }
         }
     }

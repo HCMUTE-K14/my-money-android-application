@@ -187,9 +187,15 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
         }
         if (requestCode == 15) {
             if (resultCode == Activity.RESULT_CANCELED) {
-                mEventList.clear();
-                mMyRecyclerViewEventAdapter.notifyDataSetChanged();
-                mEventPresenter.getEvent();
+
+                if(mEventList.isEmpty()){
+                    mEventPresenter.getEvent();
+                }else {
+                    mEventList.clear();
+                    mMyRecyclerViewEventAdapter.notifyDataSetChanged();
+                    mEventPresenter.getEvent();
+                }
+                
             }
         }
         

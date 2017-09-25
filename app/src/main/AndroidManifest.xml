@@ -17,11 +17,7 @@
 
     <!-- User -->
     <activity android:name=".ui.login.LoginActivity">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
 
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
     </activity>
     <activity
       android:launchMode="singleTop"
@@ -35,7 +31,11 @@
 
     <!-- Main -->
     <activity android:name=".ui.main.MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
     </activity>
 
     <!-- Wallet -->
@@ -78,7 +78,9 @@
     <activity android:name=".ui.iconshop.SelectIconActivity" />
     <activity android:name=".ui.tools.calculator.CalculatorActivity" />
     <!-- Category -->
-    <activity android:name=".ui.category.CategoryActivity" />
+    <activity android:name=".ui.category.CategoryActivity">
+
+    </activity>
     <activity android:name=".ui.category.ManagerCategoryActivity" />
     <activity android:name=".ui.category.ListParentCategoryActivity" />
   </application>

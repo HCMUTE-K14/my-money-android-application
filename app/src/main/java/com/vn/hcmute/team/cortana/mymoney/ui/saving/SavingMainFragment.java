@@ -1,6 +1,5 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.saving;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,30 +13,30 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 
 /**
- * Created by infamouSs on 8/28/2017.
+ * Created by infamouSs on 9/25/17.
  */
 
-public class SavingActivity extends BaseActivity {
-    
+public class SavingMainFragment extends BaseFragment {
     
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
-
+    
     @BindView(R.id.pager)
     ViewPager mViewPager;
-
+    
     @BindView(R.id.btn_add_saving)
     FloatingActionButton btn_add_saving;
     
+    private int mCurrentPositionFragment = 0;
+    
     private PagerAdapter mPagerAdapter;
     
-    private int currentFragmet = 0;
     
     @Override
-    public int getLayoutId() {
+    protected int getLayoutId() {
         return R.layout.activity_saving;
     }
     
@@ -47,20 +46,56 @@ public class SavingActivity extends BaseActivity {
     }
     
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), 0);
+    protected void initializePresenter() {
+
+    }
+    
+    @Override
+    protected void initializeActionBar(View rootView) {
+        getActivity().setTitle(getString(R.string.txt_savings));
+    }
+    
+    @OnClick(R.id.btn_add_saving)
+    public void onClickAddSaving(View view) {
+        Intent intent = new Intent(this.getActivity(), AddSavingActivity.class);
+        getActivity().startActivityForResult(intent, 12);
+    }
+    
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initializeView();
+    }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 12) {
+            if (resultCode == Activity.RESULT_OK) {
+                mPagerAdapter.getItem(0).onActivityResult(requestCode, resultCode, data);
+            }
+        }
+        if (requestCode == 1) {
+            mPagerAdapter.getItem(mCurrentPositionFragment)
+                      .onActivityResult(requestCode, resultCode, data);
+        }
+        if (requestCode == 2) {
+            mPagerAdapter.getItem(mCurrentPositionFragment)
+                      .onActivityResult(requestCode, resultCode, data);
+        }
+    }
+    
+    private void initializeView() {
+        mPagerAdapter = new PagerAdapter(this.getFragmentManager(), 2);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-
+        
         mTabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
             public void onTabSelected(Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
-                currentFragmet = tab.getPosition();
+                mCurrentPositionFragment = tab.getPosition();
             }
-
+            
             @Override
             public void onTabUnselected(Tab tab) {
                 
@@ -73,43 +108,6 @@ public class SavingActivity extends BaseActivity {
         });
         
         initTabLayout();
-    }
-    
-    @OnClick(R.id.btn_add_saving)
-    public void onClickAddSaving(View view) {
-        Intent intent = new Intent(this, AddSavingActivity.class);
-        startActivityForResult(intent, 12);
-    }
-    
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 12) {
-            if (resultCode == Activity.RESULT_OK) {
-                mPagerAdapter.getItem(0).onActivityResult(requestCode, resultCode, data);
-            }
-        }
-        if (requestCode == 1) {
-            mPagerAdapter.getItem(currentFragmet)
-                      .onActivityResult(requestCode, resultCode, data);
-        }
-        if (requestCode == 2) {
-            mPagerAdapter.getItem(currentFragmet)
-                      .onActivityResult(requestCode, resultCode, data);
-        }
-    }
-    
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-    
-    @Override
-    protected void initializePresenter() {
-        
-    }
-    
-    @Override
-    protected void initializeActionBar(View rootView) {
     }
     
     private void initTabLayout() {

@@ -20,15 +20,19 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerSavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.SavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
+import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.iconshop.SelectIconActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.Calendar;
 import java.util.List;
@@ -45,8 +49,6 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     LinearLayout back_button_saving;
     @BindView(R.id.txt_edit_saving)
     TextView txt_edit_saving;
-    @BindView(R.id.image_view_icon_saving)
-    ImageView image_view_icon_saving;
     @BindView(R.id.ic_clear_date)
     ImageView ic_clear_date;
     @BindView(R.id.edit_text_name_saving)
@@ -59,6 +61,11 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     TextView txt_currencies;
     @BindView(R.id.txt_wallet_saving)
     TextView txt_wallet_saving;
+    @BindView(R.id.image_view_icon_saving)
+    ImageView image_view_icon_saving;
+    @BindView(R.id.linear_icon_saving)
+    LinearLayout linear_icon_saving;
+    
     int day, month, year;
     @Inject
     SavingPresenter mSavingPresenter;
@@ -157,14 +164,12 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
                 Toast.makeText(this, getString(R.string.select_date), Toast.LENGTH_LONG).show();
             }
             
-            
         } else {
             Toast.makeText(this, getString(R.string.name_saving), Toast.LENGTH_LONG).show();
         }
         
         MyLogger.d("ksdfj", "Lnag thang co nha nha");
         
-        MyLogger.d("ksdfj", "Lnag thang co nha nha");
         
     }
     
@@ -206,7 +211,6 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         if (requestCode == 4) {
             if (resultCode == Activity.RESULT_OK) {
                 mCurrencies = (Currencies) data.getParcelableExtra("currency");
-                //MyLogger.d("currencies",mCurrencies.getCurName());
                 if (mCurrencies != null) {
                     txt_currencies.setText(mCurrencies.getCurName());
                     mSaving.setIdCurrencies(mCurrencies.getCurId());
@@ -234,6 +238,15 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
                 
             }
         }
+        if(requestCode==26){
+            if(resultCode==Activity.RESULT_OK){
+                Icon icon=data.getParcelableExtra("icon");
+                if(icon!=null){
+                    mSaving.setIcon(icon.getImage());
+                    showIcon();
+                }
+            }
+        }
     }
     
     public void updateDate() {
@@ -258,6 +271,9 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         txt_date_saving.setText(DateUtil.convertTimeMillisToDate(mSaving.getDate()));
         txt_currencies.setText(mSaving.getCurrencies().getCurName());
         txt_wallet_saving.setText(mWalletName);
+        showIcon();
+        
+        
         //init defaut
         mWallet.setWalletid(mSaving.getIdWallet());
         mCurrencies = mSaving.getCurrencies();
@@ -270,7 +286,19 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         Intent intent = new Intent(this, MyWalletActivity.class);
         startActivityForResult(intent, 14);
     }
-    
+    @OnClick(R.id.linear_icon_saving)
+    public void onClickLinearIcon(View view){
+        Intent intent =new Intent(this, SelectIconActivity.class);
+        startActivityForResult(intent,26);
+    }
+    public void showIcon(){
+        GlideApp.with(this)
+                  .load(DrawableUtil.getDrawable(this, mSaving.getIcon()))
+                  .placeholder(R.drawable.folder_placeholder)
+                  .error(R.drawable.folder_placeholder)
+                  .dontAnimate()
+                  .into(image_view_icon_saving);
+    }
     @Override
     public void showListSaving(List<Saving> savings) {
         

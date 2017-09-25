@@ -23,15 +23,19 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerSavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.SavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
+import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.iconshop.SelectIconActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import java.util.Calendar;
 import java.util.List;
@@ -56,6 +60,11 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
     TextView txt_wallet_saving;
     @BindView(R.id.ic_clear_date)
     ImageView ic_clear_date;
+    @BindView(R.id.image_view_icon_saving)
+    ImageView image_view_icon_saving;
+    
+    
+    String ic_saving_defaut;
     Saving mSaving;
     int day, month, year;
     @Inject
@@ -113,19 +122,30 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
         super.onCreate(savedInstanceState);
         
         //
+       init();
+        
+    }
+    public void init(){
         mSaving = new Saving();
         mCurrencies = new Currencies();
         mWallet = new Wallet();
         setCurrenciesDefault();
         txt_currencies.setText(mCurrencies.getCurName());
-        
-    }
+        ic_saving_defaut="ic_saving";
     
-    //Get Default Currency from current Wallet
+        showIcon();
+    }
     public void setCurrenciesDefault() {
 //        mCurrencies = mPreferencesHelper.getCurrentWallet().getCurrencyUnit();
     }
-    
+    public void showIcon(){
+        GlideApp.with(this)
+                  .load(DrawableUtil.getDrawable(this, ic_saving_defaut))
+                  .placeholder(R.drawable.folder_placeholder)
+                  .error(R.drawable.folder_placeholder)
+                  .dontAnimate()
+                  .into(image_view_icon_saving);
+    }
     @Override
     protected void onDestroy() {
         mSavingPresenter.unSubscribe();
@@ -152,7 +172,7 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
         
         mSaving.setStatus("0");
         mSaving.setUserid(mPreferencesHelper.getUserId());
-        mSaving.setIcon("");
+        mSaving.setIcon(ic_saving_defaut);
         mSaving.setCurrencies(mCurrencies);
         
     }
@@ -210,7 +230,11 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
         intent.putExtra("goal_money", txt_goal_money.getText());
         startActivityForResult(intent, 7);
     }
-    
+    @OnClick(R.id.linear_icon_saving)
+    public void onClickSelectIcon(View view){
+        Intent intent=new Intent(this, SelectIconActivity.class);
+        startActivityForResult(intent,25);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
@@ -246,8 +270,17 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
                 
             }
         }
+        if(requestCode==25){
+            if(resultCode==Activity.RESULT_OK){
+                Icon icon=data.getParcelableExtra("icon");
+                if(icon!=null){
+                    ic_saving_defaut=icon.getImage();
+                    showIcon();
+                }
+                
+            }
+        }
     }
-    
     @OnClick(R.id.txt_edit_saving)
     public void onClickSaveAdd(View view) {
         if (edit_text_name_saving.getText().toString().trim().equals("")) {

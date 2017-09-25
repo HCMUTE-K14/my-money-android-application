@@ -82,8 +82,9 @@ public class FragmentRunning extends BaseFragment implements
     
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        MyLogger.d("It's here");
         if (requestCode == 1) {
+            MyLogger.d("It's here");
             if (resultCode == Activity.RESULT_OK) {
                 String savingId = data.getStringExtra("result");
 
@@ -113,8 +114,18 @@ public class FragmentRunning extends BaseFragment implements
         if (requestCode == 12) {
             if (resultCode == Activity.RESULT_OK) {
                 Saving saving = data.getParcelableExtra("resultAdd");
-                mSavingList.add(saving);
-                mMyRecyclerViewSavingAdapter.setList(mSavingList);
+                if(mSavingList.isEmpty()){
+                    
+                    mSavingList.add(saving);
+                    mMyRecyclerViewSavingAdapter = new MyRecyclerViewSavingAdapter(getContext(),
+                              mSavingList);
+                    mMyRecyclerViewSavingAdapter.setClickListener(this);
+                    mRecyclerView.setAdapter(mMyRecyclerViewSavingAdapter);
+                }else {
+                    mSavingList.add(saving);
+                    mMyRecyclerViewSavingAdapter.setList(mSavingList);
+                }
+           
             }
         }
         

@@ -30,9 +30,10 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.di.module.WalletModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.category.CategoryActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.category.CategoryMainFragment;
+import com.vn.hcmute.team.cortana.mymoney.ui.event.EventMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.login.LoginActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.saving.SavingMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletListener;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletView;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.AddWalletActivity;
@@ -156,6 +157,28 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         }
     };
     
+    private Runnable runnableAttachSavingFragment = new Runnable() {
+        @Override
+        public void run() {
+            mNavigationView.getMenu().findItem(R.id.navigation_item_saving).setChecked(true);
+            SavingMainFragment fragment = new SavingMainFragment();
+            mCurrentFragment = fragment;
+            getSupportFragmentManager().beginTransaction()
+                      .replace(R.id.container_fragment, fragment).commit();
+        }
+    };
+    
+    private Runnable runnableAttachEventFragment = new Runnable() {
+        @Override
+        public void run() {
+            mNavigationView.getMenu().findItem(R.id.navigation_item_saving).setChecked(true);
+            EventMainFragment fragment = new EventMainFragment();
+            mCurrentFragment = fragment;
+            getSupportFragmentManager().beginTransaction()
+                      .replace(R.id.container_fragment, fragment).commit();
+        }
+    };
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -227,6 +250,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mCurrentFragment.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == RequestCode.CHOOSE_WALLET_REQUEST_CODE) {
                 if (data == null) {
@@ -242,6 +266,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                         ((CategoryMainFragment) mCurrentFragment).reloadData();
                     }
                 }
+                
             }
             
         } else if (data != null) {
@@ -379,8 +404,12 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                 mRunnable = runnableAttachCategoryFragment;
                 break;
             case R.id.navigation_item_budgets:
-                Intent intent = new Intent(this, CategoryActivity.class);
-                startActivityForResult(intent, RequestCode.CHOOSE_CATEGORY_REQUEST_CODE);
+                break;
+            case R.id.navigation_item_saving:
+                mRunnable = runnableAttachSavingFragment;
+                break;
+            case R.id.navigation_item_events:
+                mRunnable = runnableAttachEventFragment;
             default:
                 break;
         }
