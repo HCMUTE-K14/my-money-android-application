@@ -12,6 +12,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.SavingUseCase.SavingRequest;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -78,11 +79,14 @@ public class SavingUseCase extends UseCase<SavingRequest> {
     }
     
     private void doGetSaving(final BaseCallBack<Object> callBack) {
-       /* mDataRepository.putUserId("e67757e090bb47bbbebf7db8b15e7c96");
-        mDataRepository.putUserToken("557b32ce486d4a02b961d2befd310541");*/
+        
+       /* mDataRepository.putUserId("7db1cac2992b4ca08ed582a2635b783d");
+        mDataRepository.putUserToken("4f87f29a0b284f27a32347c2981032f2");*/
         
         String userid = mDataRepository.getUserId();
+        MyLogger.d("sdfdsfds",userid);
         String token = mDataRepository.getUserToken();
+        MyLogger.d("sdfdsfds",token);
         
         if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
             callBack.onFailure(new UserLoginException(

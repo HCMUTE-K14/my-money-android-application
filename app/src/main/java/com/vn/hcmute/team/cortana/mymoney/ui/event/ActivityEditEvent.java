@@ -1,5 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.event;
 
+import static com.vn.hcmute.team.cortana.mymoney.R.id.linear_icon_event;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -21,13 +23,17 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerEventComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.EventComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.EventModule;
+import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
+import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.iconshop.SelectIconActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import java.util.Calendar;
 import java.util.List;
 import javax.inject.Inject;
@@ -49,6 +55,9 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
     TextView txt_wallet_event;
     @BindView(R.id.ic_clear_date)
     ImageView ic_clear_date;
+    @BindView(R.id.image_view_icon_event)
+    ImageView image_view_icon_event;
+    
     int day, month, year;
     @Inject
     EventPresenter mEventPresenter;
@@ -126,8 +135,16 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
         } else {
             txt_wallet_event.setText(mWalletName);
         }
+        showIcon();
     }
-    
+    public void showIcon(){
+        GlideApp.with(this)
+                  .load(DrawableUtil.getDrawable(this, mEvent.getIcon()))
+                  .placeholder(R.drawable.folder_placeholder)
+                  .error(R.drawable.folder_placeholder)
+                  .dontAnimate()
+                  .into(image_view_icon_event);
+    }
     public void initDatePicker() {
         final Calendar c = Calendar.getInstance();
         year = c.get(Calendar.YEAR);
@@ -222,7 +239,11 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
         txt_date_event.setTextColor(ContextCompat.getColor(this, R.color.gray));
         ic_clear_date.setVisibility(View.GONE);
     }
-    
+    @OnClick(linear_icon_event)
+    public void onClickLinearIcon(View view){
+        Intent intent=new Intent(this, SelectIconActivity.class);
+        startActivityForResult(intent,27);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 18) {
@@ -235,6 +256,15 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
             if (resultCode == Activity.RESULT_OK) {
                 mWallet = data.getParcelableExtra("wallet");
                 txt_wallet_event.setText(mWallet.getWalletName());
+            }
+        }
+        if(requestCode==27){
+            if(resultCode==Activity.RESULT_OK){
+                Icon icon=data.getParcelableExtra("icon");
+                if(icon!=null){
+                    mEvent.setIcon(icon.getImage());
+                    showIcon();
+                }
             }
         }
     }

@@ -74,16 +74,17 @@
         android:orientation="horizontal"
         android:weightSum="6">
         <LinearLayout
+          android:id="@+id/linear_icon_event"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="5"
           android:gravity="center"
           android:orientation="vertical">
           <ImageView
-            android:id="@+id/image_view_icon_saving"
+            android:id="@+id/image_view_icon_event"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/icon_travel" />
+            android:src="@drawable/icon_not_selected" />
           <View
             android:layout_width="48dp"
             android:layout_height="2dp"

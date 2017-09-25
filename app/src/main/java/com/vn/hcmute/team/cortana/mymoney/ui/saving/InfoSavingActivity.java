@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -18,6 +19,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerSavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.SavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
+import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
@@ -27,7 +29,9 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase.WalletRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
+import com.vn.hcmute.team.cortana.mymoney.utils.validate.TextUtil;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -56,7 +60,8 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     SeekBar seek_bar_saving_info;
     @BindView(R.id.txt_unit)
     TextView txt_unit;
-    
+    @BindView(R.id.image_icon_saving)
+    ImageView image_icon_saving;
     @Inject
     SavingPresenter mSavingPresenter;
     
@@ -91,7 +96,8 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         txt_current_money.setText(mSaving.getCurrentMoney());
         double need_money = Double.parseDouble(txt_money_goal.getText().toString()) -
                             Double.parseDouble(txt_current_money.getText().toString());
-        txt_need_money.setText(need_money + "");
+        
+        txt_need_money.setText(TextUtil.doubleToString(need_money));
         
         txt_date_saving.setText(DateUtil.convertTimeMillisToDate(mSaving.getDate()));
         
@@ -107,6 +113,13 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         
         seek_bar_saving_info.setProgress(Integer.parseInt(mProcess));
         seek_bar_saving_info.setEnabled(false);
+        
+        GlideApp.with(this)
+                  .load(DrawableUtil.getDrawable(this, mSaving.getIcon()))
+                  .placeholder(R.drawable.folder_placeholder)
+                  .error(R.drawable.folder_placeholder)
+                  .dontAnimate()
+                  .into(image_icon_saving);
     }
     
     public String getNameWallet(List<Wallet> wallets) {

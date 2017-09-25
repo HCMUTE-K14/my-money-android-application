@@ -66,9 +66,10 @@
           android:gravity="center|top">
 
           <ImageView
+            android:id="@+id/image_icon_saving"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_saving" />
+            android:src="@drawable/icon_not_selected" />
 
 
         </LinearLayout>
