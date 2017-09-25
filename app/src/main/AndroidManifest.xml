@@ -28,12 +28,7 @@
       android:screenOrientation="portrait" />
 
     <!-- Main -->
-    <activity android:name=".ui.budget.BudgetActivity">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
+    <activity android:name=".ui.main.MainActivity">
     </activity>
 
     <!-- Wallet -->
@@ -74,8 +69,8 @@
     <activity android:name=".ui.iconshop.SelectIconActivity" />
 
     <!-- Category -->
-    <!--<activity android:name=".ui.category.CategoryActivity"/>-->
 
+    <activity android:name=".ui.category.CategoryActivity"/>
     <activity android:name=".ui.category.ManagerCategoryActivity" />
     <activity android:name=".ui.category.ListParentCategoryActivity" />
   </application>

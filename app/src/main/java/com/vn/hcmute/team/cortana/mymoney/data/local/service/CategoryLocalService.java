@@ -5,6 +5,7 @@ import android.database.Cursor;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -28,6 +29,7 @@ public class CategoryLocalService extends DbContentProvider<Category> {
     public CategoryLocalService(DatabaseHelper databaseHelper) {
         super(databaseHelper);
         mSubCategoryLocalService = new SubCategoryLocalService(databaseHelper);
+        
     }
     
     @Override
@@ -98,6 +100,7 @@ public class CategoryLocalService extends DbContentProvider<Category> {
             @Override
             public Integer call() throws Exception {
                 if (category.getParent() != null) {
+                    MyLogger.d("Update child");
                     return mSubCategoryLocalService.updateSubCategory(category);
                 }
                 
@@ -146,7 +149,7 @@ public class CategoryLocalService extends DbContentProvider<Category> {
     protected ContentValues createContentValues(Category category) {
         ContentValues contentValues = new ContentValues();
         
-        contentValues.put("cate_id", category.getParent().getId());
+        contentValues.put("cate_id", category.getId());
         contentValues.put("name", category.getName());
         contentValues.put("icon", category.getIcon());
         contentValues.put("type", category.getType());

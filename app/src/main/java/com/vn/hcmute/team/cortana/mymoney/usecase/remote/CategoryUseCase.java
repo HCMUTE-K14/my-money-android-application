@@ -12,6 +12,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.CategoryUseCase.CategoryRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.validate.TextUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
@@ -305,9 +306,16 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
                 callBack.onFailure(e);
             }
         };
-        
+    
+        String oldParentId = params[0];
+        String newParentId = params[1];
+    
+
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
+                if(!TextUtil.isEmpty(newParentId)){
+                    category.setParent(new Category(newParentId));
+                }
                 mDisposable = mDataRepository.updateLocalCategory(category)
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -322,16 +330,12 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-                
-                String oldParentId = params[0];
-                String newParentId = params[1];
-                
+    
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
                     return;
                 }
-
                 mDisposable = mDataRepository
                           .updateCategory(userid, token, oldParentId, newParentId, category)
                           .subscribeOn(Schedulers.io())
