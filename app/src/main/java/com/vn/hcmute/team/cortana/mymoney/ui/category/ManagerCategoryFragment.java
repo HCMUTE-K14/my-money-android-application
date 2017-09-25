@@ -244,7 +244,6 @@ public class ManagerCategoryFragment extends BaseFragment implements AddEditView
                 getActivity().startActivityForResult(intent, RequestCode.SELECT_ICON_REQUEST_CODE);
             }
         }, 150);
-        
     }
     
     @Override
@@ -279,13 +278,17 @@ public class ManagerCategoryFragment extends BaseFragment implements AddEditView
     
     @Override
     public void onAddSuccessCategory(String message, Category category) {
-        getActivity().setResult(RESULT_OK);
+        Intent intent = new Intent();
+        intent.putExtra("change_category",RequestCode.CHANGE_CATEGORY_REQUEST_CODE);
+        getActivity().setResult(RESULT_OK,intent);
         getActivity().finish();
     }
     
     @Override
     public void onEditSuccessCategory(String message, Category category) {
-        getActivity().setResult(RESULT_OK);
+        Intent intent = new Intent();
+        intent.putExtra("change_category",RequestCode.CHANGE_CATEGORY_REQUEST_CODE);
+        getActivity().setResult(RESULT_OK,intent);
         getActivity().finish();
     }
     

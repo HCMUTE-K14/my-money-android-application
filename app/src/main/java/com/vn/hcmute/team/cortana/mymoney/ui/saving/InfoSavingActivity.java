@@ -198,9 +198,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     
     @OnClick(R.id.image_view_cancel)
     public void onClickCancel(View view) {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
-        finish();
+        onClose();
     }
     
     @OnClick(R.id.image_view_delete)
@@ -230,6 +228,12 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         intent.putExtra("saving", mSaving);
         intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
         startActivityForResult(intent, 3);
+    }
+    
+    @Override
+    public void onBackPressed() {
+        onClose();
+        super.onBackPressed();
     }
     
     @Override
@@ -337,5 +341,11 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
         intent.putExtra("value", "2");
         startActivityForResult(intent, 8);
+    }
+    
+    private void onClose(){
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_CANCELED, returnIntent);
+        finish();
     }
 }

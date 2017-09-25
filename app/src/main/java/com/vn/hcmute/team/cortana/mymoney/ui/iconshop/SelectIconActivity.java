@@ -27,7 +27,6 @@ import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.EmptyAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.SpacesItemDecoration;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -152,7 +151,6 @@ public class SelectIconActivity extends BaseActivity implements SelectIconContra
             mSwipeRefreshLayout.setRefreshing(false);
         }
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 5));
-        MyLogger.d("ShowListIcon", icons.size());
         mSelectIconAdapter.setData(icons);
         mRecyclerView.setAdapter(mSelectIconAdapter);
     }

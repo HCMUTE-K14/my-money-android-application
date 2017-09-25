@@ -106,6 +106,12 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     }
     
     @Override
+    public void onBackPressed() {
+        onDone();
+        super.onBackPressed();
+    }
+    
+    @Override
     protected void onDestroy() {
         mEventPresenter.unSubscribe();
         super.onDestroy();
@@ -114,8 +120,6 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     public void getData() {
         Intent intent = getIntent();
         mEvent = intent.getParcelableExtra("event");
-        
-        MyLogger.d("Lang Tang", mEvent.getDate());
     }
     
     public void showData() {
@@ -154,6 +158,10 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     
     @OnClick(R.id.image_view_cancel)
     public void onClickCancel(View view) {
+        onDone();
+    }
+    
+    private void onDone(){
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
         finish();

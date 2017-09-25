@@ -18,6 +18,10 @@
       android:icon="@drawable/ic_bk_category_manager"
       android:title="@string/txt_navigation_category" />
     <item
+      android:id="@+id/navigation_item_saving"
+      android:icon="@drawable/ic_bk_savings"
+      android:title="@string/txt_navigation_saving" />
+    <item
       android:id="@+id/navigation_item_budgets"
       android:icon="@drawable/ic_bk_budget"
       android:title="@string/txt_navigation_budget" />

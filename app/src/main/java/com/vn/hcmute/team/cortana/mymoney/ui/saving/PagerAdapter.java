@@ -11,11 +11,11 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  */
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
-
+    
     private FragmentRunning mFragmentRunning;
     private FragmentFinished mFragmentFinished;
     private int mNumOfTabs;
-
+    
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
@@ -35,24 +35,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 return null;
         }
     }
-
-    public Fragment getFragment(int position) {
-        switch (position) {
-            case 0:
-                return mFragmentRunning;
-            case 1:
-                return mFragmentFinished;
-            default:
-                return null;
-        }
-    }
-
+    
     @Override
     public int getCount() {
-        return 2;
-    }
-    
-    public int getNumOfTabs() {
         return mNumOfTabs;
     }
 }

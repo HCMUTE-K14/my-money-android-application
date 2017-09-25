@@ -136,11 +136,7 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
         showIcon();
     }
     public void setCurrenciesDefault() {
-        mCurrencies.setCurId("4");
-        mCurrencies.setCurName("Việt Nam Đồng");
-        mCurrencies.setCurCode("VND");
-        mCurrencies.setCurSymbol("₫");
-        mCurrencies.setCurDisplayType("cur_display_type");
+//        mCurrencies = mPreferencesHelper.getCurrentWallet().getCurrencyUnit();
     }
     public void showIcon(){
         GlideApp.with(this)

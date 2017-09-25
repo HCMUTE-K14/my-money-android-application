@@ -28,6 +28,7 @@ public class CategoryLocalService extends DbContentProvider<Category> {
     public CategoryLocalService(DatabaseHelper databaseHelper) {
         super(databaseHelper);
         mSubCategoryLocalService = new SubCategoryLocalService(databaseHelper);
+        
     }
     
     @Override
@@ -146,7 +147,7 @@ public class CategoryLocalService extends DbContentProvider<Category> {
     protected ContentValues createContentValues(Category category) {
         ContentValues contentValues = new ContentValues();
         
-        contentValues.put("cate_id", category.getParent().getId());
+        contentValues.put("cate_id", category.getId());
         contentValues.put("name", category.getName());
         contentValues.put("icon", category.getIcon());
         contentValues.put("type", category.getType());

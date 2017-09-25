@@ -18,15 +18,11 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerLoginComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.LoginComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.LoginModule;
-import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.category.CategoryActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.forgetpassword.ForgetPasswordActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.register.RegisterActivity;
-import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
-import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
+import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import javax.inject.Inject;
 
 /**
@@ -103,7 +99,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         
         if (mLoginPresenter.isLogin()) {
             openMainActivity();
-            //finish();
+            finish();
             return;
         }
         
@@ -112,13 +108,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == RequestCode.CHOOSE_CATEGORY_REQUEST_CODE && data != null) {
-                Category category = data.getParcelableExtra("category");
-                
-                MyLogger.d(category);
-            }
-        }
+        
     }
     
     @Override
@@ -208,9 +198,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     
     private void openMainActivity() {
         //TODO: CHANGE
-        Intent intent = new Intent(this, CategoryActivity.class);
-        intent.putExtra("cate_id", "1");
-        startActivityForResult(intent, Constraints.RequestCode.CHOOSE_CATEGORY_REQUEST_CODE);
-        
+        Intent intent = new Intent(this, MyWalletActivity.class);
+        startActivity(intent);
     }
 }

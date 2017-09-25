@@ -82,8 +82,9 @@ public class FragmentRunning extends BaseFragment implements
     
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        MyLogger.d("It's here");
         if (requestCode == 1) {
+            MyLogger.d("It's here");
             if (resultCode == Activity.RESULT_OK) {
                 String savingId = data.getStringExtra("result");
 

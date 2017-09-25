@@ -218,4 +218,6 @@
   <string name="message_warning_name_category">Name can\'t be empty</string>
   <string name="txt_time_range">Time Range</string>
   <string name="txt_select_date">Select date</string>
+  <string name="txt_navigation_saving">Savings</string>
+  <string name="txt_savings">Savings</string>
 </resources>

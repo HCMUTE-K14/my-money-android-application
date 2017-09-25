@@ -8,7 +8,6 @@
     android:id="@+id/card_view_action_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:hideAction="true"
     app:iconBack="@drawable/ic_cancel"
     app:textTitle="@string/txt_edit_wallet" />
 

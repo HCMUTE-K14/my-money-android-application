@@ -18,7 +18,6 @@ public interface SavingContract {
         
         void onSuccessCreateSaving();
         
-        
         void onSuccessDeleteSaving();
         
         void onSuccessUpdateSaving();

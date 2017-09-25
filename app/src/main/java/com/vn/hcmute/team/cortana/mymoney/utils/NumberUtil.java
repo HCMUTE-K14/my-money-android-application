@@ -3,7 +3,6 @@ package com.vn.hcmute.team.cortana.mymoney.utils;
 import android.content.Context;
 import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -44,7 +43,7 @@ public class NumberUtil {
         double rate = Double.parseDouble(amount.replaceAll(",", "")) / _1_usd_to_;
         
         double value = rate * realTimeCurrency.get(to);
-        MyLogger.d(amount + "  " + from + "-" + to, value);
+        
         return NumberUtil.round(value, 3);
     }
 }

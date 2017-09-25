@@ -25,7 +25,7 @@ import java.util.List;
  * Created by infamouSs on 9/16/17.
  */
 
-public class CategoryMainAdapter extends BaseExpandableListAdapter {
+public class CategoryByTypeAdapter extends BaseExpandableListAdapter {
     
     private List<Category> mOriginalCategories = new ArrayList<>();
     private Context mContext;
@@ -37,7 +37,7 @@ public class CategoryMainAdapter extends BaseExpandableListAdapter {
     
     private CategoryListener mCategoryListener;
     
-    public CategoryMainAdapter(Context context, CategoryListener categoryListener,
+    public CategoryByTypeAdapter(Context context, CategoryListener categoryListener,
               List<Category> categories) {
         this.mContext = context;
         

@@ -42,7 +42,6 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     @Inject
     CurrenciesPresenter mCurrenciesPresenter;
     
-    
     @BindView(R.id.recyclerViewCurrencies)
     RecyclerView mRecyclerViewCurrencies;
     
@@ -154,7 +153,6 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
     @Override
     public void onItemClick(View view, Currencies currencies, int position) {
-        
         Toast.makeText(this, currencies.getCurName(), Toast.LENGTH_LONG).show();
         
         Intent intent = new Intent();
@@ -165,13 +163,11 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesContra
     
     @Override
     public boolean onQueryTextSubmit(String query) {
-        
         return false;
     }
     
     @Override
     public boolean onQueryTextChange(String newText) {
-        
         newText = newText.toLowerCase();
         List<Currencies> currenciesList = new ArrayList<>();
         
