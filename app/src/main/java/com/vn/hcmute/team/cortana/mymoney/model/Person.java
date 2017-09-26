@@ -23,7 +23,7 @@ public class Person implements Parcelable {
             return new Person[size];
         }
     };
-    @SerializedName("personid")
+    @SerializedName("person_id")
     @Expose
     private String personid;
     @SerializedName("name")
@@ -32,7 +32,7 @@ public class Person implements Parcelable {
     @SerializedName("describe")
     @Expose
     private String describe;
-    @SerializedName("userid")
+    @SerializedName("user_id")
     @Expose
     private String userid;
     private int color;

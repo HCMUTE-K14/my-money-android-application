@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     private Fragment mCurrentFragment;
     
     private SelectWalletView mSelectWalletView;
-    
+    private ActionBar mActionBar;
     private boolean shouldShowMenuWallet = true;
     
     private Handler mHandler = new Handler();
@@ -179,6 +179,17 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         }
     };
     
+    private Runnable runnableAttachContactFragment = new Runnable() {
+        @Override
+        public void run() {
+            mNavigationView.getMenu().findItem(R.id.navigation_item_saving).setChecked(true);
+            EventMainFragment fragment = new EventMainFragment();
+            mCurrentFragment = fragment;
+            getSupportFragmentManager().beginTransaction()
+                      .replace(R.id.container_fragment, fragment).commit();
+        }
+    };
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -206,7 +217,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         mWalletPresenter.setView(this);
     }
     
-    private ActionBar mActionBar;
+
     
     @Override
     protected void initializeActionBar(View rootView) {
@@ -410,6 +421,8 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                 break;
             case R.id.navigation_item_events:
                 mRunnable = runnableAttachEventFragment;
+                break;
+            case R.id.navigation_item_contacts:
             default:
                 break;
         }

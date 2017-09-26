@@ -29,9 +29,7 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
     
     @BindView(R.id.txt_input)
     TextView txt_input;
-    /*@BindView(R.id.scrollView)
-    ScrollView scrollView;*/
-    
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_calculator;
@@ -58,7 +56,7 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
         
         Intent intent = getIntent();
         String goalMoney = intent.getStringExtra("goal_money");
-        //txt_input.setText(goalMoney.substring(1));
+        
         txt_input.setText("0");
     }
     
@@ -68,15 +66,6 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
                 txt_input.setText("0");
                 break;
             case R.id.btn_remove:
-                if (txt_input.length() > 0) {
-                    StringBuilder tmp = new StringBuilder(txt_input.getText().toString());
-                    tmp.delete(tmp.length() - 1, tmp.length());
-                    txt_input.setText(tmp.toString());
-                } else {
-                    txt_input.setText("0");
-                }
-                
-                break;
             case R.id.image_remove:
                 if (txt_input.length() > 0) {
                     StringBuilder tmp = new StringBuilder(txt_input.getText().toString());
@@ -85,7 +74,6 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
                 } else {
                     txt_input.setText("0");
                 }
-                
                 break;
             case R.id.btn_equal:
                 try {
