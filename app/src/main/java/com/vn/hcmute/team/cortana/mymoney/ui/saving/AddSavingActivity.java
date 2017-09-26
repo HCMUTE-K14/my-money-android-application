@@ -250,7 +250,7 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
                 
                 if (mCurrencies != null) {
                     txt_currencies.setText(mCurrencies.getCurName());
-                    mSaving.setCurrencies(mCurrencies);
+                    
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {

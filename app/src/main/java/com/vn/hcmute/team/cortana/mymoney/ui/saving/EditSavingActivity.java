@@ -229,7 +229,6 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
                 mCurrencies = (Currencies) data.getParcelableExtra("currency");
                 if (mCurrencies != null) {
                     txt_currencies.setText(mCurrencies.getCurName());
-                    mSaving.setCurrencies(mCurrencies);
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
