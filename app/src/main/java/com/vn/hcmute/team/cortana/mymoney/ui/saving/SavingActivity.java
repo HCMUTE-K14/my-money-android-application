@@ -110,8 +110,8 @@ public class SavingActivity extends BaseActivity {
     
     @Override
     protected void initializeActionBar(View rootView) {
+        
     }
-    
     private void initTabLayout() {
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));

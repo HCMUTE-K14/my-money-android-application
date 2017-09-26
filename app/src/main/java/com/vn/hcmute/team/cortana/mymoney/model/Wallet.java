@@ -44,7 +44,6 @@ public class Wallet implements Parcelable {
     @Expose
     private boolean archive;
     
-    
     public Wallet() {
         this.walletid = "";
         this.userid = "";

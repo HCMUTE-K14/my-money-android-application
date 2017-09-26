@@ -25,16 +25,16 @@ public class Currencies implements Parcelable {
     @SerializedName("cur_id")
     @Expose
     private String curId;
-    @SerializedName("cur_code")
+    @SerializedName("code")
     @Expose
     private String curCode;
-    @SerializedName("cur_name")
+    @SerializedName("name")
     @Expose
     private String curName;
-    @SerializedName("cur_symbol")
+    @SerializedName("symbol")
     @Expose
     private String curSymbol;
-    @SerializedName("cur_display_type")
+    @SerializedName("display_type")
     @Expose
     private String curDisplayType;
     

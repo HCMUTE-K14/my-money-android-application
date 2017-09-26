@@ -95,6 +95,7 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:orientation="vertical">
           <EditText
             android:id="@+id/edit_text_name_saving"
@@ -131,9 +132,11 @@
 
         </LinearLayout>
         <LinearLayout
+          android:id="@+id/linear_goal_money"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:orientation="vertical">
           <TextView
             android:layout_width="wrap_content"
@@ -174,6 +177,8 @@
             android:src="@drawable/ic_calendar" />
         </LinearLayout>
         <LinearLayout
+          android:id="@+id/linear_select_date"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
@@ -225,9 +230,11 @@
             android:src="@drawable/ic_currency" />
         </LinearLayout>
         <LinearLayout
+          android:id="@+id/linear_currencies"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:gravity="center|left"
           android:orientation="vertical">
           <TextView
@@ -266,6 +273,7 @@
           android:id="@+id/linear_select_wallet"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:layout_weight="1"
           android:gravity="center|left"
           android:orientation="vertical">

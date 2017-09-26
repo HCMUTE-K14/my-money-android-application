@@ -1,8 +1,10 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.saving;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -123,7 +125,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         finish();
     }
     
-    @OnClick(R.id.txt_currencies)
+    @OnClick(R.id.linear_currencies)
     public void onClickCurrency(View view) {
         Intent intent = new Intent(this, CurrenciesActivity.class);
         startActivityForResult(intent, 4);
@@ -136,44 +138,58 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         ic_clear_date.setVisibility(View.GONE);
     }
     
-    @OnClick(R.id.txt_date_saving)
+    @OnClick(R.id.linear_date)
     public void onClickDate(View view) {
         showDialog(DATE_DIALOG_ID);
     }
     
     @OnClick(R.id.txt_edit_saving)
     public void onClickSaving(View view) {
-        if (!edit_text_name_saving.getText().toString().trim().equals("")) {
-            mSaving.setName(edit_text_name_saving.getText().toString().trim());
-            String goalMoney = txt_goal_money.getText().toString().trim().substring(1);
-            mSaving.setGoalMoney(goalMoney);
-            mSaving.setCurrencies(mCurrencies);
-            mSaving.setIdWallet(mWallet.getWalletid());
-            
-            if (!txt_date_saving.getText().toString().trim()
-                      .equals(getString(R.string.ending_date))) {
-                String[] arr = txt_date_saving.getText().toString().trim().split("/");
-                long tmp = DateUtil
-                          .getLongAsDate(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]),
-                                    Integer.parseInt(arr[2]));
-                mSaving.setDate(String.valueOf(tmp));
-                
-                //saving
-                mSavingPresenter.updateSaving(mSaving);
-            } else {
-                Toast.makeText(this, getString(R.string.select_date), Toast.LENGTH_LONG).show();
-            }
-            
-        } else {
-            Toast.makeText(this, getString(R.string.name_saving), Toast.LENGTH_LONG).show();
+        if (edit_text_name_saving.getText().toString().trim().equals("")) {
+            alertDiaglog(getString(R.string.enter_your_name));
+            return;
         }
+        if (txt_date_saving.getText().toString().trim()
+                  .equals(getString(R.string.ending_date))) {
+            alertDiaglog(getString(R.string.select_date));
+            return;
+        }
+        //check date
+        if (!checkDate()) {
+            alertDiaglog(getString(R.string.small_date));
+            return;
+        }
+        mSaving.setName(edit_text_name_saving.getText().toString().trim());
+        String goalMoney = txt_goal_money.getText().toString().trim().substring(1);
+        mSaving.setGoalMoney(goalMoney);
+        mSaving.setCurrencies(mCurrencies);
+        mSaving.setIdWallet(mWallet.getWalletid());
+        //set date
+        mSaving.setDate(convertDateToMillisecond());
+    
+        //saving
+        mSavingPresenter.updateSaving(mSaving);
         
         MyLogger.d("ksdfj", "Lnag thang co nha nha");
         
         
     }
-    
-    @OnClick(R.id.txt_goal_money)
+    public boolean checkDate(){
+        String[] arrDate = txt_date_saving.getText().toString().trim().split("/");
+        long temp = DateUtil
+                  .getLongAsDate(Integer.parseInt(arrDate[0]), Integer.parseInt(arrDate[1]),
+                            Integer.parseInt(arrDate[2]));
+        return System.currentTimeMillis() >= temp ? false:true;
+        
+    }
+    public String convertDateToMillisecond(){
+        String[] arr = txt_date_saving.getText().toString().trim().split("/");
+        long tmp = DateUtil
+                  .getLongAsDate(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]),
+                            Integer.parseInt(arr[2]));
+        return String.valueOf(tmp);
+    }
+    @OnClick(R.id.linear_goal_money)
     public void onClickGoalMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
         intent.putExtra("goal_money", txt_goal_money.getText());
@@ -213,7 +229,6 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
                 mCurrencies = (Currencies) data.getParcelableExtra("currency");
                 if (mCurrencies != null) {
                     txt_currencies.setText(mCurrencies.getCurName());
-                    mSaving.setIdCurrencies(mCurrencies.getCurId());
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -281,7 +296,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         
     }
     
-    @OnClick(R.id.txt_wallet_saving)
+    @OnClick(R.id.linear_wallet)
     public void onClickSelectWallet(View view) {
         Intent intent = new Intent(this, MyWalletActivity.class);
         startActivityForResult(intent, 14);
@@ -298,6 +313,22 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
                   .error(R.drawable.folder_placeholder)
                   .dontAnimate()
                   .into(image_view_icon_saving);
+    }
+    public void alertDiaglog(String message) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(message);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                  getString(R.string.txt_ok),
+                  new DialogInterface.OnClickListener() {
+                      public void onClick(DialogInterface dialog, int id) {
+                          dialog.cancel();
+                      }
+                  });
+        
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+        
     }
     @Override
     public void showListSaving(List<Saving> savings) {
@@ -342,7 +373,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     
     @Override
     public void showError(String message) {
-        
+        alertDiaglog(message);
     }
     
     @Override

@@ -1,5 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,43 +9,66 @@ import com.google.gson.annotations.SerializedName;
  * Created by kunsubin on 8/23/2017.
  */
 
-public class Budget {
+public class Budget implements Parcelable{
     
-    @SerializedName("budgetId")
+    @SerializedName("budget_id")
     @Expose
     private String budgetId;
-    @SerializedName("categoryId")
-    @Expose
-    private String categoryId;
-    @SerializedName("walletid")
-    @Expose
-    private String walletid;
-    @SerializedName("rangeDate")
+    @SerializedName("range_date")
     @Expose
     private String rangeDate;
-    @SerializedName("moneyGoal")
+    @SerializedName("money_goal")
     @Expose
     private String moneyGoal;
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("userid")
+    @SerializedName("user_id")
     @Expose
     private String userid;
-    @SerializedName("moneyExpense")
+    @SerializedName("money_expense")
     @Expose
     private String moneyExpense;
+    @SerializedName("wallet")
+    @Expose
+    private Wallet wallet;
+    @SerializedName("category")
+    @Expose
+    private Category category;
     
     public Budget() {
         this.budgetId = "";
-        this.categoryId = "";
-        this.walletid = "";
         this.rangeDate = "";
         this.moneyGoal = "";
         this.status = "";
         this.userid = "";
         this.moneyExpense = "";
+        this.wallet=new Wallet();
+        this.category=new Category();
     }
+    
+    protected Budget(Parcel in) {
+        budgetId = in.readString();
+        rangeDate = in.readString();
+        moneyGoal = in.readString();
+        status = in.readString();
+        userid = in.readString();
+        moneyExpense = in.readString();
+        wallet = in.readParcelable(Wallet.class.getClassLoader());
+        category = in.readParcelable(Category.class.getClassLoader());
+    }
+    
+    public static final Creator<Budget> CREATOR = new Creator<Budget>() {
+        @Override
+        public Budget createFromParcel(Parcel in) {
+            return new Budget(in);
+        }
+        
+        @Override
+        public Budget[] newArray(int size) {
+            return new Budget[size];
+        }
+    };
     
     public String getBudgetId() {
         return budgetId;
@@ -52,21 +77,20 @@ public class Budget {
     public void setBudgetId(String budgetId) {
         this.budgetId = budgetId;
     }
-    
-    public String getCategoryId() {
-        return categoryId;
+    public Wallet getWallet() {
+        return wallet;
     }
     
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
     }
     
-    public String getWalletid() {
-        return walletid;
+    public Category getCategory() {
+        return category;
     }
     
-    public void setWalletid(String walletid) {
-        this.walletid = walletid;
+    public void setCategory(Category category) {
+        this.category = category;
     }
     
     public String getRangeDate() {
@@ -113,13 +137,30 @@ public class Budget {
     public String toString() {
         return "Budget{" +
                "budgetId='" + budgetId + '\'' +
-               ", categoryId='" + categoryId + '\'' +
-               ", walletid='" + walletid + '\'' +
                ", rangeDate='" + rangeDate + '\'' +
                ", moneyGoal='" + moneyGoal + '\'' +
                ", status='" + status + '\'' +
                ", userid='" + userid + '\'' +
                ", moneyExpense='" + moneyExpense + '\'' +
                '}';
+    }
+    
+    
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+    
+        dest.writeString(budgetId);
+        dest.writeString(rangeDate);
+        dest.writeString(moneyGoal);
+        dest.writeString(status);
+        dest.writeString(userid);
+        dest.writeString(moneyExpense);
+        dest.writeParcelable(wallet, flags);
+        dest.writeParcelable(category, flags);
     }
 }

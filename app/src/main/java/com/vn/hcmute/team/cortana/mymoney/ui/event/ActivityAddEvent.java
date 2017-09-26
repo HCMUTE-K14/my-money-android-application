@@ -150,18 +150,18 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
         finish();
     }
     
-    @OnClick(R.id.txt_date_event)
+    @OnClick(R.id.linear_select_date)
     public void onClickDate(View view) {
         showDialog(DATE_DIALOG_ID);
     }
     
-    @OnClick(R.id.txt_currencies)
+    @OnClick(R.id.linear_currencies)
     public void onClickSelectCurrency(View view) {
         Intent intent = new Intent(this, CurrenciesActivity.class);
         startActivityForResult(intent, 20);
     }
     
-    @OnClick(R.id.txt_wallet_event)
+    @OnClick(R.id.linear_wallet)
     public void onClickSelectWallet(View view) {
         Intent intent = new Intent(this, MyWalletActivity.class);
         startActivityForResult(intent, 21);
@@ -308,7 +308,7 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
     
     @Override
     public void onFailure(String message) {
-        
+        alertDiaglog(message);
     }
     
     @Override
