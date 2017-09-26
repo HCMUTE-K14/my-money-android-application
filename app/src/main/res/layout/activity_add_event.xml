@@ -126,9 +126,11 @@
             android:src="@drawable/ic_calendar" />
         </LinearLayout>
         <LinearLayout
+          android:id="@+id/linear_select_date"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:gravity="center"
           android:orientation="vertical">
           <RelativeLayout
@@ -178,9 +180,11 @@
             android:src="@drawable/ic_currency" />
         </LinearLayout>
         <LinearLayout
+          android:id="@+id/linear_currencies"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:gravity="center|left"
           android:orientation="vertical">
           <TextView
@@ -216,9 +220,11 @@
             android:src="@drawable/ic_cashbook" />
         </LinearLayout>
         <LinearLayout
+          android:id="@+id/linear_wallet"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:gravity="center|left"
           android:orientation="vertical">
           <TextView

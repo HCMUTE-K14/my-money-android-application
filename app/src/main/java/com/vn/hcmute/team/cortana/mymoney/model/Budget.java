@@ -11,22 +11,22 @@ import com.google.gson.annotations.SerializedName;
 
 public class Budget implements Parcelable{
     
-    @SerializedName("budgetId")
+    @SerializedName("budget_id")
     @Expose
     private String budgetId;
-    @SerializedName("rangeDate")
+    @SerializedName("range_date")
     @Expose
     private String rangeDate;
-    @SerializedName("moneyGoal")
+    @SerializedName("money_goal")
     @Expose
     private String moneyGoal;
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("userid")
+    @SerializedName("user_id")
     @Expose
     private String userid;
-    @SerializedName("moneyExpense")
+    @SerializedName("money_expense")
     @Expose
     private String moneyExpense;
     @SerializedName("wallet")

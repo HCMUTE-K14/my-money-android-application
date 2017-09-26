@@ -169,7 +169,7 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
         ic_clear_date.setVisibility(View.VISIBLE);
     }
     
-    @OnClick(R.id.back_button_saving)
+    @OnClick(R.id.back_button_event)
     public void onClickBack(View view) {
         finish();
     }
@@ -216,18 +216,18 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
         alert11.show();
     }
     
-    @OnClick(R.id.txt_date_event)
+    @OnClick(R.id.linear_date)
     public void onClickDate(View view) {
         showDialog(DATE_DIALOG_ID);
     }
     
-    @OnClick(R.id.txt_currencies)
+    @OnClick(R.id.linear_currencies)
     public void onClickSelectCurrency(View view) {
         Intent intent = new Intent(this, CurrenciesActivity.class);
         startActivityForResult(intent, 18);
     }
     
-    @OnClick(R.id.txt_wallet_event)
+    @OnClick(R.id.linear_wallet)
     public void onClickSelectWallet(View view) {
         Intent intent = new Intent(this, MyWalletActivity.class);
         startActivityForResult(intent, 19);
@@ -295,7 +295,7 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
     
     @Override
     public void onFailure(String message) {
-        
+        alertDiaglog(message);
     }
     
     @Override

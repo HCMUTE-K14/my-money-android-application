@@ -22,7 +22,7 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
-    @SerializedName("eventid")
+    @SerializedName("event_id")
     @Expose
     private String eventid;
     @SerializedName("name")
@@ -34,13 +34,13 @@ public class Event implements Parcelable {
     @SerializedName("date")
     @Expose
     private String date;
-    @SerializedName("idWallet")
+    @SerializedName("wallet_id")
     @Expose
     private String idWallet;
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("userid")
+    @SerializedName("user_id")
     @Expose
     private String userid;
     @SerializedName("currencies")

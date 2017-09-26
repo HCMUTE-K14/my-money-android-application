@@ -22,34 +22,31 @@ public class Saving implements Parcelable {
             return new Saving[size];
         }
     };
-    @SerializedName("savingid")
+    @SerializedName("saving_id")
     @Expose
     private String savingid;
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("goalMoney")
+    @SerializedName("goal_money")
     @Expose
     private String goalMoney;
-    @SerializedName("startMoney")
+    @SerializedName("start_money")
     @Expose
     private String startMoney;
-    @SerializedName("currentMoney")
+    @SerializedName("current_money")
     @Expose
     private String currentMoney;
     @SerializedName("date")
     @Expose
     private String date;
-    @SerializedName("idWallet")
+    @SerializedName("wallet_id")
     @Expose
     private String idWallet;
-    @SerializedName("idCurrencies")
-    @Expose
-    private String idCurrencies;
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("userid")
+    @SerializedName("user_id")
     @Expose
     private String userid;
     @SerializedName("currencies")
@@ -67,7 +64,6 @@ public class Saving implements Parcelable {
         this.currentMoney = "";
         this.date = "";
         this.idWallet = "";
-        this.idCurrencies = "";
         this.status = "";
         this.userid = "";
         this.icon="";
@@ -82,7 +78,6 @@ public class Saving implements Parcelable {
         currentMoney = in.readString();
         date = in.readString();
         idWallet = in.readString();
-        idCurrencies = in.readString();
         status = in.readString();
         userid = in.readString();
         icon=in.readString();
@@ -161,13 +156,6 @@ public class Saving implements Parcelable {
         this.idWallet = idWallet;
     }
     
-    public String getIdCurrencies() {
-        return idCurrencies;
-    }
-    
-    public void setIdCurrencies(String idCurrencies) {
-        this.idCurrencies = idCurrencies;
-    }
     
     public String getStatus() {
         return status;
@@ -195,7 +183,6 @@ public class Saving implements Parcelable {
                ", currentMoney='" + currentMoney + '\'' +
                ", date='" + date + '\'' +
                ", idWallet='" + idWallet + '\'' +
-               ", idCurrencies='" + idCurrencies + '\'' +
                ", status='" + status + '\'' +
                ", userid='" + userid + '\'' +
                '}';
@@ -235,7 +222,6 @@ public class Saving implements Parcelable {
         dest.writeString(currentMoney);
         dest.writeString(date);
         dest.writeString(idWallet);
-        dest.writeString(idCurrencies);
         dest.writeString(status);
         dest.writeString(userid);
         dest.writeString(icon);

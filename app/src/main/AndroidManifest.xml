@@ -30,7 +30,7 @@
       android:screenOrientation="portrait" />
 
     <!-- Main -->
-    <activity android:name=".ui.saving.SavingActivity">
+    <activity android:name=".ui.main.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
@@ -53,7 +53,7 @@
     <activity android:name=".ui.wallet.MyWalletActivity" />
     <!-- Saving -->
 
-    <!--<activity android:name=".ui.saving.SavingActivity" />-->
+    <activity android:name=".ui.saving.SavingActivity" />
     <activity android:name=".ui.saving.AddSavingActivity" />
     <activity android:name=".ui.saving.TransferMoneySavingActivity" />
     <activity android:name=".ui.saving.InfoSavingActivity" />
