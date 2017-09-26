@@ -22,7 +22,7 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
-    @SerializedName("eventid")
+    @SerializedName("event_id")
     @Expose
     private String eventid;
     @SerializedName("name")

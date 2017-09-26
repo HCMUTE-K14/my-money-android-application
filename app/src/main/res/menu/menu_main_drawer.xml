@@ -30,6 +30,10 @@
       android:icon="@drawable/ic_bk_events"
       android:title="@string/txt_navigation_event" />
     <item
+      android:id="@+id/navigation_item_contacts"
+      android:icon="@drawable/ic_bk_savings"
+      android:title="@string/txt_contact" />
+    <item
       android:id="@+id/navigation_groups_other"
       android:checkable="false"
       android:title="@string/txt_navigation_group_others">

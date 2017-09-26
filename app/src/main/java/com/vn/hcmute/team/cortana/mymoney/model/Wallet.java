@@ -22,22 +22,22 @@ public class Wallet implements Parcelable {
             return new Wallet[size];
         }
     };
-    @SerializedName("walletid")
+    @SerializedName("wallet_id")
     @Expose
     private String walletid;
-    @SerializedName("userid")
+    @SerializedName("user_id")
     @Expose
     private String userid;
-    @SerializedName("walletName")
+    @SerializedName("name")
     @Expose
     private String walletName;
     @SerializedName("money")
     @Expose
     private String money;
-    @SerializedName("currencyUnit")
+    @SerializedName("currency")
     @Expose
     private Currencies currencyUnit;
-    @SerializedName("walletImage")
+    @SerializedName("icon")
     @Expose
     private String walletImage;
     @SerializedName("archive")

@@ -42,7 +42,7 @@ public class Category implements Parcelable {
     @SerializedName("subcategories")
     @Expose
     private List<Category> subcategories = null;
-    @SerializedName("userid")
+    @SerializedName("user_id")
     @Expose
     private String userid;
     private Category parent;

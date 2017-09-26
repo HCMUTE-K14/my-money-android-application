@@ -9,16 +9,16 @@ import com.google.gson.annotations.SerializedName;
 
 public class Image {
     
-    @SerializedName("imageId")
+    @SerializedName("image_id")
     @Expose
     private String imageid;
-    @SerializedName("imageUrl")
+    @SerializedName("url")
     @Expose
     private String url;
-    @SerializedName("userId")
+    @SerializedName("user_id")
     @Expose
     private String userid;
-    @SerializedName("imageDetail")
+    @SerializedName("detail")
     @Expose
     private String detail;
     
