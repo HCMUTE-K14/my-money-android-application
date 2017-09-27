@@ -64,11 +64,13 @@ public abstract class BaseFragment extends Fragment {
         initializeActionBar(this.view);
         return view;
     }
-    
+    protected void initialize(){
+        
+    }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
+        initialize();
     }
     
     @Override

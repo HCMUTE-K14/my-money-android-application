@@ -109,6 +109,10 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
     
     @Override
     protected void initializeActionBar(View rootView) {
+        
+    }
+    @Override
+    protected void initialize() {
         initDatePicker();
         init();
         initView();

@@ -30,14 +30,18 @@
       android:screenOrientation="portrait" />
 
     <!-- Main -->
-    <activity android:name=".ui.main.MainActivity">
+    <activity android:name=".ui.event.ActivitySelectEvent">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-
+    <!--Budget-->
+    <activity android:name=".ui.budget.BudgetActivity"/>
+    <activity android:name=".ui.budget.AddBudgetActivity"/>
+    <activity android:name=".ui.budget.InfoBudgetActivity"/>
+    <activity android:name=".ui.budget.EditBudgetActivity"/>
     <!-- Wallet -->
     <activity android:name=".ui.wallet.SelectWalletActivity">
 

@@ -92,6 +92,11 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     
     @Override
     protected void initializeActionBar(View rootView) {
+        
+    }
+    
+    @Override
+    protected void initialize() {
         getData();
         getWallet();
         showData();

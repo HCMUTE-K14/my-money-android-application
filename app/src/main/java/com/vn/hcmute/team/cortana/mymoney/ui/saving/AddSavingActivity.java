@@ -115,6 +115,11 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
     
     @Override
     protected void initializeActionBar(View rootView) {
+        
+    }
+    
+    @Override
+    protected void initialize() {
         initDatePicker();
     }
     

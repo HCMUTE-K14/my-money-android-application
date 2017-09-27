@@ -45,8 +45,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         initializeDagger();
         initializePresenter();
         initializeActionBar(this.findViewById(android.R.id.content));
+        initialize();
+        
     }
-    
+    protected void initialize(){
+        
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);

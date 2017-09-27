@@ -191,6 +191,10 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     
     @Override
     protected void initializeActionBar(View rootView) {
+       
+    }
+    @Override
+    protected void initialize() {
         getData();
         getWallet();
         showData();

@@ -145,6 +145,7 @@
           android:id="@+id/linear_wallet"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:layout_weight="1"
           android:gravity="center|left"
           android:orientation="vertical">
@@ -180,6 +181,7 @@
           android:id="@+id/linear_money"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:layout_weight="1"
           android:gravity="center|left"
           android:orientation="vertical">

@@ -112,6 +112,11 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
     
     @Override
     protected void initializeActionBar(View rootView) {
+       
+    }
+    
+    @Override
+    protected void initialize() {
         getData();
         showData();
         initDatePicker();

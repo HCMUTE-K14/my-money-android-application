@@ -25,6 +25,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
+import com.vn.hcmute.team.cortana.mymoney.utils.validate.TextUtil;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -100,7 +101,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         txt_name_saving.setText(mSaving.getName());
         double remainin = Double.parseDouble(mSaving.getGoalMoney()) -
                           Double.parseDouble(mSaving.getCurrentMoney());
-        txt_remainin.setText("+" + remainin);
+        txt_remainin.setText("+" + TextUtil.doubleToString(remainin));
         if (value.equals("1")) {
             edit_describe.setText(getString(R.string.deposit));
         } else {

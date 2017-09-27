@@ -220,4 +220,10 @@
   <string name="txt_select_date">Select date</string>
   <string name="txt_navigation_saving">Savings</string>
   <string name="txt_savings">Savings</string>
+  <string name="txt_no_saving">No Saving</string>
+  <string name="txt_error_range_date">Error range date</string>
+  <string name="txt_no_budget">No Budget</string>
+  <string name="txt_event">Events</string>
+  <string name="txt_budget">Budgets</string>
+  <string name="txt_select_event_bar">Select Event</string>
 </resources>

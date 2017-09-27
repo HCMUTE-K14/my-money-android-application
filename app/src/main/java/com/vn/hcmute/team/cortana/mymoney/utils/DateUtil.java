@@ -13,7 +13,12 @@ public class DateUtil {
         long currentTime = System.currentTimeMillis();
         return (int) ((date - currentTime) / 86400000);
     }
-    
+    public static  String getDateLeftFromTo(String fromDate, String toDate){
+        double fromLongDate=Long.parseLong(fromDate);
+        long toLongDate=Long.parseLong(toDate);
+        int result=(int)((toLongDate-fromLongDate)/86400000);
+        return String.valueOf(result);
+    }
     public static String convertTimeMillisToDate(String timeMillis) {
         
         Calendar calendar = Calendar.getInstance();
@@ -25,7 +30,16 @@ public class DateUtil {
 
         return mDay + "/" + mMonth + "/" + mYear;
     }
+    public static String convertTimeMilisToDateNotYear(String timeMillis) {
     
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(timeMillis));
+        
+        int mMonth = calendar.get(Calendar.MONTH) + 1;
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+    
+        return mDay + "/" + mMonth;
+    }
     public static long getLongAsDate(int day, int month, int year) {
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.DAY_OF_MONTH, day);

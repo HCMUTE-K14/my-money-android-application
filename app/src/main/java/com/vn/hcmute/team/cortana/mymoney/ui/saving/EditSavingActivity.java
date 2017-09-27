@@ -113,6 +113,16 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         mPresenter = mSavingPresenter;
         mSavingPresenter.setView(this);
     }
+    @Override
+    protected void initializeActionBar(View rootView) {
+        
+    }
+    @Override
+    protected void initialize() {
+        getData();
+        showData();
+        initDatePicker();
+    }
     
     @Override
     protected void onDestroy() {
@@ -196,13 +206,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         startActivityForResult(intent, 5);
     }
     
-    @Override
-    protected void initializeActionBar(View rootView) {
-        
-        getData();
-        showData();
-        initDatePicker();
-    }
+    
     
     public void initDatePicker() {
         final Calendar c = Calendar.getInstance();

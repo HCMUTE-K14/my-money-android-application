@@ -13,15 +13,14 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.budget.adapter.PagerAdapterBudget;
 
 /**
- * Created by kunsubin on 8/23/2017.
+ * Created by kunsubin on 9/27/2017.
  */
 
-public class BudgetActivity extends BaseActivity {
-    
+public class BudgetMainFragment extends BaseFragment {
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
     @BindView(R.id.pager)
@@ -30,25 +29,20 @@ public class BudgetActivity extends BaseActivity {
     FloatingActionButton btn_add_budget;
     
     private PagerAdapterBudget mPagerAdapterBudget;
-    private int currentPositionFragment = 0;
     
     @Override
-    public int getLayoutId() {
+    protected int getLayoutId() {
         return R.layout.activity_budget;
     }
     
     @Override
-    protected void initializeDagger() {
-        
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initializeView();
     }
+    private void initializeView() {
+        mPagerAdapterBudget = new PagerAdapterBudget(this.getFragmentManager());
     
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    
-    
-        mPagerAdapterBudget = new PagerAdapterBudget(getSupportFragmentManager());
-        
         mViewPager.setAdapter(mPagerAdapterBudget);
     
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
@@ -56,7 +50,6 @@ public class BudgetActivity extends BaseActivity {
             @Override
             public void onTabSelected(Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
-                currentPositionFragment = tab.getPosition();
             }
         
             @Override
@@ -69,8 +62,11 @@ public class BudgetActivity extends BaseActivity {
             
             }
         });
-    
         initTablayout();
+    }
+    
+    @Override
+    protected void initializeDagger() {
         
     }
     
@@ -81,7 +77,7 @@ public class BudgetActivity extends BaseActivity {
     
     @Override
     protected void initializeActionBar(View rootView) {
-        
+        getActivity().setTitle(getString(R.string.txt_budget));
     }
     public void initTablayout() {
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
@@ -90,12 +86,11 @@ public class BudgetActivity extends BaseActivity {
     }
     @OnClick(R.id.btn_add_budget)
     public void onClickAddBudget(View view ){
-        Intent intent=new Intent(this,AddBudgetActivity.class);
-        startActivityForResult(intent,30);
+        Intent intent=new Intent(getActivity(),AddBudgetActivity.class);
+        getActivity().startActivityForResult(intent,30);
     }
-    
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==30){
             if(resultCode == Activity.RESULT_OK){
                 mPagerAdapterBudget.getItem(0).onActivityResult(requestCode,resultCode,data);

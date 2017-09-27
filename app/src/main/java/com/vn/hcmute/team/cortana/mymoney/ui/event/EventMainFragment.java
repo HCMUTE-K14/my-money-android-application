@@ -15,6 +15,7 @@ import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.adapter.PagerAdapterEvent;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 
 /**
  * Created by infamouSs on 9/25/17.
@@ -53,7 +54,7 @@ public class EventMainFragment extends BaseFragment {
     
     @Override
     protected void initializeActionBar(View rootView) {
-        
+        getActivity().setTitle(getString(R.string.txt_event));
     }
     
     @Override
@@ -64,6 +65,9 @@ public class EventMainFragment extends BaseFragment {
     
     private void initializeView() {
         mPagerAdapterEvent = new PagerAdapterEvent(this.getFragmentManager(), 0);
+        if(mPagerAdapterEvent==null){
+            MyLogger.d(TAG,"Null adapter event");
+        }
         mViewPager.setAdapter(mPagerAdapterEvent);
         
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));

@@ -69,11 +69,15 @@ public class FragmentFinished extends BaseFragment implements
     
     @Override
     protected void initializeActionBar(View rootView) {
-        init(rootView);
+       
+    }
+    @Override
+    protected void initialize() {
+        init();
         mSavingPresenter.getSaving();
     }
-
-    public void init(View view) {
+    
+    public void init() {
         
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         mSavingList = new ArrayList<>();
@@ -131,11 +135,11 @@ public class FragmentFinished extends BaseFragment implements
                 mMyRecyclerViewSavingAdapter.setClickListener(this);
                 mRecyclerView.setAdapter(mMyRecyclerViewSavingAdapter);
             } else {
-                mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
+                mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_saving));
                 mRecyclerView.setAdapter(mEmptyAdapter);
             }
         } else {
-            mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
+            mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_saving));
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
 

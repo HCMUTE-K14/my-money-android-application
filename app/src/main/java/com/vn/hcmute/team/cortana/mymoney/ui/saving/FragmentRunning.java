@@ -67,24 +67,25 @@ public class FragmentRunning extends BaseFragment implements
         mPresenter = this.mSavingPresenter;
         mSavingPresenter.setView(this);
     }
-    
     @Override
     protected void initializeActionBar(View rootView) {
-        init(rootView);
-        mSavingPresenter.getSaving();
+       
         
     }
+    @Override
+    protected void initialize() {
+        init();
+        mSavingPresenter.getSaving();
+    }
     
-    public void init(View view) {
+    public void init() {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         mSavingList = new ArrayList<>();
     }
     
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        MyLogger.d("It's here");
         if (requestCode == 1) {
-            MyLogger.d("It's here");
             if (resultCode == Activity.RESULT_OK) {
                 String savingId = data.getStringExtra("result");
 
@@ -105,7 +106,6 @@ public class FragmentRunning extends BaseFragment implements
                 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                MyLogger.d("cancel", "saving");
                 mSavingList.clear();
                 mMyRecyclerViewSavingAdapter.notifyDataSetChanged();
                 mSavingPresenter.getSaving();
@@ -125,7 +125,6 @@ public class FragmentRunning extends BaseFragment implements
                     mSavingList.add(saving);
                     mMyRecyclerViewSavingAdapter.setList(mSavingList);
                 }
-           
             }
         }
         
@@ -148,11 +147,11 @@ public class FragmentRunning extends BaseFragment implements
                 mMyRecyclerViewSavingAdapter.setClickListener(this);
                 mRecyclerView.setAdapter(mMyRecyclerViewSavingAdapter);
             } else {
-                mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
+                mEmptyAdapter = new EmptyAdapter(getContext(),getString(R.string.txt_no_saving));
                 mRecyclerView.setAdapter(mEmptyAdapter);
             }
         } else {
-            mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
+            mEmptyAdapter = new EmptyAdapter(getContext(),getString(R.string.txt_no_saving));
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
     }
