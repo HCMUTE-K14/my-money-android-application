@@ -2,6 +2,8 @@ package com.vn.hcmute.team.cortana.mymoney.ui.budget;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -32,6 +34,8 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
     RecyclerView mRecyclerView;
     @BindView(R.id.progress_bar_budget)
     ProgressBar mProgressBar;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     
     private MyRecyclerViewBudgetAdapter mMyRecyclerViewBudgetAdapter;
     private List<Budget> mBudgetList;
@@ -76,6 +80,16 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         mBudgetList=new ArrayList<>();
         mBudgetPresenter.getBudget();
+        mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mBudgetList.clear();
+                if(mMyRecyclerViewBudgetAdapter!=null){
+                    mMyRecyclerViewBudgetAdapter.notifyDataSetChanged();
+                }
+                mBudgetPresenter.getBudget();
+            }
+        });
     }
     
     @Override
@@ -98,6 +112,9 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
         } else {
             mEmptyAdapter = new EmptyAdapter(getContext(),getString(R.string.txt_no_budget));
             mRecyclerView.setAdapter(mEmptyAdapter);
+        }
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
     
@@ -148,7 +165,11 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
     
     @Override
     public void onFailure(String message) {
-        
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+        mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_saving));
+        mRecyclerView.setAdapter(mEmptyAdapter);
     }
     
     @Override

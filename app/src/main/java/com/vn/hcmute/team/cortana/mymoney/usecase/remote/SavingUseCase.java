@@ -275,7 +275,7 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         if (!this.mCompositeDisposable.isDisposed()) {
             
             mDisposable = mDataRepository
-                      .takeInSaving(userid, token, params[0], params[1], params[2])
+                      .takeInSaving(userid, token, params[0], params[1], params[2],params[3])
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -317,7 +317,7 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         if (!this.mCompositeDisposable.isDisposed()) {
             
             mDisposable = mDataRepository
-                      .takeOutSaving(userid, token, params[0], params[1], params[2])
+                      .takeOutSaving(userid, token, params[0], params[1], params[2],params[3])
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {

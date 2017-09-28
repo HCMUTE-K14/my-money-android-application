@@ -71,7 +71,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     private Saving mSaving;
     private String mProcess;
     private List<Wallet> mWalletList;
-    
+    private Wallet mWallet;
     @Override
     public int getLayoutId() {
         return R.layout.activity_info_saving;
@@ -122,16 +122,16 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
                   .into(image_icon_saving);
     }
     
-    public String getNameWallet(List<Wallet> wallets) {
-        String name = "";
+    public Wallet getNameWallet(List<Wallet> wallets) {
+        Wallet walletResult=null;
         
         for (Wallet wallet : wallets) {
             if (wallet.getWalletid().equals(mSaving.getIdWallet())) {
-                name = wallet.getWalletName();
+                walletResult=wallet;
                 break;
             }
         }
-        return name;
+        return walletResult;
     }
     
     public void getWallet() {
@@ -142,11 +142,12 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
                       public void onSuccess(Object value) {
                           List<Wallet> wallets = (List<Wallet>) value;
                           mWalletList.addAll(wallets);
-                          String tmp = getNameWallet(wallets);
-                          if (tmp.equals("")) {
+                          Wallet tmp = getNameWallet(wallets);
+                          if (tmp==null) {
                               txt_name_wallet.setText(getString(R.string.all_wallet));
                           } else {
-                              txt_name_wallet.setText(tmp);
+                              txt_name_wallet.setText(tmp.getWalletName());
+                              mWallet=tmp;
                           }
                           
                           
@@ -273,6 +274,9 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     }
     
     public void doTransferMoneySaving(Intent data) {
+        if(!mSaving.equals("")){
+            mWallet=data.getParcelableExtra("wallet");
+        }
         mSaving = data.getParcelableExtra("saving");
         double tmp = (Double.parseDouble(mSaving.getCurrentMoney()) /
                       Double.parseDouble(mSaving.getGoalMoney())) * 100;
@@ -333,6 +337,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     public void onClickTakeIn(View view) {
         Intent intent = new Intent(this, TransferMoneySavingActivity.class);
         intent.putExtra("saving", mSaving);
+        intent.putExtra("wallet",mWallet);
         intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
         intent.putExtra("value", "1");
         startActivityForResult(intent, 7);
@@ -342,6 +347,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     public void onClickTakeOut(View view) {
         Intent intent = new Intent(this, TransferMoneySavingActivity.class);
         intent.putExtra("saving", mSaving);
+        intent.putExtra("wallet",mWallet);
         intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
         intent.putExtra("value", "2");
         startActivityForResult(intent, 8);

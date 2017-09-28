@@ -623,12 +623,13 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     
     @Override
     public Observable<String> takeInSaving(String userid, String token, String idWallet,
-              String idSaving, String money) {
+              String idSaving, String moneyUpdateWallet, String moneyUpdateSaving) {
         SavingService savingService = mServiceGenerator.getService(SavingService.class);
         if (savingService == null) {
             return null;
         }
-        return savingService.takeInSaving(userid, token, idWallet, idSaving, money).map(
+        return savingService.takeInSaving(userid, token, idWallet, idSaving, moneyUpdateWallet,
+                  moneyUpdateSaving).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
@@ -645,12 +646,13 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     
     @Override
     public Observable<String> takeOutSaving(String userid, String token, String idWallet,
-              String idSaving, String money) {
+              String idSaving, String moneyUpdateWallet, String moneyUpdateSaving) {
         SavingService savingService = mServiceGenerator.getService(SavingService.class);
         if (savingService == null) {
             return null;
         }
-        return savingService.takeOutSaving(userid, token, idWallet, idSaving, money).map(
+        return savingService.takeOutSaving(userid, token, idWallet, idSaving, moneyUpdateWallet,
+                  moneyUpdateSaving).map(
                   new Function<JsonResponse<String>, String>() {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)

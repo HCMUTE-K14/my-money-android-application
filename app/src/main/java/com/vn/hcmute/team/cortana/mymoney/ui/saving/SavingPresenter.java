@@ -131,8 +131,8 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
     }
 
     @Override
-    public void takeIn(String idWallet, String idSaving, String money) {
-        String[] params = {idWallet, idSaving, money};
+    public void takeIn(String idWallet, String idSaving, String moneyUpdateWallet,String moneyUpdateSaving) {
+        String[] params = {idWallet, idSaving, moneyUpdateWallet,moneyUpdateSaving};
         SavingRequest savingRequest = new SavingRequest(Action.ACTION_TAKE_IN_SAVING,
                   new BaseCallBack<Object>() {
                       @Override
@@ -157,8 +157,8 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
     }
     
     @Override
-    public void takeOut(String idWallet, String idSaving, String money) {
-        String[] params = {idWallet, idSaving, money};
+    public void takeOut(String idWallet, String idSaving, String moneyUpdateWallet,String moneyUpdateSaving) {
+        String[] params = {idWallet, idSaving, moneyUpdateWallet,moneyUpdateSaving};
         SavingRequest savingRequest = new SavingRequest(Action.ACTION_TAKE_OUT_SAVING,
                   new BaseCallBack<Object>() {
                       @Override

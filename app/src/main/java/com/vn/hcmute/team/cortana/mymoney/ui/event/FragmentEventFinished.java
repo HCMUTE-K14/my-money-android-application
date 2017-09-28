@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -37,6 +39,9 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
     ProgressBar mProgressBar;
     @BindView(R.id.recycler_view_event_finished)
     RecyclerView mRecyclerView;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    
     @Inject
     EventPresenter mEventPresenter;
     private EmptyAdapter mEmptyAdapter;
@@ -100,6 +105,16 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
         initView();
         mEventList = new ArrayList<>();
         mEventPresenter.getEvent();
+        mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mEventList.clear();
+                if(mMyRecyclerViewEventAdapter!=null){
+                    mMyRecyclerViewEventAdapter.notifyDataSetChanged();
+                }
+                mEventPresenter.getEvent();
+            }
+        });
     }
     
     @Override
@@ -141,12 +156,19 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
             mEmptyAdapter = new EmptyAdapter(getActivity(), getString(R.string.no_event));
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
         
     }
     
     @Override
     public void onFailure(String message) {
-        
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+        mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_saving));
+        mRecyclerView.setAdapter(mEmptyAdapter);
     }
     
     @Override

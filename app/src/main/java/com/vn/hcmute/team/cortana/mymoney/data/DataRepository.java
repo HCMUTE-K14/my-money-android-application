@@ -259,14 +259,14 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     
     @Override
     public Observable<String> takeInSaving(String userid, String token, String idWallet,
-              String idSaving, String money) {
-        return mRemoteRepository.takeInSaving(userid, token, idWallet, idSaving, money);
+              String idSaving, String moneyUpdateWallet, String moneyUpdateSaving) {
+        return mRemoteRepository.takeInSaving(userid, token, idWallet, idSaving, moneyUpdateWallet,moneyUpdateSaving);
     }
     
     @Override
     public Observable<String> takeOutSaving(String userid, String token, String idWallet,
-              String idSaving, String money) {
-        return mRemoteRepository.takeOutSaving(userid, token, idWallet, idSaving, money);
+              String idSaving, String moneyUpdateWallet, String moneyUpdateSaving) {
+        return mRemoteRepository.takeOutSaving(userid, token, idWallet, idSaving, moneyUpdateWallet,moneyUpdateSaving);
     }
     
     //person

@@ -226,4 +226,7 @@
   <string name="txt_event">Events</string>
   <string name="txt_budget">Budgets</string>
   <string name="txt_select_event_bar">Select Event</string>
+  <string name="txt_over_money_wallet">Over money wallet.</string>
+  <string name="txt_over_money_saving">Over money saving.</string>
+  <string name="txt_not_enough">Not enough money in wallet</string>
 </resources>

@@ -83,10 +83,10 @@ public interface DataSource {
         Observable<String> deleteSaving(String userid, String token, String idSaving);
         
         Observable<String> takeInSaving(String userid, String token, String idWallet,
-                  String idSaving, String money);
+                  String idSaving, String moneyUpdateWallet, String moneyUpdateSaving);
         
         Observable<String> takeOutSaving(String userid, String token, String idWallet,
-                  String idSaving, String money);
+                  String idSaving, String moneyUpdateWallet, String moneyUpdateSaving);
         
         Observable<List<Person>> getPerson(String userid, String token);
         

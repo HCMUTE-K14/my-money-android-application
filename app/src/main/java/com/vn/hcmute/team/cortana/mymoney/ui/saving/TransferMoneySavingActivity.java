@@ -25,6 +25,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.validate.TextUtil;
 import java.util.List;
 import javax.inject.Inject;
@@ -58,7 +59,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     
     private String value = "-1";
     private Saving mSaving;
-    private String mWalleName;
+    private Wallet mWalletTemp;
     
     @Override
     public int getLayoutId() {
@@ -93,15 +94,16 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         Intent intent = getIntent();
         value = intent.getStringExtra("value");
         mSaving = intent.getParcelableExtra("saving");
-        mWalleName = intent.getStringExtra("wallet_name");
-        
+        // mWalleName = intent.getStringExtra("wallet_name");
+        mWalletTemp = intent.getParcelableExtra("wallet");
     }
     
     public void showData() {
         txt_name_saving.setText(mSaving.getName());
         double remainin = Double.parseDouble(mSaving.getGoalMoney()) -
                           Double.parseDouble(mSaving.getCurrentMoney());
-        txt_remainin.setText("+" + TextUtil.doubleToString(remainin));
+        txt_remainin.setText("+" + TextUtil.doubleToString(remainin) + " " +
+                             mSaving.getCurrencies().getCurSymbol());
         if (value.equals("1")) {
             edit_describe.setText(getString(R.string.deposit));
         } else {
@@ -113,9 +115,9 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
             txt_wallet_name.setText(mWallet.getWalletName());
             linear_wallet.setEnabled(true);
         } else {
-            txt_wallet_name.setText(mWalleName);
-            mWallet = new Wallet();
-            mWallet.setWalletid(mSaving.getIdWallet());
+            mWallet = mWalletTemp;
+            txt_wallet_name.setText(mWallet.getWalletName());
+            mWallet.setWalletid(mWallet.getWalletid());
             linear_wallet.setEnabled(false);
         }
         
@@ -191,16 +193,96 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
             return;
         }
         if (value.equals("1")) {
-            mSavingPresenter.takeIn(mWallet.getWalletid(), mSaving.getSavingid(),
-                      txt_money.getText().toString().trim());
+            if (checkTakeIn()) {
+                String money = txt_money.getText().toString().trim();
+                double moneyWallet;
+                double moneySaving;
+                double exchangeMoney = NumberUtil
+                          .exchangeMoney(this, money, mWallet.getCurrencyUnit().getCurCode(),
+                                    mSaving.getCurrencies().getCurCode());
+                if ((Double.parseDouble(mSaving.getCurrentMoney()) + exchangeMoney) >
+                    Double.parseDouble(mSaving.getGoalMoney())) {
+                    double denta = Double.parseDouble(mSaving.getCurrentMoney()) + exchangeMoney -
+                                   Double.parseDouble(mSaving.getGoalMoney());
+                    
+                    moneyWallet =
+                              Double.parseDouble(mWallet.getMoney()) - Double.parseDouble(money) +
+                              NumberUtil.exchangeMoney(this, String.valueOf(denta),
+                                        mSaving.getCurrencies().getCurCode(),
+                                        mWallet.getCurrencyUnit().getCurCode());
+                    
+                    moneySaving = Double.parseDouble(mSaving.getGoalMoney());
+                    
+                    if (!mSaving.equals("")) {
+                        mWallet.setMoney(String.valueOf(moneyWallet));
+                    }
+                    
+                    mSaving.setCurrentMoney(String.valueOf(moneySaving));
+                    
+                    mSavingPresenter.takeIn(mWallet.getWalletid(), mSaving.getSavingid(),
+                              String.valueOf(moneyWallet), String.valueOf(moneySaving));
+                } else {
+                    moneyWallet =
+                              Double.parseDouble(mWallet.getMoney()) - Double.parseDouble(money);
+                    moneySaving = Double.parseDouble(mSaving.getCurrentMoney()) + exchangeMoney;
+                    
+                    //mMoneyAddSaving=exchangeMoney;
+                    if (!mSaving.equals("")) {
+                        mWallet.setMoney(String.valueOf(moneyWallet));
+                    }
+                    
+                    mSaving.setCurrentMoney(String.valueOf(moneySaving));
+                    
+                    mSavingPresenter.takeIn(mWallet.getWalletid(), mSaving.getSavingid(),
+                              String.valueOf(moneyWallet), String.valueOf(moneySaving));
+                }
+            }
             return;
         }
         if (value.equals("2")) {
-            mSavingPresenter.takeOut(mWallet.getWalletid(), mSaving.getSavingid(),
-                      txt_money.getText().toString().trim());
+            if (checkTakeOut()) {
+                String money = txt_money.getText().toString().trim();
+                double moneyWallet;
+                double moneySaving;
+                double exchangeMoney = NumberUtil
+                          .exchangeMoney(this, money, mSaving.getCurrencies().getCurCode(),
+                                    mWallet.getCurrencyUnit().getCurCode());
+                moneyWallet=Double.parseDouble(mWallet.getMoney())+exchangeMoney;
+                moneySaving=Double.parseDouble(mSaving.getCurrentMoney())-Double.parseDouble(money);
+                if(mSaving.getIdWallet().equals("")){
+                    mWallet.setMoney(String.valueOf(moneyWallet));
+                }
+                mSaving.setCurrentMoney(String.valueOf(moneySaving));
+                
+                //take out
+                mSavingPresenter.takeIn(mWallet.getWalletid(), mSaving.getSavingid(),
+                          String.valueOf(moneyWallet), String.valueOf(moneySaving));
+            }
             return;
         }
         
+    }
+    
+    public boolean checkTakeIn() {
+        double money = Double.parseDouble(txt_money.getText().toString().trim());
+        if (money > Double.parseDouble(mWallet.getMoney())) {
+            alertDiaglog(getString(R.string.txt_over_money_wallet));
+            return false;
+        }
+        if (Double.parseDouble(mWallet.getMoney()) <= 0) {
+            alertDiaglog(getString(R.string.txt_not_enough));
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean checkTakeOut() {
+        double money = Double.parseDouble(txt_money.getText().toString().trim());
+        if (money > Double.parseDouble(mSaving.getCurrentMoney())) {
+            alertDiaglog(getString(R.string.txt_over_money_saving));
+            return false;
+        }
+        return true;
     }
     
     public void alertDiaglog(String message) {
@@ -248,11 +330,14 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     public void onSuccessTakeIn() {
         // alertDiaglog(getString(R.string.deposit_success));
         
-        double moneyUpdate = Double.parseDouble(mSaving.getCurrentMoney()) +
+       /* double moneyUpdate = Double.parseDouble(mSaving.getCurrentMoney()) +
                              Double.parseDouble(txt_money.getText().toString().trim());
-        mSaving.setCurrentMoney(moneyUpdate + "");
+        mSaving.setCurrentMoney(moneyUpdate + "");*/
         Intent returnIntent = new Intent();
         returnIntent.putExtra("saving", mSaving);
+        if (!mSaving.equals("")) {
+            returnIntent.putExtra("wallet", mWallet);
+        }
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
         
@@ -262,11 +347,14 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     public void onSuccessTakeOut() {
         // alertDiaglog(getString(R.string.withdraw_success));
         
-        double moneyUpdate = Double.parseDouble(mSaving.getCurrentMoney()) -
+       /* double moneyUpdate = Double.parseDouble(mSaving.getCurrentMoney()) -
                              Double.parseDouble(txt_money.getText().toString().trim());
-        mSaving.setCurrentMoney(moneyUpdate + "");
+        mSaving.setCurrentMoney(moneyUpdate + "");*/
         Intent returnIntent = new Intent();
         returnIntent.putExtra("saving", mSaving);
+        if (!mSaving.equals("")) {
+            returnIntent.putExtra("wallet", mWallet);
+        }
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }

@@ -3,6 +3,8 @@ package com.vn.hcmute.team.cortana.mymoney.ui.saving;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -35,6 +37,9 @@ public class FragmentFinished extends BaseFragment implements
     RecyclerView mRecyclerView;
     @BindView(R.id.progress_bar_saving)
     ProgressBar mProgressBar;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    
     @Inject
     SavingPresenter mSavingPresenter;
     private List<Saving> mSavingList;
@@ -75,6 +80,16 @@ public class FragmentFinished extends BaseFragment implements
     protected void initialize() {
         init();
         mSavingPresenter.getSaving();
+        mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSavingList.clear();
+                if(mMyRecyclerViewSavingAdapter!=null){
+                    mMyRecyclerViewSavingAdapter.notifyDataSetChanged();
+                }
+                mSavingPresenter.getSaving();
+            }
+        });
     }
     
     public void init() {
@@ -142,7 +157,9 @@ public class FragmentFinished extends BaseFragment implements
             mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_saving));
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
-
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
     
     @Override
@@ -177,7 +194,11 @@ public class FragmentFinished extends BaseFragment implements
     
     @Override
     public void showError(String message) {
-        
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+        mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_saving));
+        mRecyclerView.setAdapter(mEmptyAdapter);
     }
     
     @Override
