@@ -55,6 +55,9 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     
     public static final String EXTRA_SELECTED_PERSON = "extra_selected_person";
     
+    public static final int MODE_SELECT_SINGLE = 1;
+    public static final int MODE_SELECT_MULTIPLE = 0;
+    
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     
@@ -87,6 +90,8 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     
     private List<Person> mSelectedPersons;
     
+    private int mMode;
+    
     
     private DialogInterface.OnClickListener mOnClickAddPersonDialog = new OnClickListener() {
         @Override
@@ -99,7 +104,7 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     private OnPersonClickListener mPersonItemClickListener = new OnPersonClickListener() {
         @Override
         public boolean onPersonClick(int position, boolean isSelected) {
-            return true;
+            return selectPerson();
         }
         
         
@@ -237,7 +242,7 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        mMode = getIntent().getIntExtra("mode", MODE_SELECT_MULTIPLE);
         mSelectedPersons = getListPerson();
         
         initializeView();
@@ -400,8 +405,11 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
     private void addPerson() {
         Person person = new Person();
         
-        person.setName(mEditTextNamePerson_Add.getText().toString());
-        person.setDescribe(mEditTextDescribePerson_Add.getText().toString());
+        String name = mEditTextNamePerson_Add.getText().toString();
+        String describe = mEditTextDescribePerson_Add.getText().toString();
+        
+        person.setName(name);
+        person.setDescribe(describe);
         
         mPersonPresenter.addPerson(person);
     }
@@ -528,6 +536,18 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
             return;
         }
         mPersonAdapter.filter(text);
+    }
+    
+    private boolean selectPerson() {
+        if (mMode == MODE_SELECT_MULTIPLE) {
+            return true;
+        } else if (mMode == MODE_SELECT_SINGLE) {
+            if (mPersonAdapter.getSelectedPersons().size() > 0) {
+                mPersonAdapter.removeAllSelected();
+                return false;
+            }
+        }
+        return true;
     }
     
 }

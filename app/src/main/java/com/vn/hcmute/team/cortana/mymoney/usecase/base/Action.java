@@ -6,12 +6,14 @@ package com.vn.hcmute.team.cortana.mymoney.usecase.base;
 
 public class Action {
     
-    public static final String ACTION_LOGIN_NORMAL = "action_login_normal";
+    public static final String ACTION_LOGIN = "action_login_normal";
+    public static final String ACTION_LOGIN_WITH_FACEBOOK = "action_login_with_user";
     public static final String ACTION_REGISTER = "action_register";
     public static final String ACTION_LOGOUT = "action_logout";
     public static final String ACTION_CHANGE_PASSWORD = "action_change_password";
     public static final String ACTION_FORGET_PASSWORD = "action_forget_password";
     public static final String ACTION_CHANGE_PROFILE = "action_change_profile";
+    public static final String ACTION_CHECK_EXIST_FACEBOOK_ACCOUNT = "action_check_exist_facebook_account";
     
     public static final String ACTION_GET_IMAGE_BY_ID = "action_get_image_by_id";
     public static final String ACTION_UPLOAD_IMAGE = "action_upload_image";
@@ -63,4 +65,5 @@ public class Action {
     public static final String ACTION_DELETE_CATEGORY = "action_delete_category";
     public static final String ACTION_SYNC_CATEGORY = "action_sync_category";
     public static final String ACTION_GET_CATEGORY_BY_TYPE = "action_get_category_by_type";
+
 }

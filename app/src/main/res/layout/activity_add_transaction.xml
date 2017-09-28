@@ -3,64 +3,16 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical">
-  <android.support.v7.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:layout_marginBottom="10dp">
-    <RelativeLayout
-      android:id="@+id/layout_top_bar"
-      android:layout_width="fill_parent"
-      android:layout_height="match_parent"
-      android:background="@color/white"
-      android:gravity="center_vertical">
-
-      <LinearLayout
-        android:id="@+id/cancel_button"
-        android:layout_width="50.0dip"
-        android:layout_height="fill_parent"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
-
-        <ImageView
-          android:layout_width="50.0dip"
-          android:layout_height="match_parent"
-          android:padding="10.0dip"
-          android:src="@drawable/ic_cancel" />
-      </LinearLayout>
-
-      <TextView
-        android:id="@+id/txt_title_add_transaction"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerInParent="true"
-        android:layout_toLeftOf="@+id/txt_save_transaction"
-        android:layout_toRightOf="@+id/cancel_button"
-        android:ellipsize="end"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:text="@string/txt_add_transaction"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
-      <TextView
-        android:id="@+id/txt_save_transaction"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentRight="true"
-        android:paddingLeft="15.0dip"
-        android:paddingRight="15.0dip"
-        android:clickable="true"
-        android:gravity="center|right"
-        android:text="@string/save"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
-    </RelativeLayout>
-  </android.support.v7.widget.CardView>
-
+  <com.vn.hcmute.team.cortana.mymoney.ui.view.CardViewActionBar xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view_action_bar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:iconBack="@drawable/ic_cancel"
+    app:textTitle="@string/txt_add_transaction" />
   <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="80dp"
+    android:layout_marginTop="8dp"
     android:fillViewport="true">
     <LinearLayout
       android:layout_width="match_parent"
@@ -76,9 +28,11 @@
           android:orientation="vertical"
           android:weightSum="5">
           <LinearLayout
+            android:id="@+id/btn_input_value"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/button_transparent_bounded_darken"
             android:orientation="horizontal"
             android:weightSum="6">
             <LinearLayout
@@ -95,7 +49,7 @@
               android:gravity="center|left">
               <TextView
                 android:id="@+id/txt_money"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="0.00 đ"
                 android:textColor="@color/green"
@@ -107,9 +61,12 @@
             android:layout_height="0.4dp"
             android:background="@color/colorPrimary" />
           <LinearLayout
+            android:id="@+id/btn_choose_category"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/button_transparent_bounded_darken"
+            android:clickable="true"
             android:orientation="horizontal"
             android:weightSum="6">
             <LinearLayout
@@ -131,7 +88,7 @@
               android:orientation="vertical">
               <TextView
                 android:id="@+id/txt_category"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
@@ -167,9 +124,9 @@
               android:layout_height="match_parent"
               android:layout_weight="1"
               android:orientation="vertical">
-              <TextView
+              <EditText
                 android:id="@+id/txt_note"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:paddingTop="10dp"
@@ -185,9 +142,12 @@
             </LinearLayout>
           </LinearLayout>
           <LinearLayout
+            android:id="@+id/btn_choose_date"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/button_transparent_bounded_darken"
+            android:clickable="true"
             android:orientation="horizontal"
             android:weightSum="6">
             <LinearLayout
@@ -207,7 +167,7 @@
               android:orientation="vertical">
               <TextView
                 android:id="@+id/txt_date"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:paddingTop="10dp"
@@ -224,9 +184,12 @@
             </LinearLayout>
           </LinearLayout>
           <LinearLayout
+            android:id="@+id/btn_choose_wallet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/button_transparent_bounded_darken"
+            android:clickable="true"
             android:orientation="horizontal"
             android:weightSum="6">
             <LinearLayout
@@ -244,15 +207,14 @@
               android:layout_height="match_parent"
               android:layout_weight="1"
               android:orientation="vertical">
-              <TextView
+              <EditText
                 android:id="@+id/txt_wallet"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
-                android:text="Anh Ky"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
               <View
@@ -273,7 +235,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:visibility="visible">
+        android:visibility="gone">
         <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -289,13 +251,16 @@
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
         <android.support.v7.widget.CardView
           android:layout_width="match_parent"
           android:layout_height="56dp">
           <LinearLayout
+            android:id="@+id/btn_choose_contact"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/button_transparent_bounded_darken"
+            android:clickable="true"
             android:orientation="horizontal"
             android:weightSum="6">
             <LinearLayout
@@ -309,12 +274,15 @@
                 android:src="@drawable/ic_with" />
             </LinearLayout>
             <LinearLayout
+
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_weight="1"
+
               android:orientation="vertical">
               <TextView
                 android:id="@+id/txt_with"
+                android:maxLines="6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -341,9 +309,12 @@
             android:orientation="vertical"
             android:weightSum="3">
             <LinearLayout
+              android:id="@+id/btn_choose_location"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_weight="1"
+              android:background="@drawable/button_transparent_bounded_darken"
+              android:clickable="true"
               android:orientation="horizontal"
               android:weightSum="6">
               <LinearLayout
@@ -357,13 +328,15 @@
                   android:src="@drawable/ic_location" />
               </LinearLayout>
               <LinearLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+
                 android:orientation="vertical">
                 <TextView
                   android:id="@+id/txt_location"
-                  android:layout_width="wrap_content"
+                  android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_marginTop="5dp"
                   android:paddingTop="10dp"
@@ -379,9 +352,12 @@
               </LinearLayout>
             </LinearLayout>
             <LinearLayout
+              android:id="@+id/btn_choose_event"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_weight="1"
+              android:background="@drawable/button_transparent_bounded_darken"
+              android:clickable="true"
               android:orientation="horizontal"
               android:weightSum="6">
               <LinearLayout
@@ -401,7 +377,7 @@
                 android:orientation="vertical">
                 <TextView
                   android:id="@+id/txt_event"
-                  android:layout_width="wrap_content"
+                  android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_marginTop="5dp"
                   android:paddingTop="10dp"
@@ -417,9 +393,12 @@
               </LinearLayout>
             </LinearLayout>
             <LinearLayout
+              android:id="@+id/btn_choose_date_notify"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_weight="1"
+              android:background="@drawable/button_transparent_bounded_darken"
+              android:clickable="true"
               android:orientation="horizontal"
               android:weightSum="6">
               <LinearLayout
@@ -433,13 +412,15 @@
                   android:src="@drawable/ic_reminder" />
               </LinearLayout>
               <LinearLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+
                 android:orientation="vertical">
                 <TextView
                   android:id="@+id/txt_remind"
-                  android:layout_width="wrap_content"
+                  android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_marginTop="5dp"
                   android:paddingTop="10dp"
@@ -461,6 +442,7 @@
           android:layout_height="56dp"
           android:layout_marginTop="20dp">
           <LinearLayout
+            android:id="@+id/btn_choose_image_gallery"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -480,17 +462,6 @@
               android:layout_width="0.4dp"
               android:layout_height="match_parent"
               android:background="@color/colorPrimary" />
-            <LinearLayout
-              android:id="@+id/linear_camera"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_weight="1"
-              android:gravity="center">
-              <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_camera" />
-            </LinearLayout>
           </LinearLayout>
 
         </android.support.v7.widget.CardView>

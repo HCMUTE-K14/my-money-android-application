@@ -12,7 +12,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.CategoryUseCase.CategoryRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.validate.TextUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;

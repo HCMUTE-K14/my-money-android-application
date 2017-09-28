@@ -4,10 +4,12 @@ package com.vn.hcmute.team.cortana.mymoney.model;
  * Created by infamouSs on 8/10/17.
  */
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class User implements Parcelable {
     
     @SerializedName("user_id")
     @Expose
@@ -30,6 +32,8 @@ public class User {
     @SerializedName("active")
     @Expose
     private boolean active;
+    @SerializedName("facebook_id")
+    private String facebook_id;
     
     public User() {
         this.userid = "";
@@ -39,6 +43,7 @@ public class User {
         this.token = "";
         this.email = "";
         this.active = false;
+        this.facebook_id = "";
     }
     
     public User(String username, String password, String email) {
@@ -46,6 +51,29 @@ public class User {
         this.password = password;
         this.email = email;
     }
+    
+    protected User(Parcel in) {
+        userid = in.readString();
+        username = in.readString();
+        password = in.readString();
+        name = in.readString();
+        token = in.readString();
+        email = in.readString();
+        active = in.readByte() != 0;
+        facebook_id = in.readString();
+    }
+    
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+        
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
     
     public String getUserid() {
         return userid;
@@ -106,10 +134,40 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-               "username='" + username + '\'' +
+               "userid='" + userid + '\'' +
+               ", username='" + username + '\'' +
+               ", password='" + password + '\'' +
                ", name='" + name + '\'' +
+               ", token='" + token + '\'' +
                ", email='" + email + '\'' +
                ", active=" + active +
+               ", facebook_id='" + facebook_id + '\'' +
                '}';
+    }
+    
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        
+        dest.writeString(userid);
+        dest.writeString(username);
+        dest.writeString(password);
+        dest.writeString(name);
+        dest.writeString(token);
+        dest.writeString(email);
+        dest.writeByte((byte) (active ? 1 : 0));
+        dest.writeString(facebook_id);
+    }
+    
+    public String getFacebook_id() {
+        return facebook_id;
+    }
+    
+    public void setFacebook_id(String facebook_id) {
+        this.facebook_id = facebook_id;
     }
 }

@@ -27,6 +27,10 @@ public interface RemoteTask {
         
         Observable<User> login(UserCredential userCredential);
         
+        Observable<User> login(User user);
+    
+        Observable<String> isExistFacebookAccount(User user);
+        
         Observable<String> register(User user);
         
         Observable<String> forgetPassword(String email);

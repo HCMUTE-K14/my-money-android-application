@@ -12,8 +12,6 @@ public interface CategoryContract {
     
     interface View extends BaseView {
         
-        void initializeView();
-        
         void onFailure(String message);
         
         void loading(boolean isLoading);

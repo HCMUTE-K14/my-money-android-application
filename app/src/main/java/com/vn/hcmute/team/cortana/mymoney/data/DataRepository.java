@@ -49,6 +49,16 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
+    public Observable<User> login(User user) {
+        return this.mRemoteRepository.login(user);
+    }
+    
+    @Override
+    public Observable<String> isExistFacebookAccount(User user) {
+        return this.mRemoteRepository.isExistFacebookAccount(user);
+    }
+    
+    @Override
     public Observable<String> register(User user) {
         return this.mRemoteRepository.register(user);
     }

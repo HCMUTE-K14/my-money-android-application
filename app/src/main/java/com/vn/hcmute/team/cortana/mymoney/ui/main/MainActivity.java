@@ -31,6 +31,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.WalletModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.category.CategoryMainFragment;
+import com.vn.hcmute.team.cortana.mymoney.ui.debts.DebtsMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.EventMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.login.LoginActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.SavingMainFragment;
@@ -136,15 +137,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
             }
         }
     };
-    private Runnable runnableAttachTestFragment = new Runnable() {
-        @Override
-        public void run() {
-            mNavigationView.getMenu().findItem(R.id.navigation_item_cashbook).setChecked(true);
-            TestFragment fragment = new TestFragment();
-            getSupportFragmentManager().beginTransaction()
-                      .replace(R.id.container_fragment, fragment).commit();
-        }
-    };
+
     
     private Runnable runnableAttachCategoryFragment = new Runnable() {
         @Override
@@ -190,6 +183,17 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         }
     };
     
+    private Runnable runnableAttachDebtsFragment = new Runnable() {
+        @Override
+        public void run() {
+            mNavigationView.getMenu().findItem(R.id.navigation_item_saving).setChecked(true);
+            DebtsMainFragment fragment = new DebtsMainFragment();
+            mCurrentFragment = fragment;
+            getSupportFragmentManager().beginTransaction()
+                      .replace(R.id.container_fragment, fragment).commit();
+        }
+    };
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -217,7 +221,6 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         mWalletPresenter.setView(this);
     }
     
-
     
     @Override
     protected void initializeActionBar(View rootView) {
@@ -236,8 +239,8 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         super.onCreate(savedInstanceState);
         
         if (mPreferenceHelper.getCurrentUser() == null) {
-            openLoginActivity();
-            return;
+           // openLoginActivity();
+            //return;
         }
         mHandler.postDelayed(
                   new Runnable() {
@@ -409,7 +412,9 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         mRunnable = null;
         switch (item.getItemId()) {
             case R.id.navigation_item_cashbook:
-                mRunnable = runnableAttachTestFragment;
+                break;
+            case R.id.navigation_item_debt:
+                mRunnable = runnableAttachDebtsFragment;
                 break;
             case R.id.navigation_item_categories:
                 mRunnable = runnableAttachCategoryFragment;
@@ -423,6 +428,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                 mRunnable = runnableAttachEventFragment;
                 break;
             case R.id.navigation_item_contacts:
+                break;
             default:
                 break;
         }

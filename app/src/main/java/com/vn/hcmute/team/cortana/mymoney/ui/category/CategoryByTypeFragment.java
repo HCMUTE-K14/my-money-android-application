@@ -196,7 +196,6 @@ public class CategoryByTypeFragment extends BaseFragment implements CategoryCont
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initializeView();
-        
         getCategory();
     }
     
@@ -213,7 +212,6 @@ public class CategoryByTypeFragment extends BaseFragment implements CategoryCont
         }
     }
     
-    @Override
     public void initializeView() {
         mCategoryByTypeAdapter = new CategoryByTypeAdapter(this.getContext(),
                   mChooseCategoryListener,

@@ -83,6 +83,47 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     }
     
     @Override
+    public Observable<User> login(User user) {
+        UserService userService = mServiceGenerator.getService(UserService.class);
+        if (userService == null) {
+            return null;
+        }
+        return userService.login(user)
+                  .map(new Function<JsonResponse<User>, User>() {
+                      
+                      @Override
+                      public User apply(@NonNull JsonResponse<User> userJsonResponse)
+                                throws Exception {
+                          if (userJsonResponse.getStatus().equals("success")) {
+                              return userJsonResponse.getData();
+                          } else {
+                              throw new UserLoginException(userJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> isExistFacebookAccount(User user) {
+        UserService userService = mServiceGenerator.getService(UserService.class);
+        if (userService == null) {
+            return null;
+        }
+        return userService.isExistFacebookAccount(user)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getMessage();
+                          } else {
+                              throw new UserLoginException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
     public Observable<String> register(User user) {
         UserService userService = mServiceGenerator.getService(UserService.class);
         if (userService == null) {

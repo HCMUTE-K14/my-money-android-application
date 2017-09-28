@@ -30,7 +30,7 @@ public class CategoryMainFragment extends BaseFragment {
     
     @Override
     protected int getLayoutId() {
-        return R.layout.include_main_category_fragment;
+        return R.layout.include_view_pager_fragment;
     }
     
     @Override
@@ -62,7 +62,7 @@ public class CategoryMainFragment extends BaseFragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
     
-    private void initializeView() {
+    protected void initializeView() {
         mViewPagerAdapter = new CategoryViewPagerAdapter(
                   this.getChildFragmentManager());
         

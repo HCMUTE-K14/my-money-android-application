@@ -47,7 +47,7 @@ public class SavingMainFragment extends BaseFragment {
     
     @Override
     protected void initializePresenter() {
-
+        
     }
     
     @Override
@@ -84,7 +84,7 @@ public class SavingMainFragment extends BaseFragment {
         }
     }
     
-    private void initializeView() {
+    protected void initializeView() {
         mPagerAdapter = new PagerAdapter(this.getFragmentManager(), 2);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));

@@ -138,7 +138,8 @@
   <string name="txt_edit_wallet">Edit Wallet</string>
   <string name="txt_successful">Successful</string>
   <string name="action_transfer_money">Transfer Money</string>
-
+  <string name="facebook_app_id">271864266660658</string>
+  <string name="fb_login_protocol_scheme">fb271864266660658</string>
   <string name="select_date">Select date</string>
   <string name="name_saving">Name Saving</string>
   <string name="input_money">Input money</string>
@@ -220,4 +221,5 @@
   <string name="txt_select_date">Select date</string>
   <string name="txt_navigation_saving">Savings</string>
   <string name="txt_savings">Savings</string>
+  <string name="message_warning_name_or_describe_is_empty">Name or Describe can\'t be empty</string>
 </resources>

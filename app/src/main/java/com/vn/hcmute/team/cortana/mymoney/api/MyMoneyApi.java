@@ -12,6 +12,8 @@ public class MyMoneyApi {
     /*USER             */
     /*-----------------*/
     public static final String LOGIN_URL = "users/login";
+    public static final String LOGIN_WITH_FACEBOOK ="users/login_with_facebook";
+    public static final String IS_EXIST_FACEBOOK_ACCOUNT ="users/isExistFacebookAccount";
     public static final String REGISTER_URL = "users/register";
     public static final String FORGET_PASSWORD = "users/forget";
     public static final String CHANGE_PASSWORD = "users/changepassword";

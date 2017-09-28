@@ -80,6 +80,8 @@ dependencies {
      *  6.Glide 4.1.1
      *  7.SQLiteAsset
      *  8.Exp4j
+     *  9.MaterialDateRangePicker
+     *  10.Facebook SDK
      */
 
     compile 'com.jakewharton:butterknife:8.8.1'
@@ -98,11 +100,12 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:4.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
 
-    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     compile group: 'net.objecthunter', name: 'exp4j', version: '0.4.8'
 
     compile 'com.borax12.materialdaterangepicker:library:1.9'
 
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 
     testCompile 'junit:junit:4.12'
 }

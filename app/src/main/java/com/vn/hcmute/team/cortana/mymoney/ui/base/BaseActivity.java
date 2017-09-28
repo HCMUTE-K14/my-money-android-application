@@ -33,7 +33,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     
     protected abstract void initializeActionBar(View rootView);
     
-    
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
