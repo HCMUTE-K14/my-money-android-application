@@ -229,4 +229,9 @@
   <string name="txt_over_money_wallet">Over money wallet.</string>
   <string name="txt_over_money_saving">Over money saving.</string>
   <string name="txt_not_enough">Not enough money in wallet</string>
+  <string name="txt_transaction">Transaction</string>
+  <string name="txt_add_saving_success">Add saving success.</string>
+  <string name="txt_add_saving_fail">Add saving fail.</string>
+  <string name="txt_success">Success!</string>
+  <string name="txt_fail">Fail!</string>
 </resources>

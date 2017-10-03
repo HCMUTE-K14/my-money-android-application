@@ -74,4 +74,25 @@ public class CurrencyLocalService extends DbContentProvider<Currencies> implemen
             throw new RuntimeException(e.getMessage());
         }
     }
+    
+    @Override
+    public Currencies getCurrency(String id) {
+        String selection="cur_id=?";
+        String[] selectionArg = new String[]{id};
+        Currencies currencies=null;
+        Cursor cursor = CurrencyLocalService.this
+                  .query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
+        if(cursor==null){
+            return null;
+        }
+        if(cursor.moveToFirst()){
+            currencies= new Currencies();
+            currencies.setCurId(cursor.getString(0));
+            currencies.setCurName(cursor.getString(1));
+            currencies.setCurSymbol(cursor.getString(2));
+            currencies.setCurDisplayType(cursor.getString(3));
+            currencies.setCurCode(cursor.getString(4));
+        }
+        return currencies;
+    }
 }
