@@ -50,28 +50,32 @@ public class SavingActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), 0);
+    }
+    
+    @Override
+    protected void initialize() {
+        mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-
+    
         mTabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
             public void onTabSelected(Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
                 currentFragmet = tab.getPosition();
             }
-
+        
             @Override
             public void onTabUnselected(Tab tab) {
-                
-            }
             
+            }
+        
             @Override
             public void onTabReselected(Tab tab) {
-                
+            
             }
         });
-        
+    
         initTabLayout();
     }
     

@@ -112,7 +112,9 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         //wallet
         if (mSaving.getIdWallet().equals("")) {
             mWallet = mPreferencesHelper.getCurrentWallet();
-            txt_wallet_name.setText(mWallet.getWalletName());
+            if(mWallet!=null){
+                txt_wallet_name.setText(mWallet.getWalletName());
+            }
             linear_wallet.setEnabled(true);
         } else {
             mWallet = mWalletTemp;

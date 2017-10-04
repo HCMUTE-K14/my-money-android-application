@@ -149,7 +149,8 @@ public class FragmentRunning extends BaseFragment implements
     @Override
     public void showListSaving(List<Saving> savings) {
         // mSavingList=savings;
-        
+        MyLogger.d("sdfkjdajklfdsakdsklalsdalfds");
+        MyLogger.d("size",savings.size());
         if (!savings.isEmpty()) {
             
             for (Saving saving : savings) {

@@ -85,7 +85,7 @@ public class SavingMainFragment extends BaseFragment {
     }
     
     private void initializeView() {
-        mPagerAdapter = new PagerAdapter(this.getFragmentManager(), 2);
+        mPagerAdapter = new PagerAdapter(this.getFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         

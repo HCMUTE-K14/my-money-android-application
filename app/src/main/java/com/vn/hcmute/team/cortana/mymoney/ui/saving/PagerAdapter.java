@@ -14,11 +14,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     
     private FragmentRunning mFragmentRunning;
     private FragmentFinished mFragmentFinished;
-    private int mNumOfTabs;
+
     
-    public PagerAdapter(FragmentManager fm, int NumOfTabs) {
+    public PagerAdapter(FragmentManager fm) {
         super(fm);
-        this.mNumOfTabs = NumOfTabs;
         mFragmentRunning = new FragmentRunning();
         mFragmentFinished = new FragmentFinished();
     }
@@ -38,6 +37,6 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     
     @Override
     public int getCount() {
-        return mNumOfTabs;
+        return 2;
     }
 }
