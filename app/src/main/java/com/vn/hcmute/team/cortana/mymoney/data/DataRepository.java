@@ -13,6 +13,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
 import com.vn.hcmute.team.cortana.mymoney.model.ResultConvert;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
+import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
@@ -85,9 +86,40 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
-    public Observable<String> uploadImage(RequestBody userid, RequestBody token, RequestBody detail,
-              MultipartBody.Part file) {
-        return mRemoteRepository.uploadImage(userid, token, detail, file);
+    public Observable<List<Image>> uploadImage(RequestBody userid, RequestBody token,
+              RequestBody detail,
+              List<MultipartBody.Part> files) {
+        return mRemoteRepository.uploadImage(userid, token, detail, files);
+    }
+    
+    @Override
+    public Observable<List<Transaction>> getTransactionByCategory(String userid, String token,
+              String categoryId, String walletId) {
+        return mRemoteRepository.getTransactionByCategory(userid, token, categoryId, walletId);
+    }
+    
+    @Override
+    public Observable<Transaction> getTransactionById(String id, String userid, String token) {
+        return mRemoteRepository.getTransactionById(id, userid, token);
+    }
+    
+    @Override
+    public Observable<List<Transaction>> getTransaction(String userid, String token) {
+        return mRemoteRepository.getTransaction(userid, token);
+    }
+    
+    @Override
+    public Observable<List<Transaction>> getTransactionByType(String userid, String token,
+              String type,
+              String walletId) {
+        return mRemoteRepository.getTransactionByType(userid, token, type, walletId);
+    }
+    
+    @Override
+    public Observable<List<Transaction>> getTransactionByTime(String userid, String token,
+              String startDate,
+              String endDate, String walletId) {
+        return mRemoteRepository.getTransactionByTime(userid, token, startDate, endDate, walletId);
     }
     
     @Override
@@ -355,6 +387,17 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     public Observable<String> deleteCategory(String userid, String token, String parentId,
               Category category) {
         return mRemoteRepository.deleteCategory(userid, token, parentId, category);
+    }
+    
+    @Override
+    public Observable<String> addTransaction(String userid, String token, Transaction transaction) {
+        return mRemoteRepository.addTransaction(userid, token, transaction);
+    }
+    
+    @Override
+    public Observable<String> updateTransaction(String userid, String token,
+              Transaction transaction) {
+        return mRemoteRepository.updateTransaction(userid, token, transaction);
     }
     
     @Override

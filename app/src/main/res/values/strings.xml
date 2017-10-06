@@ -222,4 +222,12 @@
   <string name="txt_navigation_saving">Savings</string>
   <string name="txt_savings">Savings</string>
   <string name="message_warning_name_or_describe_is_empty">Name or Describe can\'t be empty</string>
+  <string name="txt_edit_transaction">Edit Transaction</string>
+  <string name="txt_wallet">Wallet</string>
+  <string name="txt_end_date">End Date</string>
+  <string name="txt_please_choose_category">Please select category first !</string>
+  <string name="txt_select_location">Select Location</string>
+  <string name="txt_warning_date_created">The End date must be greater than the Start date.</string>
+  <string name="txt_please_choose_wallet">Please choose wallet !</string>
+  <string name="message_you_must_login_first">You must login first !</string>
 </resources>

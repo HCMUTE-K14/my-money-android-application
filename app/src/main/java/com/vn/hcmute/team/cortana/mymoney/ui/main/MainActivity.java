@@ -137,7 +137,6 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
             }
         }
     };
-
     
     private Runnable runnableAttachCategoryFragment = new Runnable() {
         @Override
@@ -164,7 +163,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     private Runnable runnableAttachEventFragment = new Runnable() {
         @Override
         public void run() {
-            mNavigationView.getMenu().findItem(R.id.navigation_item_saving).setChecked(true);
+            mNavigationView.getMenu().findItem(R.id.navigation_item_events).setChecked(true);
             EventMainFragment fragment = new EventMainFragment();
             mCurrentFragment = fragment;
             getSupportFragmentManager().beginTransaction()
@@ -186,7 +185,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     private Runnable runnableAttachDebtsFragment = new Runnable() {
         @Override
         public void run() {
-            mNavigationView.getMenu().findItem(R.id.navigation_item_saving).setChecked(true);
+            mNavigationView.getMenu().findItem(R.id.navigation_item_debt).setChecked(true);
             DebtsMainFragment fragment = new DebtsMainFragment();
             mCurrentFragment = fragment;
             getSupportFragmentManager().beginTransaction()

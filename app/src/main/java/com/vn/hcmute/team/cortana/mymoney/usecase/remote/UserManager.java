@@ -351,7 +351,6 @@ public class UserManager extends UseCase<UserRequest> {
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
         }
-        
     }
     
     @Override

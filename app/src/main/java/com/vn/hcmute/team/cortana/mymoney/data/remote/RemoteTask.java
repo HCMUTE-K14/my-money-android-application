@@ -9,6 +9,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
 import com.vn.hcmute.team.cortana.mymoney.model.ResultConvert;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
+import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
@@ -28,7 +29,7 @@ public interface RemoteTask {
         Observable<User> login(UserCredential userCredential);
         
         Observable<User> login(User user);
-    
+        
         Observable<String> isExistFacebookAccount(User user);
         
         Observable<String> register(User user);
@@ -49,8 +50,9 @@ public interface RemoteTask {
         
         Observable<String> removeImage(String userid, String token, String imageid);
         
-        Observable<String> uploadImage(RequestBody userid, RequestBody token, RequestBody detail,
-                  MultipartBody.Part file);
+        Observable<List<Image>> uploadImage(RequestBody userid, RequestBody token,
+                  RequestBody detail,
+                  List<MultipartBody.Part> files);
         
         Observable<String> updateImage(String userid, String token, String imageid);
     }
@@ -146,5 +148,27 @@ public interface RemoteTask {
         
         Observable<String> deleteCategory(String userid, String token, String parentId,
                   Category category);
+    }
+    
+    interface TransactionTask {
+        
+        Observable<String> addTransaction(String userid, String token, Transaction transaction);
+        
+        Observable<String> updateTransaction(String userid, String token, Transaction transaction);
+        
+        Observable<List<Transaction>> getTransactionByCategory(String userid, String token,
+                  String categoryId, String walletId);
+        
+        Observable<Transaction> getTransactionById(String id, String userid, String token);
+        
+        Observable<List<Transaction>> getTransaction(String userid, String token);
+        
+        Observable<List<Transaction>> getTransactionByType(String userid, String token,
+                  String type, String walletId);
+        
+        Observable<List<Transaction>> getTransactionByTime(String userid, String token,
+                  String startDate,
+                  String endDate, String walletId);
+        
     }
 }

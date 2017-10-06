@@ -30,9 +30,9 @@ public interface ImageService {
     
     @Multipart
     @POST(MyMoneyApi.UPLOAD_IMAGE_URL)
-    Observable<JsonResponse<String>> upload(@Part("uid") RequestBody userid,
+    Observable<JsonResponse<List<Image>>> upload(@Part("uid") RequestBody userid,
               @Part("token") RequestBody token, @Part("detail") RequestBody detail,
-              @Part MultipartBody.Part file);
+              @Part List<MultipartBody.Part> files);
     
     
     @POST(MyMoneyApi.REMOVE_IMAGE_URL)

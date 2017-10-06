@@ -65,5 +65,12 @@ public class Action {
     public static final String ACTION_DELETE_CATEGORY = "action_delete_category";
     public static final String ACTION_SYNC_CATEGORY = "action_sync_category";
     public static final String ACTION_GET_CATEGORY_BY_TYPE = "action_get_category_by_type";
-
+    
+    public static final String ACTION_ADD_TRANSACTION = "action_add_transaction";
+    public static final String ACTION_UPDATE_TRANSACTION = "action_update_transaction";
+    public static final String ACTION_GET_TRANSACTION_BY_CATEGORY = "action_get_transaction_by_category";
+    public static final String ACTION_GET_ALL_TRANSACTION = "action_get_all_transaction";
+    public static final String ACTION_GET_TRANSACTION_BY_ID = "action_get_transaction_by_id";
+    public static final String ACTION_GET_TRANSACTION_BY_TYPE = "action_get_transaction_by_type";
+    public static final String ACTION_GET_TRANSACTION_BY_TIME = "action_get_transaction_by_time";
 }

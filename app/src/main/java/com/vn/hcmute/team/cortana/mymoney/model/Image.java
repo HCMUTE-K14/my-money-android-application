@@ -21,6 +21,9 @@ public class Image {
     @SerializedName("detail")
     @Expose
     private String detail;
+    @SerializedName("local_path")
+    @Expose
+    private String local_path;
     
     public String getImageid() {
         return imageid;
@@ -52,6 +55,14 @@ public class Image {
     
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+    
+    public String getLocal_path() {
+        return local_path;
+    }
+    
+    public void setLocal_path(String local_path) {
+        this.local_path = local_path;
     }
     
     @Override

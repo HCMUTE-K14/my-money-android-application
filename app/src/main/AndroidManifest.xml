@@ -103,9 +103,8 @@
     <activity android:name=".ui.category.ListParentCategoryActivity" />
 
     <!-- Transaction -->
-    <activity android:name=".ui.transaction.AddTransactionActivity">
 
-    </activity>
+    <activity android:name=".ui.transaction.ManagerTransactionActivity" />
   </application>
 
 </manifest>

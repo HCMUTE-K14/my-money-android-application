@@ -49,7 +49,7 @@ public class SelectIconPresenter extends BasePresenter<SelectIconContract.View> 
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, null);
+                  }, null,null);
         
         mImageUseCase.subscribe(imageRequest);
     }
@@ -79,7 +79,7 @@ public class SelectIconPresenter extends BasePresenter<SelectIconContract.View> 
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, new String[]{String.valueOf(page)});
+                  }, new String[]{String.valueOf(page)},null);
         
         mImageUseCase.subscribe(imageRequest);
     }

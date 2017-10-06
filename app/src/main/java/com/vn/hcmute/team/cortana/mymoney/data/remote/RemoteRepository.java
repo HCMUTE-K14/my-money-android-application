@@ -7,6 +7,7 @@ import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.EventService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.ImageService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.PersonService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.SavingService;
+import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.TransactionService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.UserService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.WalletService;
 import com.vn.hcmute.team.cortana.mymoney.exception.BudgetException;
@@ -15,6 +16,7 @@ import com.vn.hcmute.team.cortana.mymoney.exception.EventException;
 import com.vn.hcmute.team.cortana.mymoney.exception.ImageException;
 import com.vn.hcmute.team.cortana.mymoney.exception.PersonException;
 import com.vn.hcmute.team.cortana.mymoney.exception.SavingException;
+import com.vn.hcmute.team.cortana.mymoney.exception.TransactionException;
 import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
 import com.vn.hcmute.team.cortana.mymoney.exception.UserRegisterException;
 import com.vn.hcmute.team.cortana.mymoney.exception.WalletException;
@@ -27,6 +29,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
 import com.vn.hcmute.team.cortana.mymoney.model.ResultConvert;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
+import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
@@ -48,7 +51,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                                          RemoteTask.WalletTask, RemoteTask.CurrenciesTask,
                                          RemoteTask.EventTask, RemoteTask.SavingTask,
                                          RemoteTask.PersonTask, RemoteTask.BudgetTask,
-                                         RemoteTask.CategoryTask {
+                                         RemoteTask.CategoryTask, RemoteTask.TransactionTask {
     
     
     public static final String TAG = RemoteRepository.class.getSimpleName();
@@ -270,21 +273,22 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     }
     
     @Override
-    public Observable<String> uploadImage(RequestBody userid, RequestBody token, RequestBody detail,
-              MultipartBody.Part file) {
+    public Observable<List<Image>> uploadImage(RequestBody userid, RequestBody token,
+              RequestBody detail,
+              List<MultipartBody.Part> files) {
         ImageService imageService = mServiceGenerator.getService(ImageService.class);
         if (imageService == null) {
             return null;
         }
-        return imageService.upload(userid, token, detail, file)
-                  .map(new Function<JsonResponse<String>, String>() {
+        return imageService.upload(userid, token, detail, files)
+                  .map(new Function<JsonResponse<List<Image>>, List<Image>>() {
                       @Override
-                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                      public List<Image> apply(@NonNull JsonResponse<List<Image>> listJsonResponse)
                                 throws Exception {
-                          if (stringJsonResponse.getStatus().equals("success")) {
-                              return stringJsonResponse.getData();
+                          if (listJsonResponse.getStatus().equals("success")) {
+                              return listJsonResponse.getData();
                           } else {
-                              throw new ImageException(stringJsonResponse.getMessage());
+                              throw new ImageException(listJsonResponse.getMessage());
                           }
                       }
                   });
@@ -995,6 +999,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                   });
     }
     
+    
     @Override
     public Observable<String> deleteCategory(String userid, String token, String parentId,
               Category category) {
@@ -1013,6 +1018,166 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                               
                           } else {
                               throw new BudgetException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<List<Transaction>> getTransactionByCategory(String userid, String token,
+              String categoryId, String walletId) {
+        TransactionService transactionService = mServiceGenerator
+                  .getService(TransactionService.class);
+        if (transactionService == null) {
+            return null;
+        }
+        return transactionService.getTransactionByCategory(walletId, userid, token, categoryId)
+                  .map(new Function<JsonResponse<List<Transaction>>, List<Transaction>>() {
+                      @Override
+                      public List<Transaction> apply(
+                                @NonNull JsonResponse<List<Transaction>> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getData();
+                          } else {
+                              throw new TransactionException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<Transaction> getTransactionById(String id, String userid, String token) {
+        TransactionService transactionService = mServiceGenerator
+                  .getService(TransactionService.class);
+        if (transactionService == null) {
+            return null;
+        }
+        return transactionService.getTransactionById(id, userid, token)
+                  .map(new Function<JsonResponse<Transaction>, Transaction>() {
+                      @Override
+                      public Transaction apply(
+                                @NonNull JsonResponse<Transaction> transactionJsonResponse)
+                                throws Exception {
+                          if (transactionJsonResponse.getStatus().equals("success")) {
+                              return transactionJsonResponse.getData();
+                          } else {
+                              throw new TransactionException(transactionJsonResponse.getMessage());
+                          }
+                          
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<List<Transaction>> getTransaction(String userid, String token) {
+        TransactionService transactionService = mServiceGenerator
+                  .getService(TransactionService.class);
+        if (transactionService == null) {
+            return null;
+        }
+        return transactionService.getTransaction(userid, token)
+                  .map(new Function<JsonResponse<List<Transaction>>, List<Transaction>>() {
+                      @Override
+                      public List<Transaction> apply(
+                                @NonNull JsonResponse<List<Transaction>> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getData();
+                          } else {
+                              throw new TransactionException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<List<Transaction>> getTransactionByType(String userid, String token, String type,
+              String walletId) {
+        TransactionService transactionService = mServiceGenerator
+                  .getService(TransactionService.class);
+        if (transactionService == null) {
+            return null;
+        }
+        return transactionService.getTransactionByCategory(walletId, userid, token, type)
+                  .map(new Function<JsonResponse<List<Transaction>>, List<Transaction>>() {
+                      @Override
+                      public List<Transaction> apply(
+                                @NonNull JsonResponse<List<Transaction>> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getData();
+                          } else {
+                              throw new TransactionException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<List<Transaction>> getTransactionByTime(String userid, String token, String startDate,
+              String endDate, String walletId) {
+        TransactionService transactionService = mServiceGenerator
+                  .getService(TransactionService.class);
+        if (transactionService == null) {
+            return null;
+        }
+        return transactionService
+                  .getTransactionByTime(walletId, userid, token, startDate, endDate)
+                  .map(new Function<JsonResponse<List<Transaction>>, List<Transaction>>() {
+                      @Override
+                      public List<Transaction> apply(
+                                @NonNull JsonResponse<List<Transaction>> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getData();
+                          } else {
+                              throw new TransactionException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> addTransaction(String userid, String token, Transaction transaction) {
+        TransactionService transactionService = mServiceGenerator
+                  .getService(TransactionService.class);
+        if (transactionService == null) {
+            return null;
+        }
+        return transactionService.addTransaction(userid, token, transaction)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          MyLogger.d(TAG, stringJsonResponse);
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getMessage();
+                          } else {
+                              throw new TransactionException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> updateTransaction(String userid, String token,
+              Transaction transaction) {
+        TransactionService transactionService = mServiceGenerator
+                  .getService(TransactionService.class);
+        if (transactionService == null) {
+            return null;
+        }
+        return transactionService.updateTransaction(userid, token, transaction)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getMessage();
+                          } else {
+                              throw new TransactionException(stringJsonResponse.getMessage());
                           }
                       }
                   });
