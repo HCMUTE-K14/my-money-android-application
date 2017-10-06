@@ -33,8 +33,6 @@ import javax.inject.Inject;
 public class FragmentEventFinished extends BaseFragment implements EventContract.View,
                                                                    MyRecyclerViewEventAdapter.ItemClickListener {
     
-    public MyRecyclerViewEventAdapter mMyRecyclerViewEventAdapter;
-    
     @BindView(R.id.progress_bar_event)
     ProgressBar mProgressBar;
     @BindView(R.id.recycler_view_event_finished)
@@ -42,10 +40,12 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
     
-    @Inject
-    EventPresenter mEventPresenter;
     private EmptyAdapter mEmptyAdapter;
     private List<Event> mEventList;
+    private MyRecyclerViewEventAdapter mMyRecyclerViewEventAdapter;
+    
+    @Inject
+    EventPresenter mEventPresenter;
     
     @Override
     protected int getLayoutId() {
@@ -55,9 +55,6 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        
-        
     }
     
     @Override
@@ -91,25 +88,22 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
         mPresenter = mEventPresenter;
         mEventPresenter.setView(this);
     }
-
-    public void initView() {
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
-    }
-
+    
     @Override
     protected void initializeActionBar(View rootView) {
         
     }
+    
     @Override
     protected void initialize() {
-        initView();
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         mEventList = new ArrayList<>();
         mEventPresenter.getEvent();
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mEventList.clear();
-                if(mMyRecyclerViewEventAdapter!=null){
+                if (mMyRecyclerViewEventAdapter != null) {
                     mMyRecyclerViewEventAdapter.notifyDataSetChanged();
                 }
                 mEventPresenter.getEvent();
@@ -134,8 +128,6 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
     
     @Override
     public void onSuccessGetListEvent(List<Event> events) {
-        // MyLogger.d("event",events.size());
-        
         if (!events.isEmpty()) {
             for (Event event : events) {
                 if (event.getStatus().equals("1")) {
@@ -173,7 +165,7 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
     
     @Override
     public void loading(boolean isLoading) {
-         mProgressBar.setVisibility(isLoading?View.VISIBLE:View.GONE);
+        mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
     
     @Override
@@ -182,7 +174,7 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
         intent.putExtra("event", event);
         getActivity().startActivityForResult(intent, 16);
     }
-
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
@@ -215,10 +207,10 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
         }
         if (requestCode == 15) {
             if (resultCode == Activity.RESULT_CANCELED) {
-
-                if(mEventList.isEmpty()){
+                
+                if (mEventList.isEmpty()) {
                     mEventPresenter.getEvent();
-                }else {
+                } else {
                     mEventList.clear();
                     mMyRecyclerViewEventAdapter.notifyDataSetChanged();
                     mEventPresenter.getEvent();

@@ -49,17 +49,16 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     @BindView(R.id.linear_wallet)
     LinearLayout linear_wallet;
     
-    @Inject
-    SavingPresenter mSavingPresenter;
-    
-    @Inject
-    PreferencesHelper mPreferencesHelper;
     private Wallet mWallet;
-    
-    
     private String value = "-1";
     private Saving mSaving;
     private Wallet mWalletTemp;
+    
+    @Inject
+    SavingPresenter mSavingPresenter;
+    @Inject
+    PreferencesHelper mPreferencesHelper;
+    
     
     @Override
     public int getLayoutId() {
@@ -83,48 +82,9 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
         getData();
         showData();
-        
-        
     }
-    
-    public void getData() {
-        Intent intent = getIntent();
-        value = intent.getStringExtra("value");
-        mSaving = intent.getParcelableExtra("saving");
-        // mWalleName = intent.getStringExtra("wallet_name");
-        mWalletTemp = intent.getParcelableExtra("wallet");
-    }
-    
-    public void showData() {
-        txt_name_saving.setText(mSaving.getName());
-        double remainin = Double.parseDouble(mSaving.getGoalMoney()) -
-                          Double.parseDouble(mSaving.getCurrentMoney());
-        txt_remainin.setText("+" + TextUtil.doubleToString(remainin) + " " +
-                             mSaving.getCurrencies().getCurSymbol());
-        if (value.equals("1")) {
-            edit_describe.setText(getString(R.string.deposit));
-        } else {
-            edit_describe.setText(getString(R.string.withdraw));
-        }
-        //wallet
-        if (mSaving.getIdWallet().equals("")) {
-            mWallet = mPreferencesHelper.getCurrentWallet();
-            if(mWallet!=null){
-                txt_wallet_name.setText(mWallet.getWalletName());
-            }
-            linear_wallet.setEnabled(true);
-        } else {
-            mWallet = mWalletTemp;
-            txt_wallet_name.setText(mWallet.getWalletName());
-            mWallet.setWalletid(mWallet.getWalletid());
-            linear_wallet.setEnabled(false);
-        }
-        
-    }
-    
     @Override
     protected void onDestroy() {
         mSavingPresenter.unSubscribe();
@@ -141,14 +101,6 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     protected void initializeActionBar(View rootView) {
         
     }
-    
-    @OnClick(R.id.linear_money)
-    public void onClickLinearMoney(View view) {
-        Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money", "0");
-        startActivityForResult(intent, 9);
-    }
-    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
@@ -174,7 +126,70 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
             }
         }
     }
+    @Override
+    public void showListSaving(List<Saving> savings) {
+        
+    }
     
+    @Override
+    public void showSaving() {
+        
+    }
+    
+    @Override
+    public void onSuccessCreateSaving() {
+        
+    }
+    
+    @Override
+    public void onSuccessDeleteSaving() {
+        
+    }
+    
+    @Override
+    public void onSuccessUpdateSaving() {
+        
+    }
+    
+    @Override
+    public void onSuccessTakeIn() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("saving", mSaving);
+        if (!mSaving.equals("")) {
+            returnIntent.putExtra("wallet", mWallet);
+        }
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+        
+    }
+    
+    @Override
+    public void onSuccessTakeOut() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("saving", mSaving);
+        if (!mSaving.equals("")) {
+            returnIntent.putExtra("wallet", mWallet);
+        }
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+    }
+    
+    @Override
+    public void showError(String message) {
+        alertDiaglog(message);
+    }
+    
+    @Override
+    public void loading(boolean isLoading) {
+        
+    }
+    /*Area OnClick*/
+    @OnClick(R.id.linear_money)
+    public void onClickLinearMoney(View view) {
+        Intent intent = new Intent(this, CalculatorActivity.class);
+        intent.putExtra("goal_money", "0");
+        startActivityForResult(intent, 9);
+    }
     @OnClick(R.id.back_button_saving)
     public void onClickBack(View view) {
         finish();
@@ -187,7 +202,6 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
             startActivityForResult(intent, 10);
         }
     }
-    
     @OnClick(R.id.txt_save_transaction)
     public void onClickSave(View view) {
         if (txt_money.getText().toString().trim().equals("0")) {
@@ -257,14 +271,47 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
                 mSaving.setCurrentMoney(String.valueOf(moneySaving));
                 
                 //take out
-                mSavingPresenter.takeIn(mWallet.getWalletid(), mSaving.getSavingid(),
+                mSavingPresenter.takeOut(mWallet.getWalletid(), mSaving.getSavingid(),
                           String.valueOf(moneyWallet), String.valueOf(moneySaving));
             }
             return;
         }
         
     }
+    /*Area Function*/
+    public void getData() {
+        Intent intent = getIntent();
+        value = intent.getStringExtra("value");
+        mSaving = intent.getParcelableExtra("saving");
+        mWalletTemp = intent.getParcelableExtra("wallet");
+    }
     
+    public void showData() {
+        txt_name_saving.setText(mSaving.getName());
+        double remainin = Double.parseDouble(mSaving.getGoalMoney()) -
+                          Double.parseDouble(mSaving.getCurrentMoney());
+        txt_remainin.setText("+" + TextUtil.doubleToString(remainin) + " " +
+                             mSaving.getCurrencies().getCurSymbol());
+        if (value.equals("1")) {
+            edit_describe.setText(getString(R.string.deposit));
+        } else {
+            edit_describe.setText(getString(R.string.withdraw));
+        }
+        //wallet
+        if (mSaving.getIdWallet().equals("")) {
+            mWallet = mPreferencesHelper.getCurrentWallet();
+            if(mWallet!=null){
+                txt_wallet_name.setText(mWallet.getWalletName());
+            }
+            linear_wallet.setEnabled(true);
+        } else {
+            mWallet = mWalletTemp;
+            txt_wallet_name.setText(mWallet.getWalletName());
+            mWallet.setWalletid(mWallet.getWalletid());
+            linear_wallet.setEnabled(false);
+        }
+        
+    }
     public boolean checkTakeIn() {
         double money = Double.parseDouble(txt_money.getText().toString().trim());
         if (money > Double.parseDouble(mWallet.getMoney())) {
@@ -302,73 +349,4 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
-    
-    @Override
-    public void showListSaving(List<Saving> savings) {
-        
-    }
-    
-    @Override
-    public void showSaving() {
-        
-    }
-    
-    @Override
-    public void onSuccessCreateSaving() {
-        
-    }
-    
-    @Override
-    public void onSuccessDeleteSaving() {
-        
-    }
-    
-    @Override
-    public void onSuccessUpdateSaving() {
-        
-    }
-    
-    @Override
-    public void onSuccessTakeIn() {
-        // alertDiaglog(getString(R.string.deposit_success));
-        
-       /* double moneyUpdate = Double.parseDouble(mSaving.getCurrentMoney()) +
-                             Double.parseDouble(txt_money.getText().toString().trim());
-        mSaving.setCurrentMoney(moneyUpdate + "");*/
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("saving", mSaving);
-        if (!mSaving.equals("")) {
-            returnIntent.putExtra("wallet", mWallet);
-        }
-        setResult(Activity.RESULT_OK, returnIntent);
-        finish();
-        
-    }
-    
-    @Override
-    public void onSuccessTakeOut() {
-        // alertDiaglog(getString(R.string.withdraw_success));
-        
-       /* double moneyUpdate = Double.parseDouble(mSaving.getCurrentMoney()) -
-                             Double.parseDouble(txt_money.getText().toString().trim());
-        mSaving.setCurrentMoney(moneyUpdate + "");*/
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("saving", mSaving);
-        if (!mSaving.equals("")) {
-            returnIntent.putExtra("wallet", mWallet);
-        }
-        setResult(Activity.RESULT_OK, returnIntent);
-        finish();
-    }
-    
-    @Override
-    public void showError(String message) {
-        alertDiaglog(message);
-    }
-    
-    @Override
-    public void loading(boolean isLoading) {
-        
-    }
-    
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface SavingContract {
     
-    public interface View extends BaseView {
+    interface View extends BaseView {
         
         void showListSaving(List<Saving> savings);
         
@@ -32,7 +32,7 @@ public interface SavingContract {
         
     }
     
-    public interface Presenter {
+    interface Presenter {
         
         void getSaving();
         

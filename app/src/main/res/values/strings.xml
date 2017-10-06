@@ -234,4 +234,5 @@
   <string name="txt_add_saving_fail">Add saving fail.</string>
   <string name="txt_success">Success!</string>
   <string name="txt_fail">Fail!</string>
+  <string name="txt_invalid_input">Invalid input</string>
 </resources>

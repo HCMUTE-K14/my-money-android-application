@@ -15,7 +15,6 @@ import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.adapter.PagerAdapterEvent;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 
 /**
  * Created by infamouSs on 9/25/17.
@@ -27,10 +26,8 @@ public class EventMainFragment extends BaseFragment {
     
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
-    
     @BindView(R.id.pager)
     ViewPager mViewPager;
-    
     @BindView(R.id.btn_add_event)
     FloatingActionButton btn_add_event;
     
@@ -63,13 +60,36 @@ public class EventMainFragment extends BaseFragment {
         initializeView();
     }
     
-    private void initializeView() {
-        mPagerAdapterEvent = new PagerAdapterEvent(this.getFragmentManager(), 0);
-        if(mPagerAdapterEvent==null){
-            MyLogger.d(TAG,"Null adapter event");
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 22) {
+            if (resultCode == Activity.RESULT_OK) {
+                mPagerAdapterEvent.getItem(0).onActivityResult(requestCode, resultCode, data);
+            }
         }
+        if (requestCode == 15) {
+            mPagerAdapterEvent.getItem(currentPositionFragment)
+                      .onActivityResult(requestCode, resultCode, data);
+            if (resultCode == Activity.RESULT_CANCELED) {
+                mPagerAdapterEvent.getItem(1).onActivityResult(requestCode, resultCode, data);
+            }
+        }
+        if (requestCode == 16) {
+            mPagerAdapterEvent.getItem(currentPositionFragment)
+                      .onActivityResult(requestCode, resultCode, data);
+        }
+    }
+    /*OnClick*/
+    @OnClick(R.id.btn_add_event)
+    public void onClickAddEvent(View view) {
+        Intent intent = new Intent(this.getActivity(), ActivityAddEvent.class);
+        getActivity().startActivityForResult(intent, 22);
+    }
+    /*Area Funcion*/
+    private void initializeView() {
+        mPagerAdapterEvent = new PagerAdapterEvent(this.getFragmentManager());
         mViewPager.setAdapter(mPagerAdapterEvent);
-        
+    
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
@@ -77,53 +97,22 @@ public class EventMainFragment extends BaseFragment {
                 mViewPager.setCurrentItem(tab.getPosition());
                 currentPositionFragment = tab.getPosition();
             }
-            
+        
             @Override
             public void onTabUnselected(Tab tab) {
-                
-            }
             
+            }
+        
             @Override
             public void onTabReselected(Tab tab) {
-                
+            
             }
         });
         initTablayout();
     }
-    
-    
-    
     public void initTablayout() {
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
-    
-    @OnClick(R.id.btn_add_event)
-    public void onClickAddEvent(View view) {
-        Intent intent = new Intent(this.getActivity(), ActivityAddEvent.class);
-        getActivity().startActivityForResult(intent, 22);
-    }
-    
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 22) {
-            if (resultCode == Activity.RESULT_OK) {
-                mPagerAdapterEvent.getFragment(0).onActivityResult(requestCode, resultCode, data);
-            }
-        }
-        if (requestCode == 15) {
-            mPagerAdapterEvent.getFragment(currentPositionFragment)
-                      .onActivityResult(requestCode, resultCode, data);
-            if (resultCode == Activity.RESULT_CANCELED) {
-                mPagerAdapterEvent.getFragment(1).onActivityResult(requestCode, resultCode, data);
-            }
-        }
-        if (requestCode == 16) {
-            mPagerAdapterEvent.getFragment(currentPositionFragment)
-                      .onActivityResult(requestCode, resultCode, data);
-        }
-    }
-    
-    
 }

@@ -8,7 +8,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 import butterknife.BindView;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
@@ -21,7 +20,6 @@ import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.EmptyAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.adapter.MyRecyclerViewSavingAdapter;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -42,11 +40,12 @@ public class FragmentRunning extends BaseFragment implements
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
     
-    @Inject
-    SavingPresenter mSavingPresenter;
     private List<Saving> mSavingList;
     private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
     private EmptyAdapter mEmptyAdapter;
+    
+    @Inject
+    SavingPresenter mSavingPresenter;
     
     @Override
     protected int getLayoutId() {
@@ -72,11 +71,12 @@ public class FragmentRunning extends BaseFragment implements
         mPresenter = this.mSavingPresenter;
         mSavingPresenter.setView(this);
     }
+    
     @Override
     protected void initializeActionBar(View rootView) {
-       
         
     }
+    
     @Override
     protected void initialize() {
         init();
@@ -86,7 +86,7 @@ public class FragmentRunning extends BaseFragment implements
             @Override
             public void onRefresh() {
                 mSavingList.clear();
-                if(mMyRecyclerViewSavingAdapter!=null){
+                if (mMyRecyclerViewSavingAdapter != null) {
                     mMyRecyclerViewSavingAdapter.notifyDataSetChanged();
                 }
                 mSavingPresenter.getSaving();
@@ -94,17 +94,12 @@ public class FragmentRunning extends BaseFragment implements
         });
     }
     
-    public void init() {
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        mSavingList = new ArrayList<>();
-    }
-    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 String savingId = data.getStringExtra("result");
-
+                
                 if (!mSavingList.isEmpty()) {
                     for (Saving saving : mSavingList) {
                         if (saving.getSavingid().equals(savingId)) {
@@ -130,14 +125,14 @@ public class FragmentRunning extends BaseFragment implements
         if (requestCode == 12) {
             if (resultCode == Activity.RESULT_OK) {
                 Saving saving = data.getParcelableExtra("resultAdd");
-                if(mSavingList.isEmpty()){
+                if (mSavingList.isEmpty()) {
                     
                     mSavingList.add(saving);
                     mMyRecyclerViewSavingAdapter = new MyRecyclerViewSavingAdapter(getContext(),
                               mSavingList);
                     mMyRecyclerViewSavingAdapter.setClickListener(this);
                     mRecyclerView.setAdapter(mMyRecyclerViewSavingAdapter);
-                }else {
+                } else {
                     mSavingList.add(saving);
                     mMyRecyclerViewSavingAdapter.setList(mSavingList);
                 }
@@ -148,9 +143,6 @@ public class FragmentRunning extends BaseFragment implements
     
     @Override
     public void showListSaving(List<Saving> savings) {
-        // mSavingList=savings;
-        MyLogger.d("sdfkjdajklfdsakdsklalsdalfds");
-        MyLogger.d("size",savings.size());
         if (!savings.isEmpty()) {
             
             for (Saving saving : savings) {
@@ -164,11 +156,11 @@ public class FragmentRunning extends BaseFragment implements
                 mMyRecyclerViewSavingAdapter.setClickListener(this);
                 mRecyclerView.setAdapter(mMyRecyclerViewSavingAdapter);
             } else {
-                mEmptyAdapter = new EmptyAdapter(getContext(),getString(R.string.txt_no_saving));
+                mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_saving));
                 mRecyclerView.setAdapter(mEmptyAdapter);
             }
         } else {
-            mEmptyAdapter = new EmptyAdapter(getContext(),getString(R.string.txt_no_saving));
+            mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_saving));
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
         
@@ -231,8 +223,6 @@ public class FragmentRunning extends BaseFragment implements
     
     @Override
     public void onItemClick(View view, List<Saving> savingList, int position, int process) {
-        MyLogger.d("deso===========", savingList.get(position).getName());
-        
         Saving saving = savingList.get(position);
         Intent intent = new Intent(this.getContext(), InfoSavingActivity.class);
         if (saving != null) {
@@ -241,7 +231,10 @@ public class FragmentRunning extends BaseFragment implements
             
         }
         getActivity().startActivityForResult(intent, 1);
-        
-        Toast.makeText(getContext(), position + "", Toast.LENGTH_LONG).show();
+    }
+    
+    public void init() {
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        mSavingList = new ArrayList<>();
     }
 }

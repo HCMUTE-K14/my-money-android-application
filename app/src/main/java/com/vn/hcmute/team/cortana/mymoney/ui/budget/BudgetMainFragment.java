@@ -21,6 +21,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.budget.adapter.PagerAdapterBudget;
  */
 
 public class BudgetMainFragment extends BaseFragment {
+    
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
     @BindView(R.id.pager)
@@ -40,30 +41,6 @@ public class BudgetMainFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         initializeView();
     }
-    private void initializeView() {
-        mPagerAdapterBudget = new PagerAdapterBudget(this.getFragmentManager());
-    
-        mViewPager.setAdapter(mPagerAdapterBudget);
-    
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-        mTabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(Tab tab) {
-                mViewPager.setCurrentItem(tab.getPosition());
-            }
-        
-            @Override
-            public void onTabUnselected(Tab tab) {
-            
-            }
-        
-            @Override
-            public void onTabReselected(Tab tab) {
-            
-            }
-        });
-        initTablayout();
-    }
     
     @Override
     protected void initializeDagger() {
@@ -79,28 +56,55 @@ public class BudgetMainFragment extends BaseFragment {
     protected void initializeActionBar(View rootView) {
         getActivity().setTitle(getString(R.string.txt_budget));
     }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 30) {
+            if (resultCode == Activity.RESULT_OK) {
+                mPagerAdapterBudget.getItem(0).onActivityResult(requestCode, resultCode, data);
+            }
+        }
+        if (requestCode == 34) {
+            mPagerAdapterBudget.getItem(0).onActivityResult(requestCode, resultCode, data);
+        }
+        if (requestCode == 35) {
+            mPagerAdapterBudget.getItem(1).onActivityResult(requestCode, resultCode, data);
+        }
+    }
+    
+    @OnClick(R.id.btn_add_budget)
+    public void onClickAddBudget(View view) {
+        Intent intent = new Intent(getActivity(), AddBudgetActivity.class);
+        getActivity().startActivityForResult(intent, 30);
+    }
+    
+    private void initializeView() {
+        mPagerAdapterBudget = new PagerAdapterBudget(this.getFragmentManager());
+        
+        mViewPager.setAdapter(mPagerAdapterBudget);
+        
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
+            }
+            
+            @Override
+            public void onTabUnselected(Tab tab) {
+                
+            }
+            
+            @Override
+            public void onTabReselected(Tab tab) {
+                
+            }
+        });
+        initTablayout();
+    }
     public void initTablayout() {
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-    }
-    @OnClick(R.id.btn_add_budget)
-    public void onClickAddBudget(View view ){
-        Intent intent=new Intent(getActivity(),AddBudgetActivity.class);
-        getActivity().startActivityForResult(intent,30);
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==30){
-            if(resultCode == Activity.RESULT_OK){
-                mPagerAdapterBudget.getItem(0).onActivityResult(requestCode,resultCode,data);
-            }
-        }
-        if(requestCode==34){
-            mPagerAdapterBudget.getItem(0).onActivityResult(requestCode,resultCode,data);
-        }
-        if(requestCode==35){
-            mPagerAdapterBudget.getItem(1).onActivityResult(requestCode,resultCode,data);
-        }
     }
 }

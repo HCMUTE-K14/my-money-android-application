@@ -55,15 +55,13 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     @BindView(R.id.image_icon_event)
     ImageView image_icon_event;
     
+    private Event mEvent;
+    private List<Wallet> mWalletList;
+    
     @Inject
     EventPresenter mEventPresenter;
     @Inject
     WalletUseCase mWalletUseCase;
-    
-    private Event mEvent;
-    
-    private List<Wallet> mWalletList;
-    
     
     @Override
     public int getLayoutId() {
@@ -122,34 +120,52 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
         super.onDestroy();
     }
     
-    public void getData() {
-        Intent intent = getIntent();
-        mEvent = intent.getParcelableExtra("event");
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 17) {
+            if (resultCode == Activity.RESULT_OK) {
+                mEvent = data.getParcelableExtra("event");
+                String walletName = data.getStringExtra("name_wallet");
+                txt_name_wallet.setText(walletName);
+                showData();
+            }
+        }
     }
     
-    public void showData() {
-        txt_name_event.setText(mEvent.getName());
-        txt_date_saving.setText(DateUtil.convertTimeMillisToDate(mEvent.getDate()));
-        
-        txt_time_rest.setText(getString(R.string.days_left,
-                  DateUtil.getDateLeft(Long.parseLong(mEvent.getDate())) + ""));
-        if (mEvent.getIdWallet().trim().equals("")) {
-            txt_name_wallet.setText(getString(R.string.all_wallet));
-        }
-        if (mEvent.getStatus().equals("0")) {
-            linear_mark_as_finished.setVisibility(View.VISIBLE);
-        } else {
-            linear_mark_as_finished.setVisibility(View.GONE);
-        }
-        GlideApp.with(this)
-                  .load(DrawableUtil.getDrawable(this, mEvent.getIcon()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(image_icon_event);
+    @Override
+    public void onSuccessCreateEvent(String message) {
         
     }
     
+    @Override
+    public void onSuccessUpdateEvent(String message) {
+        linear_mark_as_finished.setVisibility(View.GONE);
+    }
+    
+    @Override
+    public void onSuccessDeleteEvent(String message) {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result", mEvent.getEventid());
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+    }
+    
+    @Override
+    public void onSuccessGetListEvent(List<Event> events) {
+        
+    }
+    
+    @Override
+    public void onFailure(String message) {
+        
+    }
+    
+    @Override
+    public void loading(boolean isLoading) {
+        
+    }
+    
+    /*Area OnClick*/
     @OnClick(R.id.btn_mark_as_finished)
     public void onClickMarkAsFinished(View view) {
         mEvent.setStatus("1");
@@ -166,11 +182,6 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
         onDone();
     }
     
-    private void onDone(){
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
-        finish();
-    }
     
     @OnClick(R.id.image_view_edit)
     public void onClickEdit(View view) {
@@ -199,6 +210,35 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
             }
         });
         doneDialog.create().show();
+    }
+    
+    /*Area Function*/
+    public void getData() {
+        Intent intent = getIntent();
+        mEvent = intent.getParcelableExtra("event");
+    }
+    
+    public void showData() {
+        txt_name_event.setText(mEvent.getName());
+        txt_date_saving.setText(DateUtil.convertTimeMillisToDate(mEvent.getDate()));
+        
+        txt_time_rest.setText(getString(R.string.days_left,
+                  DateUtil.getDateLeft(Long.parseLong(mEvent.getDate())) + ""));
+        if (mEvent.getIdWallet().trim().equals("")) {
+            txt_name_wallet.setText(getString(R.string.all_wallet));
+        }
+        if (mEvent.getStatus().equals("0")) {
+            linear_mark_as_finished.setVisibility(View.VISIBLE);
+        } else {
+            linear_mark_as_finished.setVisibility(View.GONE);
+        }
+        GlideApp.with(this)
+                  .load(DrawableUtil.getDrawable(this, mEvent.getIcon()))
+                  .placeholder(R.drawable.folder_placeholder)
+                  .error(R.drawable.folder_placeholder)
+                  .dontAnimate()
+                  .into(image_icon_event);
+        
     }
     
     public String getNameWallet(List<Wallet> wallets) {
@@ -243,48 +283,9 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
         
     }
     
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 17) {
-            if (resultCode == Activity.RESULT_OK) {
-                mEvent = data.getParcelableExtra("event");
-                String walletName = data.getStringExtra("name_wallet");
-                txt_name_wallet.setText(walletName);
-                showData();
-            }
-        }
-    }
-    
-    @Override
-    public void onSuccessCreateEvent(String message) {
-        
-    }
-    
-    @Override
-    public void onSuccessUpdateEvent(String message) {
-        linear_mark_as_finished.setVisibility(View.GONE);
-    }
-    
-    @Override
-    public void onSuccessDeleteEvent(String message) {
+    private void onDone() {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("result", mEvent.getEventid());
-        setResult(Activity.RESULT_OK, returnIntent);
+        setResult(Activity.RESULT_CANCELED, returnIntent);
         finish();
-    }
-    
-    @Override
-    public void onSuccessGetListEvent(List<Event> events) {
-        
-    }
-    
-    @Override
-    public void onFailure(String message) {
-        
-    }
-    
-    @Override
-    public void loading(boolean isLoading) {
-        
     }
 }

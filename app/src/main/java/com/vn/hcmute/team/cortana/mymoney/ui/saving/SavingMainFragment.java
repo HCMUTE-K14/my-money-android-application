@@ -23,17 +23,13 @@ public class SavingMainFragment extends BaseFragment {
     
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
-    
     @BindView(R.id.pager)
     ViewPager mViewPager;
-    
     @BindView(R.id.btn_add_saving)
     FloatingActionButton btn_add_saving;
     
-    private int mCurrentPositionFragment = 0;
-    
     private PagerAdapter mPagerAdapter;
-    
+    private int mCurrentPositionFragment = 0;
     
     @Override
     protected int getLayoutId() {
@@ -54,13 +50,6 @@ public class SavingMainFragment extends BaseFragment {
     protected void initializeActionBar(View rootView) {
         getActivity().setTitle(getString(R.string.txt_savings));
     }
-    
-    @OnClick(R.id.btn_add_saving)
-    public void onClickAddSaving(View view) {
-        Intent intent = new Intent(this.getActivity(), AddSavingActivity.class);
-        getActivity().startActivityForResult(intent, 12);
-    }
-    
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -83,7 +72,11 @@ public class SavingMainFragment extends BaseFragment {
                       .onActivityResult(requestCode, resultCode, data);
         }
     }
-    
+    @OnClick(R.id.btn_add_saving)
+    public void onClickAddSaving(View view) {
+        Intent intent = new Intent(this.getActivity(), AddSavingActivity.class);
+        getActivity().startActivityForResult(intent, 12);
+    }
     private void initializeView() {
         mPagerAdapter = new PagerAdapter(this.getFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);

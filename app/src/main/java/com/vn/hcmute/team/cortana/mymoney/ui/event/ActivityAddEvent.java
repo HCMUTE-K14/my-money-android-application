@@ -44,7 +44,8 @@ import javax.inject.Inject;
 
 public class ActivityAddEvent extends BaseActivity implements EventContract.View {
     
-    static final int DATE_DIALOG_ID = 999;
+    private static final int DATE_DIALOG_ID = 999;
+    
     @BindView(R.id.edit_text_name_event)
     EditText edit_text_name_event;
     @BindView(R.id.txt_date_event)
@@ -57,20 +58,20 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
     TextView txt_wallet_event;
     @BindView(R.id.image_view_icon_event)
     ImageView image_view_icon_event;
-              
-    int day, month, year;
-    private String icon_event_defaut;
+    
+    private int day, month, year;
+    private String mIconEventDefault;
+    private Currencies mCurrencies;
+    private Wallet mWallet;
+    private Event mEvent;
+    
     @Inject
     EventPresenter mEventPresenter;
     @Inject
     PreferencesHelper mPreferencesHelper;
-    private Currencies mCurrencies;
-    private Wallet mWallet;
-    private Event mEvent;
-    private DatePickerDialog.OnDateSetListener datePickerListener
+    
+    private DatePickerDialog.OnDateSetListener mDatePickerListener
               = new DatePickerDialog.OnDateSetListener() {
-        
-        // when dialog box is closed, below method will be called.
         public void onDateSet(DatePicker view, int selectedYear,
                   int selectedMonth, int selectedDay) {
             year = selectedYear;
@@ -78,7 +79,6 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
             day = selectedDay;
             
             updateDate();
-            
         }
     };
     
@@ -111,6 +111,7 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
     protected void initializeActionBar(View rootView) {
         
     }
+    
     @Override
     protected void initialize() {
         initDatePicker();
@@ -119,146 +120,16 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
         showIcon();
     }
     
-    public void init() {
-        mEvent = new Event();
-        mCurrencies = new Currencies();
-        setCurrenciesDefault();
-        mWallet = new Wallet();
-        icon_event_defaut="icon_travel";
-    }
-    
-    public void initView() {
-        txt_date_event.setText(getString(R.string.ending_date));
-        txt_date_event.setTextColor(ContextCompat.getColor(this, R.color.gray));
-        ic_clear_date.setVisibility(View.GONE);
-        
-    }
-    public void showIcon(){
-        GlideApp.with(this)
-                  .load(DrawableUtil.getDrawable(this, icon_event_defaut))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(image_view_icon_event);
-    }
-    public void setCurrenciesDefault() {
-        mCurrencies.setCurId("4");
-        mCurrencies.setCurName("Việt Nam Đồng");
-        mCurrencies.setCurCode("VND");
-        mCurrencies.setCurSymbol("₫");
-        mCurrencies.setCurDisplayType("cur_display_type");
-    }
-    
-    @OnClick(R.id.ic_cancel_event)
-    public void onClickCancel(View view) {
-        finish();
-    }
-    
-    @OnClick(R.id.linear_select_date)
-    public void onClickDate(View view) {
-        showDialog(DATE_DIALOG_ID);
-    }
-    
-    @OnClick(R.id.linear_currencies)
-    public void onClickSelectCurrency(View view) {
-        Intent intent = new Intent(this, CurrenciesActivity.class);
-        startActivityForResult(intent, 20);
-    }
-    
-    @OnClick(R.id.linear_wallet)
-    public void onClickSelectWallet(View view) {
-        Intent intent = new Intent(this, MyWalletActivity.class);
-        startActivityForResult(intent, 21);
-    }
-    
-    @OnClick(R.id.txt_edit_event)
-    public void onClickSaveAddEvent() {
-        if (edit_text_name_event.getText().toString().trim().equals("")) {
-            alertDiaglog(getString(R.string.enter_your_name));
-            return;
-        }
-        if (txt_date_event.getText().toString().trim().equals(getString(R.string.ending_date))) {
-            alertDiaglog(getString(R.string.select_date));
-            return;
-        }
-        //set event
-        setEvent();
-        
-        mEventPresenter.createEvent(mEvent);
-    }
-    @OnClick(R.id.linear_icon_event)
-    public void onClickLinearIcon(View view){
-        Intent intent=new Intent(this, SelectIconActivity.class);
-        startActivityForResult(intent,27);
-    }
-    public void setEvent() {
-        mEvent.setEventid(SecurityUtil.getRandomUUID());
-        mEvent.setName(edit_text_name_event.getText().toString().trim());
-        mEvent.setCurrencies(mCurrencies);
-        mEvent.setDate(getDate());
-        mEvent.setIdWallet(mWallet.getWalletid());
-        mEvent.setUserid(mPreferencesHelper.getUserId());
-        mEvent.setMoney("0");
-        mEvent.setStatus("0");
-        mEvent.setIcon(icon_event_defaut);
-    }
-    
-    public String getDate() {
-        String[] arr = txt_date_event.getText().toString().trim().split("/");
-        int a = Integer.parseInt(arr[0]);
-        int b = Integer.parseInt(arr[1]);
-        int c = Integer.parseInt(arr[2]);
-        long timeTimeMillis = DateUtil.getLongAsDate(a, b, c);
-        return String.valueOf(timeTimeMillis);
-    }
-    
-    @OnClick(R.id.ic_clear_date)
-    public void onClickClearDate(View view) {
-        txt_date_event.setText(getString(R.string.ending_date));
-        txt_date_event.setTextColor(ContextCompat.getColor(this, R.color.gray));
-        ic_clear_date.setVisibility(View.GONE);
-    }
-    
-    public void initDatePicker() {
-        final Calendar c = Calendar.getInstance();
-        year = c.get(Calendar.YEAR);
-        month = c.get(Calendar.MONTH);
-        day = c.get(Calendar.DAY_OF_MONTH);
-    }
-    
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case DATE_DIALOG_ID:
-                return new DatePickerDialog(this, datePickerListener,
+                return new DatePickerDialog(this, mDatePickerListener,
                           year, month, day);
         }
         return null;
     }
     
-    public void updateDate() {
-        txt_date_event.setText(new StringBuilder().append(day)
-                  .append("/").append(month + 1).append("/").append(year));
-        txt_date_event.setTextColor(ContextCompat.getColor(this, R.color.black));
-        ic_clear_date.setVisibility(View.VISIBLE);
-    }
-    
-    public void alertDiaglog(String message) {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage(message);
-        builder1.setCancelable(true);
-        builder1.setPositiveButton(
-                  getString(R.string.txt_ok),
-                  new DialogInterface.OnClickListener() {
-                      public void onClick(DialogInterface dialog, int id) {
-                          dialog.cancel();
-                      }
-                  });
-        
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-        
-    }
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -274,11 +145,11 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
                 txt_wallet_event.setText(mWallet.getWalletName());
             }
         }
-        if(requestCode==27){
-            if(resultCode==Activity.RESULT_OK){
-                Icon icon=data.getParcelableExtra("icon");
-                if(icon!=null){
-                    icon_event_defaut=icon.getImage();
+        if (requestCode == 27) {
+            if (resultCode == Activity.RESULT_OK) {
+                Icon icon = data.getParcelableExtra("icon");
+                if (icon != null) {
+                    mIconEventDefault = icon.getImage();
                     showIcon();
                 }
                 
@@ -317,6 +188,144 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
     
     @Override
     public void loading(boolean isLoading) {
+        
+    }
+    
+    /*Area OnClick*/
+    @OnClick(R.id.ic_cancel_event)
+    public void onClickCancel(View view) {
+        finish();
+    }
+    
+    @OnClick(R.id.linear_select_date)
+    public void onClickDate(View view) {
+        showDialog(DATE_DIALOG_ID);
+    }
+    
+    @OnClick(R.id.linear_currencies)
+    public void onClickSelectCurrency(View view) {
+        Intent intent = new Intent(this, CurrenciesActivity.class);
+        startActivityForResult(intent, 20);
+    }
+    
+    @OnClick(R.id.linear_wallet)
+    public void onClickSelectWallet(View view) {
+        Intent intent = new Intent(this, MyWalletActivity.class);
+        startActivityForResult(intent, 21);
+    }
+    
+    @OnClick(R.id.txt_edit_event)
+    public void onClickSaveAddEvent() {
+        if (edit_text_name_event.getText().toString().trim().equals("")) {
+            alertDiaglog(getString(R.string.enter_your_name));
+            return;
+        }
+        if (txt_date_event.getText().toString().trim().equals(getString(R.string.ending_date))) {
+            alertDiaglog(getString(R.string.select_date));
+            return;
+        }
+        //set event
+        setEvent();
+        
+        mEventPresenter.createEvent(mEvent);
+    }
+    
+    @OnClick(R.id.linear_icon_event)
+    public void onClickLinearIcon(View view) {
+        Intent intent = new Intent(this, SelectIconActivity.class);
+        startActivityForResult(intent, 27);
+    }
+    
+    
+    @OnClick(R.id.ic_clear_date)
+    public void onClickClearDate(View view) {
+        txt_date_event.setText(getString(R.string.ending_date));
+        txt_date_event.setTextColor(ContextCompat.getColor(this, R.color.gray));
+        ic_clear_date.setVisibility(View.GONE);
+    }
+    
+    /*Area Function*/
+    public void init() {
+        mEvent = new Event();
+        mCurrencies = new Currencies();
+        setCurrenciesDefault();
+        mWallet = new Wallet();
+        mIconEventDefault = "icon_travel";
+    }
+    
+    public void initView() {
+        txt_date_event.setText(getString(R.string.ending_date));
+        txt_date_event.setTextColor(ContextCompat.getColor(this, R.color.gray));
+        ic_clear_date.setVisibility(View.GONE);
+        
+    }
+    
+    public void initDatePicker() {
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+    }
+    
+    public void showIcon() {
+        GlideApp.with(this)
+                  .load(DrawableUtil.getDrawable(this, mIconEventDefault))
+                  .placeholder(R.drawable.folder_placeholder)
+                  .error(R.drawable.folder_placeholder)
+                  .dontAnimate()
+                  .into(image_view_icon_event);
+    }
+    
+    public void setCurrenciesDefault() {
+        mCurrencies.setCurId("4");
+        mCurrencies.setCurName("Việt Nam Đồng");
+        mCurrencies.setCurCode("VND");
+        mCurrencies.setCurSymbol("₫");
+        mCurrencies.setCurDisplayType("cur_display_type");
+    }
+    
+    public void setEvent() {
+        mEvent.setEventid(SecurityUtil.getRandomUUID());
+        mEvent.setName(edit_text_name_event.getText().toString().trim());
+        mEvent.setCurrencies(mCurrencies);
+        mEvent.setDate(getDate());
+        mEvent.setIdWallet(mWallet.getWalletid());
+        mEvent.setUserid(mPreferencesHelper.getUserId());
+        mEvent.setMoney("0");
+        mEvent.setStatus("0");
+        mEvent.setIcon(mIconEventDefault);
+    }
+    
+    public String getDate() {
+        String[] arr = txt_date_event.getText().toString().trim().split("/");
+        int a = Integer.parseInt(arr[0]);
+        int b = Integer.parseInt(arr[1]);
+        int c = Integer.parseInt(arr[2]);
+        long timeTimeMillis = DateUtil.getLongAsDate(a, b, c);
+        return String.valueOf(timeTimeMillis);
+    }
+    
+    public void updateDate() {
+        txt_date_event.setText(new StringBuilder().append(day)
+                  .append("/").append(month + 1).append("/").append(year));
+        txt_date_event.setTextColor(ContextCompat.getColor(this, R.color.black));
+        ic_clear_date.setVisibility(View.VISIBLE);
+    }
+    
+    public void alertDiaglog(String message) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(message);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                  getString(R.string.txt_ok),
+                  new DialogInterface.OnClickListener() {
+                      public void onClick(DialogInterface dialog, int id) {
+                          dialog.cancel();
+                      }
+                  });
+        
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
         
     }
 }

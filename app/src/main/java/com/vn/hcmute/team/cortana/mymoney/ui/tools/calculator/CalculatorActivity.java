@@ -7,12 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.method.ScrollingMovementMethod;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.R;
@@ -25,11 +22,11 @@ import net.objecthunter.exp4j.ExpressionBuilder;
  * Created by kunsubin on 9/1/2017.
  */
 
-public class CalculatorActivity extends BaseActivity implements OnTouchListener {
+public class CalculatorActivity extends BaseActivity {
     
     @BindView(R.id.txt_input)
     TextView txt_input;
-
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_calculator;
@@ -39,7 +36,6 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
     protected void initializeDagger() {
         
     }
-    
     @Override
     protected void initializePresenter() {
         
@@ -56,8 +52,11 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
         
         Intent intent = getIntent();
         String goalMoney = intent.getStringExtra("goal_money");
-        
-        txt_input.setText("0");
+        if(goalMoney!=null){
+            txt_input.setText(goalMoney);
+        }else {
+            txt_input.setText("0");
+        }
     }
     
     public void onClick(View view) {
@@ -66,11 +65,27 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
                 txt_input.setText("0");
                 break;
             case R.id.btn_remove:
+                if (txt_input.length() > 0) {
+                    if(txt_input.length()==1){
+                        txt_input.setText("0");
+                    }else {
+                        StringBuilder tmp = new StringBuilder(txt_input.getText().toString());
+                        tmp.delete(tmp.length() - 1, tmp.length());
+                        txt_input.setText(tmp.toString());
+                    }
+                } else {
+                    txt_input.setText("0");
+                }
+                break;
             case R.id.image_remove:
                 if (txt_input.length() > 0) {
-                    StringBuilder tmp = new StringBuilder(txt_input.getText().toString());
-                    tmp.delete(tmp.length() - 1, tmp.length());
-                    txt_input.setText(tmp.toString());
+                    if(txt_input.length()==1){
+                        txt_input.setText("0");
+                    }else {
+                        StringBuilder tmp = new StringBuilder(txt_input.getText().toString());
+                        tmp.delete(tmp.length() - 1, tmp.length());
+                        txt_input.setText(tmp.toString());
+                    }
                 } else {
                     txt_input.setText("0");
                 }
@@ -86,9 +101,8 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
                         Expression e = new ExpressionBuilder(tmp).build();
                         double result = e.evaluate();
                         txt_input.setText(TextUtil.doubleToString(result));
-                        
                     } catch (Exception e) {
-                        Toast.makeText(this, "Not Input", Toast.LENGTH_LONG).show();
+                        alertDiaglog(this.getString(R.string.txt_invalid_input));
                     }
                 }
                 
@@ -103,24 +117,28 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
         }
     }
     
-    public void resultAndFinish() {
-        if (txt_input.length() > 15) {
-            alertDiaglog(getString(R.string.max15digit));
-            return;
-        }
-        if (Double.parseDouble(txt_input.getText().toString().trim()) < 0) {
-            alertDiaglog(getString(R.string.erro_negative));
-            return;
+    @OnClick(R.id.check_box)
+    public void onClickCheck(View view) {
+        try {
+            Double.parseDouble(txt_input.getText().toString().trim());
+            
+            if (!txt_input.getText().toString().equals("")) {
+                resultAndFinish();
+            } else {
+                alertDiaglog(this.getString(R.string.txt_invalid_input));
+            }
+        } catch (Exception ex) {
+            alertDiaglog(this.getString(R.string.txt_invalid_input));
         }
         
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("result", txt_input.getText().toString());
-        setResult(Activity.RESULT_OK, returnIntent);
-        finish();
+    }
+    @OnClick(R.id.linear_currencies)
+    public void onClickCurrencies(View view){
+        
+        
         
         
     }
-    
     public void alertDiaglog(String message) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage(message);
@@ -136,26 +154,18 @@ public class CalculatorActivity extends BaseActivity implements OnTouchListener 
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
-    
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        
-        return false;
-    }
-    
-    @OnClick(R.id.check_box)
-    public void onClickCheck(View view) {
-        try {
-            Double.parseDouble(txt_input.getText().toString().trim());
-            
-            if (!txt_input.getText().toString().equals("")) {
-                resultAndFinish();
-            } else {
-                Toast.makeText(this, "Not", Toast.LENGTH_LONG).show();
-            }
-        } catch (Exception ex) {
-            Toast.makeText(this, "Not", Toast.LENGTH_LONG).show();
+    public void resultAndFinish() {
+        if (txt_input.length() > 15) {
+            alertDiaglog(getString(R.string.max15digit));
+            return;
         }
-        
+        if (Double.parseDouble(txt_input.getText().toString().trim()) < 0) {
+            alertDiaglog(getString(R.string.erro_negative));
+            return;
+        }
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result", txt_input.getText().toString());
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
 }

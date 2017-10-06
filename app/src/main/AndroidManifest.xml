@@ -30,7 +30,7 @@
       android:screenOrientation="portrait" />
 
     <!-- Main -->
-    <activity android:name=".ui.main.MainActivity">
+    <activity android:name=".ui.tools.calculator.CalculatorActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
@@ -79,7 +79,7 @@
     <!-- Tool -->
     <activity android:name=".ui.tools.galleryloader.ui.GalleryLoaderActivity" />
     <activity android:name=".ui.iconshop.SelectIconActivity" />
-    <activity android:name=".ui.tools.calculator.CalculatorActivity" />
+    <!--<activity android:name=".ui.tools.calculator.CalculatorActivity" />-->
     <!-- Category -->
     <activity android:name=".ui.category.CategoryActivity">
 

@@ -52,7 +52,7 @@ public class EventActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        mPagerAdapterEvent = new PagerAdapterEvent(getSupportFragmentManager(), 0);
+        mPagerAdapterEvent = new PagerAdapterEvent(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapterEvent);
         
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
@@ -98,18 +98,18 @@ public class EventActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 22) {
             if (resultCode == Activity.RESULT_OK) {
-                mPagerAdapterEvent.getFragment(0).onActivityResult(requestCode, resultCode, data);
+                mPagerAdapterEvent.getItem(0).onActivityResult(requestCode, resultCode, data);
             }
         }
         if (requestCode == 15) {
-            mPagerAdapterEvent.getFragment(currentPositionFragment)
+            mPagerAdapterEvent.getItem(currentPositionFragment)
                       .onActivityResult(requestCode, resultCode, data);
             if (resultCode == Activity.RESULT_CANCELED) {
-                mPagerAdapterEvent.getFragment(1).onActivityResult(requestCode, resultCode, data);
+                mPagerAdapterEvent.getItem(1).onActivityResult(requestCode, resultCode, data);
             }
         }
         if (requestCode == 16) {
-            mPagerAdapterEvent.getFragment(currentPositionFragment)
+            mPagerAdapterEvent.getItem(currentPositionFragment)
                       .onActivityResult(requestCode, resultCode, data);
         }
     }

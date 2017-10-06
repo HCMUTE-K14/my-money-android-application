@@ -48,7 +48,7 @@ import javax.inject.Inject;
 
 public class AddSavingActivity extends BaseActivity implements SavingContract.View {
     
-    static final int DATE_DIALOG_ID = 999;
+    private static final int DATE_DIALOG_ID = 999;
     @BindView(R.id.edit_text_name_saving)
     EditText edit_text_name_saving;
     @BindView(R.id.txt_goal_money)
@@ -65,16 +65,17 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
     ImageView image_view_icon_saving;
     
     
-    String ic_saving_defaut;
-    Saving mSaving;
-    int day, month, year;
+    private String mIconSavingDefault;
+    private Saving mSaving;
+    private int day, month, year;
+    
     @Inject
     SavingPresenter mSavingPresenter;
     @Inject
     PreferencesHelper mPreferencesHelper;
     private Currencies mCurrencies;
     private Wallet mWallet;
-    private DatePickerDialog.OnDateSetListener datePickerListener
+    private DatePickerDialog.OnDateSetListener mDatePickerListener
               = new DatePickerDialog.OnDateSetListener() {
         
         // when dialog box is closed, below method will be called.
@@ -126,126 +127,28 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        //
-       init();
+        init();
         
     }
-    public void init(){
-        mSaving = new Saving();
-        mCurrencies = new Currencies();
-        mWallet = new Wallet();
-        setCurrenciesDefault();
-        txt_currencies.setText(mCurrencies.getCurName());
-        ic_saving_defaut="ic_saving";
     
-        showIcon();
-    }
-    public void setCurrenciesDefault() {
-        mCurrencies.setCurId("4");
-        mCurrencies.setCurName("Việt Nam Đồng");
-        mCurrencies.setCurCode("VND");
-        mCurrencies.setCurSymbol("₫");
-        mCurrencies.setCurDisplayType("cur_display_type");
-//        mCurrencies = mPreferencesHelper.getCurrentWallet().getCurrencyUnit();
-    }
-    public void showIcon(){
-        GlideApp.with(this)
-                  .load(DrawableUtil.getDrawable(this, ic_saving_defaut))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(image_view_icon_saving);
-    }
     @Override
     protected void onDestroy() {
         mSavingPresenter.unSubscribe();
         super.onDestroy();
     }
     
-    public void setSaving() {
-        
-        mSaving.setSavingid(SecurityUtil.getRandomUUID());
-        mSaving.setName(edit_text_name_saving.getText().toString().trim());
-        mSaving.setGoalMoney(txt_goal_money.getText().toString().substring(1));
-        mSaving.setCurrentMoney("0");
-        mSaving.setStartMoney("0");
-        
-        if (!txt_date_saving.getText().toString().trim().equals(getString(R.string.ending_date))) {
-            String[] arr = txt_date_saving.getText().toString().trim().split("/");
-            long tmp = DateUtil
-                      .getLongAsDate(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]),
-                                Integer.parseInt(arr[2]));
-            mSaving.setDate(String.valueOf(tmp));
-        }
-        
-        mSaving.setIdWallet(mWallet.getWalletid());
-        
-        mSaving.setStatus("0");
-        mSaving.setUserid(mPreferencesHelper.getUserId());
-        mSaving.setIcon(ic_saving_defaut);
-        mSaving.setCurrencies(mCurrencies);
-        
-    }
-    
-    @OnClick(R.id.cancel_button)
-    public void onClickCancel(View view) {
-        finish();
-    }
-    
-    @OnClick(R.id.linear_select_date)
-    public void onClickSelectDate(View view) {
-        showDialog(DATE_DIALOG_ID);
-    }
-    
-    @OnClick(R.id.ic_clear_date)
-    public void onClickClearDate(View view) {
-        txt_date_saving.setText(getString(R.string.ending_date));
-        txt_date_saving.setTextColor(ContextCompat.getColor(this, R.color.gray));
-        ic_clear_date.setVisibility(View.GONE);
-    }
-    
-    public void initDatePicker() {
-        final Calendar c = Calendar.getInstance();
-        year = c.get(Calendar.YEAR);
-        month = c.get(Calendar.MONTH);
-        day = c.get(Calendar.DAY_OF_MONTH);
-    }
     
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case DATE_DIALOG_ID:
-                return new DatePickerDialog(this, datePickerListener,
+                return new DatePickerDialog(this, mDatePickerListener,
                           year, month, day);
         }
         return null;
     }
     
-    public void updateDate() {
-        txt_date_saving.setText(new StringBuilder().append(day)
-                  .append("/").append(month + 1).append("/").append(year));
-        txt_date_saving.setTextColor(ContextCompat.getColor(this, R.color.black));
-        ic_clear_date.setVisibility(View.VISIBLE);
-    }
     
-    @OnClick(R.id.linear_currencies)
-    public void onClickCurrency(View view) {
-        Intent intent = new Intent(this, CurrenciesActivity.class);
-        startActivityForResult(intent, 6);
-    }
-    
-    @OnClick(R.id.linear_goal_money)
-    public void onClickGoalMoney(View view) {
-        Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money", txt_goal_money.getText());
-        startActivityForResult(intent, 7);
-    }
-    @OnClick(R.id.linear_icon_saving)
-    public void onClickSelectIcon(View view){
-        Intent intent=new Intent(this, SelectIconActivity.class);
-        startActivityForResult(intent,25);
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
@@ -281,68 +184,19 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
                 
             }
         }
-        if(requestCode==25){
-            if(resultCode==Activity.RESULT_OK){
-                Icon icon=data.getParcelableExtra("icon");
-                if(icon!=null){
-                    ic_saving_defaut=icon.getImage();
+        if (requestCode == 25) {
+            if (resultCode == Activity.RESULT_OK) {
+                Icon icon = data.getParcelableExtra("icon");
+                if (icon != null) {
+                    mIconSavingDefault = icon.getImage();
                     showIcon();
                 }
                 
             }
         }
     }
-    @OnClick(R.id.txt_edit_saving)
-    public void onClickSaveAdd(View view) {
-        if (edit_text_name_saving.getText().toString().trim().equals("")) {
-            alertDiaglog(getString(R.string.enter_your_name));
-            return;
-        }
-        if (txt_date_saving.getText().toString().trim().equals(getString(R.string.ending_date))) {
-            alertDiaglog( getString(R.string.select_date));
-            return;
-        }
-        if (txt_goal_money.getText().toString().substring(1).trim().equals("0")) {
-            alertDiaglog(getString(R.string.input_money));
-            return;
-        }
-        //check date
-        if (!checkDate()) {
-            alertDiaglog(getString(R.string.small_date));
-            return;
-        }
-        setSaving();
-        mSavingPresenter.createSaving(mSaving);
-        
-    }
-    public boolean checkDate(){
-        String[] arr = txt_date_saving.getText().toString().trim().split("/");
-        long tmp = DateUtil
-                  .getLongAsDate(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]),
-                            Integer.parseInt(arr[2]));
-        return System.currentTimeMillis() >= tmp?false:true;
-    }
-    @OnClick(R.id.linear_select_wallet)
-    public void onClickSelectWallet(View view) {
-        Intent intent = new Intent(this, MyWalletActivity.class);
-        startActivityForResult(intent, 13);
-    }
-    public void alertDiaglog(String message) {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage(message);
-        builder1.setCancelable(true);
-        builder1.setPositiveButton(
-                  getString(R.string.txt_ok),
-                  new DialogInterface.OnClickListener() {
-                      public void onClick(DialogInterface dialog, int id) {
-                          dialog.cancel();
-                      }
-                  });
-        
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-        
-    }
+    
+    
     @Override
     public void showListSaving(List<Saving> savings) {
         
@@ -389,6 +243,165 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
     
     @Override
     public void loading(boolean isLoading) {
+        
+    }
+    
+    /*Area OnClick*/
+    @OnClick(R.id.cancel_button)
+    public void onClickCancel(View view) {
+        finish();
+    }
+    
+    @OnClick(R.id.linear_select_date)
+    public void onClickSelectDate(View view) {
+        showDialog(DATE_DIALOG_ID);
+    }
+    
+    @OnClick(R.id.ic_clear_date)
+    public void onClickClearDate(View view) {
+        txt_date_saving.setText(getString(R.string.ending_date));
+        txt_date_saving.setTextColor(ContextCompat.getColor(this, R.color.gray));
+        ic_clear_date.setVisibility(View.GONE);
+    }
+    
+    @OnClick(R.id.linear_currencies)
+    public void onClickCurrency(View view) {
+        Intent intent = new Intent(this, CurrenciesActivity.class);
+        startActivityForResult(intent, 6);
+    }
+    
+    @OnClick(R.id.linear_goal_money)
+    public void onClickGoalMoney(View view) {
+        Intent intent = new Intent(this, CalculatorActivity.class);
+        intent.putExtra("goal_money", txt_goal_money.getText());
+        startActivityForResult(intent, 7);
+    }
+    
+    @OnClick(R.id.linear_icon_saving)
+    public void onClickSelectIcon(View view) {
+        Intent intent = new Intent(this, SelectIconActivity.class);
+        startActivityForResult(intent, 25);
+    }
+    
+    @OnClick(R.id.txt_edit_saving)
+    public void onClickSaveAdd(View view) {
+        if (edit_text_name_saving.getText().toString().trim().equals("")) {
+            alertDiaglog(getString(R.string.enter_your_name));
+            return;
+        }
+        if (txt_date_saving.getText().toString().trim().equals(getString(R.string.ending_date))) {
+            alertDiaglog(getString(R.string.select_date));
+            return;
+        }
+        if (txt_goal_money.getText().toString().substring(1).trim().equals("0")) {
+            alertDiaglog(getString(R.string.input_money));
+            return;
+        }
+        //check date
+        if (!checkDate()) {
+            alertDiaglog(getString(R.string.small_date));
+            return;
+        }
+        setSaving();
+        mSavingPresenter.createSaving(mSaving);
+        
+    }
+    
+    @OnClick(R.id.linear_select_wallet)
+    public void onClickSelectWallet(View view) {
+        Intent intent = new Intent(this, MyWalletActivity.class);
+        startActivityForResult(intent, 13);
+    }
+    
+    /*Area Function*/
+    public void init() {
+        mSaving = new Saving();
+        mCurrencies = new Currencies();
+        mWallet = new Wallet();
+        setCurrenciesDefault();
+        txt_currencies.setText(mCurrencies.getCurName());
+        mIconSavingDefault = "ic_saving";
+        
+        showIcon();
+    }
+    
+    public void initDatePicker() {
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+    }
+    
+    public void setCurrenciesDefault() {
+        mCurrencies.setCurId("4");
+        mCurrencies.setCurName("Việt Nam Đồng");
+        mCurrencies.setCurCode("VND");
+        mCurrencies.setCurSymbol("₫");
+        mCurrencies.setCurDisplayType("cur_display_type");
+    }
+    
+    public void showIcon() {
+        GlideApp.with(this)
+                  .load(DrawableUtil.getDrawable(this, mIconSavingDefault))
+                  .placeholder(R.drawable.folder_placeholder)
+                  .error(R.drawable.folder_placeholder)
+                  .dontAnimate()
+                  .into(image_view_icon_saving);
+    }
+    
+    public void setSaving() {
+        mSaving.setSavingid(SecurityUtil.getRandomUUID());
+        mSaving.setName(edit_text_name_saving.getText().toString().trim());
+        mSaving.setGoalMoney(txt_goal_money.getText().toString().substring(1));
+        mSaving.setCurrentMoney("0");
+        mSaving.setStartMoney("0");
+        
+        if (!txt_date_saving.getText().toString().trim().equals(getString(R.string.ending_date))) {
+            String[] arr = txt_date_saving.getText().toString().trim().split("/");
+            long tmp = DateUtil
+                      .getLongAsDate(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]),
+                                Integer.parseInt(arr[2]));
+            mSaving.setDate(String.valueOf(tmp));
+        }
+        
+        mSaving.setIdWallet(mWallet.getWalletid());
+        
+        mSaving.setStatus("0");
+        mSaving.setUserid(mPreferencesHelper.getUserId());
+        mSaving.setIcon(mIconSavingDefault);
+        mSaving.setCurrencies(mCurrencies);
+        
+    }
+    
+    public void updateDate() {
+        txt_date_saving.setText(new StringBuilder().append(day)
+                  .append("/").append(month + 1).append("/").append(year));
+        txt_date_saving.setTextColor(ContextCompat.getColor(this, R.color.black));
+        ic_clear_date.setVisibility(View.VISIBLE);
+    }
+    
+    public boolean checkDate() {
+        String[] arr = txt_date_saving.getText().toString().trim().split("/");
+        long tmp = DateUtil
+                  .getLongAsDate(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]),
+                            Integer.parseInt(arr[2]));
+        return System.currentTimeMillis() >= tmp ? false : true;
+    }
+    
+    public void alertDiaglog(String message) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(message);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                  getString(R.string.txt_ok),
+                  new DialogInterface.OnClickListener() {
+                      public void onClick(DialogInterface dialog, int id) {
+                          dialog.cancel();
+                      }
+                  });
+        
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
         
     }
 }

@@ -58,14 +58,12 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     private Budget mBudget;
     private Category mCategory;
     private Wallet mWallet;
-    
-    int year;
-    int monthOfYear;
-    int dayOfMonth;
-    
-    int yearEnd;
-    int monthOfYearEnd;
-    int dayOfMonthEnd;
+    private int year;
+    private int monthOfYear;
+    private int dayOfMonth;
+    private int yearEnd;
+    private int monthOfYearEnd;
+    private int dayOfMonthEnd;
     
     @Inject
     BudgetPresenter mBudgetPresenter;
@@ -77,7 +75,6 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     public int getLayoutId() {
         return R.layout.activity_add_budget;
     }
-    
     @Override
     protected void initializeDagger() {
         ApplicationComponent applicationComponent = ((MyMoneyApplication) this.getApplication())
@@ -94,6 +91,9 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+    @Override
+    protected void initialize() {
         init();
         showData();
     }
@@ -103,19 +103,6 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
         mBudgetPresenter.unSubscribe();
         super.onDestroy();
     }
-    
-    public void init() {
-        mBudget = new Budget();
-        mCategory = new Category();
-        mWallet = new Wallet();
-        
-    }
-    
-    public void showData() {
-        mWallet = mPreferencesHelper.getCurrentWallet();
-        txt_wallet_budget.setText(mWallet.getWalletName());
-    }
-    
     @Override
     protected void initializePresenter() {
         mPresenter = mBudgetPresenter;
@@ -126,105 +113,6 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     protected void initializeActionBar(View rootView) {
         
     }
-    
-    @OnClick(R.id.linear_select_date)
-    public void onClickLinearSelectDate(View view) {
-        
-        Calendar now = Calendar.getInstance();
-        DatePickerDialog dpd = DatePickerDialog.newInstance(
-                  AddBudgetActivity.this,
-                  now.get(Calendar.YEAR),
-                  now.get(Calendar.MONTH),
-                  now.get(Calendar.DAY_OF_MONTH)
-        );
-        dpd.show(getFragmentManager(), "Datepickerdialog");
-    }
-    
-    @OnClick(R.id.ic_cancel_budget)
-    public void onClickCancel(View view) {
-        finish();
-    }
-    
-    @OnClick(R.id.linear_goal_money)
-    public void onClickGoalMoney(View view) {
-        Intent intent = new Intent(this, CalculatorActivity.class);
-        startActivityForResult(intent, 31);
-    }
-    
-    @OnClick(R.id.linear_select_wallet)
-    public void onClickSelectWallet(View view) {
-        Intent intent = new Intent(this, MyWalletActivity.class);
-        startActivityForResult(intent, 32);
-    }
-    
-    @OnClick(R.id.txt_edit_budget)
-    public void onClickSave(View view) {
-        if (checkSaveBudget()) {
-            setBudget();
-            mBudgetPresenter.createBudget(mBudget);
-        }
-    }
-    
-    public boolean checkSaveBudget() {
-        if (txt_name_budget.getText().toString().equals("")) {
-            alertDiaglog(getString(R.string.txt_select_category));
-            return false;
-        }
-        if (txt_goal_money.getText().toString().substring(1).equals("0")) {
-            alertDiaglog(getString(R.string.select_money));
-            return false;
-        }
-        if (txt_date_budget.getText().toString().equals("")) {
-            alertDiaglog(getString(R.string.select_date));
-            return false;
-        }
-        if (!checkRangeDate()) {
-            alertDiaglog(getString(R.string.txt_error_range_date));
-            return false;
-        }
-        return true;
-    }
-    
-    public void setBudget() {
-        mBudget.setBudgetId(SecurityUtil.getRandomUUID());
-        mBudget.setStatus("0");
-        mBudget.setRangeDate(DateUtil.getLongAsDate(dayOfMonth, monthOfYear, year) + "/" +
-                             DateUtil.getLongAsDate(dayOfMonthEnd, monthOfYearEnd, yearEnd));
-        mBudget.setMoneyExpense("0");
-        mBudget.setUserid(mPreferencesHelper.getUserId());
-        mBudget.setCategory(mCategory);
-        mBudget.setWallet(mWallet);
-        
-    }
-    
-    public boolean checkRangeDate() {
-        return DateUtil.getLongAsDate(dayOfMonth, monthOfYear, monthOfYear) >
-               DateUtil.getLongAsDate(dayOfMonthEnd, monthOfYearEnd, monthOfYearEnd) ? false : true;
-    }
-    
-    public void alertDiaglog(String message) {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage(message);
-        builder1.setCancelable(true);
-        builder1.setPositiveButton(
-                  getString(R.string.txt_ok),
-                  new DialogInterface.OnClickListener() {
-                      public void onClick(DialogInterface dialog, int id) {
-                          dialog.cancel();
-                      }
-                  });
-        
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-        
-    }
-    
-    @OnClick(R.id.linear_select_category)
-    public void onClickSelectCategory(View view) {
-        Intent intent = new Intent(this, CategoryActivity.class);
-        startActivityForResult(intent, 33);
-    }
-    
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth,
               int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
@@ -276,7 +164,7 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     
     @Override
     public void onSuccessGetListBudget(List<Budget> list) {
-       
+        
     }
     
     @Override
@@ -296,7 +184,6 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     public void onSucsessDeleteBudget(String message) {
         
     }
-    
     @Override
     public void onFailure(String message) {
         alertDiaglog(message);
@@ -306,5 +193,109 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     public void loading(boolean isLoading) {
         
     }
+    /*Area onClick*/
+    @OnClick(R.id.linear_select_date)
+    public void onClickLinearSelectDate(View view) {
+        
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                  AddBudgetActivity.this,
+                  now.get(Calendar.YEAR),
+                  now.get(Calendar.MONTH),
+                  now.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.show(getFragmentManager(), "Datepickerdialog");
+    }
     
+    @OnClick(R.id.ic_cancel_budget)
+    public void onClickCancel(View view) {
+        finish();
+    }
+    
+    @OnClick(R.id.linear_goal_money)
+    public void onClickGoalMoney(View view) {
+        Intent intent = new Intent(this, CalculatorActivity.class);
+        startActivityForResult(intent, 31);
+    }
+    
+    @OnClick(R.id.linear_select_wallet)
+    public void onClickSelectWallet(View view) {
+        Intent intent = new Intent(this, MyWalletActivity.class);
+        startActivityForResult(intent, 32);
+    }
+    
+    @OnClick(R.id.txt_edit_budget)
+    public void onClickSave(View view) {
+        if (checkSaveBudget()) {
+            setBudget();
+            mBudgetPresenter.createBudget(mBudget);
+        }
+    }
+    
+    
+    @OnClick(R.id.linear_select_category)
+    public void onClickSelectCategory(View view) {
+        Intent intent = new Intent(this, CategoryActivity.class);
+        startActivityForResult(intent, 33);
+    }
+    /*Area function*/
+    public void init() {
+        mBudget = new Budget();
+        mCategory = new Category();
+        mWallet = new Wallet();
+        
+    }
+    public void showData() {
+        mWallet = mPreferencesHelper.getCurrentWallet();
+        txt_wallet_budget.setText(mWallet.getWalletName());
+    }
+    public boolean checkSaveBudget() {
+        if (txt_name_budget.getText().toString().equals("")) {
+            alertDiaglog(getString(R.string.txt_select_category));
+            return false;
+        }
+        if (txt_goal_money.getText().toString().substring(1).equals("0")) {
+            alertDiaglog(getString(R.string.select_money));
+            return false;
+        }
+        if (txt_date_budget.getText().toString().equals("")) {
+            alertDiaglog(getString(R.string.select_date));
+            return false;
+        }
+        if (!checkRangeDate()) {
+            alertDiaglog(getString(R.string.txt_error_range_date));
+            return false;
+        }
+        return true;
+    }
+    public void setBudget() {
+        mBudget.setBudgetId(SecurityUtil.getRandomUUID());
+        mBudget.setStatus("0");
+        mBudget.setRangeDate(DateUtil.getLongAsDate(dayOfMonth, monthOfYear, year) + "/" +
+                             DateUtil.getLongAsDate(dayOfMonthEnd, monthOfYearEnd, yearEnd));
+        mBudget.setMoneyExpense("0");
+        mBudget.setUserid(mPreferencesHelper.getUserId());
+        mBudget.setCategory(mCategory);
+        mBudget.setWallet(mWallet);
+        
+    }
+    public boolean checkRangeDate() {
+        return DateUtil.getLongAsDate(dayOfMonth, monthOfYear, monthOfYear) >
+               DateUtil.getLongAsDate(dayOfMonthEnd, monthOfYearEnd, monthOfYearEnd) ? false : true;
+    }
+    public void alertDiaglog(String message) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(message);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                  getString(R.string.txt_ok),
+                  new DialogInterface.OnClickListener() {
+                      public void onClick(DialogInterface dialog, int id) {
+                          dialog.cancel();
+                      }
+                  });
+        
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
 }

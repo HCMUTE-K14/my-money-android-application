@@ -40,11 +40,12 @@ public class FragmentFinished extends BaseFragment implements
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
     
-    @Inject
-    SavingPresenter mSavingPresenter;
     private List<Saving> mSavingList;
     private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
     private EmptyAdapter mEmptyAdapter;
+    
+    @Inject
+    SavingPresenter mSavingPresenter;
     
     @Override
     protected int getLayoutId() {
@@ -90,12 +91,6 @@ public class FragmentFinished extends BaseFragment implements
                 mSavingPresenter.getSaving();
             }
         });
-    }
-    
-    public void init() {
-        
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        mSavingList = new ArrayList<>();
     }
     
     @Override
@@ -215,5 +210,9 @@ public class FragmentFinished extends BaseFragment implements
             intent.putExtra("process", String.valueOf(process));
         }
         getActivity().startActivityForResult(intent, 2);
+    }
+    public void init() {
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        mSavingList = new ArrayList<>();
     }
 }

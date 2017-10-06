@@ -28,7 +28,8 @@ import javax.inject.Inject;
  * Created by kunsubin on 9/24/2017.
  */
 
-public class FragmentBudgetFinished extends BaseFragment implements BudgetContract.View,MyRecyclerViewBudgetAdapter.ItemClickListener{
+public class FragmentBudgetFinished extends BaseFragment implements BudgetContract.View,
+                                                                    MyRecyclerViewBudgetAdapter.ItemClickListener {
     
     @BindView(R.id.recycler_view_budget_finished)
     RecyclerView mRecyclerView;
@@ -42,7 +43,6 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
     private EmptyAdapter mEmptyAdapter;
     
     
-    
     @Inject
     BudgetPresenter mBudgetPresenter;
     
@@ -53,7 +53,8 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
     
     @Override
     protected void initializeDagger() {
-        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity().getApplication())
+        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity()
+                  .getApplication())
                   .getAppComponent();
         BudgetComponent budgetComponent = DaggerBudgetComponent
                   .builder()
@@ -66,7 +67,7 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
     
     @Override
     protected void initializePresenter() {
-        mPresenter=mBudgetPresenter;
+        mPresenter = mBudgetPresenter;
         mBudgetPresenter.setView(this);
     }
     
@@ -78,13 +79,13 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
     @Override
     protected void initialize() {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        mBudgetList=new ArrayList<>();
+        mBudgetList = new ArrayList<>();
         mBudgetPresenter.getBudget();
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mBudgetList.clear();
-                if(mMyRecyclerViewBudgetAdapter!=null){
+                if (mMyRecyclerViewBudgetAdapter != null) {
                     mMyRecyclerViewBudgetAdapter.notifyDataSetChanged();
                 }
                 mBudgetPresenter.getBudget();
@@ -106,11 +107,11 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
                 mMyRecyclerViewBudgetAdapter.setClickListener(this);
                 mRecyclerView.setAdapter(mMyRecyclerViewBudgetAdapter);
             } else {
-                mEmptyAdapter = new EmptyAdapter(getActivity(),getString(R.string.txt_no_budget));
+                mEmptyAdapter = new EmptyAdapter(getActivity(), getString(R.string.txt_no_budget));
                 mRecyclerView.setAdapter(mEmptyAdapter);
             }
         } else {
-            mEmptyAdapter = new EmptyAdapter(getContext(),getString(R.string.txt_no_budget));
+            mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_budget));
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
         if (mSwipeRefreshLayout.isRefreshing()) {
@@ -123,7 +124,7 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
         if (requestCode == 35) {
             if (resultCode == Activity.RESULT_OK) {
                 String budgetId = data.getStringExtra("result");
-            
+                
                 if (!mBudgetList.isEmpty()) {
                     for (Budget budget : mBudgetList) {
                         if (budget.getBudgetId().equals(budgetId)) {
@@ -138,7 +139,7 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
                         mRecyclerView.setAdapter(mEmptyAdapter);
                     }
                 }
-            
+                
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 mBudgetList.clear();
@@ -174,13 +175,13 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
     
     @Override
     public void loading(boolean isLoading) {
-        mProgressBar.setVisibility(isLoading?View.VISIBLE:View.GONE);
+        mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
     
     @Override
     public void onItemClick(Budget budget) {
-        Intent intent=new Intent(getActivity(),InfoBudgetActivity.class);
-        intent.putExtra("budget",budget);
-        getActivity().startActivityForResult(intent,35);
+        Intent intent = new Intent(getActivity(), InfoBudgetActivity.class);
+        intent.putExtra("budget", budget);
+        getActivity().startActivityForResult(intent, 35);
     }
 }
