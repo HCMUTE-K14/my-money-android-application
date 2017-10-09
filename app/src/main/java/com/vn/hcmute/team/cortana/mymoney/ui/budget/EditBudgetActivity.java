@@ -192,6 +192,8 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     @OnClick(R.id.linear_goal_money)
     public void onClickGoalMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
+        intent.putExtra("goal_money",txt_goal_money.getText().toString().substring(1));
+        intent.putExtra("currencies",mWallet.getCurrencyUnit());
         startActivityForResult(intent, 38);
         
     }

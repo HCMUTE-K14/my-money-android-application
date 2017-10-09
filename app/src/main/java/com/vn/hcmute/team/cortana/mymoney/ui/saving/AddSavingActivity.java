@@ -154,7 +154,7 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
         
         if (requestCode == 6) {
             if (resultCode == Activity.RESULT_OK) {
-                mCurrencies = (Currencies) data.getParcelableExtra("currency");
+                mCurrencies = data.getParcelableExtra("currency");
                 
                 if (mCurrencies != null) {
                     txt_currencies.setText(mCurrencies.getCurName());
@@ -273,7 +273,8 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
     @OnClick(R.id.linear_goal_money)
     public void onClickGoalMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money", txt_goal_money.getText());
+        intent.putExtra("goal_money", txt_goal_money.getText().toString().substring(1));
+        intent.putExtra("currencies",mCurrencies);
         startActivityForResult(intent, 7);
     }
     

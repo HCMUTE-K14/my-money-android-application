@@ -294,7 +294,8 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     @OnClick(R.id.linear_goal_money)
     public void onClickGoalMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money", txt_goal_money.getText());
+        intent.putExtra("goal_money", txt_goal_money.getText().toString().substring(1));
+        intent.putExtra("currencies",mCurrencies);
         startActivityForResult(intent, 5);
     }
     

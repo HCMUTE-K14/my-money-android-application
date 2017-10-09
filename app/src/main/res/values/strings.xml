@@ -235,4 +235,5 @@
   <string name="txt_success">Success!</string>
   <string name="txt_fail">Fail!</string>
   <string name="txt_invalid_input">Invalid input</string>
+  <string name="txt_money_empty">Money empty!</string>
 </resources>

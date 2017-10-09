@@ -187,7 +187,12 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     @OnClick(R.id.linear_money)
     public void onClickLinearMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money", "0");
+        intent.putExtra("goal_money", txt_money.getText().toString());
+        if(value.equals("1")){
+            intent.putExtra("currencies",mWallet.getCurrencyUnit());
+        }else {
+            intent.putExtra("currencies",mSaving.getCurrencies());
+        }
         startActivityForResult(intent, 9);
     }
     @OnClick(R.id.back_button_saving)
@@ -310,6 +315,8 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
             mWallet.setWalletid(mWallet.getWalletid());
             linear_wallet.setEnabled(false);
         }
+        
+        
         
     }
     public boolean checkTakeIn() {

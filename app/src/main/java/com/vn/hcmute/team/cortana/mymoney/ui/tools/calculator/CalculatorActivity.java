@@ -13,6 +13,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.R;
+import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.validate.TextUtil;
 import net.objecthunter.exp4j.Expression;
@@ -22,10 +23,15 @@ import net.objecthunter.exp4j.ExpressionBuilder;
  * Created by kunsubin on 9/1/2017.
  */
 
-public class CalculatorActivity extends BaseActivity {
+public class CalculatorActivity extends BaseActivity implements DialogCallback{
     
     @BindView(R.id.txt_input)
     TextView txt_input;
+    @BindView(R.id.txt_currency)
+    TextView txt_currency;
+    
+    Currencies mCurrencies;
+    private DialogFragmentTransferCurrencies mDialogFragmentTransferCurrencies;
     
     @Override
     public int getLayoutId() {
@@ -50,12 +56,23 @@ public class CalculatorActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        Intent intent = getIntent();
-        String goalMoney = intent.getStringExtra("goal_money");
-        if(goalMoney!=null){
-            txt_input.setText(goalMoney);
+        showData();
+        if(mCurrencies==null){
+            mDialogFragmentTransferCurrencies=new DialogFragmentTransferCurrencies("VND");
         }else {
-            txt_input.setText("0");
+            mDialogFragmentTransferCurrencies=new DialogFragmentTransferCurrencies(mCurrencies.getCurCode());
+        }
+        mDialogFragmentTransferCurrencies.setCallBack(this);
+    }
+    @Override
+    public void getResults(String results) {
+        txt_input.setText(results);
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==50){
+            mDialogFragmentTransferCurrencies.onActivityResult(requestCode,resultCode,data);
         }
     }
     
@@ -134,9 +151,23 @@ public class CalculatorActivity extends BaseActivity {
     }
     @OnClick(R.id.linear_currencies)
     public void onClickCurrencies(View view){
+        mDialogFragmentTransferCurrencies.show(getSupportFragmentManager(),"");
         
+    }
+    public void showData(){
+        Intent intent = getIntent();
+        String goalMoney = intent.getStringExtra("goal_money");
+        mCurrencies=intent.getParcelableExtra("currencies");
         
+        if(goalMoney!=null){
+            txt_input.setText(goalMoney);
+        }else {
+            txt_input.setText("0");
+        }
         
+        if(mCurrencies!=null){
+            txt_currency.setText(mCurrencies.getCurSymbol());
+        }
         
     }
     public void alertDiaglog(String message) {
@@ -168,4 +199,6 @@ public class CalculatorActivity extends BaseActivity {
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
+    
+    
 }
