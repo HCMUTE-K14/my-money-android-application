@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -70,6 +71,7 @@ class DialogFragmentTransferCurrencies extends DialogFragment {
         super.onActivityCreated(savedInstanceState);
         
         txt_currency_to.setText(mCodeCurrenciesTo);
+        edit_money_from.setRawInputType(Configuration.KEYBOARD_12KEY);
     }
     
     @Override
