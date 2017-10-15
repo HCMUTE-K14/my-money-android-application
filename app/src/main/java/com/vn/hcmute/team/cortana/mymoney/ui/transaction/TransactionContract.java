@@ -12,6 +12,7 @@ import java.util.List;
 public interface TransactionContract {
     
     interface View extends BaseView {
+        void showAllListTransaction(List<Transaction> list);
         
         void onFailure(String message);
         
@@ -24,13 +25,13 @@ public interface TransactionContract {
         
         void onUpdateSuccessTransaction(String message);
     }
-    
     interface Presenter {
         
         void addTransaction(Transaction transaction,List<ImageGallery> galleryList);
         
         void updateTransaction(Transaction transaction);
         
+        void getAllTransaction();
         
         void unSubscribe();
         

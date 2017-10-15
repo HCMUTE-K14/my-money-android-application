@@ -12,7 +12,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase.TransactionRequest;
-import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -469,8 +468,8 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
                 
-                transaction.setUser_id(userid);
-                transaction.setTrans_id(SecurityUtil.getRandomUUID());
+                /*transaction.setUser_id(userid);
+                transaction.setTrans_id(SecurityUtil.getRandomUUID());*/
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));

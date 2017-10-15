@@ -38,7 +38,7 @@ public class Transaction implements Parcelable {
     
     @SerializedName("type")
     @Expose
-    private int type; //0:Cho vay, 1:Chit ieu ,2 thu nhap
+    private int type; //0:Cho vay, 1:Chit ieu ,2 thu nhap, 3 take in saving, 4 take out saving
     
     @SerializedName("category")
     @Expose

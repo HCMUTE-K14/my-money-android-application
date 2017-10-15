@@ -261,7 +261,12 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
         startActivityForResult(intent, 3);
     }
-    
+    @OnClick(R.id.btn_list_transaction)
+    public void onClickListTransaction(View view){
+        Intent intent=new Intent(this,TransactionSavingActivity.class);
+        intent.putExtra("saving",mSaving);
+        startActivity(intent);
+    }
     /*Area Function*/
     private void onClose() {
         Intent returnIntent = new Intent();

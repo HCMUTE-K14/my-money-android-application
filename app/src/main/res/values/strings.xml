@@ -248,5 +248,5 @@
   <string name="txt_warning_date_created">The End date must be greater than the Start date.</string>
   <string name="txt_please_choose_wallet">Please choose wallet !</string>
   <string name="message_you_must_login_first">You must login first !</string>
-
+  <string name="txt_no_transaction">No Transaction</string>
 </resources>

@@ -319,6 +319,11 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     
     
     @Override
+    public void showAllListTransaction(List<Transaction> list) {
+        
+    }
+    
+    @Override
     public void onFailure(String message) {
         Toast.makeText(this.getContext(), "failure", Toast.LENGTH_SHORT).show();
     }

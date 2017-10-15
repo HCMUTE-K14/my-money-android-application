@@ -21,11 +21,18 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.SavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
+import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase.TransactionRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import java.util.List;
 import javax.inject.Inject;
@@ -53,11 +60,14 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     private String value = "-1";
     private Saving mSaving;
     private Wallet mWalletTemp;
+    private Transaction mTransaction;
     
     @Inject
     SavingPresenter mSavingPresenter;
     @Inject
     PreferencesHelper mPreferencesHelper;
+    @Inject
+    TransactionUseCase mTransactionUseCase;
     
     
     @Override
@@ -84,6 +94,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         super.onCreate(savedInstanceState);
         getData();
         showData();
+        mTransaction=new Transaction();
     }
     @Override
     protected void onDestroy() {
@@ -153,25 +164,51 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     
     @Override
     public void onSuccessTakeIn() {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("saving", mSaving);
-        if (!mSaving.equals("")) {
-            returnIntent.putExtra("wallet", mWallet);
-        }
-        setResult(Activity.RESULT_OK, returnIntent);
-        finish();
+        //add transaction
+        setTransaction(3);
+        TransactionRequest transactionRequest=new TransactionRequest(Action.ACTION_ADD_TRANSACTION,
+                  new BaseCallBack<Object>() {
+    
+                      @Override
+                      public void onSuccess(Object value) {
+                          finishTransaction();
+                      }
+    
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          alertDiaglog(throwable.getMessage());
+                      }
+    
+                      @Override
+                      public void onLoading() {
         
+                      }
+                  },mTransaction,null, TypeRepository.REMOTE);
+        mTransactionUseCase.subscribe(transactionRequest);
     }
     
     @Override
     public void onSuccessTakeOut() {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("saving", mSaving);
-        if (!mSaving.equals("")) {
-            returnIntent.putExtra("wallet", mWallet);
-        }
-        setResult(Activity.RESULT_OK, returnIntent);
-        finish();
+        setTransaction(4);
+        TransactionRequest transactionRequest=new TransactionRequest(Action.ACTION_ADD_TRANSACTION,
+                  new BaseCallBack<Object>() {
+                  
+                      @Override
+                      public void onSuccess(Object value) {
+                          finishTransaction();
+                      }
+                  
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          alertDiaglog(throwable.getMessage());
+                      }
+                  
+                      @Override
+                      public void onLoading() {
+                      
+                      }
+                  },mTransaction,null, TypeRepository.REMOTE);
+        mTransactionUseCase.subscribe(transactionRequest);
     }
     
     @Override
@@ -283,6 +320,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         }
         
     }
+    
     /*Area Function*/
     public void getData() {
         Intent intent = getIntent();
@@ -355,5 +393,24 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         
         AlertDialog alert11 = builder1.create();
         alert11.show();
+    }
+    public void setTransaction(int type){
+        mTransaction.setTrans_id(SecurityUtil.getRandomUUID());
+        mTransaction.setAmount(txt_money.getText().toString());
+        mTransaction.setWallet(mWallet);
+        mTransaction.setSaving(mSaving);
+        mTransaction.setNote(edit_describe.getText().toString());
+        mTransaction.setType(type);
+        mTransaction.setUser_id(mSaving.getUserid());
+        mTransaction.setDate_created(String.valueOf(System.currentTimeMillis()));
+    }
+    public void finishTransaction(){
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("saving", mSaving);
+        if (!mSaving.equals("")) {
+            returnIntent.putExtra("wallet", mWallet);
+        }
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
 }

@@ -85,6 +85,7 @@
     <activity android:name=".ui.saving.TransferMoneySavingActivity" />
     <activity android:name=".ui.saving.InfoSavingActivity" />
     <activity android:name=".ui.saving.EditSavingActivity" />
+    <activity android:name=".ui.saving.TransactionSavingActivity"/>
 
     <!-- Event -->
     <activity android:name=".ui.event.ActivityInfoEvent" />
