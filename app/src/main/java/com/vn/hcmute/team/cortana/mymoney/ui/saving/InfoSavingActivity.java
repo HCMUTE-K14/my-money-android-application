@@ -31,7 +31,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase.WalletReq
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
-import com.vn.hcmute.team.cortana.mymoney.utils.validate.TextUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;

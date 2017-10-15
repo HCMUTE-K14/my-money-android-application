@@ -43,7 +43,7 @@ public class SavingMainFragment extends BaseFragment {
     
     @Override
     protected void initializePresenter() {
-
+        
     }
     
     @Override

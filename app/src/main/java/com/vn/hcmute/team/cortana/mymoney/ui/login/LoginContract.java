@@ -1,5 +1,6 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.login;
 
+import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.view.BaseView;
 
@@ -13,7 +14,6 @@ public interface LoginContract {
         
         void initializeView();
         
-        
         void loginSuccessful();
         
         void loginFailure(String message);
@@ -26,6 +26,8 @@ public interface LoginContract {
         boolean isLogin();
         
         void login(UserCredential userCredential);
+        
+        void login(User user);
         
         void loginWithFacebook();
         

@@ -42,9 +42,6 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
     @BindView(R.id.btn_register)
     Button mButtonRegister;
     
-    @BindView(R.id.btn_register_with_facebook)
-    Button mButtonRegisterWithFacebook;
-    
     @BindView(R.id.btn_login)
     Button mButtonLogin;
     
@@ -96,7 +93,20 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getDataFromIntent();
         initializeView();
+        
+    }
+    
+    private User mUser;
+    private boolean isRegisterUserWithFacebookAccount;
+    
+    private void getDataFromIntent() {
+        if (getIntent() != null) {
+            isRegisterUserWithFacebookAccount = getIntent()
+                      .getBooleanExtra("register_user_by_account_facebook", false);
+            mUser = getIntent().getParcelableExtra("user");
+        }
     }
     
     @Override
@@ -114,21 +124,23 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
         String username = mEditTextUsername.getText().toString();
         String password = mEditTextPassword.getText().toString();
         String email = mEditTextEmail.getText().toString();
-        
+
         User user = new User(username, password, email);
+        
+        if(mUser != null){
+            user.setFacebook_id(mUser.getFacebook_id());
+            String name = mUser.getName();
+            user.setName(name);
+        }
         
         mRegisterPresenter.register(user);
     }
     
     @OnClick(R.id.btn_back)
-    public void onClickBackButtion() {
+    public void onClickBackButton() {
         finish();
     }
     
-    @OnClick(R.id.btn_register_with_facebook)
-    public void onClickRegisterWithFacebook() {
-        mRegisterPresenter.registerWithFacebook();
-    }
     
     @OnClick(R.id.btn_login)
     public void onClickLogin() {
@@ -149,11 +161,20 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMessage(getString(R.string.message_creating_account));
+        
+        if (isRegisterUserWithFacebookAccount) {
+            mEditTextEmail.setEnabled(false);
+            mEditTextEmail.setText(mUser.getEmail());
+            
+            mEditTextUsername.setEnabled(false);
+            mEditTextUsername.setText(mUser.getEmail());
+        }
     }
     
     @Override
     public void registerSuccess(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        finish();
     }
     
     @Override

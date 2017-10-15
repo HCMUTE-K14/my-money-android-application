@@ -19,6 +19,8 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import okhttp3.MediaType;
@@ -58,7 +60,8 @@ public class ImageUseCase extends UseCase<ImageRequest> {
                 doGetImageById(requestValues.getParams(), requestValues.getCallBack());
                 break;
             case Action.ACTION_UPLOAD_IMAGE:
-                doUploadImage(requestValues.getParams(), requestValues.getCallBack());
+                doUploadImage(requestValues.getParams(), requestValues.getPath(),
+                          requestValues.getCallBack());
                 break;
             case Action.ACTION_REMOVE_IMAGE:
                 doRemoveImage(requestValues.getParams(), requestValues.getCallBack());
@@ -71,6 +74,16 @@ public class ImageUseCase extends UseCase<ImageRequest> {
                 break;
             default:
                 break;
+        }
+    }
+    
+   
+    
+    @Override
+    public void unSubscribe() {
+        if (mCompositeDisposable != null && !mCompositeDisposable.isDisposed() &&
+            mDisposable != null) {
+            mCompositeDisposable.remove(mDisposable);
         }
     }
     
@@ -219,7 +232,8 @@ public class ImageUseCase extends UseCase<ImageRequest> {
         }
     }
     
-    private void doUploadImage(String[] params, final BaseCallBack<Object> callBack) {
+    private void doUploadImage(String[] params, String[] paths,
+              final BaseCallBack<Object> callBack) {
         String userid = mDataRepository.getUserId();
         String token = mDataRepository.getUserToken();
         
@@ -230,14 +244,6 @@ public class ImageUseCase extends UseCase<ImageRequest> {
         }
         
         String detail = params[0];
-        String path_url = params[1];
-        
-        File image = new File(path_url);
-        
-        if (image == null) {
-            callBack.onFailure(new ImageException("Cannot load image from " + path_url));
-            return;
-        }
         
         RequestBody requestBodyUserid = RequestBody
                   .create(MediaType.parse("multipart/form-data"), userid);
@@ -245,16 +251,26 @@ public class ImageUseCase extends UseCase<ImageRequest> {
                   .create(MediaType.parse("multipart/form-data"), token);
         RequestBody requestBodyDetail = RequestBody
                   .create(MediaType.parse("multipart/form-data"), detail);
-        RequestBody requestBodyFile = RequestBody
-                  .create(MediaType.parse("multipart/form-data"), image);
-        MultipartBody.Part multipartFile =
-                  MultipartBody.Part.createFormData("file", image.getName(), requestBodyFile);
+        List<MultipartBody.Part> partList = new ArrayList<>();
+        for (String path : paths) {
+            File image = new File(path);
+            if (image == null) {
+                callBack.onFailure(new ImageException("Cannot load image from " + path));
+                return;
+            }
+            RequestBody requestBodyFile = RequestBody
+                      .create(MediaType.parse("multipart/form-data"), image);
+            MultipartBody.Part multipartFile =
+                      MultipartBody.Part.createFormData("file", image.getName(), requestBodyFile);
+            
+            partList.add(multipartFile);
+        }
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object o) {
                 
-                callBack.onSuccess((String) o);
+                callBack.onSuccess(o);
             }
             
             @Override
@@ -266,7 +282,7 @@ public class ImageUseCase extends UseCase<ImageRequest> {
             
             mDisposable = mDataRepository
                       .uploadImage(requestBodyUserid, requestBodyToken, requestBodyDetail,
-                                multipartFile)
+                                partList)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -320,20 +336,12 @@ public class ImageUseCase extends UseCase<ImageRequest> {
         }
     }
     
-    @Override
-    public void unSubscribe() {
-        if (mCompositeDisposable != null && !mCompositeDisposable.isDisposed() &&
-            mDisposable != null) {
-            mCompositeDisposable.remove(mDisposable);
-        }
-    }
-    
     public static class ImageRequest implements UseCase.RequestValue {
         
         private String action;
         private BaseCallBack<Object> callBack;
         private String[] params;
-        
+        private String[] path;
         
         public ImageRequest(@NonNull String action, @NonNull BaseCallBack<Object> callBack) {
             this.action = action;
@@ -347,10 +355,11 @@ public class ImageUseCase extends UseCase<ImageRequest> {
         }
         
         public ImageRequest(@NonNull String action, @NonNull BaseCallBack<Object> callBack,
-                  @Nullable String[] params) {
+                  @Nullable String[] params, String[] path) {
             this.action = action;
             this.callBack = callBack;
             this.params = params;
+            this.path = path;
         }
         
         
@@ -369,6 +378,14 @@ public class ImageUseCase extends UseCase<ImageRequest> {
         public void setCallBack(
                   BaseCallBack<Object> callBack) {
             this.callBack = callBack;
+        }
+        
+        public String[] getPath() {
+            return path;
+        }
+        
+        public void setPath(String[] path) {
+            this.path = path;
         }
         
         public String[] getParams() {

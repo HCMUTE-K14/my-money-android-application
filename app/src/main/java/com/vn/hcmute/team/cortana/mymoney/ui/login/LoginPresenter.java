@@ -1,5 +1,6 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.login;
 
+import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BasePresenter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
@@ -33,7 +34,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     @Override
     public void login(UserCredential userCredential) {
-        UserRequest loginRequest = new UserRequest(Action.ACTION_LOGIN_NORMAL,
+        UserRequest loginRequest = new UserRequest(Action.ACTION_LOGIN,
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {
@@ -53,6 +54,31 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                       }
                   },
                   userCredential);
+        mUserManager.subscribe(loginRequest);
+    }
+    
+    @Override
+    public void login(User user) {
+        UserRequest loginRequest = new UserRequest(Action.ACTION_LOGIN_WITH_FACEBOOK,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().loginSuccessful();
+                      }
+                  
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().loginFailure(throwable.getMessage());
+                      }
+                  
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  },
+                  user);
         mUserManager.subscribe(loginRequest);
     }
     

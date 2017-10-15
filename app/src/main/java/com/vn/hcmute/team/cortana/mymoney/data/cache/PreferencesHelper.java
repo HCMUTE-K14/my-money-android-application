@@ -23,6 +23,8 @@ public class PreferencesHelper {
     private final String PREF_CURRENT_USER = "PREF_CURRENT_USER";
     private final String PREF_CURRENT_WALLET = "PREF_CURRENT_WALLET";
     private final String PREF_CURRENT_REAL_TIME_CURRENCY = "PREF_CURRENT_REAL_TIME_CURRENCY";
+    private final String PREF_FACEBOOK_ACCESS_TOKEN = "PREF_FACEBOOK_ACCESS_TOKEN";
+    
     private SharedPreferences mSharedPreferences;
     private Gson mGson;
     
@@ -99,6 +101,19 @@ public class PreferencesHelper {
             return null;
         }
         return mGson.fromJson(realTimeCurrency, RealTimeCurrency.class);
+    }
+    
+    public void putFacebookAccessToken(String token) {
+        mSharedPreferences.edit().putString(PREF_FACEBOOK_ACCESS_TOKEN, token)
+                  .apply();
+    }
+    
+    public String getFacebookAccessToken() {
+        return mSharedPreferences.getString(PREF_FACEBOOK_ACCESS_TOKEN, "");
+    }
+    
+    public void clearFacebookAccessToken() {
+        putFacebookAccessToken("");
     }
     
 }

@@ -24,7 +24,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.validate.TextUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import java.util.List;
 import javax.inject.Inject;
 

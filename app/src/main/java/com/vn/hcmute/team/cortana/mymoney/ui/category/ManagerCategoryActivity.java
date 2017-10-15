@@ -37,7 +37,7 @@ public class ManagerCategoryActivity extends BaseActivity {
     
     @Override
     public int getLayoutId() {
-        return R.layout.activity_manager_category;
+        return R.layout.activity_manager;
     }
     
     @Override

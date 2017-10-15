@@ -168,6 +168,7 @@ public class CategoryByTypeAdapter extends BaseExpandableListAdapter {
                     }
                 });
                 popup.show();
+                
             }
         });
         

@@ -65,6 +65,11 @@ public abstract class GalleryLoader {
         return this;
     }
     
+    public GalleryLoader setSelectedImage(List<ImageGallery> list) {
+        mGalleryLoaderConfig.setSelectedIamges(list);
+        return this;
+    }
+    
     public GalleryLoader single() {
         return setMode(GalleryLoader.MODE_SINGLE);
     }

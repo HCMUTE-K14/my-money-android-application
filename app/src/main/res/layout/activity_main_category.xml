@@ -6,6 +6,6 @@
   android:orientation="vertical">
   <include layout="@layout/include_top_bar" />
 
-  <include layout="@layout/include_main_category_fragment"/>
+  <include layout="@layout/include_view_pager_fragment"/>
 
 </LinearLayout>

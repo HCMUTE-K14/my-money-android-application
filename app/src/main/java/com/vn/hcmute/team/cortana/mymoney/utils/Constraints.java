@@ -20,7 +20,9 @@ public class Constraints {
         public static final int ADD_CATEGORY_REQUEST_CODE = 9;
         public static final int CHOOSE_PARENT_CATEGORY_REQUEST_CODE = 10;
         public static final int UPDATE_CATEGORY_REQUEST_CODE = 11;
-        public static final int CHANGE_CATEGORY_REQUEST_CODE = 99 ;
+        public static final int CHANGE_CATEGORY_REQUEST_CODE = 99;
+        public static final int CHOOSE_CONTACT_REQUEST_CODE = 100;
+        public static final int CHOOSE_IMAGE_REQUEST_CODE = 101;
     }
     
     public class ResultCode {

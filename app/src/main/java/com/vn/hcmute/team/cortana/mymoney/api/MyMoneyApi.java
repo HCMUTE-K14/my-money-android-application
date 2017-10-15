@@ -12,6 +12,8 @@ public class MyMoneyApi {
     /*USER             */
     /*-----------------*/
     public static final String LOGIN_URL = "users/login";
+    public static final String LOGIN_WITH_FACEBOOK = "users/login_with_facebook";
+    public static final String IS_EXIST_FACEBOOK_ACCOUNT = "users/isExistFacebookAccount";
     public static final String REGISTER_URL = "users/register";
     public static final String FORGET_PASSWORD = "users/forget";
     public static final String CHANGE_PASSWORD = "users/changepassword";
@@ -86,4 +88,15 @@ public class MyMoneyApi {
     public static final String DELETE_CATEGORY = "category/remove";
     public static final String SYNC_CATEGORY = "category/sync";
     
+    /*-----------------*/
+    /*Transaction      */
+    /*-----------------*/
+    public static final String ADD_TRANSACTION = "transaction/add";
+    public static final String UPDATE_TRANSACTION = "transaction/update";
+    public static final String GET_TRANSACTION_BY_CATEGORY = "transaction/getByCategory";
+    public static final String GET_ALL_TRANSACTION = "transaction/getAll";
+    public static final String GET_TRANSACTION_BY_ID = "transaction/get";
+    public static final String GET_TRANSACTION_BY_TYPE = "transaction/getByType";
+    public static final String GET_TRANSACTION_BY_TIME = "transaction/getByTime";
+    public static final String SYNC_TRANSACTION = "transaction/sync";
 }

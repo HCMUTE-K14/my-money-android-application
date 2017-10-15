@@ -1,6 +1,10 @@
 package com.vn.hcmute.team.cortana.mymoney.utils;
 
+import com.vn.hcmute.team.cortana.mymoney.ApplicationConfig;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -27,11 +31,10 @@ public class DateUtil {
         int mYear = calendar.get(Calendar.YEAR);
         int mMonth = calendar.get(Calendar.MONTH) + 1;
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-
+        
         return mDay + "/" + mMonth + "/" + mYear;
     }
     public static String convertTimeMilisToDateNotYear(String timeMillis) {
-    
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(timeMillis));
         
@@ -40,11 +43,35 @@ public class DateUtil {
     
         return mDay + "/" + mMonth;
     }
+    public static Date timeMilisecondsToDate(String time) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(time));
+        
+        return calendar.getTime();
+    }
+
     public static long getLongAsDate(int day, int month, int year) {
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.DAY_OF_MONTH, day);
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.YEAR, year);
         return calendar.getTimeInMillis();
+    }
+    
+    public static String formatDate(int year, int month, int dayOfMonth) {
+        String pattern = ApplicationConfig.DEFAULT_DATE_PATTERN;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, dayOfMonth);
+        Format formatter = new SimpleDateFormat(pattern);
+        
+        return formatter.format(calendar.getTime());
+    }
+    
+    public static String formatDate(Date date) {
+        String pattern = ApplicationConfig.DEFAULT_DATE_PATTERN;
+        Calendar calendar = Calendar.getInstance();
+        Format formatter = new SimpleDateFormat(pattern);
+        
+        return formatter.format(date);
     }
 }

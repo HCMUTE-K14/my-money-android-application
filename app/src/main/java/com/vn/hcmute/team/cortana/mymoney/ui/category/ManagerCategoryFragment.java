@@ -37,7 +37,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.validate.TextUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import javax.inject.Inject;
 
 /**
@@ -246,7 +246,6 @@ public class ManagerCategoryFragment extends BaseFragment implements AddEditView
         }, 150);
     }
     
-    @Override
     public void initializeView() {
         mRadioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override

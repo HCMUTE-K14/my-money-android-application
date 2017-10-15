@@ -18,6 +18,12 @@ public interface UserService {
     @POST(MyMoneyApi.LOGIN_URL)
     Observable<JsonResponse<User>> login(@Body UserCredential userCredential);
     
+    @POST(MyMoneyApi.LOGIN_WITH_FACEBOOK)
+    Observable<JsonResponse<User>> login(@Body User userCredential);
+    
+    @POST(MyMoneyApi.IS_EXIST_FACEBOOK_ACCOUNT)
+    Observable<JsonResponse<String>> isExistFacebookAccount(@Body User userCredential);
+    
     @POST(MyMoneyApi.REGISTER_URL)
     Observable<JsonResponse<String>> register(@Body User user);
     

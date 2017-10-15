@@ -10,6 +10,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
 import com.vn.hcmute.team.cortana.mymoney.model.ResultConvert;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
+import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
@@ -28,6 +29,10 @@ public interface DataSource {
         
         Observable<User> login(UserCredential userCredential);
         
+        Observable<User> login(User user);
+        
+        Observable<String> isExistFacebookAccount(User user);
+        
         Observable<String> register(User user);
         
         Observable<String> forgetPassword(String email);
@@ -39,8 +44,9 @@ public interface DataSource {
         
         Observable<List<Image>> getImage(String userid, String token);
         
-        Observable<String> uploadImage(RequestBody userid, RequestBody token, RequestBody detail,
-                  MultipartBody.Part file);
+        Observable<List<Image>> uploadImage(RequestBody userid, RequestBody token,
+                  RequestBody detail,
+                  List<MultipartBody.Part> files);
         
         Observable<Image> getImageById(String userid, String token, String imageid);
         
@@ -120,7 +126,22 @@ public interface DataSource {
         Observable<String> deleteCategory(String userid, String token, String parentId,
                   Category category);
         
+        Observable<String> addTransaction(String userid, String token, Transaction transaction);
         
+        Observable<String> updateTransaction(String userid, String token, Transaction transaction);
+        
+        Observable<List<Transaction>> getTransactionByCategory(String userid, String token,
+                  String categoryId, String walletId);
+        
+        Observable<Transaction> getTransactionById(String id, String userid, String token);
+    
+        Observable<List<Transaction>> getTransaction(String userid, String token);
+    
+        Observable<List<Transaction>> getTransactionByType(String userid, String token,
+                  String type, String walletId);
+    
+        Observable<List<Transaction>> getTransactionByTime(String userid, String token, String startDate,
+                  String endDate,String walletId);
     }
     
     public interface CacheDataSource {

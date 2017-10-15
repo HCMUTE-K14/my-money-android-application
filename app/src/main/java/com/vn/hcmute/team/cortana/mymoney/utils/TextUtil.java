@@ -1,4 +1,4 @@
-package com.vn.hcmute.team.cortana.mymoney.utils.validate;
+package com.vn.hcmute.team.cortana.mymoney.utils;
 
 import java.math.BigDecimal;
 

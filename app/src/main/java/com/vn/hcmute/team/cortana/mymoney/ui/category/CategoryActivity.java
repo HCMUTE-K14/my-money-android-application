@@ -64,7 +64,6 @@ public class CategoryActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCategoryIdSelected = getCategoryIdFromIntent();
-        
         initializeView();
     }
     
@@ -100,15 +99,16 @@ public class CategoryActivity extends BaseActivity {
         int mode = CategoryByTypeFragment.MODE_ENABLE_CHOOSE_CATEGORY;
         viewPagerAdapter
                   .add(CategoryByTypeFragment
-                                      .newInstance(mode,Action.ACTION_GET_DEBT_LOAN_CATEGORY, mCategoryIdSelected),
+                                      .newInstance(mode, Action.ACTION_GET_DEBT_LOAN_CATEGORY,
+                                                mCategoryIdSelected),
                             getString(R.string.txt_debt_loan));
         
         viewPagerAdapter.add(CategoryByTypeFragment
-                            .newInstance(mode,Action.ACTION_GET_EXPENSE_CATEGORY, mCategoryIdSelected),
+                            .newInstance(mode, Action.ACTION_GET_EXPENSE_CATEGORY, mCategoryIdSelected),
                   getString(R.string.txt_expense));
         
         viewPagerAdapter.add(CategoryByTypeFragment
-                            .newInstance(mode,Action.ACTION_GET_INCOMING_CATEGORY, mCategoryIdSelected),
+                            .newInstance(mode, Action.ACTION_GET_INCOMING_CATEGORY, mCategoryIdSelected),
                   getString(R.string.txt_incoming));
         
         mViewPager.setAdapter(viewPagerAdapter);

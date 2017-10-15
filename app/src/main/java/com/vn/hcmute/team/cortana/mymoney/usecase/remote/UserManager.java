@@ -50,13 +50,19 @@ public class UserManager extends UseCase<UserRequest> {
     public void subscribe(UserRequest requestValues) {
         String action = requestValues.getAction();
         switch (action) {
-            case Action.ACTION_LOGIN_NORMAL:
-                doLoginNormal(requestValues.getCallBack(),
+            case Action.ACTION_LOGIN:
+                doLogin(requestValues.getCallBack(),
                           requestValues.getUserCredential());
+                break;
+            case Action.ACTION_LOGIN_WITH_FACEBOOK:
+                doLoginWithFacebook(requestValues.getCallBack(), requestValues.getUser());
                 break;
             case Action.ACTION_REGISTER:
                 doRegister(requestValues.getCallBack(),
                           requestValues.getUser());
+                break;
+            case Action.ACTION_CHECK_EXIST_FACEBOOK_ACCOUNT:
+                doCheckExistFacebookAccount(requestValues.getCallBack(), requestValues.getUser());
                 break;
             case Action.ACTION_LOGOUT:
                 doLogout(requestValues.getCallBack());
@@ -69,10 +75,37 @@ public class UserManager extends UseCase<UserRequest> {
                 break;
             case Action.ACTION_CHANGE_PROFILE:
                 doChangeProfile(requestValues.getCallBack(), requestValues.getUser());
-                
                 break;
             default:
                 break;
+        }
+    }
+    
+    private void doCheckExistFacebookAccount(final BaseCallBack<Object> callBack, final User user) {
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object obj) {
+                callBack.onSuccess((String) obj);
+            }
+            
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
+        if (!this.mCompositeDisposable.isDisposed()) {
+            mDisposable = mDataRepository.isExistFacebookAccount(user)
+                      .subscribeOn(Schedulers.io())
+                      .observeOn(AndroidSchedulers.mainThread())
+                      .doOnSubscribe(new Consumer<Disposable>() {
+                          @Override
+                          public void accept(Disposable disposable) throws Exception {
+                              callBack.onLoading();
+                          }
+                      })
+                      .singleOrError()
+                      .subscribeWith(this.mDisposableSingleObserver);
+            this.mCompositeDisposable.add(mDisposable);
         }
     }
     
@@ -219,7 +252,7 @@ public class UserManager extends UseCase<UserRequest> {
         }.run();
     }
     
-    private void doLoginNormal(final BaseCallBack<Object> callBack,
+    private void doLogin(final BaseCallBack<Object> callBack,
               final UserCredential userCredential) {
         if (!UserValidate.getInstance().validateUser(userCredential)) {
             callBack.onFailure(new UserValidateException(
@@ -256,6 +289,36 @@ public class UserManager extends UseCase<UserRequest> {
         }
     }
     
+    private void doLoginWithFacebook(final BaseCallBack<Object> callBack,
+              final User userCredential) {
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
+                mDataRepository.putLoginState((User) user);
+                callBack.onSuccess((User) user);
+            }
+            
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
+        if (!this.mCompositeDisposable.isDisposed()) {
+            mDisposable = mDataRepository.login(userCredential)
+                      .subscribeOn(Schedulers.io())
+                      .observeOn(AndroidSchedulers.mainThread())
+                      .doOnSubscribe(new Consumer<Disposable>() {
+                          @Override
+                          public void accept(Disposable disposable) throws Exception {
+                              callBack.onLoading();
+                          }
+                      })
+                      .singleOrError()
+                      .subscribeWith(this.mDisposableSingleObserver);
+            this.mCompositeDisposable.add(mDisposable);
+        }
+    }
+    
     private void doRegister(final BaseCallBack<Object> callBack, final User data) {
         if (!UserValidate.getInstance().validateUser(data)) {
             callBack.onFailure(new UserValidateException(
@@ -276,7 +339,6 @@ public class UserManager extends UseCase<UserRequest> {
         if (!this.mCompositeDisposable.isDisposed()) {
             
             mDisposable = mDataRepository.register(data)
-                      
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .doOnSubscribe(new Consumer<Disposable>() {
@@ -289,7 +351,6 @@ public class UserManager extends UseCase<UserRequest> {
                       .subscribeWith(this.mDisposableSingleObserver);
             this.mCompositeDisposable.add(mDisposable);
         }
-        
     }
     
     @Override
