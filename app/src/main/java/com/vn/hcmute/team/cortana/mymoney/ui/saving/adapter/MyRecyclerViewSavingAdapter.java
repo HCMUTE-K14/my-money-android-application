@@ -36,15 +36,11 @@ public class MyRecyclerViewSavingAdapter extends
         this.mData = data;
         this.mContext = context;
     }
-    
-    
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item_saving, parent, false);
         return new ViewHolder(view);
     }
-    
-    
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(getItem(position));

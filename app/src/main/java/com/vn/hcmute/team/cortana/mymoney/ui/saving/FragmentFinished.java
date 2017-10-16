@@ -3,6 +3,8 @@ package com.vn.hcmute.team.cortana.mymoney.ui.saving;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -35,11 +37,15 @@ public class FragmentFinished extends BaseFragment implements
     RecyclerView mRecyclerView;
     @BindView(R.id.progress_bar_saving)
     ProgressBar mProgressBar;
-    @Inject
-    SavingPresenter mSavingPresenter;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    
     private List<Saving> mSavingList;
     private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
     private EmptyAdapter mEmptyAdapter;
+    
+    @Inject
+    SavingPresenter mSavingPresenter;
     
     @Override
     protected int getLayoutId() {
@@ -69,14 +75,22 @@ public class FragmentFinished extends BaseFragment implements
     
     @Override
     protected void initializeActionBar(View rootView) {
-        init(rootView);
-        mSavingPresenter.getSaving();
+       
     }
-
-    public void init(View view) {
-        
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        mSavingList = new ArrayList<>();
+    @Override
+    protected void initialize() {
+        init();
+        mSavingPresenter.getSaving();
+        mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSavingList.clear();
+                if(mMyRecyclerViewSavingAdapter!=null){
+                    mMyRecyclerViewSavingAdapter.notifyDataSetChanged();
+                }
+                mSavingPresenter.getSaving();
+            }
+        });
     }
     
     @Override
@@ -131,14 +145,16 @@ public class FragmentFinished extends BaseFragment implements
                 mMyRecyclerViewSavingAdapter.setClickListener(this);
                 mRecyclerView.setAdapter(mMyRecyclerViewSavingAdapter);
             } else {
-                mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
+                mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_saving));
                 mRecyclerView.setAdapter(mEmptyAdapter);
             }
         } else {
-            mEmptyAdapter = new EmptyAdapter(getContext(), "No Saving");
+            mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_saving));
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
-
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
     
     @Override
@@ -173,7 +189,11 @@ public class FragmentFinished extends BaseFragment implements
     
     @Override
     public void showError(String message) {
-        
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+        mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_saving));
+        mRecyclerView.setAdapter(mEmptyAdapter);
     }
     
     @Override
@@ -190,5 +210,9 @@ public class FragmentFinished extends BaseFragment implements
             intent.putExtra("process", String.valueOf(process));
         }
         getActivity().startActivityForResult(intent, 2);
+    }
+    public void init() {
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        mSavingList = new ArrayList<>();
     }
 }

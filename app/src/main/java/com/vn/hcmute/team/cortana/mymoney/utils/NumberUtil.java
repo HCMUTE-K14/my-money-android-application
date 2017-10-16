@@ -46,4 +46,5 @@ public class NumberUtil {
         
         return NumberUtil.round(value, 3);
     }
+    
 }

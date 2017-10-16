@@ -15,20 +15,11 @@ public class PagerAdapterBudget extends FragmentStatePagerAdapter {
     FragmentBudgetFinished mFragmentBudgetFinished=new FragmentBudgetFinished();
     public PagerAdapterBudget(FragmentManager fm) {
         super(fm);
+        
     }
     
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return mFragmentBudgetRunning;
-            case 1:
-                return mFragmentBudgetFinished;
-            default:
-                return null;
-        }
-    }
-    public Fragment getFragment(int position) {
         switch (position) {
             case 0:
                 return mFragmentBudgetRunning;

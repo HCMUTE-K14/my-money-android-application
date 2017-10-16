@@ -34,5 +34,7 @@ public interface BudgetContract {
         void updateBudget(Budget budget);
         
         void deleteBudget(String budgetId);
+    
+        void unSubscribe();
     }
 }

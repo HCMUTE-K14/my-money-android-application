@@ -14,27 +14,12 @@ public class PagerAdapterEvent extends FragmentStatePagerAdapter {
 
     private FragmentEventRunning mFragmentEventRunning = new FragmentEventRunning();
     private FragmentEventFinished mFragmentEventFinished = new FragmentEventFinished();
-    private int mNumOfTabs;
 
-    public PagerAdapterEvent(FragmentManager fm, int numOfTabs) {
+    public PagerAdapterEvent(FragmentManager fm) {
         super(fm);
-        this.mNumOfTabs = numOfTabs;
     }
-    
-    
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return mFragmentEventRunning;
-            case 1:
-                return mFragmentEventFinished;
-            default:
-                return null;
-        }
-    }
-
-    public Fragment getFragment(int position) {
         switch (position) {
             case 0:
                 return mFragmentEventRunning;
@@ -49,10 +34,4 @@ public class PagerAdapterEvent extends FragmentStatePagerAdapter {
     public int getCount() {
         return 2;
     }
-
-    public int getNumOfTabs() {
-        return mNumOfTabs;
-    }
-    
-
 }

@@ -221,6 +221,24 @@
   <string name="txt_select_date">Select date</string>
   <string name="txt_navigation_saving">Savings</string>
   <string name="txt_savings">Savings</string>
+
+  <string name="txt_no_saving">No Saving</string>
+  <string name="txt_error_range_date">Error range date</string>
+  <string name="txt_no_budget">No Budget</string>
+  <string name="txt_event">Events</string>
+  <string name="txt_budget">Budgets</string>
+  <string name="txt_select_event_bar">Select Event</string>
+  <string name="txt_over_money_wallet">Over money wallet.</string>
+  <string name="txt_over_money_saving">Over money saving.</string>
+  <string name="txt_not_enough">Not enough money in wallet</string>
+  <string name="txt_transaction">Transaction</string>
+  <string name="txt_add_saving_success">Add saving success.</string>
+  <string name="txt_add_saving_fail">Add saving fail.</string>
+  <string name="txt_success">Success!</string>
+  <string name="txt_fail">Fail!</string>
+  <string name="txt_invalid_input">Invalid input</string>
+  <string name="txt_money_empty">Money empty!</string>
+
   <string name="message_warning_name_or_describe_is_empty">Name or Describe can\'t be empty</string>
   <string name="txt_edit_transaction">Edit Transaction</string>
   <string name="txt_wallet">Wallet</string>
@@ -230,4 +248,5 @@
   <string name="txt_warning_date_created">The End date must be greater than the Start date.</string>
   <string name="txt_please_choose_wallet">Please choose wallet !</string>
   <string name="message_you_must_login_first">You must login first !</string>
+
 </resources>

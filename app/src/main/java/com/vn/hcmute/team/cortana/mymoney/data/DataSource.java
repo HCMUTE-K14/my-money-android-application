@@ -89,10 +89,10 @@ public interface DataSource {
         Observable<String> deleteSaving(String userid, String token, String idSaving);
         
         Observable<String> takeInSaving(String userid, String token, String idWallet,
-                  String idSaving, String money);
+                  String idSaving, String moneyUpdateWallet, String moneyUpdateSaving);
         
         Observable<String> takeOutSaving(String userid, String token, String idWallet,
-                  String idSaving, String money);
+                  String idSaving, String moneyUpdateWallet, String moneyUpdateSaving);
         
         Observable<List<Person>> getPerson(String userid, String token);
         
@@ -192,5 +192,25 @@ public interface DataSource {
         Observable<String> updateLocalCategory(Category category);
         
         Observable<String> deleteLocalCategory(Category category);
+        
+        /*Area saving*/
+        Observable<List<Saving>> getLocalListSaving();
+    
+        Observable<String> addLocalSaving(Saving saving);
+    
+        Observable<String> updateLocalSaving(Saving saving);
+    
+        Observable<String> deleteLocalSaving(String saving_id);
+    
+        Observable<String> takeInLocalSaving(String idWallet, String idSaving, String moneyWallet,
+                  String moneySaving);
+    
+        Observable<String> takeOutLocalSaving(String idWallet, String idSaving, String moneyWallet,
+                  String moneySaving);
+        /*Area wallet*/
+        Observable<List<Wallet>> getListWallet();
+        Observable<String> addLocalWallet(Wallet wallet);
+        Observable<String> updateLocalWallet(Wallet wallet);
+        Observable<String> deleteLocalWallet(String idWallet);
     }
 }

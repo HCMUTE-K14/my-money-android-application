@@ -5,7 +5,7 @@
   android:orientation="vertical">
   <android.support.v7.widget.CardView
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="?attr/actionBarSize">
     <RelativeLayout
       android:id="@+id/layout_top_bar"
       android:layout_width="fill_parent"
@@ -57,7 +57,7 @@
 
   <android.support.v7.widget.CardView
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="250dp"
     android:layout_marginTop="15dp">
 
     <LinearLayout
@@ -89,9 +89,11 @@
             android:background="@color/gray" />
         </LinearLayout>
         <LinearLayout
+          android:id="@+id/linear_select_category"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:gravity="center"
           android:orientation="vertical">
           <TextView
@@ -104,7 +106,6 @@
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/txt_name_saving"
-
             />
           <View
             android:layout_width="match_parent"
@@ -129,9 +130,11 @@
 
         </LinearLayout>
         <LinearLayout
+          android:id="@+id/linear_goal_money"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:orientation="vertical">
           <TextView
             android:layout_width="wrap_content"
@@ -220,6 +223,7 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:gravity="center|left"
           android:orientation="vertical">
           <TextView

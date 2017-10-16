@@ -32,15 +32,19 @@ public interface SavingService {
     Observable<JsonResponse<String>> deleteSaving(@Path("userid") String useid,
               @Path("token") String token, @Path("idSaving") String idSaving);
     
-    @GET(MyMoneyApi.TAKE_IN_SAVING + "/{userid}/{token}/{idWallet}/{idSaving}/{money}")
+    @GET(MyMoneyApi.TAKE_IN_SAVING +
+         "/{userid}/{token}/{idWallet}/{idSaving}/{moneyUpdateWallet}/{moneyUpdateSaving}")
     Observable<JsonResponse<String>> takeInSaving(@Path("userid") String useid,
               @Path("token") String token, @Path("idWallet") String idWallet,
               @Path("idSaving") String idSaving,
-              @Path("money") String money);
+              @Path("moneyUpdateWallet") String moneyUpdateWallet,
+              @Path("moneyUpdateSaving") String moneyUpdateSaving);
     
-    @GET(MyMoneyApi.TAKE_OUT_SAVING + "/{userid}/{token}/{idWallet}/{idSaving}/{money}")
+    @GET(MyMoneyApi.TAKE_OUT_SAVING +
+         "/{userid}/{token}/{idWallet}/{idSaving}/{moneyUpdateWallet}/{moneyUpdateSaving}")
     Observable<JsonResponse<String>> takeOutSaving(@Path("userid") String useid,
               @Path("token") String token, @Path("idWallet") String idWallet,
               @Path("idSaving") String idSaving,
-              @Path("money") String money);
+              @Path("moneyUpdateWallet") String moneyUpdateWallet,
+              @Path("moneyUpdateSaving") String moneyUpdateSaving);
 }

@@ -7,6 +7,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.scope.PerActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.ActivityAddEvent;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.ActivityEditEvent;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.ActivityInfoEvent;
+import com.vn.hcmute.team.cortana.mymoney.ui.event.ActivitySelectEvent;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.EventActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.FragmentEventFinished;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.FragmentEventRunning;
@@ -31,4 +32,6 @@ public interface EventComponent {
     void inject(ActivityEditEvent activityEditEvent);
 
     void inject(ActivityAddEvent activityAddEvent);
+    
+    void inject(ActivitySelectEvent activitySelectEvent);
 }

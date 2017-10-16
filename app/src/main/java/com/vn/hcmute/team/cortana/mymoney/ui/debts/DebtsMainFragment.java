@@ -57,7 +57,6 @@ public class DebtsMainFragment extends BaseFragment {
         viewPagerAdapter.add(DebtsFragmentByType.newInstance(), "BBB");
         
         mViewPager.setAdapter(viewPagerAdapter);
-        MyLogger.d("DebtsMainFragment", mViewPager == null ? " NULL" : "NOT NULL");
         mTabLayout.setupWithViewPager(mViewPager);
     }
 }

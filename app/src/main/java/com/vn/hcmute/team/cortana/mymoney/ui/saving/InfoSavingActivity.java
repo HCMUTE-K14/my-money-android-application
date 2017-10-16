@@ -62,15 +62,17 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     TextView txt_unit;
     @BindView(R.id.image_icon_saving)
     ImageView image_icon_saving;
-    @Inject
-    SavingPresenter mSavingPresenter;
-    
-    @Inject
-    WalletUseCase mWalletUseCase;
     
     private Saving mSaving;
     private String mProcess;
     private List<Wallet> mWalletList;
+    private Wallet mWallet;
+    
+    @Inject
+    SavingPresenter mSavingPresenter;
+    @Inject
+    WalletUseCase mWalletUseCase;
+    
     
     @Override
     public int getLayoutId() {
@@ -81,88 +83,6 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        
-    }
-    
-    public void getData() {
-        Intent intent = getIntent();
-        mSaving = (Saving) intent.getParcelableExtra("MySaving");
-        mProcess = intent.getStringExtra("process");
-    }
-    
-    public void showData() {
-        txt_saving_name.setText(mSaving.getName());
-        txt_money_goal.setText("+" + mSaving.getGoalMoney());
-        txt_current_money.setText(mSaving.getCurrentMoney());
-        double need_money = Double.parseDouble(txt_money_goal.getText().toString()) -
-                            Double.parseDouble(txt_current_money.getText().toString());
-        
-        txt_need_money.setText(TextUtil.doubleToString(need_money));
-        
-        txt_date_saving.setText(DateUtil.convertTimeMillisToDate(mSaving.getDate()));
-        
-        txt_time_rest.setText(getString(R.string.days_left,
-                  DateUtil.getDateLeft(Long.parseLong(mSaving.getDate())) + ""));
-        
-        //txt_name_wallet.setText("");
-        if (mSaving.getIdWallet().equals("")) {
-            txt_name_wallet.setText(getString(R.string.all_wallet));
-        }
-        
-        txt_unit.setText(mSaving.getCurrencies().getCurSymbol());
-        
-        seek_bar_saving_info.setProgress(Integer.parseInt(mProcess));
-        seek_bar_saving_info.setEnabled(false);
-        
-        GlideApp.with(this)
-                  .load(DrawableUtil.getDrawable(this, mSaving.getIcon()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(image_icon_saving);
-    }
-    
-    public String getNameWallet(List<Wallet> wallets) {
-        String name = "";
-        
-        for (Wallet wallet : wallets) {
-            if (wallet.getWalletid().equals(mSaving.getIdWallet())) {
-                name = wallet.getWalletName();
-                break;
-            }
-        }
-        return name;
-    }
-    
-    public void getWallet() {
-        mWalletList = new ArrayList<>();
-        WalletRequest savingRequest = new WalletRequest(Action.ACTION_GET_WALLET,
-                  new BaseCallBack<Object>() {
-                      @Override
-                      public void onSuccess(Object value) {
-                          List<Wallet> wallets = (List<Wallet>) value;
-                          mWalletList.addAll(wallets);
-                          String tmp = getNameWallet(wallets);
-                          if (tmp.equals("")) {
-                              txt_name_wallet.setText(getString(R.string.all_wallet));
-                          } else {
-                              txt_name_wallet.setText(tmp);
-                          }
-                          
-                          
-                      }
-                      
-                      @Override
-                      public void onFailure(Throwable throwable) {
-                          MyLogger.d("erro get wallet");
-                      }
-                      
-                      @Override
-                      public void onLoading() {
-                          
-                      }
-                  }, null, null);
-        mWalletUseCase.subscribe(savingRequest);
         
     }
     
@@ -191,43 +111,14 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     
     @Override
     protected void initializeActionBar(View rootView) {
+        
+    }
+    
+    @Override
+    protected void initialize() {
         getData();
         getWallet();
         showData();
-    }
-    
-    @OnClick(R.id.image_view_cancel)
-    public void onClickCancel(View view) {
-        onClose();
-    }
-    
-    @OnClick(R.id.image_view_delete)
-    public void onClickDelete(View view) {
-        
-        final AlertDialog.Builder doneDialog = new AlertDialog.Builder(this);
-        doneDialog.setMessage(getString(R.string.content_delete_saving));
-        doneDialog.setNegativeButton(getString(R.string.txt_yes), new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mSavingPresenter.deleteSaving(mSaving.getSavingid());
-            }
-        });
-        
-        doneDialog.setPositiveButton(getString(R.string.txt_no), new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        doneDialog.create().show();
-    }
-    
-    @OnClick(R.id.image_view_edit)
-    public void onClickEdit(View view) {
-        Intent intent = new Intent(this, EditSavingActivity.class);
-        intent.putExtra("saving", mSaving);
-        intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
-        startActivityForResult(intent, 3);
     }
     
     @Override
@@ -266,15 +157,6 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
                 doTransferMoneySaving(data);
             }
         }
-    }
-    
-    public void doTransferMoneySaving(Intent data) {
-        mSaving = data.getParcelableExtra("saving");
-        double tmp = (Double.parseDouble(mSaving.getCurrentMoney()) /
-                      Double.parseDouble(mSaving.getGoalMoney())) * 100;
-        int temp = (int) tmp;
-        mProcess = String.valueOf(temp);
-        showData();
     }
     
     @Override
@@ -325,10 +207,12 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         
     }
     
+    /*Area OnClick*/
     @OnClick(R.id.image_view_take_in)
     public void onClickTakeIn(View view) {
         Intent intent = new Intent(this, TransferMoneySavingActivity.class);
         intent.putExtra("saving", mSaving);
+        intent.putExtra("wallet", mWallet);
         intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
         intent.putExtra("value", "1");
         startActivityForResult(intent, 7);
@@ -338,14 +222,142 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     public void onClickTakeOut(View view) {
         Intent intent = new Intent(this, TransferMoneySavingActivity.class);
         intent.putExtra("saving", mSaving);
+        intent.putExtra("wallet", mWallet);
         intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
         intent.putExtra("value", "2");
         startActivityForResult(intent, 8);
     }
     
-    private void onClose(){
+    @OnClick(R.id.image_view_cancel)
+    public void onClickCancel(View view) {
+        onClose();
+    }
+    
+    @OnClick(R.id.image_view_delete)
+    public void onClickDelete(View view) {
+        
+        final AlertDialog.Builder doneDialog = new AlertDialog.Builder(this);
+        doneDialog.setMessage(getString(R.string.content_delete_saving));
+        doneDialog.setNegativeButton(getString(R.string.txt_yes), new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mSavingPresenter.deleteSaving(mSaving.getSavingid());
+            }
+        });
+        
+        doneDialog.setPositiveButton(getString(R.string.txt_no), new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        doneDialog.create().show();
+    }
+    
+    @OnClick(R.id.image_view_edit)
+    public void onClickEdit(View view) {
+        Intent intent = new Intent(this, EditSavingActivity.class);
+        intent.putExtra("saving", mSaving);
+        intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
+        startActivityForResult(intent, 3);
+    }
+    
+    /*Area Function*/
+    private void onClose() {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
         finish();
+    }
+    
+    public void doTransferMoneySaving(Intent data) {
+        if (!mSaving.equals("")) {
+            mWallet = data.getParcelableExtra("wallet");
+        }
+        mSaving = data.getParcelableExtra("saving");
+        double tmp = (Double.parseDouble(mSaving.getCurrentMoney()) /
+                      Double.parseDouble(mSaving.getGoalMoney())) * 100;
+        int temp = (int) tmp;
+        mProcess = String.valueOf(temp);
+        showData();
+    }
+    
+    public void getData() {
+        Intent intent = getIntent();
+        mSaving = (Saving) intent.getParcelableExtra("MySaving");
+        mProcess = intent.getStringExtra("process");
+    }
+    
+    public void showData() {
+        txt_saving_name.setText(mSaving.getName());
+        txt_money_goal.setText("+" + mSaving.getGoalMoney());
+        txt_current_money.setText(mSaving.getCurrentMoney());
+        double need_money = Double.parseDouble(txt_money_goal.getText().toString()) -
+                            Double.parseDouble(txt_current_money.getText().toString());
+        
+        txt_need_money.setText(TextUtil.doubleToString(need_money));
+        
+        txt_date_saving.setText(DateUtil.convertTimeMillisToDate(mSaving.getDate()));
+        
+        txt_time_rest.setText(getString(R.string.days_left,
+                  DateUtil.getDateLeft(Long.parseLong(mSaving.getDate())) + ""));
+        
+        //txt_name_wallet.setText("");
+        if (mSaving.getIdWallet().equals("")) {
+            txt_name_wallet.setText(getString(R.string.all_wallet));
+        }
+        
+        txt_unit.setText(mSaving.getCurrencies().getCurSymbol());
+        
+        seek_bar_saving_info.setProgress(Integer.parseInt(mProcess));
+        seek_bar_saving_info.setEnabled(false);
+        
+        GlideApp.with(this)
+                  .load(DrawableUtil.getDrawable(this, mSaving.getIcon()))
+                  .placeholder(R.drawable.folder_placeholder)
+                  .error(R.drawable.folder_placeholder)
+                  .dontAnimate()
+                  .into(image_icon_saving);
+    }
+    
+    public Wallet getNameWallet(List<Wallet> wallets) {
+        Wallet walletResult = null;
+        
+        for (Wallet wallet : wallets) {
+            if (wallet.getWalletid().equals(mSaving.getIdWallet())) {
+                walletResult = wallet;
+                break;
+            }
+        }
+        return walletResult;
+    }
+    
+    public void getWallet() {
+        mWalletList = new ArrayList<>();
+        WalletRequest savingRequest = new WalletRequest(Action.ACTION_GET_WALLET,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          List<Wallet> wallets = (List<Wallet>) value;
+                          mWalletList.addAll(wallets);
+                          Wallet tmp = getNameWallet(wallets);
+                          if (tmp == null) {
+                              txt_name_wallet.setText(getString(R.string.all_wallet));
+                          } else {
+                              txt_name_wallet.setText(tmp.getWalletName());
+                              mWallet = tmp;
+                          }
+                      }
+                      
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          MyLogger.d("erro get wallet");
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          
+                      }
+                  }, null, null);
+        mWalletUseCase.subscribe(savingRequest);
     }
 }

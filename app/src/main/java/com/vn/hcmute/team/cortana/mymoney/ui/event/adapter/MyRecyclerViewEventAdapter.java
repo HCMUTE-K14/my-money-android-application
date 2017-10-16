@@ -32,7 +32,7 @@ public class MyRecyclerViewEventAdapter extends
     public MyRecyclerViewEventAdapter(Context context, List<Event> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
-        this.mContext=context;
+        this.mContext = context;
     }
     
     @Override
@@ -67,7 +67,7 @@ public class MyRecyclerViewEventAdapter extends
     }
     
     public interface ItemClickListener {
-
+        
         void onItemClick(Event event);
     }
     

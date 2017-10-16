@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface SavingContract {
     
-    public interface View extends BaseView {
+    interface View extends BaseView {
         
         void showListSaving(List<Saving> savings);
         
@@ -32,7 +32,7 @@ public interface SavingContract {
         
     }
     
-    public interface Presenter {
+    interface Presenter {
         
         void getSaving();
         
@@ -44,9 +44,11 @@ public interface SavingContract {
         
         void deleteSaving(String idSaving);
         
-        void takeIn(String idWallet, String idSaving, String money);
+        void takeIn(String idWallet, String idSaving, String moneyUpdateWallet,
+                  String moneyUpdateSaving);
         
-        void takeOut(String idWallet, String idSaving, String money);
+        void takeOut(String idWallet, String idSaving, String moneyUpdateWallet,
+                  String moneyUpdateSaving);
         
         void unSubscribe();
         

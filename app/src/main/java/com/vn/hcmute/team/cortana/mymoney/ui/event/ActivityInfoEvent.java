@@ -55,15 +55,13 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     @BindView(R.id.image_icon_event)
     ImageView image_icon_event;
     
+    private Event mEvent;
+    private List<Wallet> mWalletList;
+    
     @Inject
     EventPresenter mEventPresenter;
     @Inject
     WalletUseCase mWalletUseCase;
-    
-    private Event mEvent;
-    
-    private List<Wallet> mWalletList;
-    
     
     @Override
     public int getLayoutId() {
@@ -92,6 +90,11 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     
     @Override
     protected void initializeActionBar(View rootView) {
+        
+    }
+    
+    @Override
+    protected void initialize() {
         getData();
         getWallet();
         showData();
@@ -115,127 +118,6 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     protected void onDestroy() {
         mEventPresenter.unSubscribe();
         super.onDestroy();
-    }
-    
-    public void getData() {
-        Intent intent = getIntent();
-        mEvent = intent.getParcelableExtra("event");
-    }
-    
-    public void showData() {
-        txt_name_event.setText(mEvent.getName());
-        txt_date_saving.setText(DateUtil.convertTimeMillisToDate(mEvent.getDate()));
-        
-        txt_time_rest.setText(getString(R.string.days_left,
-                  DateUtil.getDateLeft(Long.parseLong(mEvent.getDate())) + ""));
-        if (mEvent.getIdWallet().trim().equals("")) {
-            txt_name_wallet.setText(getString(R.string.all_wallet));
-        }
-        if (mEvent.getStatus().equals("0")) {
-            linear_mark_as_finished.setVisibility(View.VISIBLE);
-        } else {
-            linear_mark_as_finished.setVisibility(View.GONE);
-        }
-        GlideApp.with(this)
-                  .load(DrawableUtil.getDrawable(this, mEvent.getIcon()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(image_icon_event);
-        
-    }
-    
-    @OnClick(R.id.btn_mark_as_finished)
-    public void onClickMarkAsFinished(View view) {
-        mEvent.setStatus("1");
-        mEventPresenter.updateEvent(mEvent);
-    }
-    
-    @OnClick(R.id.btn_list_transaction)
-    public void onClickListTransaction(View view) {
-        
-    }
-    
-    @OnClick(R.id.image_view_cancel)
-    public void onClickCancel(View view) {
-        onDone();
-    }
-    
-    private void onDone(){
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
-        finish();
-    }
-    
-    @OnClick(R.id.image_view_edit)
-    public void onClickEdit(View view) {
-        Intent intent = new Intent(this, ActivityEditEvent.class);
-        intent.putExtra("event", mEvent);
-        intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
-        startActivityForResult(intent, 17);
-    }
-    
-    
-    @OnClick(R.id.image_view_delete)
-    public void onClickDelete(View view) {
-        final AlertDialog.Builder doneDialog = new AlertDialog.Builder(this);
-        doneDialog.setMessage(getString(R.string.content_delete_saving));
-        doneDialog.setNegativeButton(getString(R.string.txt_yes), new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mEventPresenter.deleteEvent(mEvent.getEventid());
-            }
-        });
-        
-        doneDialog.setPositiveButton(getString(R.string.txt_no), new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        doneDialog.create().show();
-    }
-    
-    public String getNameWallet(List<Wallet> wallets) {
-        String name = "";
-        
-        for (Wallet wallet : wallets) {
-            if (wallet.getWalletid().equals(mEvent.getIdWallet())) {
-                name = wallet.getWalletName();
-                break;
-            }
-        }
-        return name;
-    }
-    
-    public void getWallet() {
-        mWalletList = new ArrayList<>();
-        WalletUseCase.WalletRequest savingRequest = new WalletRequest(Action.ACTION_GET_WALLET,
-                  new BaseCallBack<Object>() {
-                      @Override
-                      public void onSuccess(Object value) {
-                          List<Wallet> wallets = (List<Wallet>) value;
-                          mWalletList.addAll(wallets);
-                          String tmp = getNameWallet(wallets);
-                          if (tmp.equals("")) {
-                              txt_name_wallet.setText(getString(R.string.all_wallet));
-                          } else {
-                              txt_name_wallet.setText(tmp);
-                          }
-                      }
-                      
-                      @Override
-                      public void onFailure(Throwable throwable) {
-                          MyLogger.d("erro get wallet");
-                      }
-                      
-                      @Override
-                      public void onLoading() {
-                          
-                      }
-                  }, null, null);
-        mWalletUseCase.subscribe(savingRequest);
-        
     }
     
     @Override
@@ -281,5 +163,129 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     @Override
     public void loading(boolean isLoading) {
         
+    }
+    
+    /*Area OnClick*/
+    @OnClick(R.id.btn_mark_as_finished)
+    public void onClickMarkAsFinished(View view) {
+        mEvent.setStatus("1");
+        mEventPresenter.updateEvent(mEvent);
+    }
+    
+    @OnClick(R.id.btn_list_transaction)
+    public void onClickListTransaction(View view) {
+        
+    }
+    
+    @OnClick(R.id.image_view_cancel)
+    public void onClickCancel(View view) {
+        onDone();
+    }
+    
+    
+    @OnClick(R.id.image_view_edit)
+    public void onClickEdit(View view) {
+        Intent intent = new Intent(this, ActivityEditEvent.class);
+        intent.putExtra("event", mEvent);
+        intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
+        startActivityForResult(intent, 17);
+    }
+    
+    
+    @OnClick(R.id.image_view_delete)
+    public void onClickDelete(View view) {
+        final AlertDialog.Builder doneDialog = new AlertDialog.Builder(this);
+        doneDialog.setMessage(getString(R.string.content_delete_saving));
+        doneDialog.setNegativeButton(getString(R.string.txt_yes), new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mEventPresenter.deleteEvent(mEvent.getEventid());
+            }
+        });
+        
+        doneDialog.setPositiveButton(getString(R.string.txt_no), new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        doneDialog.create().show();
+    }
+    
+    /*Area Function*/
+    public void getData() {
+        Intent intent = getIntent();
+        mEvent = intent.getParcelableExtra("event");
+    }
+    
+    public void showData() {
+        txt_name_event.setText(mEvent.getName());
+        txt_date_saving.setText(DateUtil.convertTimeMillisToDate(mEvent.getDate()));
+        
+        txt_time_rest.setText(getString(R.string.days_left,
+                  DateUtil.getDateLeft(Long.parseLong(mEvent.getDate())) + ""));
+        if (mEvent.getIdWallet().trim().equals("")) {
+            txt_name_wallet.setText(getString(R.string.all_wallet));
+        }
+        if (mEvent.getStatus().equals("0")) {
+            linear_mark_as_finished.setVisibility(View.VISIBLE);
+        } else {
+            linear_mark_as_finished.setVisibility(View.GONE);
+        }
+        GlideApp.with(this)
+                  .load(DrawableUtil.getDrawable(this, mEvent.getIcon()))
+                  .placeholder(R.drawable.folder_placeholder)
+                  .error(R.drawable.folder_placeholder)
+                  .dontAnimate()
+                  .into(image_icon_event);
+        
+    }
+    
+    public String getNameWallet(List<Wallet> wallets) {
+        String name = "";
+        
+        for (Wallet wallet : wallets) {
+            if (wallet.getWalletid().equals(mEvent.getIdWallet())) {
+                name = wallet.getWalletName();
+                break;
+            }
+        }
+        return name;
+    }
+    
+    public void getWallet() {
+        mWalletList = new ArrayList<>();
+        WalletUseCase.WalletRequest savingRequest = new WalletRequest(Action.ACTION_GET_WALLET,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          List<Wallet> wallets = (List<Wallet>) value;
+                          mWalletList.addAll(wallets);
+                          String tmp = getNameWallet(wallets);
+                          if (tmp.equals("")) {
+                              txt_name_wallet.setText(getString(R.string.all_wallet));
+                          } else {
+                              txt_name_wallet.setText(tmp);
+                          }
+                      }
+                      
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          MyLogger.d("erro get wallet");
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          
+                      }
+                  }, null, null);
+        mWalletUseCase.subscribe(savingRequest);
+        
+    }
+    
+    private void onDone() {
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_CANCELED, returnIntent);
+        finish();
     }
 }

@@ -4,6 +4,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BasePresenter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.SavingUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.SavingUseCase.SavingRequest;
 import java.util.List;
@@ -46,6 +47,7 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                           getView().loading(true);
                       }
                   }, null, null);
+        savingRequest.setTypeRepository(TypeRepository.REMOTE);
         mSavingUseCase.subscribe(savingRequest);
     }
     
@@ -76,6 +78,7 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                           getView().loading(true);
                       }
                   }, saving, null);
+        savingRequest.setTypeRepository(TypeRepository.REMOTE);
         mSavingUseCase.subscribe(savingRequest);
     }
     
@@ -101,6 +104,7 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                           getView().loading(true);
                       }
                   }, saving, null);
+        savingRequest.setTypeRepository(TypeRepository.REMOTE);
         mSavingUseCase.subscribe(savingRequest);
     }
     
@@ -127,12 +131,13 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                           getView().loading(true);
                       }
                   }, null, params);
+        savingRequest.setTypeRepository(TypeRepository.REMOTE);
         mSavingUseCase.subscribe(savingRequest);
     }
 
     @Override
-    public void takeIn(String idWallet, String idSaving, String money) {
-        String[] params = {idWallet, idSaving, money};
+    public void takeIn(String idWallet, String idSaving, String moneyUpdateWallet,String moneyUpdateSaving) {
+        String[] params = {idWallet, idSaving, moneyUpdateWallet,moneyUpdateSaving};
         SavingRequest savingRequest = new SavingRequest(Action.ACTION_TAKE_IN_SAVING,
                   new BaseCallBack<Object>() {
                       @Override
@@ -153,12 +158,13 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                           getView().loading(true);
                       }
                   }, null, params);
+        savingRequest.setTypeRepository(TypeRepository.REMOTE);
         mSavingUseCase.subscribe(savingRequest);
     }
     
     @Override
-    public void takeOut(String idWallet, String idSaving, String money) {
-        String[] params = {idWallet, idSaving, money};
+    public void takeOut(String idWallet, String idSaving, String moneyUpdateWallet,String moneyUpdateSaving) {
+        String[] params = {idWallet, idSaving, moneyUpdateWallet,moneyUpdateSaving};
         SavingRequest savingRequest = new SavingRequest(Action.ACTION_TAKE_OUT_SAVING,
                   new BaseCallBack<Object>() {
                       @Override
@@ -179,6 +185,7 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                           getView().loading(true);
                       }
                   }, null, params);
+        savingRequest.setTypeRepository(TypeRepository.REMOTE);
         mSavingUseCase.subscribe(savingRequest);
     }
     

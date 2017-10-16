@@ -301,14 +301,14 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     
     @Override
     public Observable<String> takeInSaving(String userid, String token, String idWallet,
-              String idSaving, String money) {
-        return mRemoteRepository.takeInSaving(userid, token, idWallet, idSaving, money);
+              String idSaving, String moneyUpdateWallet, String moneyUpdateSaving) {
+        return mRemoteRepository.takeInSaving(userid, token, idWallet, idSaving, moneyUpdateWallet,moneyUpdateSaving);
     }
     
     @Override
     public Observable<String> takeOutSaving(String userid, String token, String idWallet,
-              String idSaving, String money) {
-        return mRemoteRepository.takeOutSaving(userid, token, idWallet, idSaving, money);
+              String idSaving, String moneyUpdateWallet, String moneyUpdateSaving) {
+        return mRemoteRepository.takeOutSaving(userid, token, idWallet, idSaving, moneyUpdateWallet,moneyUpdateSaving);
     }
     
     //person
@@ -433,6 +433,58 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     @Override
     public Observable<String> deleteLocalCategory(Category category) {
         return mLocalRepository.deleteCategory(category);
+    }
+    /*Area saving*/
+    @Override
+    public Observable<List<Saving>> getLocalListSaving() {
+        return mLocalRepository.getListSaving();
+    }
+    
+    @Override
+    public Observable<String> addLocalSaving(Saving saving) {
+        return mLocalRepository.addSaving(saving);
+    }
+    
+    @Override
+    public Observable<String> updateLocalSaving(Saving saving) {
+        return mLocalRepository.updateSaving(saving);
+    }
+    
+    @Override
+    public Observable<String> deleteLocalSaving(String saving_id) {
+        return mLocalRepository.deleteSaving(saving_id);
+    }
+    
+    @Override
+    public Observable<String> takeInLocalSaving(String idWallet, String idSaving, String moneyWallet,
+              String moneySaving) {
+        return mLocalRepository.takeInSaving(idWallet,idSaving,moneyWallet,moneySaving);
+    }
+    
+    @Override
+    public Observable<String> takeOutLocalSaving(String idWallet, String idSaving, String moneyWallet,
+              String moneySaving) {
+        return mLocalRepository.takeOutSaving(idWallet,idSaving,moneyWallet,moneySaving);
+    }
+    /*Area wallet*/
+    @Override
+    public Observable<List<Wallet>> getListWallet() {
+        return mLocalRepository.getListWallet();
+    }
+    
+    @Override
+    public Observable<String> addLocalWallet(Wallet wallet) {
+        return mLocalRepository.addWallet(wallet);
+    }
+    
+    @Override
+    public Observable<String> updateLocalWallet(Wallet wallet) {
+        return mLocalRepository.updateWallet(wallet);
+    }
+    
+    @Override
+    public Observable<String> deleteLocalWallet(String idWallet) {
+        return mLocalRepository.deleteWallet(idWallet);
     }
     
 }
