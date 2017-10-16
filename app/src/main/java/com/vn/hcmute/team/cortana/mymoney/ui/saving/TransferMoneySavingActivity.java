@@ -32,7 +32,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase.TransactionRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import java.util.List;
 import javax.inject.Inject;
@@ -165,7 +164,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     @Override
     public void onSuccessTakeIn() {
         //add transaction
-        setTransaction(3);
+        setTransaction("expense");
         TransactionRequest transactionRequest=new TransactionRequest(Action.ACTION_ADD_TRANSACTION,
                   new BaseCallBack<Object>() {
     
@@ -189,7 +188,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     
     @Override
     public void onSuccessTakeOut() {
-        setTransaction(4);
+        setTransaction("income");
         TransactionRequest transactionRequest=new TransactionRequest(Action.ACTION_ADD_TRANSACTION,
                   new BaseCallBack<Object>() {
                   
@@ -394,14 +393,14 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
-    public void setTransaction(int type){
-        mTransaction.setTrans_id(SecurityUtil.getRandomUUID());
+    public void setTransaction(String type){
+        //mTransaction.setTrans_id(SecurityUtil.getRandomUUID());
         mTransaction.setAmount(txt_money.getText().toString());
         mTransaction.setWallet(mWallet);
         mTransaction.setSaving(mSaving);
         mTransaction.setNote(edit_describe.getText().toString());
         mTransaction.setType(type);
-        mTransaction.setUser_id(mSaving.getUserid());
+       // mTransaction.setUser_id(mSaving.getUserid());
         mTransaction.setDate_created(String.valueOf(System.currentTimeMillis()));
     }
     public void finishTransaction(){

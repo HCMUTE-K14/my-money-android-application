@@ -29,17 +29,13 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerLoginComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.LoginComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.LoginModule;
-import com.vn.hcmute.team.cortana.mymoney.model.Category;
-import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
-import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
-import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.ui.forgetpassword.ForgetPasswordActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.main.MainActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.register.RegisterActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.transaction.ManagerTransactionActivity;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.UserManager.UserRequest;
@@ -314,8 +310,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     
     private void openMainActivity() {
         //TODO: CHANGE
-        Intent intent = new Intent(this, ManagerTransactionActivity.class);
-        Transaction transaction = new Transaction();
+        Intent intent = new Intent(this, MainActivity.class);
+      /*  Transaction transaction = new Transaction();
         transaction.setUser_id("8daff5010562451fbf1c381f4e623390");
         transaction.setTrans_id("e46766b7c4274d34bdc853b29b3035d6");
         transaction.setAmount("2000000000");
@@ -344,7 +340,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         transaction.setDate_created("1504712678928");
         transaction.setDate_end("1504971878928");
         intent.putExtra("action", Action.ACTION_UPDATE_TRANSACTION);
-        intent.putExtra("transaction", transaction);
+        intent.putExtra("transaction", transaction);*/
         startActivity(intent);
     }
     

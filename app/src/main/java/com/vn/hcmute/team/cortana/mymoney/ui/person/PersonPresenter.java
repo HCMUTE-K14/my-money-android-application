@@ -4,6 +4,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BasePresenter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.PersonUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.PersonUseCase.CRUDPersonRequest;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.PersonUseCase.PersonRequest;
@@ -58,6 +59,7 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
         
         PersonRequest personRequest = new PersonRequest(Action.ACTION_GET_PERSON,
                   mObjectBaseCallBack);
+        personRequest.setTypeRepository(TypeRepository.LOCAL);
         mPersonUseCase.subscribe(personRequest);
     }
     
@@ -83,7 +85,7 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
         };
         PersonRequest personRequest = new CRUDPersonRequest(Action.ACTION_ADD_PERSON,
                   mObjectBaseCallBack, person);
-        
+        personRequest.setTypeRepository(TypeRepository.LOCAL);
         mPersonUseCase.subscribe(personRequest);
     }
     
@@ -109,6 +111,7 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
         };
         PersonRequest personRequest = new CRUDPersonRequest(Action.ACTION_REMOVE_PERSON,
                   mObjectBaseCallBack, person);
+        personRequest.setTypeRepository(TypeRepository.LOCAL);
         mPersonUseCase.subscribe(personRequest);
     }
     
@@ -145,7 +148,7 @@ public class PersonPresenter extends BasePresenter<PersonContract.View> implemen
                           getView().loading(true);
                       }
                   }, person);
-        
+        request.setTypeRepository(TypeRepository.LOCAL);
         mPersonUseCase.subscribe(request);
     }
     

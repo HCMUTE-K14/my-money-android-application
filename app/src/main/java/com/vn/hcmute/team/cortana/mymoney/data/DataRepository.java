@@ -28,7 +28,7 @@ import okhttp3.RequestBody;
  */
 
 public class DataRepository implements DataSource.RemoteDataSource, DataSource.CacheDataSource,
-                                       DataSource.LocalDataSource {
+                                       DataSource.LocalDataSource{
     
     public static final String TAG = DataRepository.class.getSimpleName();
     
@@ -436,8 +436,8 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     /*Area saving*/
     @Override
-    public Observable<List<Saving>> getLocalListSaving() {
-        return mLocalRepository.getListSaving();
+    public Observable<List<Saving>> getLocalListSaving(String userId) {
+        return mLocalRepository.getListSaving(userId);
     }
     
     @Override
@@ -468,8 +468,8 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     /*Area wallet*/
     @Override
-    public Observable<List<Wallet>> getListWallet() {
-        return mLocalRepository.getListWallet();
+    public Observable<List<Wallet>> getListWallet(String userId) {
+        return mLocalRepository.getListWallet(userId);
     }
     
     @Override
@@ -485,6 +485,72 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     @Override
     public Observable<String> deleteLocalWallet(String idWallet) {
         return mLocalRepository.deleteWallet(idWallet);
+    }
+    
+    @Override
+    public Observable<String> moveLocalWallet(String idWalletFrom, String idWalletTo,
+              String Money) {
+        return mLocalRepository.moveWallet(idWalletFrom,idWalletTo,Money);
+    }
+    /*Area Event*/
+    @Override
+    public Observable<List<Event>> getListEvent(String userId) {
+        return mLocalRepository.getListEvent(userId);
+    }
+    
+    @Override
+    public Observable<String> addLocalEvent(Event event) {
+        return mLocalRepository.addEvent(event);
+    }
+    
+    @Override
+    public Observable<String> updateLocalEvent(Event event) {
+        return mLocalRepository.updateEvent(event);
+    }
+    
+    @Override
+    public Observable<String> deleteLocalEvent(String idEvent) {
+        return mLocalRepository.deleteEvent(idEvent);
+    }
+    /*Area Budget*/
+    @Override
+    public Observable<List<Budget>> getLocalListBudget(String userId) {
+        return mLocalRepository.getListBudget(userId);
+    }
+    
+    @Override
+    public Observable<String> addLocalBudet(Budget budget) {
+        return mLocalRepository.addBudet(budget);
+    }
+    
+    @Override
+    public Observable<String> updateLocalBudget(Budget budget) {
+        return mLocalRepository.updateBudget(budget);
+    }
+    
+    @Override
+    public Observable<String> deleteLocalBudget(String idBudget) {
+        return mLocalRepository.deleteBudget(idBudget);
+    }
+    /*Area Person*/
+    @Override
+    public Observable<List<Person>> getLocalListPerson(String userId) {
+        return mLocalRepository.getListPerson(userId);
+    }
+    
+    @Override
+    public Observable<String> addLocalPerson(Person person) {
+        return mLocalRepository.addPerson(person);
+    }
+    
+    @Override
+    public Observable<String> updateLocalPerson(Person person) {
+        return mLocalRepository.updatePerson(person);
+    }
+    
+    @Override
+    public Observable<String> deleteLocalPeron(String idPerson) {
+        return mLocalRepository.deletePerson(idPerson);
     }
     
 }

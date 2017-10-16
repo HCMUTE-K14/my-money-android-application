@@ -27,6 +27,7 @@ public class WalletLocalService extends DbContentProvider<Wallet> implements Loc
     private final String ARCHIVE="archive";
     
     private CurrencyLocalService mCurrencyLocalService;
+
     
     public WalletLocalService(DatabaseHelper mDatabaseHelper) {
         super(mDatabaseHelper);
@@ -52,13 +53,15 @@ public class WalletLocalService extends DbContentProvider<Wallet> implements Loc
     }
     
     @Override
-    public Callable<List<Wallet>> getListWallet() {
+    public Callable<List<Wallet>> getListWallet(final String userId) {
         
         return new Callable<List<Wallet>>() {
             @Override
             public List<Wallet> call() throws Exception {
+                String selection = "user_id=?";
+                String[] selectionArg = new String[]{userId};
                 Cursor cursor = WalletLocalService.this
-                          .query(TABLE_NAME, getAllColumns(), null, null, null);
+                          .query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
                 if(cursor==null){
                     return null;
                 }
@@ -124,6 +127,11 @@ public class WalletLocalService extends DbContentProvider<Wallet> implements Loc
     }
     
     @Override
+    public Callable<Integer> moveWallet(String idWalletFrom, String idWalletTo, String Money) {
+        return null;
+    }
+    
+    @Override
     public int updateMoneyWallet(final String idWallet, final String money) {
         ContentValues contentValues=new ContentValues();
         contentValues.put("money",money);
@@ -131,6 +139,33 @@ public class WalletLocalService extends DbContentProvider<Wallet> implements Loc
         return mDatabase.update(TABLE_NAME,contentValues,whereClause,new String[]{idWallet});
        
     }
+    
+    @Override
+    public Wallet getWalletById(String idWallet) {
+        String selection="wallet_id=?";
+        String[] selectionArg = new String[]{idWallet};
+        Wallet wallet=null;
+        Cursor cursor = WalletLocalService.this
+                  .query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
+        if (cursor.moveToFirst()){
+            wallet=new Wallet();
+            wallet.setWalletid(cursor.getString(0));
+            if(cursor.getString(0)!=null){
+                wallet.setUserid(cursor.getString(1));
+            }
+            wallet.setWalletName(cursor.getString(2));
+            wallet.setMoney(cursor.getString(3));
+            //currencies 4
+            Currencies currencies=getCurrenciesId(cursor.getString(4));
+            if(currencies!=null){
+                wallet.setCurrencyUnit(currencies);
+            }
+            wallet.setWalletImage(cursor.getString(5));
+            wallet.setArchive(Boolean.parseBoolean(cursor.getString(6)));
+        }
+        return wallet;
+    }
+    
     public Currencies getCurrenciesId(String idCurrencies){
         return mCurrencyLocalService.getCurrency(idCurrencies);
     }

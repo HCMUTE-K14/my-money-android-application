@@ -11,6 +11,7 @@ import com.vn.hcmute.team.cortana.mymoney.exception.WalletException;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
@@ -53,19 +54,19 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         switch (action) {
             case Action.ACTION_CREATE_WALLET:
                 //doLoginNormal(requestValues.getCallBack(), requestValues.getData());
-                doCreate(requestValues.getCallBack(), requestValues.getData());
+                doCreate(requestValues.getCallBack(), requestValues.getData(),requestValues.getTypeRepository());
                 break;
             case Action.ACTION_UPDATE_WALLET:
-                doUpdate(requestValues.getCallBack(), requestValues.getData());
+                doUpdate(requestValues.getCallBack(), requestValues.getData(),requestValues.getTypeRepository());
                 break;
             case Action.ACTION_DELETE_WALLET:
-                doDelete(requestValues.getCallBack(), requestValues.getData());
+                doDelete(requestValues.getCallBack(), requestValues.getData(),requestValues.getTypeRepository());
                 break;
             case Action.ACTION_MOVE_WALLET:
-                doMove(requestValues.getCallBack(), requestValues.getParam());
+                doMove(requestValues.getCallBack(), requestValues.getParam(),requestValues.getTypeRepository());
                 break;
             case Action.ACTION_GET_WALLET:
-                doGetWallet(requestValues.getCallBack());
+                doGetWallet(requestValues.getCallBack(),requestValues.getTypeRepository());
                 break;
             default:
                 break;
@@ -81,16 +82,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         }
     }
     
-    private void doCreate(final BaseCallBack<Object> callBack, final Wallet wallet) {
-        
-        String userid = mDataRepository.getUserId();
-        String token = mDataRepository.getUserToken();
-        
-        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
-            callBack.onFailure(new UserLoginException(
-                      mContext.getString(R.string.message_warning_need_login)));
-            return;
-        }
+    private void doCreate(final BaseCallBack<Object> callBack, final Wallet wallet,TypeRepository typeRepository) {
         
         if (TextUtils.isEmpty(wallet.getWalletName())) {
             callBack.onFailure(new WalletException(
@@ -102,11 +94,11 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                       mContext.getString(R.string.message_validate_currency_wallet)));
             return;
         }
-        
+    
         if (TextUtils.isEmpty(wallet.getWalletImage())) {
             wallet.setWalletImage("ic_saving");
         }
-        
+     
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
@@ -122,35 +114,56 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            wallet.setWalletid(SecurityUtil.getRandomUUID());
-            wallet.setUserid(userid);
-            
-            mDisposable = mDataRepository.createWallet(wallet, userid, token)
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              callBack.onLoading();
-                          }
-                      })
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
+            if(typeRepository==TypeRepository.REMOTE){
+                
+                String userid = mDataRepository.getUserId();
+                String token = mDataRepository.getUserToken();
+    
+                if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                    callBack.onFailure(new UserLoginException(
+                              mContext.getString(R.string.message_warning_need_login)));
+                    return;
+                }
+                
+                wallet.setWalletid(SecurityUtil.getRandomUUID());
+                wallet.setUserid(userid);
+    
+                mDisposable = mDataRepository.createWallet(wallet, userid, token)
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }else {
+                String userid = mDataRepository.getUserId();
+                wallet.setWalletid(SecurityUtil.getRandomUUID());
+                if(userid!=null){
+                    wallet.setUserid(userid);
+                }
+                mDisposable = mDataRepository.addLocalWallet(wallet)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
+           
             this.mCompositeDisposable.add(mDisposable);
             
         }
     }
     
-    private void doUpdate(final BaseCallBack<Object> callBack, final Wallet wallet) {
-        String userid = mDataRepository.getUserId();
-        String token = mDataRepository.getUserToken();
-        
-        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
-            callBack.onFailure(new UserLoginException(
-                      mContext.getString(R.string.message_warning_need_login)));
-            return;
-        }
-        
+    private void doUpdate(final BaseCallBack<Object> callBack, final Wallet wallet,TypeRepository typeRepository) {
         if (TextUtils.isEmpty(wallet.getWalletName())) {
             callBack.onFailure(new WalletException(
                       mContext.getString(R.string.message_validate_name_wallet)));
@@ -161,7 +174,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                       mContext.getString(R.string.message_validate_currency_wallet)));
             return;
         }
-        
+    
         if (TextUtils.isEmpty(wallet.getWalletImage())) {
             wallet.setWalletImage("ic_saving");
         }
@@ -181,30 +194,56 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             
-            mDisposable = mDataRepository.updateWallet(wallet, userid, token)
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              callBack.onLoading();
-                          }
-                      })
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
+    
+            if(typeRepository==TypeRepository.REMOTE){
+        
+                String userid = mDataRepository.getUserId();
+                String token = mDataRepository.getUserToken();
+        
+                if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                    callBack.onFailure(new UserLoginException(
+                              mContext.getString(R.string.message_warning_need_login)));
+                    return;
+                }
+        
+                wallet.setWalletid(SecurityUtil.getRandomUUID());
+                wallet.setUserid(userid);
+        
+                mDisposable = mDataRepository.updateWallet(wallet, userid, token)
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }else {
+                String userid = mDataRepository.getUserId();
+                if(userid!=null){
+                    wallet.setUserid(userid);
+                }
+                mDisposable = mDataRepository.updateLocalWallet(wallet)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
+            
             this.mCompositeDisposable.add(mDisposable);
         }
     }
     
-    private void doDelete(final BaseCallBack<Object> callBack, final Wallet wallet) {
-        String userid = mDataRepository.getUserId();
-        String token = mDataRepository.getUserToken();
-        
-        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
-            callBack.onFailure(new UserLoginException(
-                      mContext.getString(R.string.message_warning_need_login)));
-            return;
-        }
+    private void doDelete(final BaseCallBack<Object> callBack, final Wallet wallet,TypeRepository typeRepository) {
+       
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -220,32 +259,47 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            
-            mDisposable = mDataRepository.deleteWallet(userid, token, wallet.getWalletid())
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              callBack.onLoading();
-                          }
-                      })
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
+            if(typeRepository==TypeRepository.REMOTE){
+                String userid = mDataRepository.getUserId();
+                String token = mDataRepository.getUserToken();
+    
+                if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                    callBack.onFailure(new UserLoginException(
+                              mContext.getString(R.string.message_warning_need_login)));
+                    return;
+                }
+                mDisposable = mDataRepository.deleteWallet(userid, token, wallet.getWalletid())
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }else {
+                mDisposable = mDataRepository.deleteLocalWallet(wallet.getWalletid())
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
+          
             this.mCompositeDisposable.add(mDisposable);
             
         }
     }
     
-    private void doMove(final BaseCallBack<Object> callBack, final String[] params) {
-        String userid = mDataRepository.getUserId();
-        String token = mDataRepository.getUserToken();
-        
-        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
-            callBack.onFailure(new UserLoginException(
-                      mContext.getString(R.string.message_warning_need_login)));
-            return;
-        }
+    private void doMove(final BaseCallBack<Object> callBack, final String[] params, TypeRepository typeRepository) {
+       
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -261,32 +315,45 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            
-            mDisposable = mDataRepository.moveWallet(userid, token, params[0], params[1], params[2])
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              callBack.onLoading();
-                          }
-                      })
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
+            if(typeRepository==TypeRepository.REMOTE){
+                String userid = mDataRepository.getUserId();
+                String token = mDataRepository.getUserToken();
+    
+                if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                    callBack.onFailure(new UserLoginException(
+                              mContext.getString(R.string.message_warning_need_login)));
+                    return;
+                }
+                mDisposable = mDataRepository.moveWallet(userid, token, params[0], params[1], params[2])
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }else {
+                mDisposable = mDataRepository.moveLocalWallet(params[0], params[1], params[2])
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
             this.mCompositeDisposable.add(mDisposable);
-            
         }
     }
     
-    private void doGetWallet(final BaseCallBack<Object> callBack) {
-        String userid = mDataRepository.getUserId();
-        String token = mDataRepository.getUserToken();
-        
-        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
-            callBack.onFailure(new UserLoginException(
-                      mContext.getString(R.string.message_warning_need_login)));
-            return;
-        }
+    private void doGetWallet(final BaseCallBack<Object> callBack,TypeRepository typeRepository) {
+       
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -302,18 +369,41 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            
-            mDisposable = mDataRepository.getAllWallet(userid, token)
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              callBack.onLoading();
-                          }
-                      })
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
+           if(typeRepository==TypeRepository.REMOTE){
+               String userid = mDataRepository.getUserId();
+               String token = mDataRepository.getUserToken();
+    
+               if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                   callBack.onFailure(new UserLoginException(
+                             mContext.getString(R.string.message_warning_need_login)));
+                   return;
+               }
+               mDisposable = mDataRepository.getAllWallet(userid, token)
+                         .subscribeOn(Schedulers.io())
+                         .observeOn(AndroidSchedulers.mainThread())
+                         .doOnSubscribe(new Consumer<Disposable>() {
+                             @Override
+                             public void accept(Disposable disposable) throws Exception {
+                                 callBack.onLoading();
+                             }
+                         })
+                         .singleOrError()
+                         .subscribeWith(this.mDisposableSingleObserver);
+           }else {
+               String userid = mDataRepository.getUserId();
+               mDisposable = mDataRepository.getListWallet(userid)
+                         .subscribeOn(Schedulers.computation())
+                         .observeOn(AndroidSchedulers.mainThread())
+                         .doOnSubscribe(new Consumer<Disposable>() {
+                             @Override
+                             public void accept(Disposable disposable) throws Exception {
+                                 callBack.onLoading();
+                             }
+                         })
+                         .singleOrError()
+                         .subscribeWith(this.mDisposableSingleObserver);
+           }
+           
             this.mCompositeDisposable.add(mDisposable);
             
         }
@@ -325,7 +415,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         private BaseCallBack<Object> callBack;
         private Wallet wallet;
         private String[] params;
-        
+        private TypeRepository typeRepository;
         public WalletRequest(@NonNull String action, @Nullable BaseCallBack<Object> callBack,
                   @Nullable Wallet wallet, @Nullable String[] params) {
             this.action = action;
@@ -360,6 +450,15 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         
         public String[] getParam() {
             return params;
+        }
+        
+        public TypeRepository getTypeRepository() {
+            return typeRepository;
+        }
+    
+        public void setTypeRepository(
+                  TypeRepository typeRepository) {
+            this.typeRepository = typeRepository;
         }
     }
 }

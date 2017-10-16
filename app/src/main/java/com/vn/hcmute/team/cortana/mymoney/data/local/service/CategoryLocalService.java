@@ -6,8 +6,8 @@ import android.text.TextUtils;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -241,5 +241,31 @@ public class CategoryLocalService extends DbContentProvider<Category> {
         contentValues.put("parent_id", category.getParent().getId());
         
         return contentValues;
+    }
+    public Category getCategoryById(String idCategory){
+        String selection="cate_id=?";
+        String[] selectionArg = new String[]{idCategory};
+        Category category=null;
+        Cursor cursor = CategoryLocalService.this
+                  .query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
+        if(cursor.moveToFirst()){
+            category=new Category();
+            
+            category.setId(cursor.getString(0));
+            category.setIcon(cursor.getString(1));
+            category.setName(cursor.getString(2));
+            category.setType(cursor.getString(3));
+            category.setTransType(cursor.getString(4));
+            if(cursor.getString(5)!=null){
+                category.setUserid(cursor.getString(5));
+            }
+            category.setSubcategories(null);
+            if(cursor.getString(6)!=null){
+                category.setParent(new Category(cursor.getString(6)));
+            }else {
+                category.setParent(null);
+            }
+        }
+        return category;
     }
 }

@@ -38,7 +38,7 @@ public class Transaction implements Parcelable {
     
     @SerializedName("type")
     @Expose
-    private int type; //0:Cho vay, 1:Chit ieu ,2 thu nhap, 3 take in saving, 4 take out saving
+    private String type; //0:Cho vay, expense:Chit ieu ,income thu nhap
     
     @SerializedName("category")
     @Expose
@@ -87,7 +87,7 @@ public class Transaction implements Parcelable {
         person = in.createTypedArrayList(Person.CREATOR);
         address = in.readString();
         note = in.readString();
-        type = in.readInt();
+        type = in.readString();
         category = in.readParcelable(Category.class.getClassLoader());
         event = in.readParcelable(Event.class.getClassLoader());
         latitude = in.readString();
@@ -106,7 +106,7 @@ public class Transaction implements Parcelable {
         dest.writeTypedList(person);
         dest.writeString(address);
         dest.writeString(note);
-        dest.writeInt(type);
+        dest.writeString(type);
         dest.writeParcelable(category, flags);
         dest.writeParcelable(event, flags);
         dest.writeString(latitude);
@@ -183,11 +183,11 @@ public class Transaction implements Parcelable {
         this.image = image;
     }
     
-    public int getType() {
+    public String getType() {
         return type;
     }
     
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
     

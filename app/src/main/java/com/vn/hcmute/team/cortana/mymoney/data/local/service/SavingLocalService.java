@@ -36,6 +36,7 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
     WalletLocalService mWalletLocalService;
     
     
+    
     public SavingLocalService(DatabaseHelper mDatabaseHelper) {
         super(mDatabaseHelper);
         mCurrencyLocalService = new CurrencyLocalService(mDatabaseHelper);
@@ -58,7 +59,7 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
         contentValues.put("current_money", values.getCurrentMoney());
         contentValues.put("date", values.getDate());
         contentValues.put("wallet_id", values.getIdWallet());
-        contentValues.put("cur_id", values.getCurrencies().getCurCode());
+        contentValues.put("cur_id", values.getCurrencies().getCurId());
         contentValues.put("status", values.getStatus());
         contentValues.put("user_id", values.getUserid());
         contentValues.put("icon", values.getIcon());
@@ -66,12 +67,15 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
     }
     
     @Override
-    public Callable<List<Saving>> getListSaving() {
+    public Callable<List<Saving>> getListSaving(final String userId) {
         return new Callable<List<Saving>>() {
             @Override
             public List<Saving> call() throws Exception {
+                String selection = "user_id=?";
+                String[] selectionArg = new String[]{userId};
                 Cursor cursor = SavingLocalService.this
-                          .query(TABLE_NAME, getAllColumns(), null, null, null);
+                          .query(TABLE_NAME, getAllColumns(), selection,selectionArg,null);
+                
                 if (cursor == null) {
                     return null;
                 }
@@ -84,15 +88,22 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
                     saving.setStartMoney(cursor.getString(3));
                     saving.setCurrentMoney(cursor.getString(4));
                     saving.setDate(cursor.getString(5));
-                    saving.setIdWallet(cursor.getString(6));
+                    if(cursor.getString(6)==null){
+                        saving.setIdWallet("");
+                    }else {
+                        saving.setIdWallet(cursor.getString(6));
+                    }
                     //currencies 7
                     Currencies currencies = getCurrencies(cursor.getString(7));
-                    
+                    saving.setCurrencies(currencies);
                     saving.setStatus(cursor.getString(8));
-                    saving.setUserid(cursor.getString(9));
+                    if(cursor.getString(9)!=null){
+                        saving.setUserid(cursor.getString(9));
+                    }
                     saving.setIcon(cursor.getString(10));
                     
                     savings.add(saving);
+                    
                     
                 }
                 cursor.close();

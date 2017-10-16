@@ -47,6 +47,7 @@ import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -249,8 +250,8 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         super.onCreate(savedInstanceState);
         
         if (mPreferenceHelper.getCurrentUser() == null) {
-           // openLoginActivity();
-            //return;
+            openLoginActivity();
+            return;
         }
         mHandler.postDelayed(
                   new Runnable() {
@@ -274,7 +275,10 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mCurrentFragment.onActivityResult(requestCode, resultCode, data);
+        if(mCurrentFragment!=null){
+            mCurrentFragment.onActivityResult(requestCode, resultCode, data);
+        }
+       
         if (resultCode == RESULT_OK) {
             if (requestCode == RequestCode.CHOOSE_WALLET_REQUEST_CODE) {
                 if (data == null) {
@@ -310,7 +314,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                         if (wallet.equals(mPreferenceHelper.getCurrentWallet())) {
                             updateViewHeaderWithWallet(wallet);
                         }
-                        
+                        MyLogger.d(TAG,wallet,true);
                         mSelectWalletView.updateWallet(wallet);
                     } else if (resultCode == ResultCode.REMOVE_WALLET_RESULT_CODE) {
                         if (wallet.equals(mPreferenceHelper.getCurrentWallet())) {

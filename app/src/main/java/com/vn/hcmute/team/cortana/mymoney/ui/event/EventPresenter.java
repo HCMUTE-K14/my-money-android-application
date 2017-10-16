@@ -4,6 +4,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BasePresenter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.EventUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.EventUseCase.EventRequest;
 import java.util.List;
@@ -52,6 +53,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
             }
         };
         EventRequest eventRequest = new EventRequest(Action.ACTION_GET_EVENT, callBack, null, null);
+        eventRequest.setTypeRepository(TypeRepository.LOCAL);
         mEventUseCase.subscribe(eventRequest);
     }
     
@@ -78,6 +80,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
         
         EventRequest eventRequest = new EventRequest(Action.ACTION_CREATE_EVENT,
                   mObjectBaseCallBack, event, null);
+        eventRequest.setTypeRepository(TypeRepository.LOCAL);
         mEventUseCase.subscribe(eventRequest);
     }
     
@@ -103,6 +106,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
         };
         EventRequest eventRequest = new EventRequest(Action.ACTION_UPDATE_EVENT,
                   mObjectBaseCallBack, event, null);
+        eventRequest.setTypeRepository(TypeRepository.LOCAL);
         mEventUseCase.subscribe(eventRequest);
     }
     
@@ -129,6 +133,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
         String[] params = {idEvent};
         EventRequest eventRequest = new EventRequest(Action.ACTION_DELETE_EVENT,
                   mObjectBaseCallBack, null, params);
+        eventRequest.setTypeRepository(TypeRepository.LOCAL);
         mEventUseCase.subscribe(eventRequest);
     }
 }

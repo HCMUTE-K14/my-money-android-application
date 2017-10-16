@@ -10,6 +10,7 @@ import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.EventUseCase.EventRequest;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -47,16 +48,16 @@ public class EventUseCase extends UseCase<EventRequest> {
         
         switch (action) {
             case Action.ACTION_GET_EVENT:
-                doGetEvent(requestValues.getCallBack());
+                doGetEvent(requestValues.getCallBack(),requestValues.getTypeRepository());
                 break;
             case Action.ACTION_CREATE_EVENT:
-                doCreateEvent(requestValues.getCallBack(), requestValues.getData());
+                doCreateEvent(requestValues.getCallBack(), requestValues.getData(),requestValues.getTypeRepository());
                 break;
             case Action.ACTION_UPDATE_EVENT:
-                doUpdateEvent(requestValues.getCallBack(), requestValues.getData());
+                doUpdateEvent(requestValues.getCallBack(), requestValues.getData(),requestValues.getTypeRepository());
                 break;
             case Action.ACTION_DELETE_EVENT:
-                doDeleteEvent(requestValues.getCallBack(), requestValues.getParam());
+                doDeleteEvent(requestValues.getCallBack(), requestValues.getParam(),requestValues.getTypeRepository());
                 break;
             default:
                 break;
@@ -71,15 +72,8 @@ public class EventUseCase extends UseCase<EventRequest> {
         }
     }
     
-    private void doGetEvent(final BaseCallBack<Object> callBack) {
-        String userid = mDataRepository.getUserId();
-        String token = mDataRepository.getUserToken();
-        
-        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
-            callBack.onFailure(new UserLoginException(
-                      mContext.getString(R.string.message_warning_need_login)));
-            return;
-        }
+    private void doGetEvent(final BaseCallBack<Object> callBack,TypeRepository typeRepository) {
+       
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -95,26 +89,49 @@ public class EventUseCase extends UseCase<EventRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            
-            mDisposable = mDataRepository.getEvent(userid, token)
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              callBack.onLoading();
-                          }
-                      })
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
+            if(typeRepository==TypeRepository.REMOTE){
+                
+                String userid = mDataRepository.getUserId();
+                String token = mDataRepository.getUserToken();
+    
+                if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                    callBack.onFailure(new UserLoginException(
+                              mContext.getString(R.string.message_warning_need_login)));
+                    return;
+                }
+                mDisposable = mDataRepository.getEvent(userid, token)
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }else {
+                String userid = mDataRepository.getUserId();
+                mDisposable = mDataRepository.getListEvent(userid)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
+          
             this.mCompositeDisposable.add(mDisposable);
             
         }
     }
     
-    private void doCreateEvent(final BaseCallBack<Object> callBack, final Event event) {
-        String userid = mDataRepository.getUserId();
-        String token = mDataRepository.getUserToken();
+    private void doCreateEvent(final BaseCallBack<Object> callBack, final Event event,TypeRepository typeRepository) {
+       
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -130,32 +147,46 @@ public class EventUseCase extends UseCase<EventRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            
-            mDisposable = mDataRepository.createEvent(event, userid, token)
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              callBack.onLoading();
-                          }
-                      })
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
+            if(typeRepository==TypeRepository.REMOTE){
+                String userid = mDataRepository.getUserId();
+                String token = mDataRepository.getUserToken();
+                
+                if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                    callBack.onFailure(new UserLoginException(
+                              mContext.getString(R.string.message_warning_need_login)));
+                    return;
+                }
+                mDisposable = mDataRepository.createEvent(event, userid, token)
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }else {
+                mDisposable = mDataRepository.addLocalEvent(event)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
             this.mCompositeDisposable.add(mDisposable);
             
         }
     }
     
-    private void doUpdateEvent(final BaseCallBack<Object> callBack, final Event event) {
-        String userid = mDataRepository.getUserId();
-        String token = mDataRepository.getUserToken();
-        
-        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
-            callBack.onFailure(new UserLoginException(
-                      mContext.getString(R.string.message_warning_need_login)));
-            return;
-        }
+    private void doUpdateEvent(final BaseCallBack<Object> callBack, final Event event,TypeRepository typeRepository) {
+       
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -171,32 +202,48 @@ public class EventUseCase extends UseCase<EventRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
+            String userid = mDataRepository.getUserId();
+            String token = mDataRepository.getUserToken();
+    
+            if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                callBack.onFailure(new UserLoginException(
+                          mContext.getString(R.string.message_warning_need_login)));
+                return;
+            }
             
-            mDisposable = mDataRepository.updateEvent(event, userid, token)
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              callBack.onLoading();
-                          }
-                      })
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
+            if(typeRepository==TypeRepository.REMOTE){
+                mDisposable = mDataRepository.updateEvent(event, userid, token)
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }else {
+                mDisposable = mDataRepository.updateLocalEvent(event)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
+          
             this.mCompositeDisposable.add(mDisposable);
             
         }
     }
     
-    private void doDeleteEvent(final BaseCallBack<Object> callBack, final String[] params) {
-        String userid = mDataRepository.getUserId();
-        String token = mDataRepository.getUserToken();
-        
-        if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
-            callBack.onFailure(new UserLoginException(
-                      mContext.getString(R.string.message_warning_need_login)));
-            return;
-        }
+    private void doDeleteEvent(final BaseCallBack<Object> callBack, final String[] params,TypeRepository typeRepository) {
+     
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -212,18 +259,41 @@ public class EventUseCase extends UseCase<EventRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            
-            mDisposable = mDataRepository.deleteEvent(userid, token, params[0])
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .doOnSubscribe(new Consumer<Disposable>() {
-                          @Override
-                          public void accept(Disposable disposable) throws Exception {
-                              callBack.onLoading();
-                          }
-                      })
-                      .singleOrError()
-                      .subscribeWith(this.mDisposableSingleObserver);
+            if(typeRepository==TypeRepository.REMOTE){
+                
+                String userid = mDataRepository.getUserId();
+                String token = mDataRepository.getUserToken();
+    
+                if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                    callBack.onFailure(new UserLoginException(
+                              mContext.getString(R.string.message_warning_need_login)));
+                    return;
+                }
+                
+                mDisposable = mDataRepository.deleteEvent(userid, token, params[0])
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }else {
+                mDisposable = mDataRepository.deleteLocalEvent(params[0])
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
             this.mCompositeDisposable.add(mDisposable);
             
         }
@@ -235,6 +305,7 @@ public class EventUseCase extends UseCase<EventRequest> {
         private BaseCallBack<Object> callBack;
         private Event mEvent;
         private String[] params;
+        private TypeRepository typeRepository;
         
         public EventRequest(@NonNull String action, @Nullable BaseCallBack<Object> callBack,
                   @Nullable Event event, @Nullable String[] params) {
@@ -270,6 +341,15 @@ public class EventUseCase extends UseCase<EventRequest> {
         
         public String[] getParam() {
             return params;
+        }
+        
+        public TypeRepository getTypeRepository() {
+            return typeRepository;
+        }
+    
+        public void setTypeRepository(
+                  TypeRepository typeRepository) {
+            this.typeRepository = typeRepository;
         }
     }
 }

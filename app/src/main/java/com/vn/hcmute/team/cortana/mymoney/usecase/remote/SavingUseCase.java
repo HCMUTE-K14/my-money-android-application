@@ -124,7 +124,8 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             } else {
-                mDisposable = mDataRepository.getLocalListSaving()
+                String userid = mDataRepository.getUserId();
+                mDisposable = mDataRepository.getLocalListSaving(userid)
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
                           .doOnSubscribe(new Consumer<Disposable>() {
@@ -135,6 +136,7 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
+                
                 MyLogger.d("votrong","da vo");
             }
             

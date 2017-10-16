@@ -4,6 +4,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BasePresenter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase.WalletRequest;
 import java.util.List;
@@ -47,6 +48,7 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
                           getView().loading(true);
                       }
                   }, wallet, null);
+        requestValue.setTypeRepository(TypeRepository.LOCAL);
         mWalletUseCase.subscribe(requestValue);
     }
     
@@ -71,12 +73,13 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
                           getView().loading(true);
                       }
                   }, wallet, null);
+        requestValue.setTypeRepository(TypeRepository.LOCAL);
         mWalletUseCase.subscribe(requestValue);
     }
     
     @Override
     public void removeWallet(final int position, final Wallet wallet) {
-        WalletUseCase.WalletRequest request = new WalletRequest(Action.ACTION_DELETE_WALLET,
+        WalletUseCase.WalletRequest requestValue = new WalletRequest(Action.ACTION_DELETE_WALLET,
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {
@@ -95,14 +98,15 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
                           getView().loading(true);
                       }
                   }, wallet, null);
-        mWalletUseCase.subscribe(request);
+        requestValue.setTypeRepository(TypeRepository.LOCAL);
+        mWalletUseCase.subscribe(requestValue);
     }
     
     @Override
     public void moveWallet(String walletFrom, String walletTo, String money) {
         String[] params = {walletFrom, walletTo, money};
         
-        WalletUseCase.WalletRequest request = new WalletRequest(Action.ACTION_MOVE_WALLET,
+        WalletUseCase.WalletRequest requestValue = new WalletRequest(Action.ACTION_MOVE_WALLET,
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {
@@ -121,13 +125,14 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
                           getView().loading(true);
                       }
                   }, null, params);
-        mWalletUseCase.subscribe(request);
+        requestValue.setTypeRepository(TypeRepository.LOCAL);
+        mWalletUseCase.subscribe(requestValue);
     }
     
     @Override
     public void getAllWallet() {
         
-        WalletUseCase.WalletRequest request = new WalletRequest(Action.ACTION_GET_WALLET,
+        WalletUseCase.WalletRequest requestValue = new WalletRequest(Action.ACTION_GET_WALLET,
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {
@@ -154,7 +159,8 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
                           getView().loading(true);
                       }
                   }, null, null);
-        mWalletUseCase.subscribe(request);
+        requestValue.setTypeRepository(TypeRepository.LOCAL);
+        mWalletUseCase.subscribe(requestValue);
     }
     
     @Override

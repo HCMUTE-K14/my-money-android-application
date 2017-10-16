@@ -104,14 +104,14 @@ public class TransactionSavingAdapter extends
                       DateUtil.convertTimeMillisToDate(transaction.getDate_created().trim()));
             txt_note.setText(transaction.getNote());
             
-            if (transaction.getType() == 3) {
+            if (transaction.getType().equals("expense")) {
                 txt_take_in_out.setText(mContext.getString(R.string.take_in));
                 txt_money.setText("-" + transaction.getAmount() + " " +
                                   transaction.getWallet().getCurrencyUnit().getCurSymbol());
                 txt_money.setTextColor(ContextCompat.getColor(mContext,R.color.color_red));
                 
             }
-            if (transaction.getType() == 4) {
+            if (transaction.getType().equals("income")) {
                 txt_take_in_out.setText(mContext.getString(R.string.take_out));
                 txt_money.setText("+" + transaction.getAmount() + " " +
                                   transaction.getSaving().getCurrencies().getCurSymbol());

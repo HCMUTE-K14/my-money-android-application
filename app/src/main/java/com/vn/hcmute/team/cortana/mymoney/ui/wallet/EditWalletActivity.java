@@ -329,7 +329,7 @@ public class EditWalletActivity extends BaseActivity implements View {
     
     private void finishTask(Wallet wallet, int resultCode) {
         Intent intent = new Intent();
-        intent.putExtra("wallet", mCurrentWallet);
+        intent.putExtra("wallet", wallet);
         
         setResult(resultCode, intent);
         finish();

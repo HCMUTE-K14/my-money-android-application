@@ -194,7 +194,7 @@ public interface DataSource {
         Observable<String> deleteLocalCategory(Category category);
         
         /*Area saving*/
-        Observable<List<Saving>> getLocalListSaving();
+        Observable<List<Saving>> getLocalListSaving(String userId);
     
         Observable<String> addLocalSaving(Saving saving);
     
@@ -208,9 +208,25 @@ public interface DataSource {
         Observable<String> takeOutLocalSaving(String idWallet, String idSaving, String moneyWallet,
                   String moneySaving);
         /*Area wallet*/
-        Observable<List<Wallet>> getListWallet();
+        Observable<List<Wallet>> getListWallet(String userId);
         Observable<String> addLocalWallet(Wallet wallet);
         Observable<String> updateLocalWallet(Wallet wallet);
         Observable<String> deleteLocalWallet(String idWallet);
+        Observable<String> moveLocalWallet(String idWalletFrom,String idWalletTo, String Money);
+        /*Area Event*/
+        Observable<List<Event>> getListEvent(String userId);
+        Observable<String> addLocalEvent(Event event);
+        Observable<String> updateLocalEvent(Event event);
+        Observable<String> deleteLocalEvent(String idEvent);
+        /*Area Budget*/
+        Observable<List<Budget>> getLocalListBudget(String userId);
+        Observable<String> addLocalBudet(Budget budget);
+        Observable<String> updateLocalBudget(Budget budget);
+        Observable<String> deleteLocalBudget(String idBudget);
+        /*Area person*/
+        Observable<List<Person>> getLocalListPerson(String userId);
+        Observable<String> addLocalPerson(Person person);
+        Observable<String> updateLocalPerson(Person person);
+        Observable<String> deleteLocalPeron(String idPerson);
     }
 }

@@ -4,6 +4,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BasePresenter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.BudgetUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.BudgetUseCase.BudgetRequest;
 import java.util.List;
@@ -19,8 +20,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
     BudgetUseCase mBudgetUseCase;
     
     @Inject
-    public BudgetPresenter(
-              BudgetUseCase budgetUseCase) {
+    public BudgetPresenter(BudgetUseCase budgetUseCase) {
         mBudgetUseCase = budgetUseCase;
     }
     
@@ -48,6 +48,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
         
         BudgetRequest budgetRequest = new BudgetRequest(Action.ACTION_GET_BUDGET,
                   mObjectBaseCallBack, null, null);
+        budgetRequest.setTypeRepository(TypeRepository.LOCAL);
         mBudgetUseCase.subscribe(budgetRequest);
     }
     
@@ -73,6 +74,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
         };
         BudgetRequest budgetRequest = new BudgetRequest(Action.ACTION_CREATE_BUDGET,
                   mObjectBaseCallBack, budget, null);
+        budgetRequest.setTypeRepository(TypeRepository.LOCAL);
         mBudgetUseCase.subscribe(budgetRequest);
     }
     
@@ -98,6 +100,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
         };
         BudgetRequest budgetRequest = new BudgetRequest(Action.ACTION_UPDATE_BUDGET,
                   mObjectBaseCallBack, budget, null);
+        budgetRequest.setTypeRepository(TypeRepository.LOCAL);
         mBudgetUseCase.subscribe(budgetRequest);
     }
     
@@ -125,6 +128,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
         String[] params = {budgetId};
         BudgetRequest budgetRequest = new BudgetRequest(Action.ACTION_DELETE_BUDGET,
                   mObjectBaseCallBack, null, params);
+        budgetRequest.setTypeRepository(TypeRepository.LOCAL);
         mBudgetUseCase.subscribe(budgetRequest);
     }
     
