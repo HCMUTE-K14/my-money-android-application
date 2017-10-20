@@ -73,4 +73,9 @@ public class Action {
     public static final String ACTION_GET_TRANSACTION_BY_ID = "action_get_transaction_by_id";
     public static final String ACTION_GET_TRANSACTION_BY_TYPE = "action_get_transaction_by_type";
     public static final String ACTION_GET_TRANSACTION_BY_TIME = "action_get_transaction_by_time";
+    
+    public static final String ACTION_GET_DEBT_LOAN_BY_TYPE = "action_get_debt_loan_by_type";
+    public static final String ACTION_ADD_DEBT_LOAN = "action_add_debt_loan";
+    public static final String ACTION_UPDATE_DEBT_LOAN = "action_update_debt_loan";
+    public static final String ACTION_DELETE_DEBT_LOAN = "action_delete_debt_loan";
 }

@@ -11,10 +11,10 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,11 +36,13 @@ public class MyRecyclerViewSavingAdapter extends
         this.mData = data;
         this.mContext = context;
     }
+    
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item_saving, parent, false);
         return new ViewHolder(view);
     }
+    
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(getItem(position));
@@ -100,13 +102,8 @@ public class MyRecyclerViewSavingAdapter extends
             seek_bar_saving.setProgress(t);
             seek_bar_saving.setEnabled(false);
             
-            GlideApp.with(mContext)
-                      .load(DrawableUtil.getDrawable(mContext, saving.getIcon()))
-                      .placeholder(R.drawable.folder_placeholder)
-                      .error(R.drawable.folder_placeholder)
-                      .dontAnimate()
-                      .into(image_icon_saving);
-            
+            GlideImageLoader.load(mContext, DrawableUtil.getDrawable(mContext, saving.getIcon()),
+                      image_icon_saving);
         }
         
         public int getDateRest(String milisecond) {

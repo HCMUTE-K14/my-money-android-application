@@ -6,8 +6,8 @@ import android.text.TextUtils;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -139,7 +139,7 @@ public class CategoryLocalService extends DbContentProvider<Category> {
                 
                 List<String> ids = new ArrayList<>();
                 for (Category cate : category.getSubcategories()) {
-                    MyLogger.d(TAG,cate.getName());
+                    MyLogger.d(TAG, cate.getName());
                     ids.add(cate.getId());
                 }
                 String[] selectionIds = ids.toArray(new String[ids.size()]);

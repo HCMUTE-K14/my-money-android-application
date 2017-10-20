@@ -10,9 +10,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,12 +51,8 @@ public class CurrenciesAdapter extends
         holder.currencies_code.setText(currencies.getCurCode());
         
         String iconString = "ic_currency_" + currencies.getCurCode().toLowerCase();
-        
-        GlideApp.with(mContext)
-                  .load(DrawableUtil.getDrawable(mContext, iconString))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .into(holder.image_view_currencies);
+        GlideImageLoader.load(mContext, DrawableUtil.getDrawable(mContext, iconString),
+                  holder.image_view_currencies);
         
     }
     

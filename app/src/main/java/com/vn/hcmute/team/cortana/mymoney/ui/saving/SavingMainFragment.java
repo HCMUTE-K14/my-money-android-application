@@ -50,6 +50,7 @@ public class SavingMainFragment extends BaseFragment {
     protected void initializeActionBar(View rootView) {
         getActivity().setTitle(getString(R.string.txt_savings));
     }
+    
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -72,11 +73,13 @@ public class SavingMainFragment extends BaseFragment {
                       .onActivityResult(requestCode, resultCode, data);
         }
     }
+    
     @OnClick(R.id.btn_add_saving)
     public void onClickAddSaving(View view) {
         Intent intent = new Intent(this.getActivity(), AddSavingActivity.class);
         getActivity().startActivityForResult(intent, 12);
     }
+    
     private void initializeView() {
         mPagerAdapter = new PagerAdapter(this.getFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);

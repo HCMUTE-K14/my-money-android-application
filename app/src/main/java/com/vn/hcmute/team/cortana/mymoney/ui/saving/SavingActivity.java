@@ -25,10 +25,10 @@ public class SavingActivity extends BaseActivity {
     
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
-
+    
     @BindView(R.id.pager)
     ViewPager mViewPager;
-
+    
     @BindView(R.id.btn_add_saving)
     FloatingActionButton btn_add_saving;
     
@@ -57,25 +57,25 @@ public class SavingActivity extends BaseActivity {
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-    
+        
         mTabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
             public void onTabSelected(Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
                 currentFragmet = tab.getPosition();
             }
-        
+            
             @Override
             public void onTabUnselected(Tab tab) {
-            
+                
             }
-        
+            
             @Override
             public void onTabReselected(Tab tab) {
-            
+                
             }
         });
-    
+        
         initTabLayout();
     }
     
@@ -116,6 +116,7 @@ public class SavingActivity extends BaseActivity {
     protected void initializeActionBar(View rootView) {
         
     }
+    
     private void initTabLayout() {
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));

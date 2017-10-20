@@ -8,6 +8,7 @@
   <item
     android:id="@+id/action_archive"
     android:icon="@drawable/ic_archives"
+    android:visible="false"
     android:title="@string/action_archive" />
 
   <item

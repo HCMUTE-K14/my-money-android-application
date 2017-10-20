@@ -266,19 +266,20 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
         }
     }
     
-    private void doGetAllTransaction(final BaseCallBack<Object> callBack, TypeRepository typeRepository) {
+    private void doGetAllTransaction(final BaseCallBack<Object> callBack,
+              TypeRepository typeRepository) {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object result) {
                 callBack.onSuccess(result);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
+        
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
                 //                mDisposable = mDataRepository.getListLocalCategory(type)
@@ -295,7 +296,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-            
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -314,7 +315,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             }
-        
+            
             this.mCompositeDisposable.add(mDisposable);
         }
     }

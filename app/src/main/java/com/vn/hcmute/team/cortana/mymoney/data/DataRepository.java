@@ -6,6 +6,7 @@ import com.vn.hcmute.team.cortana.mymoney.data.remote.RemoteRepository;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
@@ -120,6 +121,28 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
               String startDate,
               String endDate, String walletId) {
         return mRemoteRepository.getTransactionByTime(userid, token, startDate, endDate, walletId);
+    }
+    
+    @Override
+    public Observable<List<DebtLoan>> getDebtLoanByType(String userid, String token,
+              String wallet_id, String type) {
+        return mRemoteRepository.getDebtLoan(userid, token, wallet_id, type);
+    }
+    
+    @Override
+    public Observable<String> addDebtLoan(String userid, String token, DebtLoan debtLoan) {
+        return mRemoteRepository.addDebtLoan(userid, token, debtLoan);
+    }
+    
+    @Override
+    public Observable<String> updateDebtLoan(String userid, String token, String wallet_id,
+              DebtLoan debtLoan) {
+        return mRemoteRepository.updateDebtLoan(userid, token, debtLoan, wallet_id);
+    }
+    
+    @Override
+    public Observable<String> deleteDebtLoan(String userid, String token, DebtLoan debtLoan) {
+        return mRemoteRepository.deleteDebtLoan(userid, token, debtLoan);
     }
     
     @Override
@@ -302,13 +325,15 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     @Override
     public Observable<String> takeInSaving(String userid, String token, String idWallet,
               String idSaving, String moneyUpdateWallet, String moneyUpdateSaving) {
-        return mRemoteRepository.takeInSaving(userid, token, idWallet, idSaving, moneyUpdateWallet,moneyUpdateSaving);
+        return mRemoteRepository.takeInSaving(userid, token, idWallet, idSaving, moneyUpdateWallet,
+                  moneyUpdateSaving);
     }
     
     @Override
     public Observable<String> takeOutSaving(String userid, String token, String idWallet,
               String idSaving, String moneyUpdateWallet, String moneyUpdateSaving) {
-        return mRemoteRepository.takeOutSaving(userid, token, idWallet, idSaving, moneyUpdateWallet,moneyUpdateSaving);
+        return mRemoteRepository.takeOutSaving(userid, token, idWallet, idSaving, moneyUpdateWallet,
+                  moneyUpdateSaving);
     }
     
     //person
@@ -434,6 +459,7 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     public Observable<String> deleteLocalCategory(Category category) {
         return mLocalRepository.deleteCategory(category);
     }
+    
     /*Area saving*/
     @Override
     public Observable<List<Saving>> getLocalListSaving() {
@@ -456,16 +482,19 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
-    public Observable<String> takeInLocalSaving(String idWallet, String idSaving, String moneyWallet,
+    public Observable<String> takeInLocalSaving(String idWallet, String idSaving,
+              String moneyWallet,
               String moneySaving) {
-        return mLocalRepository.takeInSaving(idWallet,idSaving,moneyWallet,moneySaving);
+        return mLocalRepository.takeInSaving(idWallet, idSaving, moneyWallet, moneySaving);
     }
     
     @Override
-    public Observable<String> takeOutLocalSaving(String idWallet, String idSaving, String moneyWallet,
+    public Observable<String> takeOutLocalSaving(String idWallet, String idSaving,
+              String moneyWallet,
               String moneySaving) {
-        return mLocalRepository.takeOutSaving(idWallet,idSaving,moneyWallet,moneySaving);
+        return mLocalRepository.takeOutSaving(idWallet, idSaving, moneyWallet, moneySaving);
     }
+    
     /*Area wallet*/
     @Override
     public Observable<List<Wallet>> getListWallet() {

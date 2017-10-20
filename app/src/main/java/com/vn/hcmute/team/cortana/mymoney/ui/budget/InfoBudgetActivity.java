@@ -19,11 +19,11 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.BudgetComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerBudgetComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.BudgetModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import java.util.List;
 import javax.inject.Inject;
@@ -52,12 +52,9 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     TextView txt_rest_time;
     @BindView(R.id.txt_wallet)
     TextView txt_wallet;
-    
-    private Budget mBudget;
-    
     @Inject
     BudgetPresenter mBudgetPresenter;
-    
+    private Budget mBudget;
     
     @Override
     public int getLayoutId() {
@@ -195,12 +192,9 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     }
     
     public void showData() {
-        GlideApp.with(this)
-                  .load(DrawableUtil.getDrawable(this, mBudget.getCategory().getIcon()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(image_icon_category);
+        GlideImageLoader.load(this, DrawableUtil.getDrawable(this, mBudget.getCategory().getIcon()),
+                  image_icon_category);
+        
         txt_budget_name.setText(mBudget.getCategory().getName());
         txt_goal_money.setText("+" + mBudget.getMoneyGoal() + " " +
                                mBudget.getWallet().getCurrencyUnit().getCurSymbol());

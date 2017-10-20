@@ -25,12 +25,18 @@ public interface TransactionContract {
         void onUpdateSuccessTransaction(String message);
     }
     
+    interface DeleteView extends View {
+        
+        void onDeleteSuccessTransaction(String message);
+    }
+    
     interface Presenter {
         
-        void addTransaction(Transaction transaction,List<ImageGallery> galleryList);
+        void addTransaction(Transaction transaction, List<ImageGallery> galleryList);
         
         void updateTransaction(Transaction transaction);
         
+        void deleteTransaction(Transaction transaction);
         
         void unSubscribe();
         

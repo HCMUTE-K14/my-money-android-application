@@ -37,14 +37,11 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
     ProgressBar mProgressBar;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    
+    @Inject
+    BudgetPresenter mBudgetPresenter;
     private MyRecyclerViewBudgetAdapter mMyRecyclerViewBudgetAdapter;
     private List<Budget> mBudgetList;
     private EmptyAdapter mEmptyAdapter;
-    
-    
-    @Inject
-    BudgetPresenter mBudgetPresenter;
     
     @Override
     protected int getLayoutId() {

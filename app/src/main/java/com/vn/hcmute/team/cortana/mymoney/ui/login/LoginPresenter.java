@@ -66,13 +66,13 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                           getView().loading(false);
                           getView().loginSuccessful();
                       }
-                  
+
                       @Override
                       public void onFailure(Throwable throwable) {
                           getView().loading(false);
                           getView().loginFailure(throwable.getMessage());
                       }
-                  
+
                       @Override
                       public void onLoading() {
                           getView().loading(true);

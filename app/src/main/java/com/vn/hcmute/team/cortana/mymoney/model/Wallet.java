@@ -129,9 +129,9 @@ public class Wallet implements Parcelable {
         }
         
         Wallet wallet = (Wallet) o;
-    
+        
         return walletid != null ? walletid.equals(wallet.walletid) : wallet.walletid == null;
-    
+        
     }
     
     @Override

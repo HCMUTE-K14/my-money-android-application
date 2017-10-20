@@ -306,14 +306,13 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
                 callBack.onFailure(e);
             }
         };
-    
+
         String oldParentId = params[0];
         String newParentId = params[1];
-    
 
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                if(!TextUtil.isEmpty(newParentId)){
+                if (!TextUtil.isEmpty(newParentId)) {
                     category.setParent(new Category(newParentId));
                 }
                 mDisposable = mDataRepository.updateLocalCategory(category)
@@ -330,7 +329,7 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));

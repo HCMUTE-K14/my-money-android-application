@@ -3,6 +3,7 @@ package com.vn.hcmute.team.cortana.mymoney.data.remote;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
@@ -170,5 +171,18 @@ public interface RemoteTask {
                   String startDate,
                   String endDate, String walletId);
         
+    }
+    
+    interface DebtLoanTask {
+        
+        Observable<List<DebtLoan>> getDebtLoan(String userid, String token, String wallet_id,
+                  String type);
+        
+        Observable<String> addDebtLoan(String userid, String token, DebtLoan debtLoan);
+        
+        Observable<String> updateDebtLoan(String userid, String token, DebtLoan debtLoan,
+                  String wallet_id);
+        
+        Observable<String> deleteDebtLoan(String userid, String token, DebtLoan debtLoan);
     }
 }

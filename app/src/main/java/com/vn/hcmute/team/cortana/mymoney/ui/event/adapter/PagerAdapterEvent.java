@@ -11,13 +11,14 @@ import com.vn.hcmute.team.cortana.mymoney.ui.event.FragmentEventRunning;
  */
 
 public class PagerAdapterEvent extends FragmentStatePagerAdapter {
-
+    
     private FragmentEventRunning mFragmentEventRunning = new FragmentEventRunning();
     private FragmentEventFinished mFragmentEventFinished = new FragmentEventFinished();
-
+    
     public PagerAdapterEvent(FragmentManager fm) {
         super(fm);
     }
+    
     @Override
     public Fragment getItem(int position) {
         switch (position) {
@@ -29,7 +30,7 @@ public class PagerAdapterEvent extends FragmentStatePagerAdapter {
                 return null;
         }
     }
-
+    
     @Override
     public int getCount() {
         return 2;

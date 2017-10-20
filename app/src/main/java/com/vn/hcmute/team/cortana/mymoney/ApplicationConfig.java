@@ -13,13 +13,10 @@ public class ApplicationConfig {
     public static final int CACHE_MAX_AGE = 31536000; //1 year
     
     public static final int CACHE_MAX_STALE = 31536000; //1 year
+    public static final String DEFAULT_AMOUNT_PATTERN = "#,###.000";
+    public static final String DEFAULT_DATE_PATTERN = "EEEE, dd/MM/yyyy";
+    public static LANGUAGE DEFAULT_LANGUAGE = LANGUAGE.EN;
     
-    public static  String DEFAULT_DATE_PATTERN = "EEEE, dd/MM/yyyy";
-    
-    public static  LANGUAGE DEFAULT_LANGUAGE = LANGUAGE.EN;
-    
-    public static final String DEFAULT_AMOUNT_PATTERN ="5,000.123 $";
-
     public enum LANGUAGE {
         EN,
         VI

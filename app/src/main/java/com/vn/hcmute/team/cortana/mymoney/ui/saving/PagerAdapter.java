@@ -14,7 +14,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     
     private FragmentRunning mFragmentRunning;
     private FragmentFinished mFragmentFinished;
-
+    
     
     public PagerAdapter(FragmentManager fm) {
         super(fm);

@@ -77,16 +77,16 @@ public class CurrencyLocalService extends DbContentProvider<Currencies> implemen
     
     @Override
     public Currencies getCurrency(String id) {
-        String selection="cur_id=?";
+        String selection = "cur_id=?";
         String[] selectionArg = new String[]{id};
-        Currencies currencies=null;
+        Currencies currencies = null;
         Cursor cursor = CurrencyLocalService.this
                   .query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
-        if(cursor==null){
+        if (cursor == null) {
             return null;
         }
-        if(cursor.moveToFirst()){
-            currencies= new Currencies();
+        if (cursor.moveToFirst()) {
+            currencies = new Currencies();
             currencies.setCurId(cursor.getString(0));
             currencies.setCurName(cursor.getString(1));
             currencies.setCurSymbol(cursor.getString(2));

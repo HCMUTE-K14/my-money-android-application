@@ -31,7 +31,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerTransactionComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.TransactionComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.di.module.TransactionModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
@@ -43,6 +42,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.category.CategoryActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.category.ManagerCategoryFragment;
+import com.vn.hcmute.team.cortana.mymoney.ui.event.ActivitySelectEvent;
 import com.vn.hcmute.team.cortana.mymoney.ui.person.PersonActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.GalleryLoader;
@@ -55,6 +55,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -102,6 +103,9 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerViewImageSelected;
+    
+    @BindView(R.id.txt_event)
+    TextView mTextViewEvent;
     
     @Inject
     PreferencesHelper mPreferencesHelper;
@@ -262,6 +266,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case RequestCode.CALCULATOR_REQUEST_CODE:
+                    //TODO: View, Result
                     String result = data.getStringExtra("result");
                     if (!TextUtil.isEmpty(result)) {
                         mTextViewMoney.setText(result);
@@ -271,12 +276,9 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
                     mCategory = data.getParcelableExtra("category");
                     if (mCategory != null) {
                         mTextViewCategory.setText(mCategory.getName());
-                        GlideApp.with(this)
-                                  .load(DrawableUtil
-                                            .getDrawable(this.getContext(), mCategory.getIcon()))
-                                  .placeholder(R.drawable.folder_placeholder)
-                                  .error(R.drawable.folder_placeholder)
-                                  .into(mImageViewIconCategory);
+                        GlideImageLoader.load(this.getContext(), DrawableUtil
+                                            .getDrawable(this.getContext(), mCategory.getIcon()),
+                                  mImageViewIconCategory);
                     }
                     break;
                 case RequestCode.CHOOSE_WALLET_REQUEST_CODE:
@@ -299,6 +301,11 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
                         mSelectedImageAdapter.setData(mImageGalleries);
                         mRecyclerViewImageSelected.setAdapter(mSelectedImageAdapter);
                     }
+                case RequestCode.CHOOSE_EVENT_REQUEST_CODE:
+                    this.mEvent = data.getParcelableExtra("event");
+                    if (mEvent != null) {
+                        mTextViewEvent.setText(this.mEvent.getName());
+                    }
                     break;
             }
         }
@@ -308,19 +315,18 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     
     @Override
     public void onAddSuccessTransaction(String message) {
-        Toast.makeText(this.getContext(), "addd", Toast.LENGTH_SHORT).show();
-        mTransactionPresenter.updateTransaction(mCurrentTransaction);
+        
     }
     
     @Override
     public void onUpdateSuccessTransaction(String message) {
-        Toast.makeText(this.getContext(), "update", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.getContext(), "Updated", Toast.LENGTH_SHORT).show();
     }
     
     
     @Override
     public void onFailure(String message) {
-        Toast.makeText(this.getContext(), "failure", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.getContext(), message, Toast.LENGTH_SHORT).show();
     }
     
     @Override
@@ -409,7 +415,9 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     }
     
     private void openEventActivity() {
+        Intent intent = new Intent(this.getActivity(), ActivitySelectEvent.class);
         
+        startActivityForResult(intent, RequestCode.CHOOSE_EVENT_REQUEST_CODE);
     }
     
     private void openSelectLocationActivity() {
@@ -478,11 +486,11 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         
         mTextViewMoney.setText(mCurrentTransaction.getAmount());
         mTextViewCategory.setText(mCategory.getName());
-        GlideApp.with(this.getContext())
-                  .load(DrawableUtil.getDrawable(this.getContext(), mCategory.getIcon()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .into(mImageViewIconCategory);
+        
+        GlideImageLoader.load(this.getContext(),
+                  DrawableUtil.getDrawable(this.getContext(), mCategory.getIcon()),
+                  mImageViewIconCategory);
+        
         mEditTextNote.setText(mCurrentTransaction.getNote());
         mTextViewNameWallet.setText(mWallet != null ? mWallet.getWalletName() : "");
         mTextViewContacts.setText(getTextNamePerson(mPersonList));
@@ -538,8 +546,6 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         mCurrentTransaction.setDate_end(date_end);
         
         mTransactionPresenter.addTransaction(mCurrentTransaction, mImageGalleries);
-        
-        
     }
     
     private void updateTransaction() {

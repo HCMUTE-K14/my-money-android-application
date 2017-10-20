@@ -3,6 +3,7 @@ package com.vn.hcmute.team.cortana.mymoney.data.remote;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.BudgetService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.CategoryService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.CurrenciesService;
+import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.DebtLoanService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.EventService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.ImageService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.PersonService;
@@ -12,6 +13,7 @@ import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.UserService;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.WalletService;
 import com.vn.hcmute.team.cortana.mymoney.exception.BudgetException;
 import com.vn.hcmute.team.cortana.mymoney.exception.CategoryException;
+import com.vn.hcmute.team.cortana.mymoney.exception.DebtLoanException;
 import com.vn.hcmute.team.cortana.mymoney.exception.EventException;
 import com.vn.hcmute.team.cortana.mymoney.exception.ImageException;
 import com.vn.hcmute.team.cortana.mymoney.exception.PersonException;
@@ -23,6 +25,7 @@ import com.vn.hcmute.team.cortana.mymoney.exception.WalletException;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
@@ -51,7 +54,8 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                                          RemoteTask.WalletTask, RemoteTask.CurrenciesTask,
                                          RemoteTask.EventTask, RemoteTask.SavingTask,
                                          RemoteTask.PersonTask, RemoteTask.BudgetTask,
-                                         RemoteTask.CategoryTask, RemoteTask.TransactionTask {
+                                         RemoteTask.CategoryTask, RemoteTask.TransactionTask,
+                                         RemoteTask.DebtLoanTask {
     
     
     public static final String TAG = RemoteRepository.class.getSimpleName();
@@ -1094,7 +1098,8 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     }
     
     @Override
-    public Observable<List<Transaction>> getTransactionByType(String userid, String token, String type,
+    public Observable<List<Transaction>> getTransactionByType(String userid, String token,
+              String type,
               String walletId) {
         TransactionService transactionService = mServiceGenerator
                   .getService(TransactionService.class);
@@ -1117,7 +1122,8 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     }
     
     @Override
-    public Observable<List<Transaction>> getTransactionByTime(String userid, String token, String startDate,
+    public Observable<List<Transaction>> getTransactionByTime(String userid, String token,
+              String startDate,
               String endDate, String walletId) {
         TransactionService transactionService = mServiceGenerator
                   .getService(TransactionService.class);
@@ -1184,4 +1190,97 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                       }
                   });
     }
+    
+    @Override
+    public Observable<List<DebtLoan>> getDebtLoan(String userid, String token, String wallet_id,
+              String type) {
+        DebtLoanService debtLoanService = mServiceGenerator.getService(DebtLoanService.class);
+        
+        if (debtLoanService == null) {
+            return null;
+        }
+        
+        return debtLoanService.getDebtLoanByType(userid, token, wallet_id, type)
+                  .map(new Function<JsonResponse<List<DebtLoan>>, List<DebtLoan>>() {
+                      @Override
+                      public List<DebtLoan> apply(
+                                @NonNull JsonResponse<List<DebtLoan>> listJsonResponse)
+                                throws Exception {
+                          if (listJsonResponse.getStatus().equals("success")) {
+                              return listJsonResponse.getData();
+                          } else {
+                              throw new DebtLoanException(listJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> addDebtLoan(String userid, String token, DebtLoan debtLoan) {
+        DebtLoanService debtLoanService = mServiceGenerator.getService(DebtLoanService.class);
+        
+        if (debtLoanService == null) {
+            return null;
+        }
+        
+        return debtLoanService.addDebtLoan(userid, token, debtLoan)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getMessage();
+                          } else {
+                              throw new DebtLoanException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<String> updateDebtLoan(String userid, String token, DebtLoan debtLoan,
+              String wallet_id) {
+        DebtLoanService debtLoanService = mServiceGenerator.getService(DebtLoanService.class);
+        
+        if (debtLoanService == null) {
+            return null;
+        }
+        
+        return debtLoanService.updateDebtLoan(userid, token, wallet_id, debtLoan)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getMessage();
+                          } else {
+                              throw new DebtLoanException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    
+    @Override
+    public Observable<String> deleteDebtLoan(String userid, String token, DebtLoan debtLoan) {
+        DebtLoanService debtLoanService = mServiceGenerator.getService(DebtLoanService.class);
+        
+        if (debtLoanService == null) {
+            return null;
+        }
+        
+        return debtLoanService.deleteDebtLoan(userid, token, debtLoan)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getMessage();
+                          } else {
+                              throw new DebtLoanException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
 }

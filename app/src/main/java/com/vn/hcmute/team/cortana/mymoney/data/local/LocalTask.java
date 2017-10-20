@@ -36,26 +36,32 @@ public interface LocalTask {
         
         Observable<String> deleteCategory(Category category);
     }
-    interface SavingTask{
+
+    interface SavingTask {
         
         Observable<List<Saving>> getListSaving();
-    
+
         Observable<String> addSaving(Saving saving);
-    
+
         Observable<String> updateSaving(Saving saving);
-    
+
         Observable<String> deleteSaving(String saving_id);
-    
+
         Observable<String> takeInSaving(String idWallet, String idSaving, String moneyWallet,
                   String moneySaving);
-    
+
         Observable<String> takeOutSaving(String idWallet, String idSaving, String moneyWallet,
                   String moneySaving);
     }
-    interface WalletTask{
+
+    interface WalletTask {
+
         Observable<List<Wallet>> getListWallet();
+
         Observable<String> addWallet(Wallet wallet);
+
         Observable<String> updateWallet(Wallet wallet);
+
         Observable<String> deleteWallet(String idWallet);
     }
 }

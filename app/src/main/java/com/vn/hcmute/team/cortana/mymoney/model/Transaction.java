@@ -12,74 +12,70 @@ import java.util.List;
 
 public class Transaction implements Parcelable {
     
+    public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
+        @Override
+        public Transaction createFromParcel(Parcel in) {
+            return new Transaction(in);
+        }
+        
+        @Override
+        public Transaction[] newArray(int size) {
+            return new Transaction[size];
+        }
+    };
     @SerializedName("trans_id")
     @Expose
     private String trans_id;
-    
     @SerializedName("amount")
     @Expose
     private String amount;
-    
     @SerializedName("person")
     @Expose
     private List<Person> person;
-    
     @SerializedName("address")
     @Expose
     private String address;
-    
     @SerializedName("note")
     @Expose
     private String note;
-    
     @SerializedName("image")
     @Expose
     private List<Image> image;
-    
     @SerializedName("type")
     @Expose
-    private int type; //0:Cho vay, 1:Chit ieu ,2 thu nhap
-    
+    private String type; // "income" , "expense"
     @SerializedName("category")
     @Expose
     private Category category;
-    
     @SerializedName("event")
     @Expose
     private Event event;
-    
     @SerializedName("latitude")
     @Expose
     private String latitude;
-    
     @SerializedName("longitude")
     @Expose
     private String longitude;
-    
     @SerializedName("user_id")
     @Expose
     private String user_id;
-    
     @SerializedName("wallet")
     @Expose
     private Wallet wallet;
-    
     @SerializedName("date_created")
     @Expose
     private String date_created;
-    
     @SerializedName("date_end")
     @Expose
     private String date_end;
-    
     @SerializedName("saving")
     @Expose
     private Saving saving;
     
+    
     public Transaction() {
         
     }
-    
     
     protected Transaction(Parcel in) {
         trans_id = in.readString();
@@ -87,7 +83,7 @@ public class Transaction implements Parcelable {
         person = in.createTypedArrayList(Person.CREATOR);
         address = in.readString();
         note = in.readString();
-        type = in.readInt();
+        type = in.readString();
         category = in.readParcelable(Category.class.getClassLoader());
         event = in.readParcelable(Event.class.getClassLoader());
         latitude = in.readString();
@@ -106,7 +102,7 @@ public class Transaction implements Parcelable {
         dest.writeTypedList(person);
         dest.writeString(address);
         dest.writeString(note);
-        dest.writeInt(type);
+        dest.writeString(type);
         dest.writeParcelable(category, flags);
         dest.writeParcelable(event, flags);
         dest.writeString(latitude);
@@ -122,18 +118,6 @@ public class Transaction implements Parcelable {
     public int describeContents() {
         return 0;
     }
-    
-    public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
-        @Override
-        public Transaction createFromParcel(Parcel in) {
-            return new Transaction(in);
-        }
-        
-        @Override
-        public Transaction[] newArray(int size) {
-            return new Transaction[size];
-        }
-    };
     
     public String getTrans_id() {
         return trans_id;
@@ -183,11 +167,11 @@ public class Transaction implements Parcelable {
         this.image = image;
     }
     
-    public int getType() {
+    public String getType() {
         return type;
     }
     
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
     

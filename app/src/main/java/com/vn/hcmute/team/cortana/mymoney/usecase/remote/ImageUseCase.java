@@ -77,7 +77,6 @@ public class ImageUseCase extends UseCase<ImageRequest> {
         }
     }
     
-   
     
     @Override
     public void unSubscribe() {

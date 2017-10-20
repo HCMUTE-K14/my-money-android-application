@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical">
@@ -20,12 +21,6 @@
       android:layout_height="match_parent"
       android:gravity="right|center"
       android:orientation="horizontal">
-      <ImageView
-        android:id="@+id/image_share"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/ic_share" />
       <ImageView
         android:id="@+id/image_view_edit"
         android:layout_width="30dp"
@@ -100,9 +95,9 @@
           android:paddingLeft="10dp"
           android:gravity="center|left">
           <TextView
+            android:id="@+id/txt_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-200000"
             android:textColor="@color/color_red"
             android:textSize="25dp" />
         </LinearLayout>
@@ -213,34 +208,121 @@
   </android.support.v7.widget.CardView>
   <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="match_parent"
     android:layout_marginTop="20dp"
     android:orientation="vertical"
-    android:weightSum="2">
+    android:weightSum="5">
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_weight="1"
-      android:paddingLeft="15dp"
-      android:gravity="center|left"
-      android:orientation="vertical">
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/budget"
-        android:textColor="@color/black"
-        android:textSize="23dp" />
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/txt_info_budget_transaction"
-        android:textColor="@color/black" />
+      android:layout_weight="4"
+      android:orientation="horizontal">
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+      </LinearLayout>
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+          android:id="@+id/txt_type"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_marginTop="5dp"
+          android:paddingTop="10dp"
+          android:paddingBottom="10dp"
+          android:paddingLeft="10dp"
+          android:textColor="@color/black"
+          android:textSize="18dp" />
+      </LinearLayout>
     </LinearLayout>
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_weight="1">
-
+      android:layout_weight="2">
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        <com.vn.hcmute.team.cortana.mymoney.ui.view.RoundedLetterView
+          android:id="@+id/rounded_letter"
+          android:layout_width="30dp"
+          android:layout_height="wrap_content"
+          app:rlv_backgroundColorValue="#FF5722"
+          app:rlv_titleColor="@color/white"
+          app:rlv_titleSize="25dp"
+          app:rlv_titleText="B" />
+      </LinearLayout>
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingRight="12dp">
+          <LinearLayout
+            android:layout_marginLeft="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="@string/txt_paid" />
+            <TextView
+              android:id="@+id/txt_amount_start"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="$5" />
+          </LinearLayout>
+          <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical">
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="@string/txt_left" />
+            <TextView
+              android:id="@+id/txt_amount_end"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="$5" />
+          </LinearLayout>
+        </RelativeLayout>
+        <SeekBar
+          android:id="@+id/seek_bar_saving_info"
+          android:layout_width="match_parent"
+          android:layout_height="8dp"
+          android:layout_marginTop="5dp"
+          android:max="100"
+          android:progress="0"
+          android:progressDrawable="@drawable/process_saving"
+          android:thumb="@null" />
+        <Button
+          android:id="@+id/btn_cash_back"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="30dp"
+          android:layout_marginLeft="30dp"
+          android:paddingLeft="10dp"
+          android:paddingRight="10dp"
+          android:background="@color/colorPrimary"
+          android:text="@string/txt_cash_back"
+          android:textColor="@color/white" />
+      </LinearLayout>
     </LinearLayout>
   </LinearLayout>
 </LinearLayout>

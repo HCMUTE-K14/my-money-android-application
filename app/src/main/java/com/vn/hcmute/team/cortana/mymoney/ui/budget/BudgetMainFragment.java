@@ -102,6 +102,7 @@ public class BudgetMainFragment extends BaseFragment {
         });
         initTablayout();
     }
+    
     public void initTablayout() {
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));

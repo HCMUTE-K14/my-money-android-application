@@ -18,10 +18,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.MenuPopupWithIcon;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,10 +136,7 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
             
             int imageWallet = DrawableUtil.getDrawable(mContext, wallet.getWalletImage());
             
-            GlideApp.with(mContext).load(imageWallet)
-                      .placeholder(R.drawable.folder_placeholder)
-                      .error(R.drawable.folder_placeholder)
-                      .into(item.mImageViewIconWallet);
+            GlideImageLoader.load(mContext, imageWallet, item.mImageViewIconWallet);
             
             item.mTextViewNameWallet.setText(wallet.getWalletName());
             

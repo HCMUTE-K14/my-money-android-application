@@ -21,7 +21,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerSavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.SavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
@@ -34,6 +33,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import java.util.Calendar;
 import java.util.List;
 import javax.inject.Inject;
@@ -66,16 +66,13 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     ImageView image_view_icon_saving;
     @BindView(R.id.linear_icon_saving)
     LinearLayout linear_icon_saving;
-    
+    @Inject
+    SavingPresenter mSavingPresenter;
     private int day, month, year;
     private String mWalletName;
     private Wallet mWallet;
     private Currencies mCurrencies;
     private Saving mSaving;
-    
-    @Inject
-    SavingPresenter mSavingPresenter;
-    
     private DatePickerDialog.OnDateSetListener mDatePickerListener
               = new DatePickerDialog.OnDateSetListener() {
         
@@ -160,6 +157,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         }
         if (requestCode == 5) {
             if (resultCode == Activity.RESULT_OK) {
+                //TODO: View,Result
                 String goalMoney = data.getStringExtra("result");
                 txt_goal_money.setText("+" + goalMoney);
             }
@@ -295,7 +293,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     public void onClickGoalMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
         intent.putExtra("goal_money", txt_goal_money.getText().toString().substring(1));
-        intent.putExtra("currencies",mCurrencies);
+        intent.putExtra("currencies", mCurrencies);
         startActivityForResult(intent, 5);
     }
     
@@ -367,12 +365,8 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     }
     
     public void showIcon() {
-        GlideApp.with(this)
-                  .load(DrawableUtil.getDrawable(this, mSaving.getIcon()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(image_view_icon_saving);
+        GlideImageLoader.load(this, DrawableUtil.getDrawable(this, mSaving.getIcon()),
+                  image_view_icon_saving);
     }
     
     public void alertDiaglog(String message) {

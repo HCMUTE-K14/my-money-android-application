@@ -5,5 +5,6 @@ package com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator;
  */
 
 public interface DialogCallback {
+    
     void getResults(String results);
 }

@@ -11,8 +11,10 @@ import com.vn.hcmute.team.cortana.mymoney.ui.budget.FragmentBudgetRunning;
  */
 
 public class PagerAdapterBudget extends FragmentStatePagerAdapter {
-    FragmentBudgetRunning mFragmentBudgetRunning=new FragmentBudgetRunning();
-    FragmentBudgetFinished mFragmentBudgetFinished=new FragmentBudgetFinished();
+    
+    FragmentBudgetRunning mFragmentBudgetRunning = new FragmentBudgetRunning();
+    FragmentBudgetFinished mFragmentBudgetFinished = new FragmentBudgetFinished();
+    
     public PagerAdapterBudget(FragmentManager fm) {
         super(fm);
         
@@ -29,6 +31,7 @@ public class PagerAdapterBudget extends FragmentStatePagerAdapter {
                 return null;
         }
     }
+    
     @Override
     public int getCount() {
         return 2;

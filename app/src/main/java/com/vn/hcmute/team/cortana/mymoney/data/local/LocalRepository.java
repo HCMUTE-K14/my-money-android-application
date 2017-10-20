@@ -247,18 +247,19 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
             }
         });
     }
+
     /*Area wallet*/
     @Override
     public Observable<List<Wallet>> getListWallet() {
-        WalletLocalService walletLocalService=new WalletLocalService(mDatabaseHelper);
-        Callable<List<Wallet>> callable=walletLocalService.getListWallet();
+        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        Callable<List<Wallet>> callable = walletLocalService.getListWallet();
         return makeObservable(callable);
     }
     
     @Override
     public Observable<String> addWallet(Wallet wallet) {
-        WalletLocalService walletLocalService=new WalletLocalService(mDatabaseHelper);
-        Callable<Long> callable=walletLocalService.addWallet(wallet);
+        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        Callable<Long> callable = walletLocalService.addWallet(wallet);
         return makeObservable(callable).map(new Function<Long, String>() {
             @Override
             public String apply(@NonNull Long aLong) throws Exception {
@@ -273,8 +274,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> updateWallet(Wallet wallet) {
-        WalletLocalService walletLocalService=new WalletLocalService(mDatabaseHelper);
-        Callable<Integer> callable=walletLocalService.updateWallet(wallet);
+        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        Callable<Integer> callable = walletLocalService.updateWallet(wallet);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {
@@ -289,8 +290,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> deleteWallet(String idWallet) {
-        WalletLocalService walletLocalService=new WalletLocalService(mDatabaseHelper);
-        Callable<Integer> callable=walletLocalService.deleteWallet(idWallet);
+        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        Callable<Integer> callable = walletLocalService.deleteWallet(idWallet);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {

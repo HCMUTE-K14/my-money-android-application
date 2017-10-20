@@ -79,17 +79,19 @@ public class EventMainFragment extends BaseFragment {
                       .onActivityResult(requestCode, resultCode, data);
         }
     }
+    
     /*OnClick*/
     @OnClick(R.id.btn_add_event)
     public void onClickAddEvent(View view) {
         Intent intent = new Intent(this.getActivity(), ActivityAddEvent.class);
         getActivity().startActivityForResult(intent, 22);
     }
+    
     /*Area Funcion*/
     private void initializeView() {
         mPagerAdapterEvent = new PagerAdapterEvent(this.getFragmentManager());
         mViewPager.setAdapter(mPagerAdapterEvent);
-    
+        
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
@@ -97,19 +99,20 @@ public class EventMainFragment extends BaseFragment {
                 mViewPager.setCurrentItem(tab.getPosition());
                 currentPositionFragment = tab.getPosition();
             }
-        
+            
             @Override
             public void onTabUnselected(Tab tab) {
-            
+                
             }
-        
+            
             @Override
             public void onTabReselected(Tab tab) {
-            
+                
             }
         });
         initTablayout();
     }
+    
     public void initTablayout() {
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));

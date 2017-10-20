@@ -22,7 +22,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.BudgetComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerBudgetComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.BudgetModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
@@ -32,6 +31,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import java.util.Calendar;
 import java.util.List;
@@ -54,7 +54,10 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     TextView txt_date_budget;
     @BindView(R.id.txt_wallet_budget)
     TextView txt_wallet_budget;
-    
+    @Inject
+    BudgetPresenter mBudgetPresenter;
+    @Inject
+    PreferencesHelper mPreferencesHelper;
     private Budget mBudget;
     private Category mCategory;
     private Wallet mWallet;
@@ -65,16 +68,11 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     private int monthOfYearEnd;
     private int dayOfMonthEnd;
     
-    @Inject
-    BudgetPresenter mBudgetPresenter;
-    @Inject
-    PreferencesHelper mPreferencesHelper;
-    
-    
     @Override
     public int getLayoutId() {
         return R.layout.activity_add_budget;
     }
+    
     @Override
     protected void initializeDagger() {
         ApplicationComponent applicationComponent = ((MyMoneyApplication) this.getApplication())
@@ -92,6 +90,7 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+    
     @Override
     protected void initialize() {
         init();
@@ -103,6 +102,7 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
         mBudgetPresenter.unSubscribe();
         super.onDestroy();
     }
+    
     @Override
     protected void initializePresenter() {
         mPresenter = mBudgetPresenter;
@@ -113,22 +113,24 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     protected void initializeActionBar(View rootView) {
         
     }
+    
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth,
               int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
         
         this.year = year;
-        this.monthOfYear = monthOfYear+1;
+        this.monthOfYear = monthOfYear + 1;
         this.dayOfMonth = dayOfMonth;
         this.yearEnd = yearEnd;
-        this.monthOfYearEnd = monthOfYearEnd+1;
+        this.monthOfYearEnd = monthOfYearEnd + 1;
         this.dayOfMonthEnd = dayOfMonthEnd;
         
         txt_date_budget
-                  .setText(this.dayOfMonth + "/" + this.monthOfYear + "/" + this.year + " - " + this.dayOfMonthEnd +
+                  .setText(this.dayOfMonth + "/" + this.monthOfYear + "/" + this.year + " - " +
+                           this.dayOfMonthEnd +
                            "/" + this.monthOfYearEnd + "/" +
                            this.yearEnd);
-        txt_date_budget.setTextColor(ContextCompat.getColor(this,R.color.black));
+        txt_date_budget.setTextColor(ContextCompat.getColor(this, R.color.black));
         
     }
     
@@ -152,12 +154,8 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
             if (resultCode == Activity.RESULT_OK) {
                 mCategory = data.getParcelableExtra("category");
                 txt_name_budget.setText(mCategory.getName());
-                GlideApp.with(this)
-                          .load(DrawableUtil.getDrawable(this, mCategory.getIcon()))
-                          .placeholder(R.drawable.folder_placeholder)
-                          .error(R.drawable.folder_placeholder)
-                          .dontAnimate()
-                          .into(image_view_icon_budget);
+                GlideImageLoader.load(this, DrawableUtil.getDrawable(this, mCategory.getIcon()),
+                          image_view_icon_budget);
             }
         }
     }
@@ -184,6 +182,7 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     public void onSucsessDeleteBudget(String message) {
         
     }
+    
     @Override
     public void onFailure(String message) {
         alertDiaglog(message);
@@ -193,6 +192,7 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     public void loading(boolean isLoading) {
         
     }
+    
     /*Area onClick*/
     @OnClick(R.id.linear_select_date)
     public void onClickLinearSelectDate(View view) {
@@ -215,8 +215,8 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     @OnClick(R.id.linear_goal_money)
     public void onClickGoalMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money",txt_goal_money.getText().toString().substring(1));
-        intent.putExtra("currencies",mWallet.getCurrencyUnit());
+        intent.putExtra("goal_money", txt_goal_money.getText().toString().substring(1));
+        intent.putExtra("currencies", mWallet.getCurrencyUnit());
         startActivityForResult(intent, 31);
     }
     
@@ -240,6 +240,7 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
         Intent intent = new Intent(this, CategoryActivity.class);
         startActivityForResult(intent, 33);
     }
+    
     /*Area function*/
     public void init() {
         mBudget = new Budget();
@@ -247,10 +248,12 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
         mWallet = new Wallet();
         
     }
+    
     public void showData() {
         mWallet = mPreferencesHelper.getCurrentWallet();
         txt_wallet_budget.setText(mWallet.getWalletName());
     }
+    
     public boolean checkSaveBudget() {
         if (txt_name_budget.getText().toString().equals("")) {
             alertDiaglog(getString(R.string.txt_select_category));
@@ -270,6 +273,7 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
         }
         return true;
     }
+    
     public void setBudget() {
         mBudget.setBudgetId(SecurityUtil.getRandomUUID());
         mBudget.setStatus("0");
@@ -281,10 +285,12 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
         mBudget.setWallet(mWallet);
         
     }
+    
     public boolean checkRangeDate() {
         return DateUtil.getLongAsDate(dayOfMonth, monthOfYear, monthOfYear) >
                DateUtil.getLongAsDate(dayOfMonthEnd, monthOfYearEnd, monthOfYearEnd) ? false : true;
     }
+    
     public void alertDiaglog(String message) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage(message);

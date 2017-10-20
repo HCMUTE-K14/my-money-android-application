@@ -34,7 +34,7 @@ public interface EventContract {
         void updateEvent(Event event);
         
         void deleteEvent(String idEvent);
-
+        
         void unSubscribe();
         
     }

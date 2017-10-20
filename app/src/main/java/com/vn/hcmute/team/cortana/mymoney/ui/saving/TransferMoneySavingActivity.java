@@ -48,17 +48,14 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     TextView txt_wallet_name;
     @BindView(R.id.linear_wallet)
     LinearLayout linear_wallet;
-    
-    private Wallet mWallet;
-    private String value = "-1";
-    private Saving mSaving;
-    private Wallet mWalletTemp;
-    
     @Inject
     SavingPresenter mSavingPresenter;
     @Inject
     PreferencesHelper mPreferencesHelper;
-    
+    private Wallet mWallet;
+    private String value = "-1";
+    private Saving mSaving;
+    private Wallet mWalletTemp;
     
     @Override
     public int getLayoutId() {
@@ -85,6 +82,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         getData();
         showData();
     }
+    
     @Override
     protected void onDestroy() {
         mSavingPresenter.unSubscribe();
@@ -101,6 +99,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     protected void initializeActionBar(View rootView) {
         
     }
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
@@ -126,6 +125,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
             }
         }
     }
+    
     @Override
     public void showListSaving(List<Saving> savings) {
         
@@ -183,18 +183,20 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     public void loading(boolean isLoading) {
         
     }
+    
     /*Area OnClick*/
     @OnClick(R.id.linear_money)
     public void onClickLinearMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
         intent.putExtra("goal_money", txt_money.getText().toString());
-        if(value.equals("1")){
-            intent.putExtra("currencies",mWallet.getCurrencyUnit());
-        }else {
-            intent.putExtra("currencies",mSaving.getCurrencies());
+        if (value.equals("1")) {
+            intent.putExtra("currencies", mWallet.getCurrencyUnit());
+        } else {
+            intent.putExtra("currencies", mSaving.getCurrencies());
         }
         startActivityForResult(intent, 9);
     }
+    
     @OnClick(R.id.back_button_saving)
     public void onClickBack(View view) {
         finish();
@@ -207,6 +209,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
             startActivityForResult(intent, 10);
         }
     }
+    
     @OnClick(R.id.txt_save_transaction)
     public void onClickSave(View view) {
         if (txt_money.getText().toString().trim().equals("0")) {
@@ -268,9 +271,10 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
                 double exchangeMoney = NumberUtil
                           .exchangeMoney(this, money, mSaving.getCurrencies().getCurCode(),
                                     mWallet.getCurrencyUnit().getCurCode());
-                moneyWallet=Double.parseDouble(mWallet.getMoney())+exchangeMoney;
-                moneySaving=Double.parseDouble(mSaving.getCurrentMoney())-Double.parseDouble(money);
-                if(mSaving.getIdWallet().equals("")){
+                moneyWallet = Double.parseDouble(mWallet.getMoney()) + exchangeMoney;
+                moneySaving =
+                          Double.parseDouble(mSaving.getCurrentMoney()) - Double.parseDouble(money);
+                if (mSaving.getIdWallet().equals("")) {
                     mWallet.setMoney(String.valueOf(moneyWallet));
                 }
                 mSaving.setCurrentMoney(String.valueOf(moneySaving));
@@ -283,6 +287,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         }
         
     }
+    
     /*Area Function*/
     public void getData() {
         Intent intent = getIntent();
@@ -305,7 +310,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         //wallet
         if (mSaving.getIdWallet().equals("")) {
             mWallet = mPreferencesHelper.getCurrentWallet();
-            if(mWallet!=null){
+            if (mWallet != null) {
                 txt_wallet_name.setText(mWallet.getWalletName());
             }
             linear_wallet.setEnabled(true);
@@ -317,8 +322,8 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         }
         
         
-        
     }
+    
     public boolean checkTakeIn() {
         double money = Double.parseDouble(txt_money.getText().toString().trim());
         if (money > Double.parseDouble(mWallet.getMoney())) {

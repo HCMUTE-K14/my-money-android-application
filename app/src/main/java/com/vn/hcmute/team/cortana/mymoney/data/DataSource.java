@@ -3,6 +3,7 @@ package com.vn.hcmute.team.cortana.mymoney.data;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
@@ -134,14 +135,25 @@ public interface DataSource {
                   String categoryId, String walletId);
         
         Observable<Transaction> getTransactionById(String id, String userid, String token);
-    
+        
         Observable<List<Transaction>> getTransaction(String userid, String token);
-    
+        
         Observable<List<Transaction>> getTransactionByType(String userid, String token,
                   String type, String walletId);
-    
-        Observable<List<Transaction>> getTransactionByTime(String userid, String token, String startDate,
-                  String endDate,String walletId);
+        
+        Observable<List<Transaction>> getTransactionByTime(String userid, String token,
+                  String startDate,
+                  String endDate, String walletId);
+        
+        Observable<List<DebtLoan>> getDebtLoanByType(String userid, String token, String wallet_id,
+                  String type);
+        
+        Observable<String> addDebtLoan(String userid, String token, DebtLoan debtLoan);
+        
+        Observable<String> updateDebtLoan(String userid, String token, String walelt_id,
+                  DebtLoan debtLoan);
+        
+        Observable<String> deleteDebtLoan(String userid, String token, DebtLoan debtLoan);
     }
     
     public interface CacheDataSource {
@@ -195,22 +207,26 @@ public interface DataSource {
         
         /*Area saving*/
         Observable<List<Saving>> getLocalListSaving();
-    
+        
         Observable<String> addLocalSaving(Saving saving);
-    
+        
         Observable<String> updateLocalSaving(Saving saving);
-    
+        
         Observable<String> deleteLocalSaving(String saving_id);
-    
+        
         Observable<String> takeInLocalSaving(String idWallet, String idSaving, String moneyWallet,
                   String moneySaving);
-    
+        
         Observable<String> takeOutLocalSaving(String idWallet, String idSaving, String moneyWallet,
                   String moneySaving);
+        
         /*Area wallet*/
         Observable<List<Wallet>> getListWallet();
+        
         Observable<String> addLocalWallet(Wallet wallet);
+        
         Observable<String> updateLocalWallet(Wallet wallet);
+        
         Observable<String> deleteLocalWallet(String idWallet);
     }
 }

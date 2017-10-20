@@ -64,15 +64,15 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                       public void onSuccess(Object value) {
                           getView().loading(false);
                           getView().onSuccessCreateSaving();
-
+                          
                       }
-
+                      
                       @Override
                       public void onFailure(Throwable throwable) {
                           getView().loading(false);
                           getView().showError(throwable.getMessage());
                       }
-
+                      
                       @Override
                       public void onLoading() {
                           getView().loading(true);
@@ -90,15 +90,15 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                       public void onSuccess(Object value) {
                           getView().loading(false);
                           getView().onSuccessUpdateSaving();
-
+                          
                       }
-
+                      
                       @Override
                       public void onFailure(Throwable throwable) {
                           getView().loading(false);
                           getView().showError(throwable.getMessage());
                       }
-
+                      
                       @Override
                       public void onLoading() {
                           getView().loading(true);
@@ -117,42 +117,15 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                       public void onSuccess(Object value) {
                           getView().loading(false);
                           getView().onSuccessDeleteSaving();
-
+                          
                       }
-
+                      
                       @Override
                       public void onFailure(Throwable throwable) {
                           getView().loading(false);
                           getView().showError(throwable.getMessage());
                       }
-
-                      @Override
-                      public void onLoading() {
-                          getView().loading(true);
-                      }
-                  }, null, params);
-        savingRequest.setTypeRepository(TypeRepository.REMOTE);
-        mSavingUseCase.subscribe(savingRequest);
-    }
-
-    @Override
-    public void takeIn(String idWallet, String idSaving, String moneyUpdateWallet,String moneyUpdateSaving) {
-        String[] params = {idWallet, idSaving, moneyUpdateWallet,moneyUpdateSaving};
-        SavingRequest savingRequest = new SavingRequest(Action.ACTION_TAKE_IN_SAVING,
-                  new BaseCallBack<Object>() {
-                      @Override
-                      public void onSuccess(Object value) {
-                          getView().loading(false);
-                          getView().onSuccessTakeIn();
-
-                      }
-
-                      @Override
-                      public void onFailure(Throwable throwable) {
-                          getView().loading(false);
-                          getView().showError(throwable.getMessage());
-                      }
-
+                      
                       @Override
                       public void onLoading() {
                           getView().loading(true);
@@ -163,23 +136,52 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
     }
     
     @Override
-    public void takeOut(String idWallet, String idSaving, String moneyUpdateWallet,String moneyUpdateSaving) {
-        String[] params = {idWallet, idSaving, moneyUpdateWallet,moneyUpdateSaving};
+    public void takeIn(String idWallet, String idSaving, String moneyUpdateWallet,
+              String moneyUpdateSaving) {
+        String[] params = {idWallet, idSaving, moneyUpdateWallet, moneyUpdateSaving};
+        SavingRequest savingRequest = new SavingRequest(Action.ACTION_TAKE_IN_SAVING,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().onSuccessTakeIn();
+                          
+                      }
+                      
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().showError(throwable.getMessage());
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, null, params);
+        savingRequest.setTypeRepository(TypeRepository.REMOTE);
+        mSavingUseCase.subscribe(savingRequest);
+    }
+    
+    @Override
+    public void takeOut(String idWallet, String idSaving, String moneyUpdateWallet,
+              String moneyUpdateSaving) {
+        String[] params = {idWallet, idSaving, moneyUpdateWallet, moneyUpdateSaving};
         SavingRequest savingRequest = new SavingRequest(Action.ACTION_TAKE_OUT_SAVING,
                   new BaseCallBack<Object>() {
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
                           getView().onSuccessTakeOut();
-
+                          
                       }
-
+                      
                       @Override
                       public void onFailure(Throwable throwable) {
                           getView().loading(false);
                           getView().showError(throwable.getMessage());
                       }
-
+                      
                       @Override
                       public void onLoading() {
                           getView().loading(true);

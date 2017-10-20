@@ -39,13 +39,11 @@ public class FragmentRunning extends BaseFragment implements
     ProgressBar mProgressBar;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    
+    @Inject
+    SavingPresenter mSavingPresenter;
     private List<Saving> mSavingList;
     private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
     private EmptyAdapter mEmptyAdapter;
-    
-    @Inject
-    SavingPresenter mSavingPresenter;
     
     @Override
     protected int getLayoutId() {

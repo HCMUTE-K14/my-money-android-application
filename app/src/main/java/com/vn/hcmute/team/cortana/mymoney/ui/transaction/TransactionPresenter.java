@@ -119,6 +119,11 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
     }
     
     @Override
+    public void deleteTransaction(Transaction transaction) {
+        
+    }
+    
+    @Override
     public void unSubscribe() {
         mTransactionUseCase.unSubscribe();
     }

@@ -21,7 +21,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerEventComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.EventComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.EventModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
@@ -31,6 +30,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase.WalletRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,14 +54,12 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     LinearLayout linear_mark_as_finished;
     @BindView(R.id.image_icon_event)
     ImageView image_icon_event;
-    
-    private Event mEvent;
-    private List<Wallet> mWalletList;
-    
     @Inject
     EventPresenter mEventPresenter;
     @Inject
     WalletUseCase mWalletUseCase;
+    private Event mEvent;
+    private List<Wallet> mWalletList;
     
     @Override
     public int getLayoutId() {
@@ -232,13 +230,8 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
         } else {
             linear_mark_as_finished.setVisibility(View.GONE);
         }
-        GlideApp.with(this)
-                  .load(DrawableUtil.getDrawable(this, mEvent.getIcon()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(image_icon_event);
-        
+        GlideImageLoader
+                  .load(this, DrawableUtil.getDrawable(this, mEvent.getIcon()), image_icon_event);
     }
     
     public String getNameWallet(List<Wallet> wallets) {
