@@ -123,6 +123,12 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
+    public Observable<List<Transaction>> getTransactionByEvent(String userid, String token,
+              String eventid) {
+        return mRemoteRepository.getTransactionByEvent(eventid,userid,token);
+    }
+    
+    @Override
     public Observable<Image> getImageById(String userid, String token, String imageid) {
         return mRemoteRepository.getImageByid(userid, token, imageid);
     }

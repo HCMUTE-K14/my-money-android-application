@@ -170,5 +170,9 @@ public interface RemoteTask {
                   String startDate,
                   String endDate, String walletId);
         
+        Observable<List<Transaction>> getTransactionByEvent(String eventid, String userid,
+                  String token
+        );
+        
     }
 }

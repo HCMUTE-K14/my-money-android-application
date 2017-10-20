@@ -142,7 +142,8 @@ public interface DataSource {
     
         Observable<List<Transaction>> getTransactionByTime(String userid, String token, String startDate,
                   String endDate,String walletId);
-    }
+        Observable<List<Transaction>> getTransactionByEvent(String userid,String token,String eventid);
+     }
     
     public interface CacheDataSource {
         

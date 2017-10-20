@@ -48,7 +48,7 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
                           getView().loading(true);
                       }
                   }, wallet, null);
-        requestValue.setTypeRepository(TypeRepository.LOCAL);
+        requestValue.setTypeRepository(TypeRepository.REMOTE);
         mWalletUseCase.subscribe(requestValue);
     }
     
@@ -73,7 +73,7 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
                           getView().loading(true);
                       }
                   }, wallet, null);
-        requestValue.setTypeRepository(TypeRepository.LOCAL);
+        requestValue.setTypeRepository(TypeRepository.REMOTE);
         mWalletUseCase.subscribe(requestValue);
     }
     
@@ -98,7 +98,7 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
                           getView().loading(true);
                       }
                   }, wallet, null);
-        requestValue.setTypeRepository(TypeRepository.LOCAL);
+        requestValue.setTypeRepository(TypeRepository.REMOTE);
         mWalletUseCase.subscribe(requestValue);
     }
     
@@ -125,7 +125,7 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
                           getView().loading(true);
                       }
                   }, null, params);
-        requestValue.setTypeRepository(TypeRepository.LOCAL);
+        requestValue.setTypeRepository(TypeRepository.REMOTE);
         mWalletUseCase.subscribe(requestValue);
     }
     
@@ -159,7 +159,7 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
                           getView().loading(true);
                       }
                   }, null, null);
-        requestValue.setTypeRepository(TypeRepository.LOCAL);
+        requestValue.setTypeRepository(TypeRepository.REMOTE);
         mWalletUseCase.subscribe(requestValue);
     }
     

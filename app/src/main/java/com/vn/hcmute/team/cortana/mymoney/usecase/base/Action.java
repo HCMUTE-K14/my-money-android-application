@@ -73,4 +73,5 @@ public class Action {
     public static final String ACTION_GET_TRANSACTION_BY_ID = "action_get_transaction_by_id";
     public static final String ACTION_GET_TRANSACTION_BY_TYPE = "action_get_transaction_by_type";
     public static final String ACTION_GET_TRANSACTION_BY_TIME = "action_get_transaction_by_time";
+    public static final String ACTION_GET_TRANSACTION_BY_EVENT="action_get_transaction_by_event";
 }

@@ -51,6 +51,10 @@ public interface TransactionService {
               @Query("token") String token, @Query("startdate") String startDate,
               @Query("enddate") String endDate);
     
+    @GET(MyMoneyApi.GET_TRANSACTION_BY_EVENT + "/{eventId}")
+    Observable<JsonResponse<List<Transaction>>> getTransactionByEvent(
+              @Path("eventId") String eventId, @Query("uid") String uid,@Query("token") String token);
+    
     @POST(MyMoneyApi.SYNC_TRANSACTION)
     Observable<JsonResponse<String>> syncTransaction(@Query("uid") String uid,
               @Query("token") String token);

@@ -33,6 +33,8 @@ public interface TransactionContract {
         
         void getAllTransaction();
         
+        void getTransactionByEvent(String eventId);
+        
         void unSubscribe();
         
     }
