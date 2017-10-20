@@ -37,13 +37,11 @@ public class ActivitySelectEvent extends BaseActivity implements EventContract.V
     RecyclerView mRecyclerView;
     @BindView(R.id.progress_bar_select_event)
     ProgressBar mProgressBar;
-    
+    @Inject
+    EventPresenter mEventPresenter;
     private MyRecyclerViewEventAdapter mMyRecyclerViewEventAdapter;
     private List<Event> mEventList;
     private EmptyAdapter mEmptyAdapter;
-    
-    @Inject
-    EventPresenter mEventPresenter;
     
     @Override
     public int getLayoutId() {

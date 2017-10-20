@@ -48,16 +48,19 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
         String action = requestValues.getAction();
         switch (action) {
             case Action.ACTION_GET_BUDGET:
-                doGetBudget(requestValues.getCallBack(),requestValues.getTypeRepository());
+                doGetBudget(requestValues.getCallBack(), requestValues.getTypeRepository());
                 break;
             case Action.ACTION_CREATE_BUDGET:
-                doCreateBudget(requestValues.getCallBack(), requestValues.getData(),requestValues.getTypeRepository());
+                doCreateBudget(requestValues.getCallBack(), requestValues.getData(),
+                          requestValues.getTypeRepository());
                 break;
             case Action.ACTION_UPDATE_BUDGET:
-                doUpdateBudget(requestValues.getCallBack(), requestValues.getData(),requestValues.getTypeRepository());
+                doUpdateBudget(requestValues.getCallBack(), requestValues.getData(),
+                          requestValues.getTypeRepository());
                 break;
             case Action.ACTION_DELETE_BUDGET:
-                doDeleteBudget(requestValues.getCallBack(), requestValues.getParam(),requestValues.getTypeRepository());
+                doDeleteBudget(requestValues.getCallBack(), requestValues.getParam(),
+                          requestValues.getTypeRepository());
                 break;
             default:
                 break;
@@ -74,7 +77,6 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
     
     private void doGetBudget(final BaseCallBack<Object> callBack, TypeRepository typeRepository) {
         
-        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
@@ -89,11 +91,11 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -111,7 +113,7 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 String userid = mDataRepository.getUserId();
                 mDisposable = mDataRepository.getLocalListBudget(userid)
                           .subscribeOn(Schedulers.computation())
@@ -125,13 +127,14 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             }
-           
+            
             this.mCompositeDisposable.add(mDisposable);
         }
     }
     
-    private void doCreateBudget(final BaseCallBack<Object> callBack, Budget budget,TypeRepository typeRepository) {
-       
+    private void doCreateBudget(final BaseCallBack<Object> callBack, Budget budget,
+              TypeRepository typeRepository) {
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
@@ -146,17 +149,17 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
                     return;
                 }
-    
+                
                 mDisposable = mDataRepository.createBudget(budget, userid, token)
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -168,7 +171,7 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 mDisposable = mDataRepository.addLocalBudet(budget)
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -187,8 +190,8 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
         }
     }
     
-    private void doUpdateBudget(final BaseCallBack<Object> callBack, Budget budget,TypeRepository typeRepository) {
-       
+    private void doUpdateBudget(final BaseCallBack<Object> callBack, Budget budget,
+              TypeRepository typeRepository) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -204,10 +207,10 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -224,7 +227,7 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 mDisposable = mDataRepository.updateLocalBudget(budget)
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -237,14 +240,14 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             }
-          
+            
             this.mCompositeDisposable.add(mDisposable);
             
         }
     }
     
-    private void doDeleteBudget(final BaseCallBack<Object> callBack, String[] params,TypeRepository typeRepository) {
-        
+    private void doDeleteBudget(final BaseCallBack<Object> callBack, String[] params,
+              TypeRepository typeRepository) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -260,11 +263,11 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -282,7 +285,7 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 mDisposable = mDataRepository.deleteLocalBudget(params[0])
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -347,7 +350,7 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
         public TypeRepository getTypeRepository() {
             return typeRepository;
         }
-    
+        
         public void setTypeRepository(
                   TypeRepository typeRepository) {
             this.typeRepository = typeRepository;

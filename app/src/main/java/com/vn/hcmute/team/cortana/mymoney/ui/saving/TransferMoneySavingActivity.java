@@ -55,19 +55,18 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     @BindView(R.id.linear_wallet)
     LinearLayout linear_wallet;
     
+    
     private Wallet mWallet;
     private String value = "-1";
     private Saving mSaving;
     private Wallet mWalletTemp;
     private Transaction mTransaction;
-    
     @Inject
     SavingPresenter mSavingPresenter;
     @Inject
     PreferencesHelper mPreferencesHelper;
     @Inject
     TransactionUseCase mTransactionUseCase;
-    
     
     @Override
     public int getLayoutId() {
@@ -93,8 +92,9 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         super.onCreate(savedInstanceState);
         getData();
         showData();
-        mTransaction=new Transaction();
+        mTransaction = new Transaction();
     }
+    
     @Override
     protected void onDestroy() {
         mSavingPresenter.unSubscribe();
@@ -111,6 +111,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     protected void initializeActionBar(View rootView) {
         
     }
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         
@@ -136,6 +137,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
             }
         }
     }
+    
     @Override
     public void showListSaving(List<Saving> savings) {
         
@@ -165,48 +167,50 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     public void onSuccessTakeIn() {
         //add transaction
         setTransaction("expense");
-        TransactionRequest transactionRequest=new TransactionRequest(Action.ACTION_ADD_TRANSACTION,
+        TransactionRequest transactionRequest = new TransactionRequest(
+                  Action.ACTION_ADD_TRANSACTION,
                   new BaseCallBack<Object>() {
-    
+                      
                       @Override
                       public void onSuccess(Object value) {
                           finishTransaction();
                       }
-    
+                      
                       @Override
                       public void onFailure(Throwable throwable) {
                           alertDiaglog(throwable.getMessage());
                       }
-    
+                      
                       @Override
                       public void onLoading() {
-        
+                          
                       }
-                  },mTransaction,null, TypeRepository.REMOTE);
+                  }, mTransaction, null, TypeRepository.REMOTE);
         mTransactionUseCase.subscribe(transactionRequest);
     }
     
     @Override
     public void onSuccessTakeOut() {
         setTransaction("income");
-        TransactionRequest transactionRequest=new TransactionRequest(Action.ACTION_ADD_TRANSACTION,
+        TransactionRequest transactionRequest = new TransactionRequest(
+                  Action.ACTION_ADD_TRANSACTION,
                   new BaseCallBack<Object>() {
-                  
+                      
                       @Override
                       public void onSuccess(Object value) {
                           finishTransaction();
                       }
-                  
+                      
                       @Override
                       public void onFailure(Throwable throwable) {
                           alertDiaglog(throwable.getMessage());
                       }
-                  
+                      
                       @Override
                       public void onLoading() {
-                      
+                          
                       }
-                  },mTransaction,null, TypeRepository.REMOTE);
+                  }, mTransaction, null, TypeRepository.REMOTE);
         mTransactionUseCase.subscribe(transactionRequest);
     }
     
@@ -219,18 +223,20 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     public void loading(boolean isLoading) {
         
     }
+    
     /*Area OnClick*/
     @OnClick(R.id.linear_money)
     public void onClickLinearMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
         intent.putExtra("goal_money", txt_money.getText().toString());
-        if(value.equals("1")){
-            intent.putExtra("currencies",mWallet.getCurrencyUnit());
-        }else {
-            intent.putExtra("currencies",mSaving.getCurrencies());
+        if (value.equals("1")) {
+            intent.putExtra("currencies", mWallet.getCurrencyUnit());
+        } else {
+            intent.putExtra("currencies", mSaving.getCurrencies());
         }
         startActivityForResult(intent, 9);
     }
+    
     @OnClick(R.id.back_button_saving)
     public void onClickBack(View view) {
         finish();
@@ -243,6 +249,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
             startActivityForResult(intent, 10);
         }
     }
+    
     @OnClick(R.id.txt_save_transaction)
     public void onClickSave(View view) {
         if (txt_money.getText().toString().trim().equals("0")) {
@@ -304,9 +311,10 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
                 double exchangeMoney = NumberUtil
                           .exchangeMoney(this, money, mSaving.getCurrencies().getCurCode(),
                                     mWallet.getCurrencyUnit().getCurCode());
-                moneyWallet=Double.parseDouble(mWallet.getMoney())+exchangeMoney;
-                moneySaving=Double.parseDouble(mSaving.getCurrentMoney())-Double.parseDouble(money);
-                if(mSaving.getIdWallet().equals("")){
+                moneyWallet = Double.parseDouble(mWallet.getMoney()) + exchangeMoney;
+                moneySaving =
+                          Double.parseDouble(mSaving.getCurrentMoney()) - Double.parseDouble(money);
+                if (mSaving.getIdWallet().equals("")) {
                     mWallet.setMoney(String.valueOf(moneyWallet));
                 }
                 mSaving.setCurrentMoney(String.valueOf(moneySaving));
@@ -342,7 +350,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         //wallet
         if (mSaving.getIdWallet().equals("")) {
             mWallet = mPreferencesHelper.getCurrentWallet();
-            if(mWallet!=null){
+            if (mWallet != null) {
                 txt_wallet_name.setText(mWallet.getWalletName());
             }
             linear_wallet.setEnabled(true);
@@ -354,8 +362,8 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         }
         
         
-        
     }
+    
     public boolean checkTakeIn() {
         double money = Double.parseDouble(txt_money.getText().toString().trim());
         if (money > Double.parseDouble(mWallet.getMoney())) {
@@ -393,17 +401,19 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
-    public void setTransaction(String type){
+    
+    public void setTransaction(String type) {
         //mTransaction.setTrans_id(SecurityUtil.getRandomUUID());
         mTransaction.setAmount(txt_money.getText().toString());
         mTransaction.setWallet(mWallet);
         mTransaction.setSaving(mSaving);
         mTransaction.setNote(edit_describe.getText().toString());
         mTransaction.setType(type);
-       // mTransaction.setUser_id(mSaving.getUserid());
+        // mTransaction.setUser_id(mSaving.getUserid());
         mTransaction.setDate_created(String.valueOf(System.currentTimeMillis()));
     }
-    public void finishTransaction(){
+    
+    public void finishTransaction() {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("saving", mSaving);
         if (!mSaving.equals("")) {

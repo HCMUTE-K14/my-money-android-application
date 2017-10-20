@@ -16,7 +16,7 @@ public class Saving implements Parcelable {
         public Saving createFromParcel(Parcel in) {
             return new Saving(in);
         }
-
+        
         @Override
         public Saving[] newArray(int size) {
             return new Saving[size];
@@ -66,7 +66,7 @@ public class Saving implements Parcelable {
         this.idWallet = "";
         this.status = "";
         this.userid = "";
-        this.icon="";
+        this.icon = "";
         this.currencies = new Currencies();
     }
     
@@ -80,7 +80,7 @@ public class Saving implements Parcelable {
         idWallet = in.readString();
         status = in.readString();
         userid = in.readString();
-        icon=in.readString();
+        icon = in.readString();
         currencies = in.readParcelable(Currencies.class.getClassLoader());
     }
     
@@ -91,11 +91,11 @@ public class Saving implements Parcelable {
     public void setIcon(String icon) {
         this.icon = icon;
     }
-
+    
     public Currencies getCurrencies() {
         return currencies;
     }
-
+    
     public void setCurrencies(Currencies currencies) {
         this.currencies = currencies;
     }
@@ -196,11 +196,11 @@ public class Saving implements Parcelable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+        
         Saving saving = (Saving) o;
-
+        
         return savingid != null ? savingid.equals(saving.savingid) : saving.savingid == null;
-
+        
     }
     
     @Override

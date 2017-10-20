@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.model.ImageGallery;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.SelectedImageAdapter.SelectedImageViewHolder;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +38,8 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageView
     
     @Override
     public SelectedImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_view_selected_image, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                  .inflate(R.layout.item_recycler_view_selected_image, parent, false);
         return new SelectedImageViewHolder(view);
     }
     
@@ -46,11 +47,7 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageView
     public void onBindViewHolder(SelectedImageViewHolder holder, final int position) {
         final ImageGallery imageGallery = mImageGalleries.get(position);
         
-        GlideApp.with(mContext)
-                  .load(imageGallery.getPath())
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .into(holder.mImageViewFile);
+        GlideImageLoader.load(mContext, imageGallery.getPath(), holder.mImageViewFile);
         
         holder.mCheckedTextView.setOnClickListener(new OnClickListener() {
             @Override
@@ -59,12 +56,6 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageView
             }
         });
     }
-    
-    public interface RemoveImageSelectedListener {
-        
-        void onClick(ImageGallery imageGallery, int position);
-    }
-    
     
     public void setData(List<ImageGallery> list) {
         if (mImageGalleries == null) {
@@ -83,6 +74,11 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageView
     @Override
     public int getItemCount() {
         return mImageGalleries.size();
+    }
+    
+    public interface RemoveImageSelectedListener {
+        
+        void onClick(ImageGallery imageGallery, int position);
     }
     
     static class SelectedImageViewHolder extends RecyclerView.ViewHolder {

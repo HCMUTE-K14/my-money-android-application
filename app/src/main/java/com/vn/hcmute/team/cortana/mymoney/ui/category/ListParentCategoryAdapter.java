@@ -13,10 +13,10 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.ui.category.ListParentCategoryAdapter.ListParentCategoryViewHolder;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,11 +62,8 @@ public class ListParentCategoryAdapter extends RecyclerView.Adapter<ListParentCa
         final Category category = mDisplayCategories.get(position);
         
         holder.mTextViewNameCate.setText(category.getName());
-        GlideApp.with(mContext).load(DrawableUtil.getDrawable(mContext, category.getIcon()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .into(holder.mImageViewIcon);
-        
+        GlideImageLoader.load(mContext, DrawableUtil.getDrawable(mContext, category.getIcon()),
+                  holder.mImageViewIcon);
         holder.mImageViewSelected
                   .setVisibility(isSelectedCategory(category) ? View.VISIBLE : View.GONE);
         

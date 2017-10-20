@@ -34,7 +34,8 @@ import javax.inject.Inject;
 
 public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTask,
                                         LocalTask.CategoryTask, LocalTask.SavingTask,
-                                        LocalTask.WalletTask,LocalTask.EventTask,LocalTask.BudgetTask, LocalTask.PersonTask{
+                                        LocalTask.WalletTask, LocalTask.EventTask,
+                                        LocalTask.BudgetTask, LocalTask.PersonTask {
     
     public static final String TAG = LocalRepository.class.getSimpleName();
     
@@ -253,18 +254,19 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
             }
         });
     }
+    
     /*Area wallet*/
     @Override
     public Observable<List<Wallet>> getListWallet(String userId) {
-        WalletLocalService walletLocalService=new WalletLocalService(mDatabaseHelper);
-        Callable<List<Wallet>> callable=walletLocalService.getListWallet(userId);
+        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        Callable<List<Wallet>> callable = walletLocalService.getListWallet(userId);
         return makeObservable(callable);
     }
     
     @Override
     public Observable<String> addWallet(Wallet wallet) {
-        WalletLocalService walletLocalService=new WalletLocalService(mDatabaseHelper);
-        Callable<Long> callable=walletLocalService.addWallet(wallet);
+        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        Callable<Long> callable = walletLocalService.addWallet(wallet);
         return makeObservable(callable).map(new Function<Long, String>() {
             @Override
             public String apply(@NonNull Long aLong) throws Exception {
@@ -279,8 +281,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> updateWallet(Wallet wallet) {
-        WalletLocalService walletLocalService=new WalletLocalService(mDatabaseHelper);
-        Callable<Integer> callable=walletLocalService.updateWallet(wallet);
+        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        Callable<Integer> callable = walletLocalService.updateWallet(wallet);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {
@@ -295,8 +297,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> deleteWallet(String idWallet) {
-        WalletLocalService walletLocalService=new WalletLocalService(mDatabaseHelper);
-        Callable<Integer> callable=walletLocalService.deleteWallet(idWallet);
+        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        Callable<Integer> callable = walletLocalService.deleteWallet(idWallet);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {
@@ -311,8 +313,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> moveWallet(String idWalletFrom, String idWalletTo, String Money) {
-        WalletLocalService walletLocalService=new WalletLocalService(mDatabaseHelper);
-        Callable<Integer> callable=walletLocalService.moveWallet(idWalletFrom,idWalletTo,Money);
+        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        Callable<Integer> callable = walletLocalService.moveWallet(idWalletFrom, idWalletTo, Money);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {
@@ -324,18 +326,19 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
             }
         });
     }
+    
     /*Area Event*/
     @Override
     public Observable<List<Event>> getListEvent(String userId) {
-        EventLocalService eventLocalService=new EventLocalService(mDatabaseHelper);
-        Callable<List<Event>> callable=eventLocalService.getListEvent(userId);
+        EventLocalService eventLocalService = new EventLocalService(mDatabaseHelper);
+        Callable<List<Event>> callable = eventLocalService.getListEvent(userId);
         return makeObservable(callable);
     }
     
     @Override
     public Observable<String> addEvent(Event event) {
-        EventLocalService eventLocalService=new EventLocalService(mDatabaseHelper);
-        Callable<Long> callable=eventLocalService.addEvent(event);
+        EventLocalService eventLocalService = new EventLocalService(mDatabaseHelper);
+        Callable<Long> callable = eventLocalService.addEvent(event);
         return makeObservable(callable).map(new Function<Long, String>() {
             @Override
             public String apply(@NonNull Long aLong) throws Exception {
@@ -350,8 +353,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> updateEvent(Event event) {
-        EventLocalService eventLocalService=new EventLocalService(mDatabaseHelper);
-        Callable<Integer> callable=eventLocalService.updateEvent(event);
+        EventLocalService eventLocalService = new EventLocalService(mDatabaseHelper);
+        Callable<Integer> callable = eventLocalService.updateEvent(event);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {
@@ -366,8 +369,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> deleteEvent(String idEvent) {
-        EventLocalService eventLocalService=new EventLocalService(mDatabaseHelper);
-        Callable<Integer> callable=eventLocalService.deleteEvent(idEvent);
+        EventLocalService eventLocalService = new EventLocalService(mDatabaseHelper);
+        Callable<Integer> callable = eventLocalService.deleteEvent(idEvent);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {
@@ -379,18 +382,19 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
             }
         });
     }
+    
     /*Area Budget*/
     @Override
     public Observable<List<Budget>> getListBudget(String userId) {
-        BudgetLocalService budgetLocalService=new BudgetLocalService(mDatabaseHelper);
-        Callable<List<Budget>> callable=budgetLocalService.getListBudget(userId);
+        BudgetLocalService budgetLocalService = new BudgetLocalService(mDatabaseHelper);
+        Callable<List<Budget>> callable = budgetLocalService.getListBudget(userId);
         return makeObservable(callable);
     }
     
     @Override
     public Observable<String> addBudet(Budget budget) {
-        BudgetLocalService budgetLocalService=new BudgetLocalService(mDatabaseHelper);
-        Callable<Long> callable=budgetLocalService.addBudet(budget);
+        BudgetLocalService budgetLocalService = new BudgetLocalService(mDatabaseHelper);
+        Callable<Long> callable = budgetLocalService.addBudet(budget);
         return makeObservable(callable).map(new Function<Long, String>() {
             @Override
             public String apply(@NonNull Long aLong) throws Exception {
@@ -405,8 +409,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> updateBudget(Budget budget) {
-        BudgetLocalService budgetLocalService=new BudgetLocalService(mDatabaseHelper);
-        Callable<Integer> callable=budgetLocalService.updateBudget(budget);
+        BudgetLocalService budgetLocalService = new BudgetLocalService(mDatabaseHelper);
+        Callable<Integer> callable = budgetLocalService.updateBudget(budget);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {
@@ -421,8 +425,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> deleteBudget(String idBudget) {
-        BudgetLocalService budgetLocalService=new BudgetLocalService(mDatabaseHelper);
-        Callable<Integer> callable=budgetLocalService.deleteBudget(idBudget);
+        BudgetLocalService budgetLocalService = new BudgetLocalService(mDatabaseHelper);
+        Callable<Integer> callable = budgetLocalService.deleteBudget(idBudget);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {
@@ -434,18 +438,19 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
             }
         });
     }
+    
     /*Area person*/
     @Override
     public Observable<List<Person>> getListPerson(String userId) {
-        PersonLocalService personLocalService=new PersonLocalService(mDatabaseHelper);
-        Callable<List<Person>> callable=personLocalService.getListPerson(userId);
+        PersonLocalService personLocalService = new PersonLocalService(mDatabaseHelper);
+        Callable<List<Person>> callable = personLocalService.getListPerson(userId);
         return makeObservable(callable);
     }
     
     @Override
     public Observable<String> addPerson(Person person) {
-        PersonLocalService personLocalService=new PersonLocalService(mDatabaseHelper);
-        Callable<Long> callable=personLocalService.addPerson(person);
+        PersonLocalService personLocalService = new PersonLocalService(mDatabaseHelper);
+        Callable<Long> callable = personLocalService.addPerson(person);
         return makeObservable(callable).map(new Function<Long, String>() {
             @Override
             public String apply(@NonNull Long aLong) throws Exception {
@@ -460,8 +465,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> updatePerson(Person person) {
-        PersonLocalService personLocalService=new PersonLocalService(mDatabaseHelper);
-        Callable<Integer> callable=personLocalService.updatePerson(person);
+        PersonLocalService personLocalService = new PersonLocalService(mDatabaseHelper);
+        Callable<Integer> callable = personLocalService.updatePerson(person);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {
@@ -476,8 +481,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> deletePerson(String isPerson) {
-        PersonLocalService personLocalService=new PersonLocalService(mDatabaseHelper);
-        Callable<Integer> callable=personLocalService.deletePerson(isPerson);
+        PersonLocalService personLocalService = new PersonLocalService(mDatabaseHelper);
+        Callable<Integer> callable = personLocalService.deletePerson(isPerson);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {

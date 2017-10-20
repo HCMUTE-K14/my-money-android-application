@@ -10,10 +10,10 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.ui.iconshop.SelectIconAdapter.SelectIconViewHolder;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,12 +52,8 @@ public class SelectIconAdapter extends RecyclerView.Adapter<SelectIconViewHolder
     public void onBindViewHolder(SelectIconViewHolder holder, final int position) {
         final Icon icon = mIcons.get(position);
         
-        GlideApp.with(mContext)
-                  .load(DrawableUtil.getDrawable(mContext, icon.getImage()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(holder.mImageView);
+        GlideImageLoader.load(mContext, DrawableUtil.getDrawable(mContext, icon.getImage()),
+                  holder.mImageView);
         
         holder.mImageView.setOnClickListener(new OnClickListener() {
             @Override

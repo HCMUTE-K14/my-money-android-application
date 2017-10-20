@@ -39,45 +39,67 @@ public interface LocalTask {
         
         Observable<String> deleteCategory(Category category);
     }
-    interface SavingTask{
+    
+    interface SavingTask {
         
         Observable<List<Saving>> getListSaving(String userId);
-    
+        
         Observable<String> addSaving(Saving saving);
-    
+        
         Observable<String> updateSaving(Saving saving);
-    
+        
         Observable<String> deleteSaving(String saving_id);
-    
+        
         Observable<String> takeInSaving(String idWallet, String idSaving, String moneyWallet,
                   String moneySaving);
-    
+        
         Observable<String> takeOutSaving(String idWallet, String idSaving, String moneyWallet,
                   String moneySaving);
     }
-    interface WalletTask{
+    
+    interface WalletTask {
+        
         Observable<List<Wallet>> getListWallet(String userId);
+        
         Observable<String> addWallet(Wallet wallet);
+        
         Observable<String> updateWallet(Wallet wallet);
+        
         Observable<String> deleteWallet(String idWallet);
-        Observable<String> moveWallet(String idWalletFrom,String idWalletTo, String Money);
+        
+        Observable<String> moveWallet(String idWalletFrom, String idWalletTo, String Money);
     }
-    interface EventTask{
+    
+    interface EventTask {
+        
         Observable<List<Event>> getListEvent(String userId);
+        
         Observable<String> addEvent(Event event);
+        
         Observable<String> updateEvent(Event event);
+        
         Observable<String> deleteEvent(String idEvent);
     }
-    interface BudgetTask{
+    
+    interface BudgetTask {
+        
         Observable<List<Budget>> getListBudget(String userId);
+        
         Observable<String> addBudet(Budget budget);
+        
         Observable<String> updateBudget(Budget budget);
+        
         Observable<String> deleteBudget(String idBudget);
     }
-    interface  PersonTask{
+    
+    interface PersonTask {
+        
         Observable<List<Person>> getListPerson(String userId);
+        
         Observable<String> addPerson(Person person);
+        
         Observable<String> updatePerson(Person person);
+        
         Observable<String> deletePerson(String idPerson);
     }
 }

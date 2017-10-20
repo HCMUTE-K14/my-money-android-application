@@ -22,7 +22,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerEventComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.EventComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.EventModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
@@ -33,6 +32,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.iconshop.SelectIconActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import java.util.Calendar;
 import java.util.List;
@@ -58,18 +58,15 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
     TextView txt_wallet_event;
     @BindView(R.id.image_view_icon_event)
     ImageView image_view_icon_event;
-    
+    @Inject
+    EventPresenter mEventPresenter;
+    @Inject
+    PreferencesHelper mPreferencesHelper;
     private int day, month, year;
     private String mIconEventDefault;
     private Currencies mCurrencies;
     private Wallet mWallet;
     private Event mEvent;
-    
-    @Inject
-    EventPresenter mEventPresenter;
-    @Inject
-    PreferencesHelper mPreferencesHelper;
-    
     private DatePickerDialog.OnDateSetListener mDatePickerListener
               = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int selectedYear,
@@ -268,12 +265,8 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
     }
     
     public void showIcon() {
-        GlideApp.with(this)
-                  .load(DrawableUtil.getDrawable(this, mIconEventDefault))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(image_view_icon_event);
+        GlideImageLoader.load(this, DrawableUtil.getDrawable(this, mIconEventDefault),
+                  image_view_icon_event);
     }
     
     public void setCurrenciesDefault() {

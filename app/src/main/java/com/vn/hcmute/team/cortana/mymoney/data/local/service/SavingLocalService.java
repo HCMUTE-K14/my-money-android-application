@@ -36,7 +36,6 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
     WalletLocalService mWalletLocalService;
     
     
-    
     public SavingLocalService(DatabaseHelper mDatabaseHelper) {
         super(mDatabaseHelper);
         mCurrencyLocalService = new CurrencyLocalService(mDatabaseHelper);
@@ -74,7 +73,7 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
                 String selection = "user_id=?";
                 String[] selectionArg = new String[]{userId};
                 Cursor cursor = SavingLocalService.this
-                          .query(TABLE_NAME, getAllColumns(), selection,selectionArg,null);
+                          .query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
                 
                 if (cursor == null) {
                     return null;
@@ -88,16 +87,16 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
                     saving.setStartMoney(cursor.getString(3));
                     saving.setCurrentMoney(cursor.getString(4));
                     saving.setDate(cursor.getString(5));
-                    if(cursor.getString(6)==null){
+                    if (cursor.getString(6) == null) {
                         saving.setIdWallet("");
-                    }else {
+                    } else {
                         saving.setIdWallet(cursor.getString(6));
                     }
                     //currencies 7
                     Currencies currencies = getCurrencies(cursor.getString(7));
                     saving.setCurrencies(currencies);
                     saving.setStatus(cursor.getString(8));
-                    if(cursor.getString(9)!=null){
+                    if (cursor.getString(9) != null) {
                         saving.setUserid(cursor.getString(9));
                     }
                     saving.setIcon(cursor.getString(10));
@@ -113,7 +112,7 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
     }
     
     @Override
-    public  Callable<Long> addSaving(final Saving saving) {
+    public Callable<Long> addSaving(final Saving saving) {
         return new Callable<Long>() {
             @Override
             public Long call() throws Exception {
@@ -124,7 +123,7 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
     }
     
     @Override
-    public  Callable<Integer> updateSaving(final Saving saving) {
+    public Callable<Integer> updateSaving(final Saving saving) {
         return new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
@@ -137,7 +136,7 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
     }
     
     @Override
-    public  Callable<Integer> deleteSaving(final String saving_id) {
+    public Callable<Integer> deleteSaving(final String saving_id) {
         
         return new Callable<Integer>() {
             @Override
@@ -149,13 +148,14 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
     }
     
     @Override
-    public Callable<Integer> takeInSaving(final String idWallet, final String idSaving, final String moneyWallet,
+    public Callable<Integer> takeInSaving(final String idWallet, final String idSaving,
+              final String moneyWallet,
               final String moneySaving) {
         
         return new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
-                return takeSaving(idWallet,idSaving,moneyWallet,moneySaving);
+                return takeSaving(idWallet, idSaving, moneyWallet, moneySaving);
             }
         };
     }
@@ -167,7 +167,7 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
         return new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
-                return takeSaving(idWallet,idSaving,moneyWallet,moneySaving);
+                return takeSaving(idWallet, idSaving, moneyWallet, moneySaving);
             }
         };
     }
@@ -186,6 +186,7 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
         }
         return -1;
     }
+    
     public Currencies getCurrencies(String idCurrencies) {
         return mCurrencyLocalService.getCurrency(idCurrencies);
     }

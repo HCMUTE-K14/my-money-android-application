@@ -3,6 +3,7 @@ package com.vn.hcmute.team.cortana.mymoney.data;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
@@ -134,16 +135,29 @@ public interface DataSource {
                   String categoryId, String walletId);
         
         Observable<Transaction> getTransactionById(String id, String userid, String token);
-    
+        
         Observable<List<Transaction>> getTransaction(String userid, String token);
-    
+        
         Observable<List<Transaction>> getTransactionByType(String userid, String token,
                   String type, String walletId);
-    
-        Observable<List<Transaction>> getTransactionByTime(String userid, String token, String startDate,
-                  String endDate,String walletId);
-        Observable<List<Transaction>> getTransactionByEvent(String userid,String token,String eventid);
-     }
+        
+        Observable<List<Transaction>> getTransactionByTime(String userid, String token,
+                  String startDate,
+                  String endDate, String walletId);
+        
+        Observable<List<Transaction>> getTransactionByEvent(String userid, String token,
+                  String eventid);
+        
+        Observable<List<DebtLoan>> getDebtLoanByType(String userid, String token, String wallet_id,
+                  String type);
+        
+        Observable<String> addDebtLoan(String userid, String token, DebtLoan debtLoan);
+        
+        Observable<String> updateDebtLoan(String userid, String token, String walelt_id,
+                  DebtLoan debtLoan);
+        
+        Observable<String> deleteDebtLoan(String userid, String token, DebtLoan debtLoan);
+    }
     
     public interface CacheDataSource {
         
@@ -195,39 +209,58 @@ public interface DataSource {
         Observable<String> deleteLocalCategory(Category category);
         
         /*Area saving*/
+        
         Observable<List<Saving>> getLocalListSaving(String userId);
-    
+        
         Observable<String> addLocalSaving(Saving saving);
-    
+        
         Observable<String> updateLocalSaving(Saving saving);
-    
+        
         Observable<String> deleteLocalSaving(String saving_id);
-    
+        
         Observable<String> takeInLocalSaving(String idWallet, String idSaving, String moneyWallet,
                   String moneySaving);
-    
+        
         Observable<String> takeOutLocalSaving(String idWallet, String idSaving, String moneyWallet,
                   String moneySaving);
+        
         /*Area wallet*/
+        
         Observable<List<Wallet>> getListWallet(String userId);
+        
         Observable<String> addLocalWallet(Wallet wallet);
+        
         Observable<String> updateLocalWallet(Wallet wallet);
+        
         Observable<String> deleteLocalWallet(String idWallet);
-        Observable<String> moveLocalWallet(String idWalletFrom,String idWalletTo, String Money);
+        
+        Observable<String> moveLocalWallet(String idWalletFrom, String idWalletTo, String Money);
+        
         /*Area Event*/
         Observable<List<Event>> getListEvent(String userId);
+        
         Observable<String> addLocalEvent(Event event);
+        
         Observable<String> updateLocalEvent(Event event);
+        
         Observable<String> deleteLocalEvent(String idEvent);
+        
         /*Area Budget*/
         Observable<List<Budget>> getLocalListBudget(String userId);
+        
         Observable<String> addLocalBudet(Budget budget);
+        
         Observable<String> updateLocalBudget(Budget budget);
+        
         Observable<String> deleteLocalBudget(String idBudget);
+        
         /*Area person*/
         Observable<List<Person>> getLocalListPerson(String userId);
+        
         Observable<String> addLocalPerson(Person person);
+        
         Observable<String> updateLocalPerson(Person person);
+        
         Observable<String> deleteLocalPeron(String idPerson);
     }
 }

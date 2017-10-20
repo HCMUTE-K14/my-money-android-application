@@ -10,9 +10,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -94,12 +94,8 @@ public class MyRecyclerViewEventAdapter extends
             txt_money.setText(event.getMoney());
             txt_currency.setText(event.getCurrencies().getCurSymbol());
             
-            GlideApp.with(mContext)
-                      .load(DrawableUtil.getDrawable(mContext, event.getIcon()))
-                      .placeholder(R.drawable.folder_placeholder)
-                      .error(R.drawable.folder_placeholder)
-                      .dontAnimate()
-                      .into(image_event);
+            GlideImageLoader.load(mContext, DrawableUtil.getDrawable(mContext, event.getIcon()),
+                      image_event);
         }
         
         @Override

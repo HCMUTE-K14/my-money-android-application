@@ -19,7 +19,8 @@ import dagger.Component;
  */
 @PerActivity
 @Component(modules = {ActivityModule.class,
-          SavingModule.class, WalletModule.class, TransactionModule.class}, dependencies = ApplicationComponent.class)
+          SavingModule.class, WalletModule.class,
+          TransactionModule.class}, dependencies = ApplicationComponent.class)
 public interface SavingComponent {
     
     void inject(SavingActivity savingActivity);

@@ -18,7 +18,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.BudgetComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerBudgetComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.BudgetModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
@@ -28,6 +27,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import java.util.Calendar;
 import java.util.List;
 import javax.inject.Inject;
@@ -49,7 +49,8 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     TextView txt_date_budget;
     @BindView(R.id.txt_wallet_budget)
     TextView txt_wallet_budget;
-    
+    @Inject
+    BudgetPresenter mBudgetPresenter;
     private Budget mBudget;
     private Wallet mWallet;
     private Category mCategory;
@@ -59,9 +60,6 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     private int yearEnd;
     private int monthOfYearEnd;
     private int dayOfMonthEnd;
-    
-    @Inject
-    BudgetPresenter mBudgetPresenter;
     
     @Override
     public int getLayoutId() {
@@ -192,8 +190,8 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     @OnClick(R.id.linear_goal_money)
     public void onClickGoalMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money",txt_goal_money.getText().toString().substring(1));
-        intent.putExtra("currencies",mWallet.getCurrencyUnit());
+        intent.putExtra("goal_money", txt_goal_money.getText().toString().substring(1));
+        intent.putExtra("currencies", mWallet.getCurrencyUnit());
         startActivityForResult(intent, 38);
         
     }
@@ -254,12 +252,9 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     }
     
     public void showData() {
-        GlideApp.with(this)
-                  .load(DrawableUtil.getDrawable(this, mCategory.getIcon()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(image_view_icon_budget);
+        GlideImageLoader.load(this, DrawableUtil.getDrawable(this, mCategory.getIcon()),
+                  image_view_icon_budget);
+        
         edit_text_name_budget.setText(mCategory.getName());
         txt_goal_money.setText("+" + mBudget.getMoneyGoal());
         txt_date_budget.setText(getRangeDate());

@@ -12,74 +12,70 @@ import java.util.List;
 
 public class Transaction implements Parcelable {
     
+    public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
+        @Override
+        public Transaction createFromParcel(Parcel in) {
+            return new Transaction(in);
+        }
+        
+        @Override
+        public Transaction[] newArray(int size) {
+            return new Transaction[size];
+        }
+    };
     @SerializedName("trans_id")
     @Expose
     private String trans_id;
-    
     @SerializedName("amount")
     @Expose
     private String amount;
-    
     @SerializedName("person")
     @Expose
     private List<Person> person;
-    
     @SerializedName("address")
     @Expose
     private String address;
-    
     @SerializedName("note")
     @Expose
     private String note;
-    
     @SerializedName("image")
     @Expose
     private List<Image> image;
-    
     @SerializedName("type")
     @Expose
-    private String type; //0:Cho vay, expense:Chit ieu ,income thu nhap
-    
+    private String type; // "income" , "expense"
     @SerializedName("category")
     @Expose
     private Category category;
-    
     @SerializedName("event")
     @Expose
     private Event event;
-    
     @SerializedName("latitude")
     @Expose
     private String latitude;
-    
     @SerializedName("longitude")
     @Expose
     private String longitude;
-    
     @SerializedName("user_id")
     @Expose
     private String user_id;
-    
     @SerializedName("wallet")
     @Expose
     private Wallet wallet;
-    
     @SerializedName("date_created")
     @Expose
     private String date_created;
-    
     @SerializedName("date_end")
     @Expose
     private String date_end;
-    
     @SerializedName("saving")
     @Expose
     private Saving saving;
     
+    
     public Transaction() {
         
     }
-    
     
     protected Transaction(Parcel in) {
         trans_id = in.readString();
@@ -122,18 +118,6 @@ public class Transaction implements Parcelable {
     public int describeContents() {
         return 0;
     }
-    
-    public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
-        @Override
-        public Transaction createFromParcel(Parcel in) {
-            return new Transaction(in);
-        }
-        
-        @Override
-        public Transaction[] newArray(int size) {
-            return new Transaction[size];
-        }
-    };
     
     public String getTrans_id() {
         return trans_id;

@@ -24,7 +24,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerSavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.SavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
@@ -37,6 +36,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import java.util.Calendar;
 import java.util.List;
@@ -63,18 +63,16 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
     ImageView ic_clear_date;
     @BindView(R.id.image_view_icon_saving)
     ImageView image_view_icon_saving;
-    
-    
-    private String mIconSavingDefault;
-    private Saving mSaving;
-    private int day, month, year;
-    
     @Inject
     SavingPresenter mSavingPresenter;
     @Inject
     PreferencesHelper mPreferencesHelper;
+    private String mIconSavingDefault;
+    private Saving mSaving;
+    private int day, month, year;
     private Currencies mCurrencies;
     private Wallet mWallet;
+    private String mGoalMoney = "0";
     private DatePickerDialog.OnDateSetListener mDatePickerListener
               = new DatePickerDialog.OnDateSetListener() {
         
@@ -167,8 +165,10 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
         }
         if (requestCode == 7) {
             if (resultCode == Activity.RESULT_OK) {
-                String goalMoney = data.getStringExtra("result");
-                txt_goal_money.setText("+" + goalMoney);
+                //TODO: View, Result
+                String goalMoney2Show = data.getStringExtra("result_view");
+                mGoalMoney = data.getStringExtra("result");
+                txt_goal_money.setText("+" + goalMoney2Show);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 
@@ -273,8 +273,8 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
     @OnClick(R.id.linear_goal_money)
     public void onClickGoalMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money", txt_goal_money.getText().toString().substring(1));
-        intent.putExtra("currencies",mCurrencies);
+        intent.putExtra("goal_money", mGoalMoney);
+        intent.putExtra("currencies", mCurrencies);
         startActivityForResult(intent, 7);
     }
     
@@ -342,18 +342,14 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
     }
     
     public void showIcon() {
-        GlideApp.with(this)
-                  .load(DrawableUtil.getDrawable(this, mIconSavingDefault))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(image_view_icon_saving);
+        GlideImageLoader.load(this, DrawableUtil.getDrawable(this, mIconSavingDefault),
+                  image_view_icon_saving);
     }
     
     public void setSaving() {
         mSaving.setSavingid(SecurityUtil.getRandomUUID());
         mSaving.setName(edit_text_name_saving.getText().toString().trim());
-        mSaving.setGoalMoney(txt_goal_money.getText().toString().substring(1));
+        mSaving.setGoalMoney(mGoalMoney);
         mSaving.setCurrentMoney("0");
         mSaving.setStartMoney("0");
         

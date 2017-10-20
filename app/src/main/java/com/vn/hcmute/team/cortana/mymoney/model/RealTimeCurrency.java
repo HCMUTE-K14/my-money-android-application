@@ -513,7 +513,7 @@ public class RealTimeCurrency {
     @SerializedName("USDZWL")
     @Expose
     public double ZWL;
-
+    
     public double get(String cur_code) {
         switch (cur_code) {
             case "AED":

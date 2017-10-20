@@ -26,7 +26,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.CategoryComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerCategoryComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.CategoryModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
@@ -37,6 +36,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import javax.inject.Inject;
 
@@ -206,12 +206,9 @@ public class ManagerCategoryFragment extends BaseFragment implements AddEditView
             if (requestCode == RequestCode.SELECT_ICON_REQUEST_CODE && data != null) {
                 Icon icon = data.getParcelableExtra("icon");
                 if (icon != null) {
-                    GlideApp.with(this.getContext())
-                              .load(DrawableUtil.getDrawable(this.getContext(), icon.getImage()))
-                              .placeholder(R.drawable.folder_placeholder)
-                              .error(R.drawable.folder_placeholder)
-                              .into(mImageViewIcon);
-                    
+                    GlideImageLoader.load(this.getContext(),
+                              DrawableUtil.getDrawable(this.getContext(), icon.getImage()),
+                              mImageViewIcon);
                     mIcon = icon.getImage();
                     needChooseIcon = false;
                 }
@@ -278,16 +275,16 @@ public class ManagerCategoryFragment extends BaseFragment implements AddEditView
     @Override
     public void onAddSuccessCategory(String message, Category category) {
         Intent intent = new Intent();
-        intent.putExtra("change_category",RequestCode.CHANGE_CATEGORY_REQUEST_CODE);
-        getActivity().setResult(RESULT_OK,intent);
+        intent.putExtra("change_category", RequestCode.CHANGE_CATEGORY_REQUEST_CODE);
+        getActivity().setResult(RESULT_OK, intent);
         getActivity().finish();
     }
     
     @Override
     public void onEditSuccessCategory(String message, Category category) {
         Intent intent = new Intent();
-        intent.putExtra("change_category",RequestCode.CHANGE_CATEGORY_REQUEST_CODE);
-        getActivity().setResult(RESULT_OK,intent);
+        intent.putExtra("change_category", RequestCode.CHANGE_CATEGORY_REQUEST_CODE);
+        getActivity().setResult(RESULT_OK, intent);
         getActivity().finish();
     }
     
@@ -297,11 +294,10 @@ public class ManagerCategoryFragment extends BaseFragment implements AddEditView
         }
         
         mEditTextNameCategory.setText(mCurrentCategory.getName());
-        GlideApp.with(this.getContext())
-                  .load(DrawableUtil.getDrawable(this.getContext(), mCurrentCategory.getIcon()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .into(mImageViewIcon);
+        GlideImageLoader.load(this.getContext(),
+                  DrawableUtil.getDrawable(this.getContext(), mCurrentCategory.getIcon()),
+                  mImageViewIcon);
+        
         mIcon = mCurrentCategory.getIcon();
         
         mTypeCategory = mCurrentCategory.getType();

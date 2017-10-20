@@ -15,13 +15,15 @@ import java.util.concurrent.Callable;
  * Created by kunsubin on 10/16/2017.
  */
 
-public class EventLocalService extends DbContentProvider<Event> implements LocalService.EventLocalService{
+public class EventLocalService extends DbContentProvider<Event> implements
+                                                                LocalService.EventLocalService {
+    
     public static final String TAG = EventLocalService.class.getSimpleName();
     private final String TABLE_NAME = "tbl_event";
-    private final String ID="event_id";
-    private final String NAME="name";
-    private final String MONEY="money";
-    private final String DATE="date";
+    private final String ID = "event_id";
+    private final String NAME = "name";
+    private final String MONEY = "money";
+    private final String DATE = "date";
     private final String WALLET_ID = "wallet_id";
     private final String CUR_ID = "cur_id";
     private final String STATUS = "status";
@@ -39,7 +41,7 @@ public class EventLocalService extends DbContentProvider<Event> implements Local
     
     @Override
     protected String[] getAllColumns() {
-        return new String[]{ID, NAME,MONEY, DATE, WALLET_ID,
+        return new String[]{ID, NAME, MONEY, DATE, WALLET_ID,
                   CUR_ID, STATUS, USER_ID, ICON};
     }
     
@@ -48,7 +50,7 @@ public class EventLocalService extends DbContentProvider<Event> implements Local
         ContentValues contentValues = new ContentValues();
         contentValues.put("event_id", values.getEventid());
         contentValues.put("name", values.getName());
-        contentValues.put("money",values.getMoney());
+        contentValues.put("money", values.getMoney());
         contentValues.put("date", values.getDate());
         contentValues.put("wallet_id", values.getIdWallet());
         contentValues.put("cur_id", values.getCurrencies().getCurId());
@@ -78,9 +80,9 @@ public class EventLocalService extends DbContentProvider<Event> implements Local
                     event.setMoney(cursor.getString(2));
                     event.setDate(cursor.getString(3));
                     
-                    if(cursor.getString(4)==null){
+                    if (cursor.getString(4) == null) {
                         event.setIdWallet("");
-                    }else {
+                    } else {
                         event.setIdWallet(cursor.getString(4));
                     }
                     //currencies
@@ -88,7 +90,7 @@ public class EventLocalService extends DbContentProvider<Event> implements Local
                     event.setCurrencies(currencies);
                     
                     event.setStatus(cursor.getString(6));
-                    if(cursor.getString(7)!=null){
+                    if (cursor.getString(7) != null) {
                         event.setUserid(cursor.getString(7));
                     }
                     event.setIcon(cursor.getString(8));
@@ -135,6 +137,7 @@ public class EventLocalService extends DbContentProvider<Event> implements Local
             }
         };
     }
+    
     public Currencies getCurrencies(String idCurrencies) {
         return mCurrencyLocalService.getCurrency(idCurrencies);
     }

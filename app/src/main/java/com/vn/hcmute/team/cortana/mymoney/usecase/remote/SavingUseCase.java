@@ -13,7 +13,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.SavingUseCase.SavingRequest;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -137,7 +136,6 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
                 
-                MyLogger.d("votrong","da vo");
             }
             
             this.mCompositeDisposable.add(mDisposable);
@@ -146,8 +144,8 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         
     }
     
-    private void doCreateSaving(final BaseCallBack<Object> callBack, Saving saving,TypeRepository typeRepository) {
-       
+    private void doCreateSaving(final BaseCallBack<Object> callBack, Saving saving,
+              TypeRepository typeRepository) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -163,11 +161,11 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if (typeRepository==TypeRepository.REMOTE) {
+            if (typeRepository == TypeRepository.REMOTE) {
                 
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -185,7 +183,7 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 mDisposable = mDataRepository.addLocalSaving(saving)
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -203,8 +201,8 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         }
     }
     
-    private void doUpdateSaving(final BaseCallBack<Object> callBack, Saving saving,TypeRepository typeRepository) {
-       
+    private void doUpdateSaving(final BaseCallBack<Object> callBack, Saving saving,
+              TypeRepository typeRepository) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -220,10 +218,10 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -240,7 +238,7 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 mDisposable = mDataRepository.updateLocalSaving(saving)
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -253,14 +251,14 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             }
-          
+            
             this.mCompositeDisposable.add(mDisposable);
             
         }
     }
     
-    private void doDeleteSaving(final BaseCallBack<Object> callBack, String[] params,TypeRepository typeRepository) {
-      
+    private void doDeleteSaving(final BaseCallBack<Object> callBack, String[] params,
+              TypeRepository typeRepository) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -276,10 +274,10 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -297,7 +295,7 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 mDisposable = mDataRepository.deleteLocalSaving(params[0])
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -310,14 +308,14 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             }
-          
+            
             this.mCompositeDisposable.add(mDisposable);
             
         }
     }
     
-    private void doTakeInSaving(final BaseCallBack<Object> callBack, String[] params,TypeRepository typeRepository) {
-        
+    private void doTakeInSaving(final BaseCallBack<Object> callBack, String[] params,
+              TypeRepository typeRepository) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -333,10 +331,10 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -354,8 +352,9 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
-                mDisposable = mDataRepository.takeInLocalSaving( params[0], params[1], params[2], params[3])
+            } else {
+                mDisposable = mDataRepository
+                          .takeInLocalSaving(params[0], params[1], params[2], params[3])
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
                           .doOnSubscribe(new Consumer<Disposable>() {
@@ -367,14 +366,14 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             }
-          
+            
             this.mCompositeDisposable.add(mDisposable);
             
         }
     }
     
-    private void doTakeOutSaving(final BaseCallBack<Object> callBack, String[] params,TypeRepository typeRepository) {
-       
+    private void doTakeOutSaving(final BaseCallBack<Object> callBack, String[] params,
+              TypeRepository typeRepository) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -390,10 +389,10 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -411,8 +410,9 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
-                mDisposable = mDataRepository.takeOutLocalSaving(params[0], params[1], params[2], params[3])
+            } else {
+                mDisposable = mDataRepository
+                          .takeOutLocalSaving(params[0], params[1], params[2], params[3])
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
                           .doOnSubscribe(new Consumer<Disposable>() {
@@ -424,7 +424,7 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             }
-           
+            
             this.mCompositeDisposable.add(mDisposable);
             
         }

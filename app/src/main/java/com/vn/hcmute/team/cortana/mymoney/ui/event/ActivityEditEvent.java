@@ -23,7 +23,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerEventComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.EventComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.EventModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
@@ -34,6 +33,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.iconshop.SelectIconActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import java.util.Calendar;
 import java.util.List;
 import javax.inject.Inject;
@@ -58,16 +58,13 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
     ImageView ic_clear_date;
     @BindView(R.id.image_view_icon_event)
     ImageView image_view_icon_event;
-    
+    @Inject
+    EventPresenter mEventPresenter;
     private int day, month, year;
     private Event mEvent;
     private String mWalletName;
     private Wallet mWallet;
     private Currencies mCurrencies;
-    
-    @Inject
-    EventPresenter mEventPresenter;
-    
     private DatePickerDialog.OnDateSetListener mDatePickerListener
               = new DatePickerDialog.OnDateSetListener() {
         
@@ -269,12 +266,8 @@ public class ActivityEditEvent extends BaseActivity implements EventContract.Vie
     }
     
     public void showIcon() {
-        GlideApp.with(this)
-                  .load(DrawableUtil.getDrawable(this, mEvent.getIcon()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(image_view_icon_event);
+        GlideImageLoader.load(this, DrawableUtil.getDrawable(this, mEvent.getIcon()),
+                  image_view_icon_event);
     }
     
     public void initDatePicker() {

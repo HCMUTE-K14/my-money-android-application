@@ -1,6 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.utils;
 
 import android.content.Context;
+import com.vn.hcmute.team.cortana.mymoney.ApplicationConfig;
 import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
 import java.math.BigDecimal;
@@ -46,4 +47,13 @@ public class NumberUtil {
         
         return NumberUtil.round(value, 3);
     }
+    
+    public static String formatAmount(String number, String symbolCurrency) {
+        double amount = Double.parseDouble(number);
+        
+        DecimalFormat formatter = new DecimalFormat(ApplicationConfig.DEFAULT_AMOUNT_PATTERN);
+        
+        return formatter.format(amount) + " " + symbolCurrency;
+    }
+    
 }

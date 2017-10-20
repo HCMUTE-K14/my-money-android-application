@@ -21,7 +21,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerWalletComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.WalletComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.di.module.WalletModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
@@ -34,6 +33,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletContract.View;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.List;
 import javax.inject.Inject;
@@ -167,12 +167,8 @@ public class EditWalletActivity extends BaseActivity implements View {
                     if (icon == null) {
                         return;
                     }
-                    
-                    GlideApp.with(this)
-                              .load(DrawableUtil.getDrawable(this, icon.getImage()))
-                              .placeholder(R.drawable.folder_placeholder)
-                              .error(R.drawable.folder_placeholder)
-                              .into(mImageViewIcon);
+                    GlideImageLoader.load(this, DrawableUtil.getDrawable(this, icon.getImage()),
+                              mImageViewIcon);
                     mIconWallet = icon.getImage();
                 default:
                     break;
@@ -225,10 +221,8 @@ public class EditWalletActivity extends BaseActivity implements View {
             }
         });
         
-        GlideApp.with(this).load(DrawableUtil.getDrawable(this, mCurrentWallet.getWalletImage()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.ic_saving)
-                  .into(mImageViewIcon);
+        GlideImageLoader.load(this, DrawableUtil.getDrawable(this, mCurrentWallet.getWalletImage()),
+                  mImageViewIcon);
         
         mEditTextNameWallet.setText(mCurrentWallet.getWalletName());
         mCheckBoxArchive.setChecked(mCurrentWallet.isArchive());

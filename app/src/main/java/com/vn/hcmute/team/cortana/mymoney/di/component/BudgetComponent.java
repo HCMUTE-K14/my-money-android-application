@@ -18,12 +18,19 @@ import dagger.Component;
  */
 @PerActivity
 @Component(modules = {ActivityModule.class,
-          BudgetModule.class, WalletModule.class, CategoryModule.class}, dependencies = ApplicationComponent.class)
+          BudgetModule.class, WalletModule.class,
+          CategoryModule.class}, dependencies = ApplicationComponent.class)
 public interface BudgetComponent {
+    
     void inject(BudgetActivity budgetActivity);
+    
     void inject(EditBudgetActivity editBudgetActivity);
+    
     void inject(AddBudgetActivity addBudgetActivity);
+    
     void inject(InfoBudgetActivity infoBudgetActivity);
+    
     void inject(FragmentBudgetRunning fragmentBudgetRunning);
+    
     void inject(FragmentBudgetFinished fragmentBudgetFinished);
 }

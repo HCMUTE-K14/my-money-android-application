@@ -35,6 +35,5 @@ public class NetworkUtil {
         }
         
         return networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
-        
     }
 }

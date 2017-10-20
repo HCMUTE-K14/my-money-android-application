@@ -21,7 +21,6 @@
   <string name="txt_done">Done</string>
   <string name="txt_warning_limit">Cannot pick more</string>
   <string name="action_search">Search</string>
-
   <string name="action_search_currency">Search Currency</string>
   <string name="title_currency">Currency</string>
   <string name="take_in">Take in</string>
@@ -248,5 +247,14 @@
   <string name="txt_warning_date_created">The End date must be greater than the Start date.</string>
   <string name="txt_please_choose_wallet">Please choose wallet !</string>
   <string name="message_you_must_login_first">You must login first !</string>
+
   <string name="txt_no_transaction">No Transaction</string>
+
+  <string name="message_warning_wrong_param_input">Wrong Params Input</string>
+  <string name="message_warning_choose_wallet">Please choosing wallet first !</string>
+  <string name="txt_cash_back">Cash Back</string>
+  <string name="txt_left">Left</string>
+  <string name="txt_paid">Paid</string>
+
+
 </resources>

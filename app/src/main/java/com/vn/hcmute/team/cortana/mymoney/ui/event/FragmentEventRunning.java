@@ -33,19 +33,17 @@ import javax.inject.Inject;
 public class FragmentEventRunning extends BaseFragment implements EventContract.View,
                                                                   MyRecyclerViewEventAdapter.ItemClickListener {
     
+    public MyRecyclerViewEventAdapter mMyRecyclerViewEventAdapter;
     @BindView(R.id.progress_bar_event)
     ProgressBar mProgressBar;
     @BindView(R.id.recycler_view_event_running)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    
-    public MyRecyclerViewEventAdapter mMyRecyclerViewEventAdapter;
-    private EmptyAdapter mEmptyAdapter;
-    private List<Event> mEventList;
-    
     @Inject
     EventPresenter mEventPresenter;
+    private EmptyAdapter mEmptyAdapter;
+    private List<Event> mEventList;
     
     @Override
     protected int getLayoutId() {

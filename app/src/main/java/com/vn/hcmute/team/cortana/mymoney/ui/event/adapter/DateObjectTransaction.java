@@ -5,6 +5,7 @@ package com.vn.hcmute.team.cortana.mymoney.ui.event.adapter;
  */
 
 public class DateObjectTransaction {
+    
     private String mDayOfWeek;
     private String mDayOfMonth;
     private String mMonthOfYear;
@@ -21,6 +22,7 @@ public class DateObjectTransaction {
         mMoney = money;
         mCurrencies = currencies;
     }
+    
     public DateObjectTransaction() {
         mDayOfWeek = "";
         mDayOfMonth = "";
@@ -29,6 +31,7 @@ public class DateObjectTransaction {
         mMoney = "";
         mCurrencies = "";
     }
+    
     public String getDayOfWeek() {
         return mDayOfWeek;
     }
@@ -76,8 +79,6 @@ public class DateObjectTransaction {
     public void setCurrencies(String currencies) {
         mCurrencies = currencies;
     }
-    
-    
     
     
 }

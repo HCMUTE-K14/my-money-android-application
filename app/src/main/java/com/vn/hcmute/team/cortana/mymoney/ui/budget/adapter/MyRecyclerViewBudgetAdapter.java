@@ -12,10 +12,10 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +35,7 @@ public class MyRecyclerViewBudgetAdapter extends
     public MyRecyclerViewBudgetAdapter(Context context, List<Budget> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
-        mContext=context;
+        mContext = context;
     }
     
     @Override
@@ -47,7 +47,7 @@ public class MyRecyclerViewBudgetAdapter extends
     
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-       holder.bindView(getItem(position));
+        holder.bindView(getItem(position));
     }
     
     
@@ -63,6 +63,7 @@ public class MyRecyclerViewBudgetAdapter extends
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
+    
     public void setList(List<Budget> list) {
         mData = new ArrayList<>();
         mData.addAll(list);
@@ -75,6 +76,7 @@ public class MyRecyclerViewBudgetAdapter extends
     }
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        
         @BindView(R.id.txt_budget_name)
         TextView txt_budget_name;
         @BindView(R.id.txt_range_date)
@@ -93,16 +95,21 @@ public class MyRecyclerViewBudgetAdapter extends
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
-        public void bindView(Budget budget){
+        
+        public void bindView(Budget budget) {
             txt_budget_name.setText(budget.getCategory().getName());
             txt_range_date.setText(getRangeDate(budget.getRangeDate()));
-            seek_bar_budget.setProgress(getProgress(budget.getMoneyExpense(),budget.getMoneyGoal()));
-            if(!checkNegative(budget.getMoneyExpense())){
-                txt_money_expense.setText("+"+budget.getMoneyExpense()+" "+budget.getWallet().getCurrencyUnit().getCurSymbol());
-            }else {
-                txt_money_expense.setText(budget.getMoneyExpense()+" "+budget.getWallet().getCurrencyUnit().getCurSymbol());
+            seek_bar_budget
+                      .setProgress(getProgress(budget.getMoneyExpense(), budget.getMoneyGoal()));
+            if (!checkNegative(budget.getMoneyExpense())) {
+                txt_money_expense.setText("+" + budget.getMoneyExpense() + " " +
+                                          budget.getWallet().getCurrencyUnit().getCurSymbol());
+            } else {
+                txt_money_expense.setText(budget.getMoneyExpense() + " " +
+                                          budget.getWallet().getCurrencyUnit().getCurSymbol());
                 txt_money_expense.setTextColor(ContextCompat.getColor(mContext, R.color.color_red));
-                seek_bar_budget.setProgressDrawable(ContextCompat.getDrawable(mContext, R.drawable.process_color_red));
+                seek_bar_budget.setProgressDrawable(
+                          ContextCompat.getDrawable(mContext, R.drawable.process_color_red));
             }
             seek_bar_budget.setEnabled(false);
             
@@ -110,37 +117,40 @@ public class MyRecyclerViewBudgetAdapter extends
             txt_time_rest.setText(mContext
                       .getString(R.string.days_left, getTimeRest(budget.getRangeDate()) + ""));
             
-            GlideApp.with(mContext)
-                      .load(DrawableUtil.getDrawable(mContext, budget.getCategory().getIcon()))
-                      .placeholder(R.drawable.folder_placeholder)
-                      .error(R.drawable.folder_placeholder)
-                      .dontAnimate()
-                      .into(image_icon_category_budget);
+            GlideImageLoader.load(mContext,
+                      DrawableUtil.getDrawable(mContext, budget.getCategory().getIcon()),
+                      image_icon_category_budget);
         }
-        public String getTimeRest(String rangeDate){
-            String [] arr=rangeDate.split("/");
-            int result=DateUtil.getDateLeft(Long.parseLong(arr[1]));
+        
+        public String getTimeRest(String rangeDate) {
+            String[] arr = rangeDate.split("/");
+            int result = DateUtil.getDateLeft(Long.parseLong(arr[1]));
             return String.valueOf(result);
         }
-        public String getRangeDate(String rangeDate){
-            String result="";
-            String [] arr=rangeDate.split("/");
-            result=DateUtil.convertTimeMilisToDateNotYear(arr[0])+" - "+DateUtil.convertTimeMilisToDateNotYear(arr[1]);
-            return  result;
+        
+        public String getRangeDate(String rangeDate) {
+            String result = "";
+            String[] arr = rangeDate.split("/");
+            result = DateUtil.convertTimeMilisToDateNotYear(arr[0]) + " - " +
+                     DateUtil.convertTimeMilisToDateNotYear(arr[1]);
+            return result;
         }
+        
         public int getProgress(String a, String b) {
             double current = Double.parseDouble(a);
-            if(current<0){
+            if (current < 0) {
                 return 100;
             }
             double goal = Double.parseDouble(b);
             double proportion = (current / goal) * 100;
             return (int) proportion;
         }
-        public boolean checkNegative(String moneyExpense){
-            double money=Double.parseDouble(moneyExpense);
-            return money<0?true:false;
+        
+        public boolean checkNegative(String moneyExpense) {
+            double money = Double.parseDouble(moneyExpense);
+            return money < 0 ? true : false;
         }
+        
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {

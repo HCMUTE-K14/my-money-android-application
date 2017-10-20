@@ -21,7 +21,7 @@ public class DebtsViewPagerAdapter extends FragmentPagerAdapter {
     
     @Override
     public Fragment getItem(int position) {
-        return null;
+        return mFragmentList.get(position);
     }
     
     @Override

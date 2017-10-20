@@ -39,13 +39,11 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    
+    @Inject
+    EventPresenter mEventPresenter;
     private EmptyAdapter mEmptyAdapter;
     private List<Event> mEventList;
     private MyRecyclerViewEventAdapter mMyRecyclerViewEventAdapter;
-    
-    @Inject
-    EventPresenter mEventPresenter;
     
     @Override
     protected int getLayoutId() {

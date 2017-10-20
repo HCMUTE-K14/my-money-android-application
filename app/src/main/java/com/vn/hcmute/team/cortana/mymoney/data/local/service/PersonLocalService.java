@@ -15,13 +15,15 @@ import java.util.concurrent.Callable;
  * Created by kunsubin on 10/16/2017.
  */
 
-public class PersonLocalService extends DbContentProvider<Person> implements LocalService.PersonLocalService{
+public class PersonLocalService extends DbContentProvider<Person> implements
+                                                                  LocalService.PersonLocalService {
+    
     public static final String TAG = PersonService.class.getSimpleName();
     private final String TABLE_NAME = "tbl_person";
-    private final String ID="person_id";
-    private final String NAME="name";
-    private final String DESCRIBE="describe";
-    private final String USER_ID="user_id";
+    private final String ID = "person_id";
+    private final String NAME = "name";
+    private final String DESCRIBE = "describe";
+    private final String USER_ID = "user_id";
     
     public PersonLocalService(DatabaseHelper mDatabaseHelper) {
         super(mDatabaseHelper);
@@ -29,16 +31,16 @@ public class PersonLocalService extends DbContentProvider<Person> implements Loc
     
     @Override
     protected String[] getAllColumns() {
-        return new String[]{ID,NAME,DESCRIBE,USER_ID};
+        return new String[]{ID, NAME, DESCRIBE, USER_ID};
     }
     
     @Override
     protected ContentValues createContentValues(Person values) {
-        ContentValues contentValues=new ContentValues();
-        contentValues.put("person_id",values.getPersonid());
-        contentValues.put("name",values.getName());
-        contentValues.put("describe",values.getDescribe());
-        contentValues.put("user_id",values.getUserid());
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("person_id", values.getPersonid());
+        contentValues.put("name", values.getName());
+        contentValues.put("describe", values.getDescribe());
+        contentValues.put("user_id", values.getUserid());
         return contentValues;
     }
     
@@ -57,12 +59,12 @@ public class PersonLocalService extends DbContentProvider<Person> implements Loc
                 List<Person> persons = new ArrayList<>();
                 while (cursor.moveToNext()) {
                     Person person = new Person();
-                 
+                    
                     person.setPersonid(cursor.getString(0));
                     person.setName(cursor.getString(1));
                     person.setDescribe(cursor.getString(2));
                     person.setUserid(cursor.getString(3));
-                
+                    
                     persons.add(person);
                 }
                 cursor.close();
@@ -73,7 +75,7 @@ public class PersonLocalService extends DbContentProvider<Person> implements Loc
     
     @Override
     public Callable<Long> addPerson(final Person person) {
-        MyLogger.d("lanngthang",person.getName());
+        MyLogger.d("lanngthang", person.getName());
         return new Callable<Long>() {
             @Override
             public Long call() throws Exception {

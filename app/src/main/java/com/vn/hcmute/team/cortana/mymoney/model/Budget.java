@@ -9,8 +9,19 @@ import com.google.gson.annotations.SerializedName;
  * Created by kunsubin on 8/23/2017.
  */
 
-public class Budget implements Parcelable{
+public class Budget implements Parcelable {
     
+    public static final Creator<Budget> CREATOR = new Creator<Budget>() {
+        @Override
+        public Budget createFromParcel(Parcel in) {
+            return new Budget(in);
+        }
+        
+        @Override
+        public Budget[] newArray(int size) {
+            return new Budget[size];
+        }
+    };
     @SerializedName("budget_id")
     @Expose
     private String budgetId;
@@ -43,8 +54,8 @@ public class Budget implements Parcelable{
         this.status = "";
         this.userid = "";
         this.moneyExpense = "";
-        this.wallet=new Wallet();
-        this.category=new Category();
+        this.wallet = new Wallet();
+        this.category = new Category();
     }
     
     protected Budget(Parcel in) {
@@ -58,18 +69,6 @@ public class Budget implements Parcelable{
         category = in.readParcelable(Category.class.getClassLoader());
     }
     
-    public static final Creator<Budget> CREATOR = new Creator<Budget>() {
-        @Override
-        public Budget createFromParcel(Parcel in) {
-            return new Budget(in);
-        }
-        
-        @Override
-        public Budget[] newArray(int size) {
-            return new Budget[size];
-        }
-    };
-    
     public String getBudgetId() {
         return budgetId;
     }
@@ -77,6 +76,7 @@ public class Budget implements Parcelable{
     public void setBudgetId(String budgetId) {
         this.budgetId = budgetId;
     }
+    
     public Wallet getWallet() {
         return wallet;
     }
@@ -153,7 +153,7 @@ public class Budget implements Parcelable{
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-    
+        
         dest.writeString(budgetId);
         dest.writeString(rangeDate);
         dest.writeString(moneyGoal);

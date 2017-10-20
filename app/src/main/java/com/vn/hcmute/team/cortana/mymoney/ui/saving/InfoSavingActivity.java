@@ -19,7 +19,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerSavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.SavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
@@ -30,8 +29,9 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase.WalletRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -62,17 +62,14 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     TextView txt_unit;
     @BindView(R.id.image_icon_saving)
     ImageView image_icon_saving;
-    
-    private Saving mSaving;
-    private String mProcess;
-    private List<Wallet> mWalletList;
-    private Wallet mWallet;
-    
     @Inject
     SavingPresenter mSavingPresenter;
     @Inject
     WalletUseCase mWalletUseCase;
-    
+    private Saving mSaving;
+    private String mProcess;
+    private List<Wallet> mWalletList;
+    private Wallet mWallet;
     
     @Override
     public int getLayoutId() {
@@ -261,12 +258,14 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
         startActivityForResult(intent, 3);
     }
+    
     @OnClick(R.id.btn_list_transaction)
-    public void onClickListTransaction(View view){
-        Intent intent=new Intent(this,TransactionSavingActivity.class);
-        intent.putExtra("saving",mSaving);
+    public void onClickListTransaction(View view) {
+        Intent intent = new Intent(this, TransactionSavingActivity.class);
+        intent.putExtra("saving", mSaving);
         startActivity(intent);
     }
+    
     /*Area Function*/
     private void onClose() {
         Intent returnIntent = new Intent();
@@ -316,12 +315,8 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         seek_bar_saving_info.setProgress(Integer.parseInt(mProcess));
         seek_bar_saving_info.setEnabled(false);
         
-        GlideApp.with(this)
-                  .load(DrawableUtil.getDrawable(this, mSaving.getIcon()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .dontAnimate()
-                  .into(image_icon_saving);
+        GlideImageLoader
+                  .load(this, DrawableUtil.getDrawable(this, mSaving.getIcon()), image_icon_saving);
     }
     
     public Wallet getNameWallet(List<Wallet> wallets) {

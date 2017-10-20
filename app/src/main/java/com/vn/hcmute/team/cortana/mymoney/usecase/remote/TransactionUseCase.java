@@ -394,7 +394,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
             public void onSuccess(@io.reactivex.annotations.NonNull Object result) {
                 callBack.onSuccess(result);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
@@ -402,11 +402,11 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
         };
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-    
+                
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-            
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));

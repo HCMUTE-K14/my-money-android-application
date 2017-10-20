@@ -122,8 +122,10 @@ class DialogFragmentTransferCurrencies extends DialogFragment {
     public void onClickImageSync(View view) {
         try {
             double moneyFrom = Double.parseDouble(edit_money_from.getText().toString().trim());
-            double exchangeMoney = NumberUtil.exchangeMoney(getActivity(), String.valueOf(moneyFrom),
-                      txt_currency_from.getText().toString(), txt_currency_to.getText().toString());
+            double exchangeMoney = NumberUtil
+                      .exchangeMoney(getActivity(), String.valueOf(moneyFrom),
+                                txt_currency_from.getText().toString(),
+                                txt_currency_to.getText().toString());
             
             txt_money.setText(TextUtil.doubleToString(exchangeMoney));
         } catch (Exception e) {

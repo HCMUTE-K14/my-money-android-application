@@ -149,11 +149,12 @@ public class TransactionSavingActivity extends BaseActivity implements Transacti
     
     @Override
     public void loading(boolean isLoading) {
-        mProgressBar.setVisibility(isLoading?View.VISIBLE:View.GONE);
+        mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
+    
     /*Area onClick*/
     @OnClick(R.id.ic_cancel)
-    public void onClickCancel(View view){
+    public void onClickCancel(View view) {
         finish();
     }
     

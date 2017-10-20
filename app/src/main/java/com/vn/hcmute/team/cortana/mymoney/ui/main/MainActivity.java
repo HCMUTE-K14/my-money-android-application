@@ -26,7 +26,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerWalletComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.WalletComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.di.module.WalletModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
@@ -47,6 +46,7 @@ import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
@@ -183,7 +183,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                       .replace(R.id.container_fragment, fragment).commit();
         }
     };
-    private Runnable runnableAttachBudgetFragment=new Runnable() {
+    private Runnable runnableAttachBudgetFragment = new Runnable() {
         @Override
         public void run() {
             mNavigationView.getMenu().findItem(R.id.navigation_item_budgets).setChecked(true);
@@ -193,7 +193,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                       .replace(R.id.container_fragment, fragment).commit();
         }
     };
-
+    
     
     private Runnable runnableAttachDebtsFragment = new Runnable() {
         @Override
@@ -205,6 +205,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                       .replace(R.id.container_fragment, fragment).commit();
         }
     };
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -275,10 +276,9 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(mCurrentFragment!=null){
+        if (mCurrentFragment != null) {
             mCurrentFragment.onActivityResult(requestCode, resultCode, data);
         }
-       
         if (resultCode == RESULT_OK) {
             if (requestCode == RequestCode.CHOOSE_WALLET_REQUEST_CODE) {
                 if (data == null) {
@@ -314,7 +314,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                         if (wallet.equals(mPreferenceHelper.getCurrentWallet())) {
                             updateViewHeaderWithWallet(wallet);
                         }
-                        MyLogger.d(TAG,wallet,true);
+                        MyLogger.d(TAG, wallet, true);
                         mSelectWalletView.updateWallet(wallet);
                     } else if (resultCode == ResultCode.REMOVE_WALLET_RESULT_CODE) {
                         if (wallet.equals(mPreferenceHelper.getCurrentWallet())) {
@@ -393,10 +393,8 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
             return;
         }
         mCurrentWallet = mPreferenceHelper.getCurrentWallet();
-        GlideApp.with(this).load(DrawableUtil.getDrawable(this, mCurrentWallet.getWalletImage()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .into(mImageViewIconWallet);
+        GlideImageLoader.load(this, DrawableUtil.getDrawable(this, mCurrentWallet.getWalletImage()),
+                  mImageViewIconWallet);
         
         String value = getString(R.string.txt_show_value_wallet,
                   mCurrentWallet.getCurrencyUnit().getCurSymbol(),
@@ -434,7 +432,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                 mRunnable = runnableAttachCategoryFragment;
                 break;
             case R.id.navigation_item_budgets:
-                mRunnable=runnableAttachBudgetFragment;
+                mRunnable = runnableAttachBudgetFragment;
                 break;
             case R.id.navigation_item_saving:
                 mRunnable = runnableAttachSavingFragment;
@@ -519,13 +517,8 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     }
     
     private void updateViewHeaderWithWallet(Wallet wallet) {
-        GlideApp.with(MainActivity.this)
-                  .load(DrawableUtil
-                            .getDrawable(MainActivity.this, wallet.getWalletImage()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .into(mImageViewIconWallet);
-        mTextViewNameWallet.setText(wallet.getWalletName());
+        GlideImageLoader.load(MainActivity.this, DrawableUtil
+                  .getDrawable(MainActivity.this, wallet.getWalletImage()), mImageViewIconWallet);
         String value = getString(R.string.txt_show_value_wallet,
                   wallet.getCurrencyUnit().getCurSymbol(),
                   (TextUtils.isEmpty(wallet.getMoney()) ? "0" : wallet.getMoney()));

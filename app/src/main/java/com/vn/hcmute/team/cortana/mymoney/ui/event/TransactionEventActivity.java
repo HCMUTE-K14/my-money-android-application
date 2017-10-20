@@ -18,6 +18,7 @@ import javax.inject.Inject;
  */
 
 public class TransactionEventActivity extends BaseActivity {
+    
     @BindView(R.id.list_transaction_event)
     ExpandableListView mExpandableListView;
     @BindView(R.id.progress_bar_transaction)

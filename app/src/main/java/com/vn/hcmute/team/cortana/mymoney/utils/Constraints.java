@@ -23,6 +23,7 @@ public class Constraints {
         public static final int CHANGE_CATEGORY_REQUEST_CODE = 99;
         public static final int CHOOSE_CONTACT_REQUEST_CODE = 100;
         public static final int CHOOSE_IMAGE_REQUEST_CODE = 101;
+        public static final int CHOOSE_EVENT_REQUEST_CODE = 102;
     }
     
     public class ResultCode {

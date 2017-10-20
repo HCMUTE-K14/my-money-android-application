@@ -14,6 +14,8 @@ import dagger.Component;
 @Component(modules = {ActivityModule.class,
           TransactionModule.class}, dependencies = ApplicationComponent.class)
 public interface TransactionComponent {
+    
     void inject(ManagerTransactionFragment transactionFragment);
+    
     void inject(TransactionSavingActivity transactionSavingActivity);
 }

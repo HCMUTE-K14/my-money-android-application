@@ -52,6 +52,8 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
     RegisterPresenter mRegisterPresenter;
     
     private ProgressDialog mProgressDialog;
+    private User mUser;
+    private boolean isRegisterUserWithFacebookAccount;
     
     public RegisterActivity() {
         
@@ -98,9 +100,6 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
         
     }
     
-    private User mUser;
-    private boolean isRegisterUserWithFacebookAccount;
-    
     private void getDataFromIntent() {
         if (getIntent() != null) {
             isRegisterUserWithFacebookAccount = getIntent()
@@ -124,10 +123,10 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
         String username = mEditTextUsername.getText().toString();
         String password = mEditTextPassword.getText().toString();
         String email = mEditTextEmail.getText().toString();
-
+        
         User user = new User(username, password, email);
         
-        if(mUser != null){
+        if (mUser != null) {
             user.setFacebook_id(mUser.getFacebook_id());
             String name = mUser.getName();
             user.setName(name);

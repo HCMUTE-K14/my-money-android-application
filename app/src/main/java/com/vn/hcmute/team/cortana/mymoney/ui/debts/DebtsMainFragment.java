@@ -22,7 +22,6 @@ public class DebtsMainFragment extends BaseFragment {
     @BindView(R.id.viewpager)
     ViewPager mViewPager;
     
-    
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_main_debts;
@@ -46,11 +45,17 @@ public class DebtsMainFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initializeView();
     }
     
     public void initializeView() {
         DebtsViewPagerAdapter viewPagerAdapter = new DebtsViewPagerAdapter(
                   this.getChildFragmentManager());
         
+        viewPagerAdapter.add(DebtsFragmentByType.newInstance(), "AAA");
+        viewPagerAdapter.add(DebtsFragmentByType.newInstance(), "BBB");
+        
+        mViewPager.setAdapter(viewPagerAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 }

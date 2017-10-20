@@ -30,22 +30,20 @@ import javax.inject.Inject;
  * Created by kunsubin on 9/24/2017.
  */
 
-public class FragmentBudgetRunning extends BaseFragment implements BudgetContract.View,MyRecyclerViewBudgetAdapter.ItemClickListener{
+public class FragmentBudgetRunning extends BaseFragment implements BudgetContract.View,
+                                                                   MyRecyclerViewBudgetAdapter.ItemClickListener {
+    
     @BindView(R.id.recycler_view_budget_running)
     RecyclerView mRecyclerView;
     @BindView(R.id.progress_bar_budget)
     ProgressBar mProgressBar;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    
+    @Inject
+    BudgetPresenter mBudgetPresenter;
     private MyRecyclerViewBudgetAdapter mMyRecyclerViewBudgetAdapter;
     private List<Budget> mBudgetList;
     private EmptyAdapter mEmptyAdapter;
-    
-    
-    
-    @Inject
-    BudgetPresenter mBudgetPresenter;
     
     @Override
     protected int getLayoutId() {
@@ -54,7 +52,8 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
     
     @Override
     protected void initializeDagger() {
-        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity().getApplication())
+        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity()
+                  .getApplication())
                   .getAppComponent();
         BudgetComponent budgetComponent = DaggerBudgetComponent
                   .builder()
@@ -74,25 +73,25 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
     
     @Override
     protected void initializePresenter() {
-        mPresenter=mBudgetPresenter;
+        mPresenter = mBudgetPresenter;
         mBudgetPresenter.setView(this);
     }
     
     @Override
     protected void initializeActionBar(View rootView) {
-       
+        
     }
     
     @Override
     protected void initialize() {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        mBudgetList=new ArrayList<>();
+        mBudgetList = new ArrayList<>();
         mBudgetPresenter.getBudget();
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mBudgetList.clear();
-                if(mMyRecyclerViewBudgetAdapter!=null){
+                if (mMyRecyclerViewBudgetAdapter != null) {
                     mMyRecyclerViewBudgetAdapter.notifyDataSetChanged();
                 }
                 mBudgetPresenter.getBudget();
@@ -114,11 +113,11 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
                 mMyRecyclerViewBudgetAdapter.setClickListener(this);
                 mRecyclerView.setAdapter(mMyRecyclerViewBudgetAdapter);
             } else {
-                mEmptyAdapter = new EmptyAdapter(getActivity(),getString(R.string.txt_no_budget));
+                mEmptyAdapter = new EmptyAdapter(getActivity(), getString(R.string.txt_no_budget));
                 mRecyclerView.setAdapter(mEmptyAdapter);
             }
         } else {
-            mEmptyAdapter = new EmptyAdapter(getContext(),getString(R.string.txt_no_budget));
+            mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_budget));
             mRecyclerView.setAdapter(mEmptyAdapter);
         }
         if (mSwipeRefreshLayout.isRefreshing()) {
@@ -128,17 +127,17 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
     
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==30){
-            if (resultCode == Activity.RESULT_OK){
+        if (requestCode == 30) {
+            if (resultCode == Activity.RESULT_OK) {
                 Budget budget = data.getParcelableExtra("resultAdd");
-                if(mBudgetList.isEmpty()){
-        
+                if (mBudgetList.isEmpty()) {
+                    
                     mBudgetList.add(budget);
                     mMyRecyclerViewBudgetAdapter = new MyRecyclerViewBudgetAdapter(getContext(),
                               mBudgetList);
                     mMyRecyclerViewBudgetAdapter.setClickListener(this);
                     mRecyclerView.setAdapter(mMyRecyclerViewBudgetAdapter);
-                }else {
+                } else {
                     mBudgetList.add(budget);
                     mMyRecyclerViewBudgetAdapter.setList(mBudgetList);
                 }
@@ -147,7 +146,7 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
         if (requestCode == 34) {
             if (resultCode == Activity.RESULT_OK) {
                 String budgetId = data.getStringExtra("result");
-            
+                
                 if (!mBudgetList.isEmpty()) {
                     for (Budget budget : mBudgetList) {
                         if (budget.getBudgetId().equals(budgetId)) {
@@ -162,7 +161,7 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
                         mRecyclerView.setAdapter(mEmptyAdapter);
                     }
                 }
-            
+                
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 mBudgetList.clear();
@@ -198,15 +197,15 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
     
     @Override
     public void loading(boolean isLoading) {
-        mProgressBar.setVisibility(isLoading?View.VISIBLE:View.GONE);
+        mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
     
     @Override
     public void onItemClick(Budget budget) {
         
-        Intent intent=new Intent(getActivity(),InfoBudgetActivity.class);
-        intent.putExtra("budget",budget);
-        getActivity().startActivityForResult(intent,34);
+        Intent intent = new Intent(getActivity(), InfoBudgetActivity.class);
+        intent.putExtra("budget", budget);
+        getActivity().startActivityForResult(intent, 34);
         
     }
 }

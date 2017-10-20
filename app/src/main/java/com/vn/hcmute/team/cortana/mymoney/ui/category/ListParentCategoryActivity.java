@@ -28,9 +28,9 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.EmptyAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.category.CategoryContract.ShowView;
 import com.vn.hcmute.team.cortana.mymoney.ui.category.ListParentCategoryAdapter.OnSelectParentCategoryListener;
+import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.sort.SortType;
 import com.vn.hcmute.team.cortana.mymoney.utils.sort.SortUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import java.util.List;
 import javax.inject.Inject;
 

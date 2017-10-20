@@ -54,19 +54,22 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         String action = requestValues.getAction();
         switch (action) {
             case Action.ACTION_GET_PERSON:
-                doGetPerson(requestValues.getCallBack(),requestValues.getTypeRepository());
+                doGetPerson(requestValues.getCallBack(), requestValues.getTypeRepository());
                 break;
             case Action.ACTION_ADD_PERSON:
                 doAddPerson(requestValues.getCallBack(),
-                          ((CRUDPersonRequest) requestValues).getPerson(),requestValues.getTypeRepository());
+                          ((CRUDPersonRequest) requestValues).getPerson(),
+                          requestValues.getTypeRepository());
                 break;
             case Action.ACTION_REMOVE_PERSON:
                 doRemovePerson(requestValues.getCallBack(),
-                          ((CRUDPersonRequest) requestValues).getPerson().getPersonid(),requestValues.getTypeRepository());
+                          ((CRUDPersonRequest) requestValues).getPerson().getPersonid(),
+                          requestValues.getTypeRepository());
                 break;
             case Action.ACTION_UPDATE_PERSON:
                 doUpdatePerson(requestValues.getCallBack(),
-                          ((CRUDPersonRequest) requestValues).getPerson(),requestValues.getTypeRepository());
+                          ((CRUDPersonRequest) requestValues).getPerson(),
+                          requestValues.getTypeRepository());
                 break;
             case Action.ACTION_SYNC_PERSON:
                 doSyncPerson(requestValues.getCallBack(),
@@ -114,8 +117,8 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         }
     }
     
-    private void doUpdatePerson(final BaseCallBack<Object> callBack, Person person,TypeRepository typeRepository) {
-       
+    private void doUpdatePerson(final BaseCallBack<Object> callBack, Person person,
+              TypeRepository typeRepository) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -131,10 +134,10 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -151,7 +154,7 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 mDisposable = mDataRepository.updateLocalPerson(person)
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -164,7 +167,7 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             }
-          
+            
             this.mCompositeDisposable.add(mDisposable);
         }
     }
@@ -177,8 +180,7 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         }
     }
     
-    private void doGetPerson(final BaseCallBack<Object> callBack,TypeRepository typeRepository) {
-       
+    private void doGetPerson(final BaseCallBack<Object> callBack, TypeRepository typeRepository) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -194,10 +196,10 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -214,7 +216,7 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 String userid = mDataRepository.getUserId();
                 mDisposable = mDataRepository.getLocalListPerson(userid)
                           .subscribeOn(Schedulers.computation())
@@ -228,13 +230,14 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             }
-         
+            
             this.mCompositeDisposable.add(mDisposable);
         }
     }
     
-    private void doAddPerson(final BaseCallBack<Object> callBack, Person person,TypeRepository typeRepository) {
-    
+    private void doAddPerson(final BaseCallBack<Object> callBack, Person person,
+              TypeRepository typeRepository) {
+        
         if (TextUtils.isEmpty(person.getName())) {
             callBack.onFailure(
                       new PersonException(mContext.getString(R.string.message_name_person_empty)));
@@ -255,10 +258,10 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -267,7 +270,7 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                 
                 person.setPersonid(SecurityUtil.getRandomUUID());
                 person.setUserid(userid);
-    
+                
                 mDisposable = mDataRepository.addPerson(person, userid, token)
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -279,7 +282,7 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 String userid = mDataRepository.getUserId();
                 person.setUserid(userid);
                 mDisposable = mDataRepository.addLocalPerson(person)
@@ -294,14 +297,14 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             }
-         
+            
             this.mCompositeDisposable.add(mDisposable);
             
         }
     }
     
-    private void doRemovePerson(final BaseCallBack<Object> callBack, String personid,TypeRepository typeRepository) {
-       
+    private void doRemovePerson(final BaseCallBack<Object> callBack, String personid,
+              TypeRepository typeRepository) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -317,11 +320,11 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -338,7 +341,7 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 mDisposable = mDataRepository.deleteLocalPeron(personid)
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -382,9 +385,11 @@ public class PersonUseCase extends UseCase<PersonRequest> {
         public void setCallBack(BaseCallBack<Object> callBack) {
             this.callBack = callBack;
         }
+        
         public TypeRepository getTypeRepository() {
             return typeRepository;
         }
+        
         public void setTypeRepository(
                   TypeRepository typeRepository) {
             this.typeRepository = typeRepository;

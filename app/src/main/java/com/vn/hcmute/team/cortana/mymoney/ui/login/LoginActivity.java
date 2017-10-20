@@ -341,6 +341,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         transaction.setDate_end("1504971878928");
         intent.putExtra("action", Action.ACTION_UPDATE_TRANSACTION);
         intent.putExtra("transaction", transaction);*/
+        
         startActivity(intent);
     }
     

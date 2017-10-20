@@ -1,6 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.debts;
 
 import android.view.View;
+import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 
 /**
@@ -16,7 +17,7 @@ public class DebtsFragmentByType extends BaseFragment {
     
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.activity_login;
     }
     
     @Override

@@ -139,7 +139,7 @@ public class CategoryLocalService extends DbContentProvider<Category> {
                 
                 List<String> ids = new ArrayList<>();
                 for (Category cate : category.getSubcategories()) {
-                    MyLogger.d(TAG,cate.getName());
+                    MyLogger.d(TAG, cate.getName());
                     ids.add(cate.getId());
                 }
                 String[] selectionIds = ids.toArray(new String[ids.size()]);
@@ -242,27 +242,28 @@ public class CategoryLocalService extends DbContentProvider<Category> {
         
         return contentValues;
     }
-    public Category getCategoryById(String idCategory){
-        String selection="cate_id=?";
+    
+    public Category getCategoryById(String idCategory) {
+        String selection = "cate_id=?";
         String[] selectionArg = new String[]{idCategory};
-        Category category=null;
+        Category category = null;
         Cursor cursor = CategoryLocalService.this
                   .query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
-        if(cursor.moveToFirst()){
-            category=new Category();
+        if (cursor.moveToFirst()) {
+            category = new Category();
             
             category.setId(cursor.getString(0));
             category.setIcon(cursor.getString(1));
             category.setName(cursor.getString(2));
             category.setType(cursor.getString(3));
             category.setTransType(cursor.getString(4));
-            if(cursor.getString(5)!=null){
+            if (cursor.getString(5) != null) {
                 category.setUserid(cursor.getString(5));
             }
             category.setSubcategories(null);
-            if(cursor.getString(6)!=null){
+            if (cursor.getString(6) != null) {
                 category.setParent(new Category(cursor.getString(6)));
-            }else {
+            } else {
                 category.setParent(null);
             }
         }

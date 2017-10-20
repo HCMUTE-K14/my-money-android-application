@@ -27,7 +27,6 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
     private HashMap<DateObjectTransaction, List<Transaction>> mListDataChild;
     
     
-    
     public TransactionEventAdapter(Context context, List<DateObjectTransaction> listDataHeader,
               HashMap<DateObjectTransaction, List<Transaction>> listChildData) {
         this.mContext = context;
@@ -73,17 +72,17 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
               ViewGroup parent) {
-    
+        
         DateObjectTransaction headerTitle = (DateObjectTransaction) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                       .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.item_parent_transaction_event, null);
         }
-    
-        ViewGroupHoder viewGroupHoder=new ViewGroupHoder(convertView);
+        
+        ViewGroupHoder viewGroupHoder = new ViewGroupHoder(convertView);
         viewGroupHoder.bindView(headerTitle);
-    
+        
         return convertView;
     }
     
@@ -99,9 +98,9 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.item_children_transaction_event, null);
         }
         
-        ViewChildHoder viewChildHoder=new ViewChildHoder(convertView);
+        ViewChildHoder viewChildHoder = new ViewChildHoder(convertView);
         viewChildHoder.bindView(transaction);
-    
+        
         return convertView;
     }
     
@@ -109,7 +108,8 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
     }
-    public class ViewGroupHoder{
+    
+    public class ViewGroupHoder {
         
         @BindView(R.id.txt_mon)
         TextView txt_mon;
@@ -120,17 +120,22 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
         @BindView(R.id.txt_money)
         TextView txt_money;
         
-        public ViewGroupHoder(View view){
-            ButterKnife.bind(this,view);
+        public ViewGroupHoder(View view) {
+            ButterKnife.bind(this, view);
         }
-        public void bindView(DateObjectTransaction dateObjectTransaction){
+        
+        public void bindView(DateObjectTransaction dateObjectTransaction) {
             txt_mon.setText(dateObjectTransaction.getDayOfWeek());
             txt_day.setText(dateObjectTransaction.getDayOfMonth());
-            txt_month_year.setText(dateObjectTransaction.getMonthOfYear()+" "+dateObjectTransaction.getYear());
-            txt_money.setText("+ "+dateObjectTransaction.getMoney()+" "+dateObjectTransaction.getCurrencies());
+            txt_month_year.setText(dateObjectTransaction.getMonthOfYear() + " " +
+                                   dateObjectTransaction.getYear());
+            txt_money.setText("+ " + dateObjectTransaction.getMoney() + " " +
+                              dateObjectTransaction.getCurrencies());
         }
     }
-    public class ViewChildHoder{
+    
+    public class ViewChildHoder {
+        
         @BindView(R.id.image_category)
         ImageView image_category;
         @BindView(R.id.txt_category_name)
@@ -141,12 +146,14 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
         TextView txt_note;
         
         public ViewChildHoder(View view) {
-            ButterKnife.bind(this,view);
+            ButterKnife.bind(this, view);
         }
-        private void bindView(Transaction transaction){
+        
+        private void bindView(Transaction transaction) {
             
             txt_category_name.setText(transaction.getCategory().getName());
-            txt_money.setText("-"+transaction.getAmount()+" "+transaction.getWallet().getCurrencyUnit().getCurSymbol());
+            txt_money.setText("-" + transaction.getAmount() + " " +
+                              transaction.getWallet().getCurrencyUnit().getCurSymbol());
             txt_note.setText(transaction.getNote());
             
             GlideApp.with(mContext)

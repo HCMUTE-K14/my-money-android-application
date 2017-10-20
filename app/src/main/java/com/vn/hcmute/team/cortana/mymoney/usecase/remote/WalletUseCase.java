@@ -54,19 +54,23 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         switch (action) {
             case Action.ACTION_CREATE_WALLET:
                 //doLoginNormal(requestValues.getCallBack(), requestValues.getData());
-                doCreate(requestValues.getCallBack(), requestValues.getData(),requestValues.getTypeRepository());
+                doCreate(requestValues.getCallBack(), requestValues.getData(),
+                          requestValues.getTypeRepository());
                 break;
             case Action.ACTION_UPDATE_WALLET:
-                doUpdate(requestValues.getCallBack(), requestValues.getData(),requestValues.getTypeRepository());
+                doUpdate(requestValues.getCallBack(), requestValues.getData(),
+                          requestValues.getTypeRepository());
                 break;
             case Action.ACTION_DELETE_WALLET:
-                doDelete(requestValues.getCallBack(), requestValues.getData(),requestValues.getTypeRepository());
+                doDelete(requestValues.getCallBack(), requestValues.getData(),
+                          requestValues.getTypeRepository());
                 break;
             case Action.ACTION_MOVE_WALLET:
-                doMove(requestValues.getCallBack(), requestValues.getParam(),requestValues.getTypeRepository());
+                doMove(requestValues.getCallBack(), requestValues.getParam(),
+                          requestValues.getTypeRepository());
                 break;
             case Action.ACTION_GET_WALLET:
-                doGetWallet(requestValues.getCallBack(),requestValues.getTypeRepository());
+                doGetWallet(requestValues.getCallBack(), requestValues.getTypeRepository());
                 break;
             default:
                 break;
@@ -82,7 +86,8 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         }
     }
     
-    private void doCreate(final BaseCallBack<Object> callBack, final Wallet wallet,TypeRepository typeRepository) {
+    private void doCreate(final BaseCallBack<Object> callBack, final Wallet wallet,
+              TypeRepository typeRepository) {
         
         if (TextUtils.isEmpty(wallet.getWalletName())) {
             callBack.onFailure(new WalletException(
@@ -94,11 +99,11 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                       mContext.getString(R.string.message_validate_currency_wallet)));
             return;
         }
-    
+        
         if (TextUtils.isEmpty(wallet.getWalletImage())) {
             wallet.setWalletImage("ic_saving");
         }
-     
+        
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
@@ -114,11 +119,11 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -127,7 +132,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                 
                 wallet.setWalletid(SecurityUtil.getRandomUUID());
                 wallet.setUserid(userid);
-    
+                
                 mDisposable = mDataRepository.createWallet(wallet, userid, token)
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -139,10 +144,10 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 String userid = mDataRepository.getUserId();
                 wallet.setWalletid(SecurityUtil.getRandomUUID());
-                if(userid!=null){
+                if (userid != null) {
                     wallet.setUserid(userid);
                 }
                 mDisposable = mDataRepository.addLocalWallet(wallet)
@@ -157,13 +162,14 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             }
-           
+            
             this.mCompositeDisposable.add(mDisposable);
             
         }
     }
     
-    private void doUpdate(final BaseCallBack<Object> callBack, final Wallet wallet,TypeRepository typeRepository) {
+    private void doUpdate(final BaseCallBack<Object> callBack, final Wallet wallet,
+              TypeRepository typeRepository) {
         if (TextUtils.isEmpty(wallet.getWalletName())) {
             callBack.onFailure(new WalletException(
                       mContext.getString(R.string.message_validate_name_wallet)));
@@ -174,7 +180,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                       mContext.getString(R.string.message_validate_currency_wallet)));
             return;
         }
-    
+        
         if (TextUtils.isEmpty(wallet.getWalletImage())) {
             wallet.setWalletImage("ic_saving");
         }
@@ -194,21 +200,20 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             
-    
-            if(typeRepository==TypeRepository.REMOTE){
-        
+            if (typeRepository == TypeRepository.REMOTE) {
+                
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-        
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
                     return;
                 }
-        
+                
                 wallet.setWalletid(SecurityUtil.getRandomUUID());
                 wallet.setUserid(userid);
-        
+                
                 mDisposable = mDataRepository.updateWallet(wallet, userid, token)
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -220,9 +225,9 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 String userid = mDataRepository.getUserId();
-                if(userid!=null){
+                if (userid != null) {
                     wallet.setUserid(userid);
                 }
                 mDisposable = mDataRepository.updateLocalWallet(wallet)
@@ -242,8 +247,8 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         }
     }
     
-    private void doDelete(final BaseCallBack<Object> callBack, final Wallet wallet,TypeRepository typeRepository) {
-       
+    private void doDelete(final BaseCallBack<Object> callBack, final Wallet wallet,
+              TypeRepository typeRepository) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -259,10 +264,10 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -279,7 +284,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 mDisposable = mDataRepository.deleteLocalWallet(wallet.getWalletid())
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -292,14 +297,14 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             }
-          
+            
             this.mCompositeDisposable.add(mDisposable);
             
         }
     }
     
-    private void doMove(final BaseCallBack<Object> callBack, final String[] params, TypeRepository typeRepository) {
-       
+    private void doMove(final BaseCallBack<Object> callBack, final String[] params,
+              TypeRepository typeRepository) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -315,16 +320,17 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            if(typeRepository==TypeRepository.REMOTE){
+            if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
                     return;
                 }
-                mDisposable = mDataRepository.moveWallet(userid, token, params[0], params[1], params[2])
+                mDisposable = mDataRepository
+                          .moveWallet(userid, token, params[0], params[1], params[2])
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())
                           .doOnSubscribe(new Consumer<Disposable>() {
@@ -335,7 +341,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            }else {
+            } else {
                 mDisposable = mDataRepository.moveLocalWallet(params[0], params[1], params[2])
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
@@ -352,8 +358,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         }
     }
     
-    private void doGetWallet(final BaseCallBack<Object> callBack,TypeRepository typeRepository) {
-       
+    private void doGetWallet(final BaseCallBack<Object> callBack, TypeRepository typeRepository) {
         
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -369,41 +374,41 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-           if(typeRepository==TypeRepository.REMOTE){
-               String userid = mDataRepository.getUserId();
-               String token = mDataRepository.getUserToken();
-    
-               if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
-                   callBack.onFailure(new UserLoginException(
-                             mContext.getString(R.string.message_warning_need_login)));
-                   return;
-               }
-               mDisposable = mDataRepository.getAllWallet(userid, token)
-                         .subscribeOn(Schedulers.io())
-                         .observeOn(AndroidSchedulers.mainThread())
-                         .doOnSubscribe(new Consumer<Disposable>() {
-                             @Override
-                             public void accept(Disposable disposable) throws Exception {
-                                 callBack.onLoading();
-                             }
-                         })
-                         .singleOrError()
-                         .subscribeWith(this.mDisposableSingleObserver);
-           }else {
-               String userid = mDataRepository.getUserId();
-               mDisposable = mDataRepository.getListWallet(userid)
-                         .subscribeOn(Schedulers.computation())
-                         .observeOn(AndroidSchedulers.mainThread())
-                         .doOnSubscribe(new Consumer<Disposable>() {
-                             @Override
-                             public void accept(Disposable disposable) throws Exception {
-                                 callBack.onLoading();
-                             }
-                         })
-                         .singleOrError()
-                         .subscribeWith(this.mDisposableSingleObserver);
-           }
-           
+            if (typeRepository == TypeRepository.REMOTE) {
+                String userid = mDataRepository.getUserId();
+                String token = mDataRepository.getUserToken();
+                
+                if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                    callBack.onFailure(new UserLoginException(
+                              mContext.getString(R.string.message_warning_need_login)));
+                    return;
+                }
+                mDisposable = mDataRepository.getAllWallet(userid, token)
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            } else {
+                String userid = mDataRepository.getUserId();
+                mDisposable = mDataRepository.getListWallet(userid)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
+            
             this.mCompositeDisposable.add(mDisposable);
             
         }
@@ -416,6 +421,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         private Wallet wallet;
         private String[] params;
         private TypeRepository typeRepository;
+        
         public WalletRequest(@NonNull String action, @Nullable BaseCallBack<Object> callBack,
                   @Nullable Wallet wallet, @Nullable String[] params) {
             this.action = action;
@@ -455,7 +461,7 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         public TypeRepository getTypeRepository() {
             return typeRepository;
         }
-    
+        
         public void setTypeRepository(
                   TypeRepository typeRepository) {
             this.typeRepository = typeRepository;

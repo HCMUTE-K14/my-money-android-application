@@ -126,21 +126,21 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
-                          getView().showAllListTransaction((List<Transaction>)value);
+                          getView().showAllListTransaction((List<Transaction>) value);
                       }
-                  
+                      
                       @Override
                       public void onFailure(Throwable throwable) {
                           getView().loading(false);
                           getView().onFailure(throwable.getMessage());
                       }
-                  
+                      
                       @Override
                       public void onLoading() {
                           getView().loading(true);
                       }
                   }, null, null, TypeRepository.REMOTE);
-    
+        
         mTransactionUseCase.subscribe(request);
     }
     
@@ -152,22 +152,26 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
-                          getView().showAllListTransaction((List<Transaction>)value);
+                          getView().showAllListTransaction((List<Transaction>) value);
                       }
-                  
+                      
                       @Override
                       public void onFailure(Throwable throwable) {
                           getView().loading(false);
                           getView().onFailure(throwable.getMessage());
                       }
-                  
+                      
                       @Override
                       public void onLoading() {
                           getView().loading(true);
                       }
                   }, null, new String[]{eventId}, TypeRepository.REMOTE);
-    
+        
         mTransactionUseCase.subscribe(request);
+    }
+    
+    public void deleteTransaction(Transaction transaction) {
+        
     }
     
     @Override

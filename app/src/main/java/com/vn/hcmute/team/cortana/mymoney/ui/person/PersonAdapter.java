@@ -190,7 +190,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapterViewHolder>
     }
     
     public void add(Person person) {
-        if(getItemCount() == 0){
+        if (getItemCount() == 0) {
             notifyDataSetChanged();
         }
         mPersons.add(person);

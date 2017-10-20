@@ -45,12 +45,11 @@ public class BudgetActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    
-    
+        
         mPagerAdapterBudget = new PagerAdapterBudget(getSupportFragmentManager());
         
         mViewPager.setAdapter(mPagerAdapterBudget);
-    
+        
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
@@ -58,18 +57,18 @@ public class BudgetActivity extends BaseActivity {
                 mViewPager.setCurrentItem(tab.getPosition());
                 currentPositionFragment = tab.getPosition();
             }
-        
+            
             @Override
             public void onTabUnselected(Tab tab) {
-            
+                
             }
-        
+            
             @Override
             public void onTabReselected(Tab tab) {
-            
+                
             }
         });
-    
+        
         initTablayout();
         
     }
@@ -83,29 +82,31 @@ public class BudgetActivity extends BaseActivity {
     protected void initializeActionBar(View rootView) {
         
     }
+    
     public void initTablayout() {
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_running)));
         mTabLayout.addTab(mTabLayout.newTab().setText(this.getString(R.string.saving_finished)));
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
+    
     @OnClick(R.id.btn_add_budget)
-    public void onClickAddBudget(View view ){
-        Intent intent=new Intent(this,AddBudgetActivity.class);
-        startActivityForResult(intent,30);
+    public void onClickAddBudget(View view) {
+        Intent intent = new Intent(this, AddBudgetActivity.class);
+        startActivityForResult(intent, 30);
     }
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==30){
-            if(resultCode == Activity.RESULT_OK){
-                mPagerAdapterBudget.getItem(0).onActivityResult(requestCode,resultCode,data);
+        if (requestCode == 30) {
+            if (resultCode == Activity.RESULT_OK) {
+                mPagerAdapterBudget.getItem(0).onActivityResult(requestCode, resultCode, data);
             }
         }
-        if(requestCode==34){
-            mPagerAdapterBudget.getItem(0).onActivityResult(requestCode,resultCode,data);
+        if (requestCode == 34) {
+            mPagerAdapterBudget.getItem(0).onActivityResult(requestCode, resultCode, data);
         }
-        if(requestCode==35){
-            mPagerAdapterBudget.getItem(1).onActivityResult(requestCode,resultCode,data);
+        if (requestCode == 35) {
+            mPagerAdapterBudget.getItem(1).onActivityResult(requestCode, resultCode, data);
         }
     }
 }

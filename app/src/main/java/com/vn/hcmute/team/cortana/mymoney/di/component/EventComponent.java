@@ -20,17 +20,17 @@ import dagger.Component;
 @Component(modules = {ActivityModule.class,
           EventModule.class, WalletModule.class}, dependencies = ApplicationComponent.class)
 public interface EventComponent {
-
+    
     void inject(EventActivity eventActivity);
-
+    
     void inject(FragmentEventRunning fragmentEventRunning);
-
+    
     void inject(FragmentEventFinished fragmentEventFinished);
-
+    
     void inject(ActivityInfoEvent activityInfoEvent);
-
+    
     void inject(ActivityEditEvent activityEditEvent);
-
+    
     void inject(ActivityAddEvent activityAddEvent);
     
     void inject(ActivitySelectEvent activitySelectEvent);
