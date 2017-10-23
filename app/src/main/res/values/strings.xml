@@ -256,5 +256,6 @@
   <string name="txt_left">Left</string>
   <string name="txt_paid">Paid</string>
   <string name="txt_over_current_money">Current money > Goal money!</string>
+  <string name="txt_over_view">Overview</string>
 
 </resources>

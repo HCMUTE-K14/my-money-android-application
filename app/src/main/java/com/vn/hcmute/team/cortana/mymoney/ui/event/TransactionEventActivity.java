@@ -3,10 +3,15 @@ package com.vn.hcmute.team.cortana.mymoney.ui.event;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
@@ -35,7 +40,8 @@ import javax.inject.Inject;
  * Created by kunsubin on 10/17/2017.
  */
 
-public class TransactionEventActivity extends BaseActivity implements TransactionContract.View {
+public class TransactionEventActivity extends BaseActivity implements TransactionContract.View,
+                                                                      TransactionEventAdapter.ClickChildView {
     
     @BindView(R.id.list_transaction_event)
     ExpandableListView mExpandableListView;
@@ -43,6 +49,8 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
     ProgressBar mProgressBar;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    
+    TextView mGoalMoney;
     
     private ExpandableListEmptyAdapter mBaseEmptyAdapter;
     private List<Transaction> mTransactionList;
@@ -94,6 +102,14 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
         mListDataHeader = new ArrayList<>();
         mListDataChild = new HashMap<>();
         getData();
+        //add header
+        LayoutInflater inflater = getLayoutInflater();
+        ViewGroup header = (ViewGroup) inflater
+                  .inflate(R.layout.item_header_list_view_transaction, mExpandableListView, false);
+        
+        mGoalMoney= ButterKnife.findById(header, R.id.txt_goal_money);
+        mExpandableListView.addHeaderView(header);
+        //get list transaction by event
         mTransactionPresenter.getTransactionByEvent(mEvent.getEventid());
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -122,10 +138,15 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
             //set adapter
             mTransactionEventAdapter = new TransactionEventAdapter(this, mListDataHeader,
                       mListDataChild);
+            mTransactionEventAdapter.setClickChildView(this);
+            
+            setGoalMoneyHeader();
+            
             mExpandableListView.setAdapter(mTransactionEventAdapter);
-          
+            mExpandableListView.setGroupIndicator(null);
         } else {
-            mBaseEmptyAdapter=new ExpandableListEmptyAdapter(this,this.getString(R.string.txt_no_transaction));
+            mBaseEmptyAdapter = new ExpandableListEmptyAdapter(this,
+                      this.getString(R.string.txt_no_transaction));
             mExpandableListView.setAdapter(mBaseEmptyAdapter);
         }
         if (mSwipeRefreshLayout.isRefreshing()) {
@@ -135,9 +156,10 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
         
     }
     
+    
     @Override
     public void onFailure(String message) {
-        mBaseEmptyAdapter=new ExpandableListEmptyAdapter(this,message);
+        mBaseEmptyAdapter = new ExpandableListEmptyAdapter(this, message);
         mExpandableListView.setAdapter(mBaseEmptyAdapter);
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
@@ -147,6 +169,11 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
     @Override
     public void loading(boolean isLoading) {
         mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+    }
+    
+    @Override
+    public void onClickChild(Transaction transaction) {
+        Toast.makeText(this, transaction.getCategory().getName(), Toast.LENGTH_LONG).show();
     }
     
     /*Area onClick*/
@@ -225,4 +252,14 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
         }
         mListDataChild.put(dateObjectTransaction, list);
     }
+    
+    private void setGoalMoneyHeader() {
+        double moneyGoal = 0;
+        for (DateObjectTransaction dateObjectTransaction : mListDataHeader) {
+            moneyGoal += Double.parseDouble(dateObjectTransaction.getMoney().trim());
+        }
+        mGoalMoney.setText("-" + NumberUtil.formatAmount(moneyGoal + "",
+                  mEvent.getCurrencies().getCurSymbol()));
+    }
+    
 }

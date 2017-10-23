@@ -3,8 +3,10 @@ package com.vn.hcmute.team.cortana.mymoney.ui.event.adapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -21,12 +23,12 @@ import java.util.List;
  * Created by kunsubin on 10/20/2017.
  */
 
-public class TransactionEventAdapter extends BaseExpandableListAdapter {
+public class TransactionEventAdapter extends BaseExpandableListAdapter{
     
     private Context mContext;
     private List<DateObjectTransaction> mListDataHeader;
     private HashMap<DateObjectTransaction, List<Transaction>> mListDataChild;
-    
+    private ClickChildView mClickChildView;
     
     public TransactionEventAdapter(Context context, List<DateObjectTransaction> listDataHeader,
               HashMap<DateObjectTransaction, List<Transaction>> listChildData) {
@@ -83,6 +85,9 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
         
         ViewGroupHoder viewGroupHoder = new ViewGroupHoder(convertView);
         viewGroupHoder.bindView(headerTitle);
+    
+        ExpandableListView mExpandableListView = (ExpandableListView) parent;
+        mExpandableListView.expandGroup(groupPosition);
         
         return convertView;
     }
@@ -91,7 +96,7 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
               View convertView, ViewGroup parent) {
         
-        Transaction transaction = (Transaction) getChild(groupPosition, childPosition);
+        final Transaction transaction = (Transaction) getChild(groupPosition, childPosition);
         
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
@@ -102,6 +107,13 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
         ViewChildHoder viewChildHoder = new ViewChildHoder(convertView);
         viewChildHoder.bindView(transaction);
         
+        convertView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickChildView.onClickChild(transaction);
+            }
+        });
+        
         return convertView;
     }
     
@@ -109,6 +121,8 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
     }
+    
+
     
     public class ViewGroupHoder {
         
@@ -167,5 +181,11 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
                       .into(image_category);
             
         }
+    }
+    public interface ClickChildView{
+        void onClickChild(Transaction transaction);
+    }
+    public void setClickChildView(ClickChildView clickChildView){
+        mClickChildView=clickChildView;
     }
 }
