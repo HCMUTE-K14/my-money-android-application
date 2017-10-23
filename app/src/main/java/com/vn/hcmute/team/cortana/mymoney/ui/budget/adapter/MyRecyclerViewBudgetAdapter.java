@@ -16,6 +16,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -102,11 +103,10 @@ public class MyRecyclerViewBudgetAdapter extends
             seek_bar_budget
                       .setProgress(getProgress(budget.getMoneyExpense(), budget.getMoneyGoal()));
             if (!checkNegative(budget.getMoneyExpense())) {
-                txt_money_expense.setText("+" + budget.getMoneyExpense() + " " +
-                                          budget.getWallet().getCurrencyUnit().getCurSymbol());
+                txt_money_expense.setText("+" + NumberUtil.formatAmount(budget.getMoneyExpense(),budget.getWallet().getCurrencyUnit().getCurSymbol()));
             } else {
-                txt_money_expense.setText(budget.getMoneyExpense() + " " +
-                                          budget.getWallet().getCurrencyUnit().getCurSymbol());
+                txt_money_expense.setText("+" + NumberUtil.formatAmount(budget.getMoneyExpense(),budget.getWallet().getCurrencyUnit().getCurSymbol()));
+                
                 txt_money_expense.setTextColor(ContextCompat.getColor(mContext, R.color.color_red));
                 seek_bar_budget.setProgressDrawable(
                           ContextCompat.getDrawable(mContext, R.drawable.process_color_red));

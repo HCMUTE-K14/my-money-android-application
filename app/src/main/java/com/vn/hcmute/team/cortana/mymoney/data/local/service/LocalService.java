@@ -96,7 +96,6 @@ public interface LocalService {
         
         Callable<Integer> deletePerson(String idPerson);
         
-        int updateMoneyWallet(String idWallet, String money);
         
     }
 }

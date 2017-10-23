@@ -24,6 +24,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.EmptyAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.adapter.TransactionSavingAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionContract;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionPresenter;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -51,6 +52,7 @@ public class TransactionSavingActivity extends BaseActivity implements Transacti
     
     @Inject
     TransactionPresenter mTransactionPresenter;
+    
     
     @Override
     public int getLayoutId() {
@@ -113,6 +115,7 @@ public class TransactionSavingActivity extends BaseActivity implements Transacti
     
     @Override
     public void showAllListTransaction(List<Transaction> list) {
+        MyLogger.d("size list trana",list.size());
         if (list == null || list.isEmpty()) {
             mEmptyAdapter = new EmptyAdapter(this, getString(R.string.txt_no_transaction));
             mRecyclerViewTransaction.setAdapter(mEmptyAdapter);
@@ -124,6 +127,7 @@ public class TransactionSavingActivity extends BaseActivity implements Transacti
                     mTransactionList.add(transaction);
                 }
             }
+            MyLogger.d("size list trana",mTransactionList.size());
             if (mTransactionList != null && !mTransactionList.isEmpty()) {
                 mTransactionSavingAdapter = new TransactionSavingAdapter(this, mTransactionList);
                 mTransactionSavingAdapter.setClickListener(this);

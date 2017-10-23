@@ -15,6 +15,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionContract.DeleteView;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -87,6 +88,11 @@ public class InfoTransactionActivity extends BaseActivity implements DeleteView 
         
     }
     
+    
+    @Override
+    public void showAllListTransaction(List<Transaction> list) {
+        
+    }
     
     @Override
     public void onFailure(String message) {

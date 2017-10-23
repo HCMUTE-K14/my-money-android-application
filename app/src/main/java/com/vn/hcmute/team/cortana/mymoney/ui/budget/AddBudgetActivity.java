@@ -32,6 +32,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import java.util.Calendar;
 import java.util.List;
@@ -54,10 +55,12 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     TextView txt_date_budget;
     @BindView(R.id.txt_wallet_budget)
     TextView txt_wallet_budget;
+    
     @Inject
     BudgetPresenter mBudgetPresenter;
     @Inject
     PreferencesHelper mPreferencesHelper;
+    
     private Budget mBudget;
     private Category mCategory;
     private Wallet mWallet;
@@ -67,6 +70,7 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     private int yearEnd;
     private int monthOfYearEnd;
     private int dayOfMonthEnd;
+    private String mGoalMoney = "0";
     
     @Override
     public int getLayoutId() {
@@ -138,16 +142,21 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 31) {
             if (resultCode == Activity.RESULT_OK) {
-                String result = data.getStringExtra("result");
+                
+                mGoalMoney = data.getStringExtra("result");
+                String goalMoneyShow = data.getStringExtra("result_view");
                 txt_goal_money
-                          .setText("+" + result);
-                mBudget.setMoneyGoal(result);
+                          .setText("+" + goalMoneyShow);
+                mBudget.setMoneyGoal(mGoalMoney);
             }
         }
         if (requestCode == 32) {
             if (resultCode == Activity.RESULT_OK) {
                 mWallet = data.getParcelableExtra("wallet");
                 txt_wallet_budget.setText(mWallet.getWalletName());
+                txt_goal_money
+                          .setText("+" + NumberUtil.formatAmount(mGoalMoney,
+                                    mWallet.getCurrencyUnit().getCurSymbol()));
             }
         }
         if (requestCode == 33) {
@@ -215,7 +224,7 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     @OnClick(R.id.linear_goal_money)
     public void onClickGoalMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money", txt_goal_money.getText().toString().substring(1));
+        intent.putExtra("goal_money", mGoalMoney);
         intent.putExtra("currencies", mWallet.getCurrencyUnit());
         startActivityForResult(intent, 31);
     }
@@ -252,6 +261,8 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     public void showData() {
         mWallet = mPreferencesHelper.getCurrentWallet();
         txt_wallet_budget.setText(mWallet.getWalletName());
+        txt_goal_money.setText("+" + NumberUtil.formatAmount(mGoalMoney,
+                  mWallet.getCurrencyUnit().getCurSymbol()));
     }
     
     public boolean checkSaveBudget() {
@@ -259,7 +270,7 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
             alertDiaglog(getString(R.string.txt_select_category));
             return false;
         }
-        if (txt_goal_money.getText().toString().substring(1).equals("0")) {
+        if (mGoalMoney.equals("0")) {
             alertDiaglog(getString(R.string.select_money));
             return false;
         }

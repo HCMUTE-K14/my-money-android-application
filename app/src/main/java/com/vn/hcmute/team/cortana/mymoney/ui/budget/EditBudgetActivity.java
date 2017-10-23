@@ -28,6 +28,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.Calendar;
 import java.util.List;
 import javax.inject.Inject;
@@ -60,7 +61,7 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     private int yearEnd;
     private int monthOfYearEnd;
     private int dayOfMonthEnd;
-    
+    private String mGoalMoney;
     @Override
     public int getLayoutId() {
         return R.layout.activity_edit_budget;
@@ -130,7 +131,8 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
         }
         if (requestCode == 38) {
             if (resultCode == Activity.RESULT_OK) {
-                mBudget.setMoneyGoal(data.getStringExtra("result"));
+                mGoalMoney=data.getStringExtra("result");
+                mBudget.setMoneyGoal(mGoalMoney);
                 showData();
             }
         }
@@ -190,7 +192,7 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     @OnClick(R.id.linear_goal_money)
     public void onClickGoalMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money", txt_goal_money.getText().toString().substring(1));
+        intent.putExtra("goal_money", mGoalMoney);
         intent.putExtra("currencies", mWallet.getCurrencyUnit());
         startActivityForResult(intent, 38);
         
@@ -216,7 +218,7 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     
     @OnClick(R.id.txt_edit_budget)
     public void onClickSave(View view) {
-        if (txt_goal_money.getText().toString().substring(1).equals("0")) {
+        if (mGoalMoney.equals("0")) {
             alertDiaglog(getString(R.string.select_money));
             return;
         }
@@ -237,6 +239,9 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
         //set value date
         String[] arr = mBudget.getRangeDate().split("/");
         setDate(arr[0], arr[1]);
+        //set money
+        mGoalMoney=mBudget.getMoneyGoal();
+        
         
     }
     
@@ -256,9 +261,10 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
                   image_view_icon_budget);
         
         edit_text_name_budget.setText(mCategory.getName());
-        txt_goal_money.setText("+" + mBudget.getMoneyGoal());
+        txt_goal_money.setText("+" + NumberUtil.formatAmount(mGoalMoney,mWallet.getCurrencyUnit().getCurSymbol()));
         txt_date_budget.setText(getRangeDate());
         txt_wallet_budget.setText(mWallet.getWalletName());
+        
     }
     
     public String getRangeDate() {
@@ -270,7 +276,7 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     
     public void setData() {
         mBudget.setCategory(mCategory);
-        mBudget.setMoneyGoal(txt_goal_money.getText().toString().substring(1));
+        mBudget.setMoneyGoal(mGoalMoney);
         mBudget.setWallet(mWallet);
         mBudget.setRangeDate(DateUtil.getLongAsDate(dayOfMonth, monthOfYear, year) + "/" +
                              DateUtil.getLongAsDate(dayOfMonthEnd, monthOfYearEnd, yearEnd));

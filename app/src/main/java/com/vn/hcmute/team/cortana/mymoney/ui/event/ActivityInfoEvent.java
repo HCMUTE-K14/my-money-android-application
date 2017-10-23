@@ -172,7 +172,9 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     
     @OnClick(R.id.btn_list_transaction)
     public void onClickListTransaction(View view) {
-        
+        Intent intent=new Intent(this,TransactionEventActivity.class);
+        intent.putExtra("event",mEvent);
+        startActivity(intent);
     }
     
     @OnClick(R.id.image_view_cancel)

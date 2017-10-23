@@ -44,13 +44,19 @@
   <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v7.widget.RecyclerView
-      android:layout_marginTop="10dp"
-      android:id="@+id/recycler_view_event"
+    <android.support.v4.widget.SwipeRefreshLayout
+      android:id="@+id/swipeRefresh"
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="match_parent"
+      android:layout_below="@id/appbar">
+      <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="10dp"
+        android:id="@+id/recycler_view_event"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+      </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
     <ProgressBar
       android:id="@+id/progress_bar_select_event"
       android:layout_width="100dp"

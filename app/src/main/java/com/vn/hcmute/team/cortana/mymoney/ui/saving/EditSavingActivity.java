@@ -34,6 +34,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.Calendar;
 import java.util.List;
 import javax.inject.Inject;
@@ -73,6 +74,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     private Wallet mWallet;
     private Currencies mCurrencies;
     private Saving mSaving;
+    private String mGoalMoney;
     private DatePickerDialog.OnDateSetListener mDatePickerListener
               = new DatePickerDialog.OnDateSetListener() {
         
@@ -149,6 +151,8 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
                 mCurrencies = (Currencies) data.getParcelableExtra("currency");
                 if (mCurrencies != null) {
                     txt_currencies.setText(mCurrencies.getCurName());
+                    txt_goal_money.setText("+" + NumberUtil.formatAmount(mGoalMoney,
+                              mCurrencies.getCurSymbol()));
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -158,8 +162,10 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         if (requestCode == 5) {
             if (resultCode == Activity.RESULT_OK) {
                 //TODO: View,Result
-                String goalMoney = data.getStringExtra("result");
-                txt_goal_money.setText("+" + goalMoney);
+                mGoalMoney = data.getStringExtra("result");
+                String goalMoneyShow=data.getStringExtra("result_view");
+                txt_goal_money.setText("+" + goalMoneyShow);
+                
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 
@@ -275,9 +281,14 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
             alertDiaglog(getString(R.string.small_date));
             return;
         }
+        //check currentMoney>goalMoney
+        if(checkCurrentMoney()){
+            alertDiaglog(getString(R.string.txt_over_current_money));
+            return;
+        }
+        
         mSaving.setName(edit_text_name_saving.getText().toString().trim());
-        String goalMoney = txt_goal_money.getText().toString().trim().substring(1);
-        mSaving.setGoalMoney(goalMoney);
+        mSaving.setGoalMoney(mGoalMoney);
         mSaving.setCurrencies(mCurrencies);
         mSaving.setIdWallet(mWallet.getWalletid());
         //set date
@@ -292,7 +303,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     @OnClick(R.id.linear_goal_money)
     public void onClickGoalMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money", txt_goal_money.getText().toString().substring(1));
+        intent.putExtra("goal_money", mGoalMoney);
         intent.putExtra("currencies", mCurrencies);
         startActivityForResult(intent, 5);
     }
@@ -347,11 +358,13 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         mWalletName = intent.getStringExtra("wallet_name");
         mCurrencies = new Currencies();
         mWallet = new Wallet();
+        mGoalMoney = mSaving.getGoalMoney();
     }
     
     public void showData() {
         edit_text_name_saving.setText(mSaving.getName());
-        txt_goal_money.setText("+" + mSaving.getGoalMoney());
+        txt_goal_money.setText("+" + NumberUtil.formatAmount(mGoalMoney,
+                  mSaving.getCurrencies().getCurSymbol()));
         txt_date_saving.setText(DateUtil.convertTimeMillisToDate(mSaving.getDate()));
         txt_currencies.setText(mSaving.getCurrencies().getCurName());
         txt_wallet_saving.setText(mWalletName);
@@ -384,5 +397,10 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         AlertDialog alert11 = builder1.create();
         alert11.show();
         
+    }
+    public boolean checkCurrentMoney(){
+        double currentMoney=Double.parseDouble(mSaving.getCurrentMoney());
+        double goalMoney=Double.parseDouble(mGoalMoney);
+        return currentMoney>goalMoney?true:false;
     }
 }

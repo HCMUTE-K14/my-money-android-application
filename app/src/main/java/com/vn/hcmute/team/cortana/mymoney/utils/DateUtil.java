@@ -36,7 +36,27 @@ public class DateUtil {
         
         return mDay + "/" + mMonth + "/" + mYear;
     }
-    
+    public static int getDayOfWeek(String timeMillis){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(timeMillis));
+        return calendar.get(Calendar.DAY_OF_WEEK);
+    }
+    public static int getDayOfMonth(String timeMillis){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(timeMillis));
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+    public static int getMonthOfYear(String timeMillis){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(timeMillis));
+        
+        return calendar.get(Calendar.MONTH);
+    }
+    public static int getYear(String timeMillis){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(timeMillis));
+        return calendar.get(Calendar.YEAR);
+    }
     public static String convertTimeMilisToDateNotYear(String timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(timeMillis));
@@ -75,7 +95,57 @@ public class DateUtil {
         String pattern = ApplicationConfig.DEFAULT_DATE_PATTERN;
         Calendar calendar = Calendar.getInstance();
         Format formatter = new SimpleDateFormat(pattern);
-        
         return formatter.format(date);
+    }
+    
+    public static String getDayOfWeek(int dayOfWeek){
+        switch (dayOfWeek){
+            case 2:
+                return "Monday";
+            case 3:
+                return "Tuesday";
+            case 4:
+                return "Wednesday";
+            case 5:
+                return "Thurday";
+            case 6:
+                return "Friday";
+            case 7:
+                return "Saturday";
+            case 1:
+                return "Sunday";
+            default:
+                return "";
+        }
+    }
+    public static String getMonthOfYear(int monthOfYear){
+        switch (monthOfYear){
+            case 0:
+                return "January";
+            case 1:
+                return "February";
+            case 2:
+                return "March";
+            case 3:
+                return "April";
+            case 4:
+                return "May";
+            case 5:
+                return "June";
+            case 6:
+                return "July";
+            case 7:
+                return "August";
+            case 8:
+                return "September";
+            case 9:
+                return "October";
+            case 10:
+                return "November ";
+            case 11:
+                return "December";
+            default:
+                return "";
+        }
     }
 }

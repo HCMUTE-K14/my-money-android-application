@@ -13,6 +13,7 @@ import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.HashMap;
 import java.util.List;
 
@@ -129,8 +130,9 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
             txt_day.setText(dateObjectTransaction.getDayOfMonth());
             txt_month_year.setText(dateObjectTransaction.getMonthOfYear() + " " +
                                    dateObjectTransaction.getYear());
-            txt_money.setText("+ " + dateObjectTransaction.getMoney() + " " +
-                              dateObjectTransaction.getCurrencies());
+            txt_money.setText("-" + NumberUtil.formatAmount(dateObjectTransaction.getMoney(),
+                      dateObjectTransaction.getCurrencies()));
+            
         }
     }
     
@@ -152,8 +154,9 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
         private void bindView(Transaction transaction) {
             
             txt_category_name.setText(transaction.getCategory().getName());
-            txt_money.setText("-" + transaction.getAmount() + " " +
-                              transaction.getWallet().getCurrencyUnit().getCurSymbol());
+            txt_money.setText("-" + NumberUtil.formatAmount(transaction.getAmount(),
+                      transaction.getWallet().getCurrencyUnit().getCurSymbol()));
+            
             txt_note.setText(transaction.getNote());
             
             GlideApp.with(mContext)

@@ -15,6 +15,7 @@ public interface TransactionContract {
         
         void showAllListTransaction(List<Transaction> list);
         
+        
         void onFailure(String message);
         
         void loading(boolean isLoading);

@@ -32,7 +32,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase.TransactionRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -61,6 +60,8 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     private Saving mSaving;
     private Wallet mWalletTemp;
     private Transaction mTransaction;
+    private String mGoalMoney="0";
+    
     @Inject
     SavingPresenter mSavingPresenter;
     @Inject
@@ -118,9 +119,10 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         if (requestCode == 9) {
             if (resultCode == Activity.RESULT_OK) {
                 
-                String result = data.getStringExtra("result");
+                mGoalMoney = data.getStringExtra("result");
+                String goalMoneyShow=data.getStringExtra("result_view");
                 
-                txt_money.setText(result);
+                txt_money.setText(goalMoneyShow);
                 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -228,7 +230,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     @OnClick(R.id.linear_money)
     public void onClickLinearMoney(View view) {
         Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("goal_money", txt_money.getText().toString());
+        intent.putExtra("goal_money", mGoalMoney);
         if (value.equals("1")) {
             intent.putExtra("currencies", mWallet.getCurrencyUnit());
         } else {
@@ -252,13 +254,13 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     
     @OnClick(R.id.txt_save_transaction)
     public void onClickSave(View view) {
-        if (txt_money.getText().toString().trim().equals("0")) {
+        if (mGoalMoney.equals("0")) {
             alertDiaglog(getString(R.string.select_money));
             return;
         }
         if (value.equals("1")) {
             if (checkTakeIn()) {
-                String money = txt_money.getText().toString().trim();
+                String money = mGoalMoney;
                 double moneyWallet;
                 double moneySaving;
                 double exchangeMoney = NumberUtil
@@ -305,7 +307,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         }
         if (value.equals("2")) {
             if (checkTakeOut()) {
-                String money = txt_money.getText().toString().trim();
+                String money = mGoalMoney;
                 double moneyWallet;
                 double moneySaving;
                 double exchangeMoney = NumberUtil
@@ -340,8 +342,9 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         txt_name_saving.setText(mSaving.getName());
         double remainin = Double.parseDouble(mSaving.getGoalMoney()) -
                           Double.parseDouble(mSaving.getCurrentMoney());
-        txt_remainin.setText("+" + TextUtil.doubleToString(remainin) + " " +
-                             mSaving.getCurrencies().getCurSymbol());
+        txt_remainin.setText("+" + NumberUtil.formatAmount(String.valueOf(remainin),
+                  mSaving.getCurrencies().getCurSymbol()));
+        txt_money.setText(NumberUtil.formatAmount(mGoalMoney,mSaving.getCurrencies().getCurSymbol()));
         if (value.equals("1")) {
             edit_describe.setText(getString(R.string.deposit));
         } else {
@@ -365,7 +368,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     }
     
     public boolean checkTakeIn() {
-        double money = Double.parseDouble(txt_money.getText().toString().trim());
+        double money = Double.parseDouble(mGoalMoney);
         if (money > Double.parseDouble(mWallet.getMoney())) {
             alertDiaglog(getString(R.string.txt_over_money_wallet));
             return false;
@@ -378,7 +381,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     }
     
     public boolean checkTakeOut() {
-        double money = Double.parseDouble(txt_money.getText().toString().trim());
+        double money = Double.parseDouble(mGoalMoney);
         if (money > Double.parseDouble(mSaving.getCurrentMoney())) {
             alertDiaglog(getString(R.string.txt_over_money_saving));
             return false;
@@ -404,7 +407,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     
     public void setTransaction(String type) {
         //mTransaction.setTrans_id(SecurityUtil.getRandomUUID());
-        mTransaction.setAmount(txt_money.getText().toString());
+        mTransaction.setAmount(mGoalMoney);
         mTransaction.setWallet(mWallet);
         mTransaction.setSaving(mSaving);
         mTransaction.setNote(edit_describe.getText().toString());

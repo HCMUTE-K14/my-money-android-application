@@ -24,7 +24,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
-import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -55,6 +55,7 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     @Inject
     BudgetPresenter mBudgetPresenter;
     private Budget mBudget;
+    
     
     @Override
     public int getLayoutId() {
@@ -196,15 +197,15 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
                   image_icon_category);
         
         txt_budget_name.setText(mBudget.getCategory().getName());
-        txt_goal_money.setText("+" + mBudget.getMoneyGoal() + " " +
-                               mBudget.getWallet().getCurrencyUnit().getCurSymbol());
+        txt_goal_money.setText("+"+NumberUtil.formatAmount(mBudget.getMoneyGoal(),mBudget.getWallet().getCurrencyUnit().getCurSymbol()));
+       
         if (checkCurrentMoney()) {
-            txt_current_money.setText("+" + mBudget.getMoneyExpense());
+            txt_current_money.setText("+"+NumberUtil.formatAmount(mBudget.getMoneyExpense(),""));
             txt_need_money.setText(getTextNeedMoney());
             seek_bar_saving_info.setProgress(getProgress());
             seek_bar_saving_info.setEnabled(false);
         } else {
-            txt_current_money.setText(mBudget.getMoneyExpense());
+            txt_current_money.setText(NumberUtil.formatAmount(mBudget.getMoneyExpense(),""));
             txt_current_money.setTextColor(ContextCompat.getColor(this, R.color.color_red));
             txt_need_money.setText("0");
             seek_bar_saving_info.setProgress(100);
@@ -245,7 +246,7 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     public String getTextNeedMoney() {
         double needMoney = Double.parseDouble(mBudget.getMoneyGoal()) -
                            Double.parseDouble(mBudget.getMoneyExpense());
-        return TextUtil.doubleToString(needMoney);
+        return NumberUtil.formatAmount(String.valueOf(needMoney),"");
     }
     
     private void onClose() {
