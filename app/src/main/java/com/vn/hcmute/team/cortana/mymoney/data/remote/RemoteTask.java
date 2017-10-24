@@ -175,6 +175,10 @@ public interface RemoteTask {
                   String token
         );
         
+        Observable<List<Transaction>> getTransactionByBudget(String startDate, String endDate,
+                  String categoryId, String walletId, String userid,
+                  String token
+        );
     }
     
     interface DebtLoanTask {

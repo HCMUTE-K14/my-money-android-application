@@ -156,9 +156,14 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     
     @OnClick(R.id.image_view_edit)
     public void onClickEdit(View view) {
-        Intent intent = new Intent(this, EditBudgetActivity.class);
-        intent.putExtra("budget", mBudget);
-        startActivityForResult(intent, 36);
+        if(checkEditBudget()){
+            Intent intent = new Intent(this, EditBudgetActivity.class);
+            intent.putExtra("budget", mBudget);
+            startActivityForResult(intent, 36);
+        }else {
+            alertDiaglog(getString(R.string.txt_check_edit_budget));
+        }
+       
     }
     
     @OnClick(R.id.image_view_delete)
@@ -183,7 +188,9 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     
     @OnClick(R.id.btn_list_transaction)
     public void onClickListTransaction(View view) {
-        
+        Intent intent=new Intent(this, TransactionBudgetActivity.class);
+        intent.putExtra("budget",mBudget);
+        startActivity(intent);
     }
     
     /*Area function*/
@@ -270,5 +277,8 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
         AlertDialog alert11 = builder1.create();
         alert11.show();
         
+    }
+    public boolean checkEditBudget(){
+        return mBudget.getMoneyExpense().equals("0")?true:false;
     }
 }

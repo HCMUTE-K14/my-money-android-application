@@ -44,6 +44,9 @@ public interface TransactionContract {
         
         void getTransactionByEvent(String eventId);
         
+        void getTransactionByBudget(String startDate, String endDate, String categoryId,
+                  String walletId);
+        
         void deleteTransaction(Transaction transaction);
         
         

@@ -99,6 +99,7 @@ public class MyMoneyApi {
     public static final String GET_TRANSACTION_BY_TYPE = "transaction/getByType";
     public static final String GET_TRANSACTION_BY_TIME = "transaction/getByTime";
     public static final String GET_TRANSACTION_BY_EVENT = "transaction/getTransactionByEvent";
+    public static final String GET_TRANSACTION_BY_BUDGET="transaction/getTransactionByBudget";
     public static final String SYNC_TRANSACTION = "transaction/sync";
     
     public static final String GET_ALL_DEBT_LOAN = "debt_loan/get";

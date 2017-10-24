@@ -1171,6 +1171,32 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     }
     
     @Override
+    public Observable<List<Transaction>> getTransactionByBudget(String startDate, String endDate,
+              String categoryId, String walletId, String userid, String token) {
+        TransactionService transactionService = mServiceGenerator
+                  .getService(TransactionService.class);
+        if (transactionService == null) {
+            return null;
+        }
+        //MyLogger.d(startDate+"kejkwjkr"+endDate);
+        return transactionService
+                  .getTransactionByBudget(startDate,endDate,categoryId,walletId,userid,token)
+                  .map(new Function<JsonResponse<List<Transaction>>, List<Transaction>>() {
+                      @Override
+                      public List<Transaction> apply(
+                                @NonNull JsonResponse<List<Transaction>> stringJsonResponse)
+                                throws Exception {
+                          MyLogger.d("chieu lang thang ghe qua ne");
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getData();
+                          } else {
+                              throw new TransactionException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
     public Observable<String> addTransaction(String userid, String token, Transaction transaction) {
         TransactionService transactionService = mServiceGenerator
                   .getService(TransactionService.class);

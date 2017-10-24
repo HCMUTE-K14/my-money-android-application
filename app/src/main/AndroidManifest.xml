@@ -87,6 +87,7 @@
     <activity android:name=".ui.budget.AddBudgetActivity"/>
     <activity android:name=".ui.budget.EditBudgetActivity"/>
     <activity android:name=".ui.budget.InfoBudgetActivity"/>
+    <activity android:name=".ui.budget.TransactionBudgetActivity"/>
     <!-- Event -->
     <activity android:name=".ui.event.ActivityInfoEvent" />
     <activity android:name=".ui.event.ActivityEditEvent" />
