@@ -13,7 +13,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase.TransactionRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -58,6 +57,10 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                 doUpdateTransaction(requestValues.getCallback(), requestValues.getTransaction(),
                           requestValues.getTypeRepository());
                 break;
+            case Action.ACTION_DELETE_TRANSACTION:
+                doDeleteTransaction(requestValues.getCallback(), requestValues.getParams(),
+                          requestValues.getTypeRepository());
+                break;
             case Action.ACTION_GET_TRANSACTION_BY_CATEGORY:
                 doGetTransactionByCategory(requestValues.getCallback(), requestValues.getParams(),
                           requestValues.getTypeRepository());
@@ -83,6 +86,67 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                 break;
         }
         
+    }
+    
+    private void doDeleteTransaction(final BaseCallBack<Object> callBack, String[] params,
+              TypeRepository typeRepository) {
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object result) {
+                callBack.onSuccess(result);
+            }
+            
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
+        
+        String trans_id = params[0];
+        
+        if (TextUtil.isEmpty(trans_id)) {
+            callBack.onFailure(new TransactionException("Wrong params"));
+            return;
+        }
+        
+        if (!this.mCompositeDisposable.isDisposed()) {
+            if (typeRepository == TypeRepository.LOCAL) {
+                //                mDisposable = mDataRepository.getListLocalCategory(type)
+                //                          .subscribeOn(Schedulers.computation())
+                //                          .observeOn(AndroidSchedulers.mainThread())
+                //                          .doOnSubscribe(new Consumer<Disposable>() {
+                //                              @Override
+                //                              public void accept(Disposable disposable) throws Exception {
+                //                                  callBack.onLoading();
+                //                              }
+                //                          })
+                //                          .singleOrError()
+                //                          .subscribeWith(this.mDisposableSingleObserver);
+            } else if (typeRepository == TypeRepository.REMOTE) {
+                String userid = mDataRepository.getUserId();
+                String token = mDataRepository.getUserToken();
+                
+                if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                    callBack.onFailure(new UserLoginException(
+                              mContext.getString(R.string.message_warning_need_login)));
+                    return;
+                }
+                mDisposable = mDataRepository
+                          .deleteTransaction(userid, token, trans_id)
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
+            
+            this.mCompositeDisposable.add(mDisposable);
+        }
     }
     
     @Override
@@ -368,7 +432,6 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                               mContext.getString(R.string.message_warning_need_login)));
                     return;
                 }
-                MyLogger.d(TAG, "GET BY CATEGORY");
                 mDisposable = mDataRepository
                           .getTransactionByCategory(userid, token, cate_id, wallet_id)
                           .subscribeOn(Schedulers.io())
@@ -515,8 +578,8 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
                 
-                /*transaction.setUser_id(userid);
-                transaction.setTrans_id(SecurityUtil.getRandomUUID());*/
+                transaction.setUser_id(userid);
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));

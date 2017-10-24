@@ -6,7 +6,6 @@ import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.PersonService;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -75,7 +74,6 @@ public class PersonLocalService extends DbContentProvider<Person> implements
     
     @Override
     public Callable<Long> addPerson(final Person person) {
-        MyLogger.d("lanngthang", person.getName());
         return new Callable<Long>() {
             @Override
             public Long call() throws Exception {

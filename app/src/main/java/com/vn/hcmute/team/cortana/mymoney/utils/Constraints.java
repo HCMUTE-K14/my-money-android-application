@@ -1,11 +1,14 @@
 package com.vn.hcmute.team.cortana.mymoney.utils;
 
+import com.vn.hcmute.team.cortana.mymoney.model.Person;
+
 /**
  * Created by infamouSs on 8/21/17.
  */
 
 public class Constraints {
     
+    public static final Person SOME_ONE_PERSON = new Person("some_one_id", "someone", "");
     
     public class RequestCode {
         
@@ -24,6 +27,9 @@ public class Constraints {
         public static final int CHOOSE_CONTACT_REQUEST_CODE = 100;
         public static final int CHOOSE_IMAGE_REQUEST_CODE = 101;
         public static final int CHOOSE_EVENT_REQUEST_CODE = 102;
+        public static final int UPDATE_TRANSACTION_REQUEST_CODE = 103;
+        public static final int ADD_DEBT_LOAN_REQUEST_CODE = 104;
+        public static final int OPEN_INFO_TRANSACTION_MODE_DEBT_LOAN_REQUEST_CODE = 105;
     }
     
     public class ResultCode {
@@ -31,6 +37,8 @@ public class Constraints {
         public static final int EDIT_WALLET_RESULT_CODE = -5;
         public static final int REMOVE_WALLET_RESULT_CODE = -6;
         public static final int ADD_WALLET_RESULT_CODE = -7;
+        public static final int ADD_TRANSACTION_RESULT_CODE = -8;
+        public static final int EDIT_TRANSACTION_RESULT_CODE = -9;
     }
     
 }

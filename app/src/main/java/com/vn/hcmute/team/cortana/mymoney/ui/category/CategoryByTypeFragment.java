@@ -95,6 +95,7 @@ public class CategoryByTypeFragment extends BaseFragment implements CategoryCont
     }
     
     public static CategoryByTypeFragment newInstance(int mode, String action, String categoryId) {
+        
         CategoryByTypeFragment categoryByTypeFragment = new CategoryByTypeFragment();
         Bundle bundle = new Bundle();
         switch (action) {

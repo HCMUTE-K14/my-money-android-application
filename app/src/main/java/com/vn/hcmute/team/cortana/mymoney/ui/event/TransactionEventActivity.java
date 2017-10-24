@@ -25,12 +25,10 @@ public class TransactionEventActivity extends BaseActivity {
     ProgressBar mProgressBar;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    
-    private EmptyAdapter mEmptyAdapter;
-    private List<Transaction> mTransactionList;
-    
     @Inject
     TransactionPresenter mTransactionPresenter;
+    private EmptyAdapter mEmptyAdapter;
+    private List<Transaction> mTransactionList;
     
     @Override
     public int getLayoutId() {

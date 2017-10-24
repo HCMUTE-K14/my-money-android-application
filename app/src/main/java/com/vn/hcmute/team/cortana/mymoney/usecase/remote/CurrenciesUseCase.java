@@ -97,7 +97,6 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
                           .doOnSubscribe(new Consumer<Disposable>() {
                               @Override
                               public void accept(Disposable disposable) throws Exception {
-                                  MyLogger.d("Currencies Usecacse", "loading");
                                   callBack.onLoading();
                               }
                           })
@@ -110,7 +109,6 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
                           .doOnSubscribe(new Consumer<Disposable>() {
                               @Override
                               public void accept(Disposable disposable) throws Exception {
-                                  MyLogger.d("Currencies Usecacse", "loading");
                                   callBack.onLoading();
                               }
                           })
@@ -142,7 +140,6 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
                 mDataRepository.putRealTimeCurrency((RealTimeCurrency) currencies);
-                MyLogger.d(TAG, (RealTimeCurrency) currencies, true);
                 callBack.onSuccess(currencies);
             }
             

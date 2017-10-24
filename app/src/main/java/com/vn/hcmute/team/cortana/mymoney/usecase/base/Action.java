@@ -68,6 +68,7 @@ public class Action {
     
     public static final String ACTION_ADD_TRANSACTION = "action_add_transaction";
     public static final String ACTION_UPDATE_TRANSACTION = "action_update_transaction";
+    public static final String ACTION_DELETE_TRANSACTION = "action_delete_transaction";
     public static final String ACTION_GET_TRANSACTION_BY_CATEGORY = "action_get_transaction_by_category";
     public static final String ACTION_GET_ALL_TRANSACTION = "action_get_all_transaction";
     public static final String ACTION_GET_TRANSACTION_BY_ID = "action_get_transaction_by_id";
@@ -81,4 +82,5 @@ public class Action {
     public static final String ACTION_ADD_DEBT_LOAN = "action_add_debt_loan";
     public static final String ACTION_UPDATE_DEBT_LOAN = "action_update_debt_loan";
     public static final String ACTION_DELETE_DEBT_LOAN = "action_delete_debt_loan";
+    
 }

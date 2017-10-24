@@ -54,19 +54,17 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     TextView txt_wallet_name;
     @BindView(R.id.linear_wallet)
     LinearLayout linear_wallet;
-    
-    
-    private Wallet mWallet;
-    private String value = "-1";
-    private Saving mSaving;
-    private Wallet mWalletTemp;
-    private Transaction mTransaction;
     @Inject
     SavingPresenter mSavingPresenter;
     @Inject
     PreferencesHelper mPreferencesHelper;
     @Inject
     TransactionUseCase mTransactionUseCase;
+    private Wallet mWallet;
+    private String value = "-1";
+    private Saving mSaving;
+    private Wallet mWalletTemp;
+    private Transaction mTransaction;
     
     @Override
     public int getLayoutId() {

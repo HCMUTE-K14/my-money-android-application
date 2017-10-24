@@ -6,13 +6,13 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BasePresenter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.galleryloader.model.ImageGallery;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionContract.AddUpdateView;
+import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionContract.DeleteView;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.ImageUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.ImageUseCase.ImageRequest;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase.TransactionRequest;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -42,7 +42,8 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
-                          ((AddUpdateView) getView()).onAddSuccessTransaction((String) value);
+                          ((AddUpdateView) getView())
+                                    .onAddSuccessTransaction(transaction, (String) value);
                       }
                       
                       @Override
@@ -85,14 +86,13 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       }, new String[]{"detail"}, paths.toArray(new String[paths.size()]));
             mImageUseCase.subscribe(imageRequest);
         } else {
-            MyLogger.d("NO GALLERY");
             mTransactionUseCase.subscribe(request);
         }
         
     }
     
     @Override
-    public void updateTransaction(Transaction transaction) {
+    public void updateTransaction(final Transaction transaction) {
         
         TransactionRequest request = new TransactionRequest(
                   Action.ACTION_UPDATE_TRANSACTION,
@@ -100,7 +100,8 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
-                          ((AddUpdateView) getView()).onUpdateSuccessTransaction((String) value);
+                          ((AddUpdateView) getView())
+                                    .onUpdateSuccessTransaction(transaction, (String) value);
                       }
                       
                       @Override
@@ -171,6 +172,27 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
     }
     
     public void deleteTransaction(Transaction transaction) {
+        TransactionRequest request = new TransactionRequest(Action.ACTION_DELETE_TRANSACTION,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          ((DeleteView) getView()).onDeleteSuccessTransaction((String) value);
+                      }
+                      
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().onFailure(throwable.getMessage());
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, null, new String[]{transaction.getTrans_id()}, TypeRepository.REMOTE);
+        
+        mTransactionUseCase.subscribe(request);
         
     }
     

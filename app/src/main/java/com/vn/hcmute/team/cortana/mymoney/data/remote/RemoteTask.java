@@ -157,6 +157,8 @@ public interface RemoteTask {
         
         Observable<String> updateTransaction(String userid, String token, Transaction transaction);
         
+        Observable<String> deleteTransaction(String userid, String token, String trans_id);
+        
         Observable<List<Transaction>> getTransactionByCategory(String userid, String token,
                   String categoryId, String walletId);
         

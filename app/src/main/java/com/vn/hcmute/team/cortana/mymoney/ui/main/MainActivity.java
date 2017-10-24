@@ -31,7 +31,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.budget.BudgetMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.category.CategoryMainFragment;
-import com.vn.hcmute.team.cortana.mymoney.ui.debts.DebtsMainFragment;
+import com.vn.hcmute.team.cortana.mymoney.ui.debts.DebtsLoanMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.EventMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.login.LoginActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.SavingMainFragment;
@@ -47,7 +47,6 @@ import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -199,7 +198,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         @Override
         public void run() {
             mNavigationView.getMenu().findItem(R.id.navigation_item_debt).setChecked(true);
-            DebtsMainFragment fragment = new DebtsMainFragment();
+            DebtsLoanMainFragment fragment = new DebtsLoanMainFragment();
             mCurrentFragment = fragment;
             getSupportFragmentManager().beginTransaction()
                       .replace(R.id.container_fragment, fragment).commit();
@@ -314,7 +313,6 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                         if (wallet.equals(mPreferenceHelper.getCurrentWallet())) {
                             updateViewHeaderWithWallet(wallet);
                         }
-                        MyLogger.d(TAG, wallet, true);
                         mSelectWalletView.updateWallet(wallet);
                     } else if (resultCode == ResultCode.REMOVE_WALLET_RESULT_CODE) {
                         if (wallet.equals(mPreferenceHelper.getCurrentWallet())) {
@@ -524,6 +522,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                   (TextUtils.isEmpty(wallet.getMoney()) ? "0" : wallet.getMoney()));
         
         mTextViewValueWallet.setText(value);
+        mTextViewNameWallet.setText(wallet.getWalletName());
     }
     
     private void openEditWalletActivity(Wallet wallet) {

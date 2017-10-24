@@ -431,6 +431,12 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
+    public Observable<String> deleteTransaction(String userid, String token, String trans_id) {
+        return mRemoteRepository.deleteTransaction(userid, token, trans_id);
+    }
+    
+    
+    @Override
     public Observable<List<Icon>> getListIcon() {
         return mLocalRepository.getListIcon();
     }

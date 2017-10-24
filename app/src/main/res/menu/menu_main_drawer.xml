@@ -32,6 +32,7 @@
     <item
       android:id="@+id/navigation_item_contacts"
       android:icon="@drawable/ic_bk_savings"
+      android:visible="false"
       android:title="@string/txt_contact" />
     <item
       android:id="@+id/navigation_groups_other"

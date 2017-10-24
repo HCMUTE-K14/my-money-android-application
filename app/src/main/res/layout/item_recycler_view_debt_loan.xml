@@ -3,21 +3,16 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <!--<TextView-->
-    <!--android:paddingTop="10dp"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:text="fdsafsafsafsafasfsafasfas"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content" />-->
-
-
   <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container_person"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    android:background="?selectableItemBackground">
+    android:background="?selectableItemBackground"
+    android:layout_marginBottom="18dp"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true">
     <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="80dp"
@@ -30,12 +25,12 @@
         android:layout_centerVertical="true"
         app:rlv_backgroundColorValue="#FF5722"
         app:rlv_titleColor="@color/white"
-        app:rlv_titleSize="25dp"
+        app:rlv_titleSize="20dp"
         app:rlv_titleText="B" />
 
       <LinearLayout
         android:id="@+id/linear_layout_title"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/rounded_letter"
@@ -47,8 +42,9 @@
           style="@style/ListItemSubTitleStyle"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
-          android:text="fsdafdsafdsafdsafsadfdsafsda"
-          android:textSize="18sp" />
+          android:maxLength="10"
+          android:textColor="@color/black"
+          android:textSize="15sp" />
 
         <RelativeLayout
           android:layout_width="fill_parent"
@@ -59,8 +55,11 @@
             style="@style/ListItemSubTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="fdsafdsafsdafdsa"
-            android:textSize="15sp" />
+            android:minWidth="100dp"
+            android:textSize="12sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         </RelativeLayout>
       </LinearLayout>
@@ -68,31 +67,28 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/rounded_letter"
+        android:layout_toRightOf="@id/linear_layout_title"
         android:paddingLeft="10dp"
         android:orientation="vertical">
-
         <TextView
+          android:id="@+id/txt_status_money_1"
           style="@style/ListItemSubTitleStyle"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
-          android:text="fsdafdsafdsafdsafsadfdsafsda"
-          android:textSize="18sp" />
-
+          android:textSize="15sp" />
         <RelativeLayout
           android:layout_width="fill_parent"
           android:layout_height="fill_parent">
 
           <TextView
+            android:id="@+id/txt_status_money_2"
             style="@style/ListItemSubTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="fdsafdsafsdafdsa"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
         </RelativeLayout>
       </LinearLayout>
-
     </RelativeLayout>
 
   </android.support.v7.widget.CardView>

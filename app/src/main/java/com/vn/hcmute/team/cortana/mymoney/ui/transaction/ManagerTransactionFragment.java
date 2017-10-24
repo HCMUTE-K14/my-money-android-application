@@ -52,15 +52,20 @@ import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionContract.Add
 import com.vn.hcmute.team.cortana.mymoney.ui.view.CardViewActionBar;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
+import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 
 /**
@@ -70,49 +75,39 @@ import javax.inject.Inject;
 public class ManagerTransactionFragment extends BaseFragment implements AddUpdateView {
     
     public static final String TAG = ManagerCategoryFragment.class.getSimpleName();
-    
+    @BindView(R.id.card_view_select_image)
+    View mViewSelectImage;
     @BindView(R.id.card_view_action_bar)
     CardViewActionBar mCardViewActionBar;
-    
     @BindView(R.id.txt_note)
     EditText mEditTextNote;
-    
     @BindView(R.id.image_icon_category)
     ImageView mImageViewIconCategory;
-    
     @BindView(R.id.txt_category)
     TextView mTextViewCategory;
-    
     @BindView(R.id.txt_money)
     TextView mTextViewMoney;
-    
     @BindView(R.id.txt_with)
     TextView mTextViewContacts;
-    
     @BindView(R.id.txt_location)
     TextView mTextViewLocation;
-    
     @BindView(R.id.txt_remind)
     TextView mTextViewRemind;
-    
     @BindView(R.id.txt_wallet)
     TextView mTextViewNameWallet;
-    
     @BindView(R.id.txt_date_start)
     TextView mTextViewDateStart;
-    
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerViewImageSelected;
-    
     @BindView(R.id.txt_event)
     TextView mTextViewEvent;
-    
     @Inject
     PreferencesHelper mPreferencesHelper;
-    
     @Inject
     TransactionPresenter mTransactionPresenter;
-    
+    private boolean FLAG_IS_MULTI_SELECT_PERSON = true;
+    private boolean FLAG_IS_ENABLE_UPLOAD_IMAGE = true;
+    private boolean FLAG_IS_ONLY_DEBT_LOAN_CATEGORY = false;
     private DatePickerDialog mDatePickerStartTime;
     private DatePickerDialog mDatePickerEndTime;
     
@@ -130,6 +125,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     private List<ImageGallery> mImageGalleries = new ArrayList<>();
     private SelectedImageAdapter mSelectedImageAdapter;
     private Saving mSaving;
+    private String mAmount = "0";
     
     private ProgressDialog mProgressDialog;
     
@@ -162,25 +158,28 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         }
     };
     
-    public static ManagerTransactionFragment newInstance(String action, Transaction transaction,
+    public static ManagerTransactionFragment newInstance(String action, Map<String, Boolean> params,
+              Transaction transaction,
               Saving saving) {
         ManagerTransactionFragment fragment = new ManagerTransactionFragment();
         Bundle bundle = new Bundle();
         switch (action) {
             case Action.ACTION_ADD_TRANSACTION:
-                bundle.putString("action", action);
-                bundle.putParcelable("transaction", transaction);
+                bundle.putString(ManagerTransactionActivity.EXTRA_ACTION, action);
+                bundle.putParcelable(ManagerTransactionActivity.EXTRA_TRANSACTION, transaction);
                 bundle.putParcelable("saving", saving);
                 break;
             case Action.ACTION_UPDATE_TRANSACTION:
-                bundle.putString("action", action);
-                bundle.putParcelable("transaction", transaction);
+                bundle.putString(ManagerTransactionActivity.EXTRA_ACTION, action);
+                bundle.putParcelable(ManagerTransactionActivity.EXTRA_TRANSACTION, transaction);
                 bundle.putParcelable("saving", saving);
                 break;
             default:
                 break;
         }
-        
+        bundle.putBoolean("upload_image", params.get("upload_image"));
+        bundle.putBoolean("multiple_select_contact", params.get("multiple_select_contact"));
+        bundle.putBoolean("only_debt_loan_category", params.get("only_debt_loan_category"));
         fragment.setArguments(bundle);
         
         return fragment;
@@ -225,8 +224,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         mCardViewActionBar.setOnClickBack(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ManagerTransactionFragment.this.getContext(), "Cancel",
-                          Toast.LENGTH_SHORT).show();
+                ManagerTransactionFragment.this.getActivity().finish();
             }
         });
     }
@@ -241,6 +239,9 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
             mAction = bundle.getString("action");
             mCurrentTransaction = bundle.getParcelable("transaction");
             mSaving = bundle.getParcelable("saving");
+            FLAG_IS_ENABLE_UPLOAD_IMAGE = bundle.getBoolean("upload_image");
+            FLAG_IS_MULTI_SELECT_PERSON = bundle.getBoolean("multiple_select_contact");
+            FLAG_IS_ONLY_DEBT_LOAN_CATEGORY = bundle.getBoolean("only_debt_loan_category");
         }
     }
     
@@ -266,10 +267,15 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case RequestCode.CALCULATOR_REQUEST_CODE:
-                    //TODO: View, Result
-                    String result = data.getStringExtra("result");
-                    if (!TextUtil.isEmpty(result)) {
-                        mTextViewMoney.setText(result);
+                    mAmount = data.getStringExtra("result");
+                    if (mAmount.equals("0")) {
+                        Toast.makeText(this.getContext(), R.string.message_warning_fill_amount,
+                                  Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    String result2Show = data.getStringExtra("result_view");
+                    if (!TextUtil.isEmpty(result2Show)) {
+                        mTextViewMoney.setText(result2Show);
                     }
                     break;
                 case RequestCode.CHOOSE_CATEGORY_REQUEST_CODE:
@@ -314,13 +320,19 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     
     
     @Override
-    public void onAddSuccessTransaction(String message) {
-        
+    public void onAddSuccessTransaction(Transaction transaction, String message) {
+        Intent intent = new Intent();
+        intent.putExtra("transaction", transaction);
+        getActivity().setResult(Constraints.ResultCode.ADD_TRANSACTION_RESULT_CODE, intent);
+        getActivity().finish();
     }
     
     @Override
-    public void onUpdateSuccessTransaction(String message) {
-        Toast.makeText(this.getContext(), "Updated", Toast.LENGTH_SHORT).show();
+    public void onUpdateSuccessTransaction(Transaction transaction, String message) {
+        Intent intent = new Intent();
+        intent.putExtra("transaction", transaction);
+        getActivity().setResult(ResultCode.EDIT_TRANSACTION_RESULT_CODE, intent);
+        getActivity().finish();
     }
     
     
@@ -331,7 +343,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     
     @Override
     public void onFailure(String message) {
-        Toast.makeText(this.getContext(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.getContext(), "fail", Toast.LENGTH_SHORT).show();
     }
     
     @Override
@@ -396,11 +408,14 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     
     private void openCalculatorActivity() {
         Intent intent = new Intent(this.getActivity(), CalculatorActivity.class);
+        intent.putExtra("goal_money", mAmount);
+        intent.putExtra("currencies", mWallet != null ? mWallet.getCurrencyUnit() : null);
         startActivityForResult(intent, RequestCode.CALCULATOR_REQUEST_CODE);
     }
     
     private void openCategoryActivity() {
         Intent intent = new Intent(this.getActivity(), CategoryActivity.class);
+        intent.putExtra("only_debt_loan_category", FLAG_IS_ONLY_DEBT_LOAN_CATEGORY);
         startActivityForResult(intent, RequestCode.CHOOSE_CATEGORY_REQUEST_CODE);
     }
     
@@ -411,7 +426,8 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     
     private void openContactActivity() {
         Intent intent = new Intent(this.getActivity(), PersonActivity.class);
-        intent.putExtra("mode", PersonActivity.MODE_SELECT_MULTIPLE);
+        intent.putExtra("mode", FLAG_IS_MULTI_SELECT_PERSON ? PersonActivity.MODE_SELECT_MULTIPLE
+                  : PersonActivity.MODE_SELECT_SINGLE);
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(PersonActivity.EXTRA_SELECTED_PERSON,
                   (ArrayList<? extends Parcelable>) mPersonList);
@@ -445,6 +461,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     }
     
     private void initializeView() {
+        
         Calendar calendar = Calendar.getInstance();
         
         mYear_StartTime = calendar.get(Calendar.YEAR);
@@ -453,7 +470,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         
         mYear_EndTime = mYear_StartTime;
         mMonth_EndTime = mMonth_StartTime;
-        mDayOfMonth_EndTime = mMonth_StartTime;
+        mDayOfMonth_EndTime = mDayOfMonth_StartTime;
         
         mDatePickerStartTime = new DatePickerDialog(this.getActivity(), mOnDateSetListenerStartTime,
                   mYear_StartTime, mMonth_StartTime, mDayOfMonth_StartTime);
@@ -465,16 +482,27 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         mTextViewDateStart.setText(DateUtil
                   .formatDate(mYear_StartTime, mMonth_StartTime, mDayOfMonth_StartTime));
         
-        mSelectedImageAdapter = new SelectedImageAdapter(this.getContext(), null,
-                  new RemoveImageSelectedListener() {
-                      @Override
-                      public void onClick(ImageGallery imageGallery, int position) {
-                          mImageGalleries.remove(imageGallery);
-                          mSelectedImageAdapter.remove(imageGallery, position);
-                      }
-                  });
+        if (mWallet != null) {
+            mTextViewNameWallet.setText(mWallet.getWalletName());
+            mTextViewMoney.setText("0" + " " + mWallet.getCurrencyUnit().getCurSymbol());
+        }
         
-        mRecyclerViewImageSelected.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
+        if (!FLAG_IS_ENABLE_UPLOAD_IMAGE) {
+            mViewSelectImage.setVisibility(View.GONE);
+        } else {
+            mViewSelectImage.setVisibility(View.VISIBLE);
+            mSelectedImageAdapter = new SelectedImageAdapter(this.getContext(), null,
+                      new RemoveImageSelectedListener() {
+                          @Override
+                          public void onClick(ImageGallery imageGallery, int position) {
+                              mImageGalleries.remove(imageGallery);
+                              mSelectedImageAdapter.remove(imageGallery, position);
+                          }
+                      });
+            
+            mRecyclerViewImageSelected
+                      .setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
+        }
         
         mProgressDialog = new ProgressDialog(this.getActivity());
         mProgressDialog.setCanceledOnTouchOutside(false);
@@ -488,8 +516,10 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         mPersonList = mCurrentTransaction.getPerson();
         mImages = mCurrentTransaction.getImage();
         mWallet = mCurrentTransaction.getWallet();
+        mAmount = mCurrentTransaction.getAmount();
         
-        mTextViewMoney.setText(mCurrentTransaction.getAmount());
+        mTextViewMoney.setText(NumberUtil.formatAmount(mCurrentTransaction.getAmount(),
+                  mCurrentTransaction.getWallet().getCurrencyUnit().getCurSymbol()));
         mTextViewCategory.setText(mCategory.getName());
         
         GlideImageLoader.load(this.getContext(),
@@ -508,39 +538,44 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     
     private void addTransaction() {
         mCurrentTransaction = new Transaction();
+        String date_created = String.valueOf(DateUtil
+                  .getLongAsDate(mDayOfMonth_StartTime, mMonth_StartTime, mYear_StartTime));
+        String date_end = String.valueOf(DateUtil
+                  .getLongAsDate(mDayOfMonth_EndTime, mMonth_EndTime, mYear_EndTime));
+        Wallet wallet = mWallet;
+        Category category = mCategory;
+        category.setSubcategories(null);
+        String note = mEditTextNote.getText().toString().trim();
+        if (mPersonList == null || mPersonList.isEmpty()) {
+            mPersonList = new ArrayList<>();
+            mPersonList.add(Constraints.SOME_ONE_PERSON);
+        }
+        List<Person> persons = mPersonList;
+        Event event = mEvent;
+        Saving saving = mSaving;
+        
         if (mCategory == null) {
             Toast.makeText(this.getContext(), R.string.txt_please_choose_category,
                       Toast.LENGTH_SHORT).show();
             return;
         }
-        String date_created = String.valueOf(DateUtil
-                  .getLongAsDate(mDayOfMonth_StartTime, mMonth_StartTime, mYear_StartTime));
-        String date_end = String.valueOf(DateUtil
-                  .getLongAsDate(mDayOfMonth_EndTime, mMonth_EndTime, mYear_EndTime));
-        
-        if (Long.valueOf(date_created) > Long.valueOf(date_end)) {
-            Toast.makeText(this.getContext(), R.string.txt_warning_date_created, Toast.LENGTH_SHORT)
-                      .show();
-            return;
-        }
-        Wallet wallet = mWallet;
         if (wallet == null || TextUtil.isEmpty(mTextViewNameWallet.getText().toString())) {
             Toast.makeText(this.getContext(), R.string.txt_please_choose_wallet, Toast.LENGTH_SHORT)
                       .show();
             return;
         }
-        
-        mCategory.setSubcategories(null);
-        
-        String amount = mTextViewMoney.getText().toString().trim();
-        Category category = mCategory;
-        String note = mEditTextNote.getText().toString().trim();
-        
-        List<Person> persons = mPersonList;
-        Event event = mEvent;
-        Saving saving = mSaving;
-        
-        mCurrentTransaction.setAmount(amount);
+        if (Long.valueOf(date_created) > Long.valueOf(date_end)) {
+            Toast.makeText(this.getContext(), R.string.txt_warning_date_created, Toast.LENGTH_SHORT)
+                      .show();
+            return;
+        }
+        if (mAmount.equals("0")) {
+            Toast.makeText(this.getContext(), R.string.message_warning_fill_amount,
+                      Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mCurrentTransaction.setTrans_id(SecurityUtil.getRandomUUID());
+        mCurrentTransaction.setAmount(mAmount);
         mCurrentTransaction.setNote(note);
         mCurrentTransaction.setCategory(category);
         mCurrentTransaction.setWallet(wallet);
@@ -549,44 +584,65 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         mCurrentTransaction.setEvent(event);
         mCurrentTransaction.setSaving(saving);
         mCurrentTransaction.setDate_end(date_end);
+        mCurrentTransaction.setType(mCategory.getType());
+        
+        if (mCategory.getType().equals("expense")) {
+            double amountWallet = Double.valueOf(mWallet.getMoney());
+            double amountTrans = Double.valueOf(mAmount);
+            if (amountWallet < amountTrans) {
+                showDialogWarningAmount();
+            }
+            return;
+        }
         
         mTransactionPresenter.addTransaction(mCurrentTransaction, mImageGalleries);
+        
     }
     
     private void updateTransaction() {
-        if (mCategory == null) {
-            Toast.makeText(this.getContext(), R.string.txt_please_choose_category,
-                      Toast.LENGTH_SHORT).show();
-            return;
-        }
         String date_created = String.valueOf(DateUtil
                   .getLongAsDate(mDayOfMonth_StartTime, mMonth_StartTime, mYear_StartTime));
         String date_end = String.valueOf(DateUtil
                   .getLongAsDate(mDayOfMonth_EndTime, mMonth_EndTime, mYear_EndTime));
         
-        if (Long.valueOf(date_created) > Long.valueOf(date_end)) {
-            Toast.makeText(this.getContext(), R.string.txt_warning_date_created, Toast.LENGTH_SHORT)
-                      .show();
+        Wallet wallet = mWallet;
+        
+        mCategory.setSubcategories(null);
+        
+        Category category = mCategory;
+        category.setSubcategories(null);
+        String note = mEditTextNote.getText().toString().trim();
+        if (mPersonList == null) {
+            mPersonList = new ArrayList<>();
+            mPersonList.add(Constraints.SOME_ONE_PERSON);
+        }
+        List<Person> persons = mPersonList;
+        Event event = mEvent;
+        Saving saving = mSaving;
+        
+        if (mCategory == null) {
+            Toast.makeText(this.getContext(), R.string.txt_please_choose_category,
+                      Toast.LENGTH_SHORT).show();
             return;
         }
-        Wallet wallet = mWallet;
         if (wallet == null || TextUtil.isEmpty(mTextViewNameWallet.getText().toString())) {
             Toast.makeText(this.getContext(), R.string.txt_please_choose_wallet, Toast.LENGTH_SHORT)
                       .show();
             return;
         }
+        if (Long.valueOf(date_created) > Long.valueOf(date_end)) {
+            Toast.makeText(this.getContext(), R.string.txt_warning_date_created,
+                      Toast.LENGTH_SHORT).show();
+            return;
+        }
         
-        mCategory.setSubcategories(null);
+        if (mAmount.equals("0")) {
+            Toast.makeText(this.getContext(), R.string.message_warning_fill_amount,
+                      Toast.LENGTH_SHORT).show();
+            return;
+        }
         
-        String amount = mTextViewMoney.getText().toString().trim();
-        Category category = mCategory;
-        String note = mEditTextNote.getText().toString().trim();
-        
-        List<Person> persons = mPersonList;
-        Event event = mEvent;
-        Saving saving = mSaving;
-        
-        mCurrentTransaction.setAmount(amount);
+        mCurrentTransaction.setAmount(mAmount);
         mCurrentTransaction.setNote(note);
         mCurrentTransaction.setCategory(category);
         mCurrentTransaction.setWallet(wallet);
@@ -595,8 +651,46 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         mCurrentTransaction.setEvent(event);
         mCurrentTransaction.setSaving(saving);
         mCurrentTransaction.setDate_end(date_end);
+        mCurrentTransaction.setType(mCategory.getType());
+        
+        if (mCategory.getType().equals("expense")) {
+            double amountWallet = Double.valueOf(mWallet.getMoney());
+            double amountTrans = Double.valueOf(mAmount);
+            if (amountWallet < amountTrans) {
+                showDialogWarningAmount();
+            }
+            return;
+        }
         
         mTransactionPresenter.updateTransaction(mCurrentTransaction);
+        
+    }
+    
+    private void showDialogWarningAmount() {
+        AlertDialog.Builder dialog = new Builder(this.getActivity());
+        
+        dialog.setTitle(R.string.txt_warning);
+        dialog.setMessage(getString(R.string.message_warning_amount_too_big));
+        
+        dialog.setNegativeButton(R.string.txt_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (mAction.equals(Action.ACTION_ADD_TRANSACTION)) {
+                    mTransactionPresenter.addTransaction(mCurrentTransaction, mImageGalleries);
+                } else if (mAction.equals(Action.ACTION_UPDATE_TRANSACTION)) {
+                    mTransactionPresenter.updateTransaction(mCurrentTransaction);
+                }
+            }
+        });
+        dialog.setPositiveButton(R.string.txt_im_wrong, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                dialog.dismiss();
+            }
+        });
+        
+        dialog.create().show();
     }
     
     private String getTextNamePerson(List<Person> list) {
@@ -616,6 +710,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         }
         return getString(R.string.txt_edit_transaction);
     }
+    
     
     private void showDialogConfirmChooseImage() {
         AlertDialog.Builder builder = new Builder(this.getActivity());

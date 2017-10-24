@@ -19,6 +19,5 @@
     android:layout_width="300dp"
     android:layout_height="120dp"
     android:layout_gravity="center"
-    android:scaleType="centerCrop"
-    android:src="@drawable/img_header_nav_back_ground" />
+    android:scaleType="centerCrop"/>
 </RelativeLayout>

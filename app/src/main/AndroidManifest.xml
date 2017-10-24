@@ -111,6 +111,7 @@
     <activity android:name=".ui.transaction.ManagerTransactionActivity" >
 
     </activity>
+    <activity android:name=".ui.transaction.InfoTransactionActivity"/>
   </application>
 
 </manifest>

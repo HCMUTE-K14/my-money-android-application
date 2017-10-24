@@ -107,13 +107,11 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
-                MyLogger.d(TAG, "ONSUCCESS");
                 callBack.onSuccess(user);
             }
             
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-                MyLogger.d(TAG, "onFAILURE");
                 callBack.onFailure(e);
             }
         };

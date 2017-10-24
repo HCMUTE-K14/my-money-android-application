@@ -1,20 +1,39 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.transaction;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
+import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerTransactionComponent;
+import com.vn.hcmute.team.cortana.mymoney.di.component.TransactionComponent;
+import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
+import com.vn.hcmute.team.cortana.mymoney.di.module.TransactionModule;
+import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionContract.DeleteView;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.RoundedLetterView;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
+import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -24,6 +43,11 @@ import javax.inject.Inject;
 public class InfoTransactionActivity extends BaseActivity implements DeleteView {
     
     public static final String TAG = InfoTransactionActivity.class.getSimpleName();
+    
+    public static final String EXTRA_SHOW_CASH_BACK_VIEW = "show_cash_back_view";
+    
+    @BindView(R.id.cash_back_view)
+    View mCashBackView;
     
     @BindView(R.id.image_icon_category)
     ImageView mImageViewIconCategory;
@@ -43,20 +67,30 @@ public class InfoTransactionActivity extends BaseActivity implements DeleteView 
     @BindView(R.id.txt_wallet)
     TextView mTextViewNameWallet;
     
-    @BindView(R.id.txt_type)
-    TextView mTextViewType;
-    
     @BindView(R.id.txt_amount_start)
     TextView mTextViewAmountStart;
     
     @BindView(R.id.txt_amount_end)
     TextView mTextViewAmountEnd;
     
+    @BindView(R.id.txt_type)
+    TextView mTextViewType;
+    
+    @BindView(R.id.rounded_letter)
+    RoundedLetterView mRoundedLetterView;
+    
+    @BindView(R.id.txt_remind)
+    TextView mTextViewRemind;
+    
     @Inject
     TransactionPresenter mTransactionPresenter;
     
+    
     private ProgressDialog mProgressDialog;
     private Transaction mTransaction;
+    
+    private String mType;
+    private boolean isShowCashBackView = false;
     
     @Override
     public int getLayoutId() {
@@ -67,6 +101,14 @@ public class InfoTransactionActivity extends BaseActivity implements DeleteView 
     protected void initializeDagger() {
         ApplicationComponent applicationComponent = ((MyMoneyApplication) this.getApplication())
                   .getAppComponent();
+        
+        TransactionComponent transactionComponent = DaggerTransactionComponent.builder()
+                  .applicationComponent(applicationComponent)
+                  .activityModule(new ActivityModule(this))
+                  .transactionModule(new TransactionModule())
+                  .build();
+        
+        transactionComponent.inject(this);
     }
     
     @Override
@@ -84,35 +126,154 @@ public class InfoTransactionActivity extends BaseActivity implements DeleteView 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mTransaction = getIntent().getParcelableExtra("transaction");
+        mType = getIntent().getStringExtra("type");
+        isShowCashBackView = getIntent()
+                  .getBooleanExtra(InfoTransactionActivity.EXTRA_SHOW_CASH_BACK_VIEW, false);
+        if (mType == null) {
+            mType = "";
+        }
+        
+        initializeView();
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        if (requestCode == Constraints.RequestCode.UPDATE_TRANSACTION_REQUEST_CODE &&
+            data != null) {
+            mTransaction = data.getParcelableExtra("transaction");
+            
+            if (mTransaction != null) {
+                showDataTransaction();
+            }
+        }
+    }
+    
+    @Override
+    public void showAllListTransaction(List<Transaction> list) {
         
     }
     
-    
     @Override
     public void onFailure(String message) {
-        
+        Toast.makeText(this, "failure", Toast.LENGTH_SHORT).show();
     }
     
     @Override
     public void loading(boolean isLoading) {
-        
+        if (isLoading) {
+            mProgressDialog.show();
+            return;
+        }
+        mProgressDialog.dismiss();
     }
     
     @Override
     public void onDeleteSuccessTransaction(String message) {
-        
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+    
+    @OnClick(R.id.image_view_cancel)
+    public void exit() {
+        finish();
+    }
+    
+    @OnClick(R.id.btn_cash_back)
+    public void cashBack() {
+        Toast.makeText(this, "Cash back", Toast.LENGTH_SHORT).show();
+    }
+    
+    @OnClick(R.id.image_view_delete)
+    public void deleteTrans() {
+        showDialogConfirmDelete();
+    }
+    
+    @OnClick(R.id.image_view_edit)
+    public void editTrans() {
+        Intent intent = new Intent(this, ManagerTransactionActivity.class);
+        intent.putExtra("action", Action.ACTION_UPDATE_TRANSACTION);
+        intent.putExtra("transaction", mTransaction);
+        intent.putExtra("multiple_select_contact", false);
+        startActivityForResult(intent, Constraints.RequestCode.UPDATE_TRANSACTION_REQUEST_CODE);
     }
     
     private void initializeView() {
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage(getString(R.string.txt_deleting_transaction));
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        
         if (mTransaction == null) {
             finish();
         }
+        showDataTransaction();
         
+        if (isShowCashBackView) {
+            if (mType.equals("debt")) {
+                mTextViewType.setText(getString(R.string.txt_lender));
+            } else if (mType.equals("loan")) {
+                mTextViewType.setText(getString(R.string.txt_borrower));
+            }
+            initViewPerson();
+        }
+    }
+    
+    private void showDataTransaction() {
         GlideImageLoader
                   .load(this, DrawableUtil.getDrawable(this, mTransaction.getCategory().getIcon()),
                             mImageViewIconCategory);
         mTextViewNameCategory.setText(mTransaction.getCategory().getName());
         
-        //  String formatAmount = NumberUtil.formatAmount(mTransaction.getAmount());
+        String formatAmount = NumberUtil.formatAmount(mTransaction.getAmount(),
+                  mTransaction.getWallet().getCurrencyUnit().getCurSymbol());
+        mTextViewAmount.setText(formatAmount);
+        
+        mTextViewNote.setText(TextUtils.isEmpty(mTransaction.getNote()) ? getString(
+                  R.string.txt_no_note) : mTransaction.getNote());
+        
+        String dateFormat = DateUtil
+                  .formatDate(DateUtil.timeMilisecondsToDate(mTransaction.getDate_created()));
+        mTextViewDate.setText(dateFormat);
+        String dateRemind = DateUtil
+                  .formatDate(DateUtil.timeMilisecondsToDate(mTransaction.getDate_created()));
+        mTextViewDate.setText(dateFormat);
+        mTextViewRemind.setText(dateRemind);
+        
+        mTextViewNameWallet.setText(mTransaction.getWallet().getWalletName());
+    }
+    
+    private void initViewPerson() {
+        if (mTransaction.getPerson() == null) {
+            return;
+        }
+        for (Person person : mTransaction.getPerson()) {
+            
+        }
+        Person person = mTransaction.getPerson().get(0);
+        
+    }
+    
+    private void showDialogConfirmDelete() {
+        AlertDialog.Builder dialog = new Builder(this);
+        dialog.setTitle(R.string.txt_wait_a_second);
+        dialog.setMessage(R.string.message_warning_delete_transaction);
+        dialog.setNegativeButton(R.string.txt_yes, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteTransaction();
+            }
+        });
+        dialog.setPositiveButton(R.string.txt_no, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                dialog.dismiss();
+            }
+        });
+        dialog.create().show();
+    }
+    
+    private void deleteTransaction() {
+        mTransactionPresenter.deleteTransaction(mTransaction);
     }
 }

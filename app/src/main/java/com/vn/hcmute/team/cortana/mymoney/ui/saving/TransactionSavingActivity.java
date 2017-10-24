@@ -42,15 +42,12 @@ public class TransactionSavingActivity extends BaseActivity implements Transacti
     ProgressBar mProgressBar;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    
+    @Inject
+    TransactionPresenter mTransactionPresenter;
     private TransactionSavingAdapter mTransactionSavingAdapter;
     private EmptyAdapter mEmptyAdapter;
     private List<Transaction> mTransactionList;
     private Saving mSaving;
-    
-    
-    @Inject
-    TransactionPresenter mTransactionPresenter;
     
     @Override
     public int getLayoutId() {

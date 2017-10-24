@@ -12,6 +12,7 @@
       android:id="@+id/txt_person_name"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:maxLength="20"
       android:padding="10dp"
       android:hint="@string/txt_name" />
     <EditText
