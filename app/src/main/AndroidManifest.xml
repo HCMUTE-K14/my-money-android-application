@@ -72,7 +72,7 @@
 
     </activity>
 
-    <activity android:name=".ui.wallet.MyWalletActivity" >
+    <activity android:name=".ui.wallet.MyWalletActivity">
 
     </activity>
     <!-- Saving -->
@@ -82,14 +82,14 @@
     <activity android:name=".ui.saving.TransferMoneySavingActivity" />
     <activity android:name=".ui.saving.InfoSavingActivity" />
     <activity android:name=".ui.saving.EditSavingActivity" />
-    <activity android:name=".ui.saving.TransactionSavingActivity"/>
+    <activity android:name=".ui.saving.TransactionSavingActivity" />
 
     <!-- Event -->
     <activity android:name=".ui.event.ActivityInfoEvent" />
     <activity android:name=".ui.event.ActivityEditEvent" />
     <activity android:name=".ui.event.ActivityAddEvent" />
     <activity android:name=".ui.event.EventActivity" />
-    <activity android:name=".ui.event.ActivitySelectEvent"/>
+    <activity android:name=".ui.event.ActivitySelectEvent" />
 
     <!-- Person -->
     <activity android:name=".ui.person.PersonActivity" />
@@ -102,16 +102,17 @@
     <activity android:name=".ui.iconshop.SelectIconActivity" />
     <activity android:name=".ui.tools.calculator.CalculatorActivity" />
     <!-- Category -->
-    <activity android:name=".ui.category.CategoryActivity"/>
+    <activity android:name=".ui.category.CategoryActivity" />
     <activity android:name=".ui.category.ManagerCategoryActivity" />
     <activity android:name=".ui.category.ListParentCategoryActivity" />
 
     <!-- Transaction -->
 
-    <activity android:name=".ui.transaction.ManagerTransactionActivity" >
+    <activity android:name=".ui.transaction.ManagerTransactionActivity">
 
     </activity>
-    <activity android:name=".ui.transaction.InfoTransactionActivity"/>
+    <!-- Debt & Loan -->
+    <activity android:name=".ui.transaction.InfoTransactionForDebtLoanActivity" />
   </application>
 
 </manifest>

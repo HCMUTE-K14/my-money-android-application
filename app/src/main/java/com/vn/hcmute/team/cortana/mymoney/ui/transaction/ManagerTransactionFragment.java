@@ -41,7 +41,6 @@ import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.category.CategoryActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.category.ManagerCategoryFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.ActivitySelectEvent;
 import com.vn.hcmute.team.cortana.mymoney.ui.person.PersonActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
@@ -74,7 +73,7 @@ import javax.inject.Inject;
 
 public class ManagerTransactionFragment extends BaseFragment implements AddUpdateView {
     
-    public static final String TAG = ManagerCategoryFragment.class.getSimpleName();
+    public static final String TAG = ManagerTransactionFragment.class.getSimpleName();
     @BindView(R.id.card_view_select_image)
     View mViewSelectImage;
     @BindView(R.id.card_view_action_bar)
@@ -322,6 +321,11 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     @Override
     public void onAddSuccessTransaction(Transaction transaction, String message) {
         Intent intent = new Intent();
+        if (transaction.getPerson() == null && transaction.getPerson().isEmpty()) {
+            transaction.setPerson(new ArrayList<Person>() {{
+                add(Constraints.SOME_ONE_PERSON);
+            }});
+        }
         intent.putExtra("transaction", transaction);
         getActivity().setResult(Constraints.ResultCode.ADD_TRANSACTION_RESULT_CODE, intent);
         getActivity().finish();
@@ -330,6 +334,11 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     @Override
     public void onUpdateSuccessTransaction(Transaction transaction, String message) {
         Intent intent = new Intent();
+        if (transaction.getPerson() == null && transaction.getPerson().isEmpty()) {
+            transaction.setPerson(new ArrayList<Person>() {{
+                add(Constraints.SOME_ONE_PERSON);
+            }});
+        }
         intent.putExtra("transaction", transaction);
         getActivity().setResult(ResultCode.EDIT_TRANSACTION_RESULT_CODE, intent);
         getActivity().finish();
@@ -591,8 +600,8 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
             double amountTrans = Double.valueOf(mAmount);
             if (amountWallet < amountTrans) {
                 showDialogWarningAmount();
+                return;
             }
-            return;
         }
         
         mTransactionPresenter.addTransaction(mCurrentTransaction, mImageGalleries);
@@ -658,8 +667,8 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
             double amountTrans = Double.valueOf(mAmount);
             if (amountWallet < amountTrans) {
                 showDialogWarningAmount();
+                return;
             }
-            return;
         }
         
         mTransactionPresenter.updateTransaction(mCurrentTransaction);

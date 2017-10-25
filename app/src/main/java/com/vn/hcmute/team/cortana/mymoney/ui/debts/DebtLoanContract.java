@@ -36,5 +36,7 @@ public interface DebtLoanContract {
         void getDebtLoanByType(String type);
         
         void addDebtLoan(DebtLoan debtLoan);
+        
+        void unSubscribe();
     }
 }

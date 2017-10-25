@@ -15,6 +15,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.transaction.ManagerTransactionActiv
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 
 /**
  * Created by infamouSs on 9/27/17.
@@ -61,6 +62,7 @@ public class DebtsLoanMainFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        MyLogger.d(TAG, resultCode);
         if (resultCode == ResultCode.ADD_TRANSACTION_RESULT_CODE) {
             Transaction transaction = data.getParcelableExtra("transaction");
             
@@ -68,6 +70,10 @@ public class DebtsLoanMainFragment extends BaseFragment {
                 ((DebtsLoanFragmentByType) mViewPagerAdapter.getItem(mViewPager.getCurrentItem()))
                           .addDebtLoan(transaction);
             }
+        } else if (resultCode == ResultCode.CHANGE_DEBT_LOAN_RESULT_CODE ||
+                   resultCode == ResultCode.REMOVE_TRANSACTION_RESULT_CODE) {
+            ((DebtsLoanFragmentByType) mViewPagerAdapter.getItem(mViewPager.getCurrentItem()))
+                      .getData();
         }
     }
     

@@ -205,6 +205,9 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
     
     @Override
     public int getItemCount() {
+        if (this.mWallets.size() == 0) {
+            return 1;
+        }
         if (shouldHaveHeader()) {
             return this.mWallets.size() + 2;
         }

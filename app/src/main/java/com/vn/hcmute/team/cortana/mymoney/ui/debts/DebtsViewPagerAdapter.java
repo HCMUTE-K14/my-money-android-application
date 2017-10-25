@@ -2,7 +2,7 @@ package com.vn.hcmute.team.cortana.mymoney.ui.debts;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * Created by infamouSs on 9/27/17.
  */
 
-public class DebtsViewPagerAdapter extends FragmentPagerAdapter {
+public class DebtsViewPagerAdapter extends FragmentStatePagerAdapter {
     
     private List<Fragment> mFragmentList = new ArrayList<>();
     private List<String> mTitleList = new ArrayList<>();

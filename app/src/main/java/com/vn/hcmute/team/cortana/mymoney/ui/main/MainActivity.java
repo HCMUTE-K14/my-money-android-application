@@ -215,7 +215,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         ApplicationComponent applicationComponent = ((MyMoneyApplication) this.getApplication())
                   .getAppComponent();
         
-        mPreferenceHelper = applicationComponent.prefenencesHelper();
+        mPreferenceHelper = applicationComponent.preferencesHelper();
         
         WalletComponent walletComponent = DaggerWalletComponent.builder()
                   .applicationComponent(applicationComponent)

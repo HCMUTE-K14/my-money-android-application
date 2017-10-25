@@ -39,6 +39,8 @@ public class Constraints {
         public static final int ADD_WALLET_RESULT_CODE = -7;
         public static final int ADD_TRANSACTION_RESULT_CODE = -8;
         public static final int EDIT_TRANSACTION_RESULT_CODE = -9;
+        public static final int REMOVE_TRANSACTION_RESULT_CODE = -10;
+        public static final int CHANGE_DEBT_LOAN_RESULT_CODE = -11;
     }
     
 }

@@ -3,7 +3,6 @@ package com.vn.hcmute.team.cortana.mymoney.ui.debts;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -225,12 +224,12 @@ public class DebtLoanAdapter extends BaseExpandableListAdapter {
             
         } else if (mType == TYPE_DEBT && groupPosition == 1) {
             item = mData.get("done").get(childPosition);
+            String amount =
+                      NumberUtil.formatAmount(item.getTransaction().getAmount(), symbolCurrency);
             holder.mTextViewStatusMoney_1
                       .setTextColor(ContextCompat.getColor(mContext, R.color.color_31ADE9));
-            Spanned amount = TextUtil
-                      .showTextFromHTML(TextUtil.buildDelString(item.getTransaction().getAmount()));
             
-            holder.mTextViewStatusMoney_1.setText(amount);
+            holder.mTextViewStatusMoney_1.setText(TextUtil.buildDelString(amount));
         } else if (mType == TYPE_LOAN && groupPosition == 0) {
             item = mData.get("not_yet").get(childPosition);
             holder.mTextViewStatusMoney_1
@@ -239,12 +238,11 @@ public class DebtLoanAdapter extends BaseExpandableListAdapter {
                       NumberUtil.formatAmount(item.getTransaction().getAmount(), symbolCurrency)));
         } else if (mType == TYPE_LOAN && groupPosition == 1) {
             item = mData.get("done").get(childPosition);
+            String amount =
+                      NumberUtil.formatAmount(item.getTransaction().getAmount(), symbolCurrency);
             holder.mTextViewStatusMoney_1
                       .setTextColor(ContextCompat.getColor(mContext, R.color.color_E7252C));
-            Spanned amount = TextUtil
-                      .showTextFromHTML(TextUtil.buildDelString(item.getTransaction().getAmount()));
-            
-            holder.mTextViewStatusMoney_1.setText(amount);
+            holder.mTextViewStatusMoney_1.setText(TextUtil.buildDelString(amount));
         } else {
             item = null;
         }
@@ -314,12 +312,12 @@ public class DebtLoanAdapter extends BaseExpandableListAdapter {
     }
     
     public void add(DebtLoan debtLoan) {
-        if (debtLoan.getStatus() == 0) {
-            mData.get("not_yet").add(debtLoan);
-        } else if (debtLoan.getStatus() == 1) {
-            mData.get("done").add(debtLoan);
-        }
-        notifyDataSetChanged();
+        //        if (debtLoan.getStatus() == 0) {
+        //            mData.get("not_yet").add(debtLoan);
+        //        } else if (debtLoan.getStatus() == 1) {
+        //            mData.get("done").add(debtLoan);
+        //        }
+        //        notifyDataSetChanged();
     }
     
     

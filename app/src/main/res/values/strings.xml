@@ -275,4 +275,7 @@
   <string name="message_warning_transaction_cannot_be_null">Transaction cannot be null</string>
   <string name="message_warning_amount_too_big">This transaction amount seems too big. Are you sure it\'s correct ?</string>
   <string name="txt_im_wrong">I\'m Wrong</string>
+  <string name="txt_cashing_back">Cashing back...</string>
+  <string name="txt_pls_wait">Please wait......</string>
+
 </resources>

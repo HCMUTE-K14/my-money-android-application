@@ -2,7 +2,9 @@ package com.vn.hcmute.team.cortana.mymoney.utils;
 
 import android.os.Build;
 import android.text.Html;
+import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.StrikethroughSpan;
 import java.math.BigDecimal;
 
 /**
@@ -34,8 +36,12 @@ public class TextUtil {
         }
     }
     
-    public static String buildDelString(String str) {
-        return "<del>" + str + "</del>";
+    public static Spanned buildDelString(String str) {
+        SpannableString string = new SpannableString(str);
+        
+        string.setSpan(new StrikethroughSpan(), 0, string.length(), 0);
+        
+        return string;
     }
     
     public static Spanned showTextFromHTML(String html) {

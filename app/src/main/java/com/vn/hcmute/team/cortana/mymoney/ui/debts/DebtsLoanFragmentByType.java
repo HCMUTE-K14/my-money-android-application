@@ -19,9 +19,8 @@ import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.debts.DebtLoanContract.ShowView;
-import com.vn.hcmute.team.cortana.mymoney.ui.transaction.InfoTransactionActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.transaction.InfoTransactionForDebtLoanActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -36,23 +35,27 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
     
     public static final String TYPE_DEBT = "debt";
     public static final String TYPE_LOAN = "loan";
+    
     @BindView(R.id.expandable_list_view)
     ExpandableListView mExpandableListView;
+    
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
+    
     @Inject
     DebtLoanPresenter mDebtLoanPresenter;
+    
     private String mType;
     private DebtLoanAdapter mDebtLoanAdapter;
     private DebtLoanListener mDebtLoanListener = new DebtLoanListener() {
         @Override
         public void onClick(DebtLoan debtLoan, int groupPosition, int childPosition) {
             Intent intent = new Intent(DebtsLoanFragmentByType.this.getContext(),
-                      InfoTransactionActivity.class);
+                      InfoTransactionForDebtLoanActivity.class);
             
-            intent.putExtra(InfoTransactionActivity.EXTRA_SHOW_CASH_BACK_VIEW, true);
             intent.putExtra("transaction", debtLoan.getTransaction());
-            
+            intent.putExtra("debt_loan", debtLoan);
+            intent.putExtra("type", mType);
             startActivityForResult(intent,
                       Constraints.RequestCode.OPEN_INFO_TRANSACTION_MODE_DEBT_LOAN_REQUEST_CODE);
         }
@@ -125,9 +128,14 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
     }
     
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mDebtLoanPresenter.unSubscribe();
+    }
+    
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        MyLogger.d(TAG, requestCode);
     }
     
     @Override
@@ -142,7 +150,6 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
     
     @Override
     public void showList(List<DebtLoan> list) {
-        
         mDebtLoanAdapter.setData(list);
         mExpandableListView.setAdapter(mDebtLoanAdapter);
         
@@ -184,7 +191,17 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
         mDebtLoanPresenter.addDebtLoan(debtLoan);
     }
     
-    private void getData() {
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            // load data here
+        }else{
+            // fragment is no longer visible
+        }
+    }
+    
+    public void getData() {
         mDebtLoanPresenter.getDebtLoanByType(this.mType);
     }
     
@@ -200,13 +217,12 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
     
     @Override
     public void addDebtLoanSuccessful(DebtLoan debtLoan, String message) {
-        Toast.makeText(this.getContext(), "SUCCESSFUL", Toast.LENGTH_SHORT).show();
-        mDebtLoanAdapter.add(debtLoan);
+        getData();
     }
     
     @Override
     public void editDebtLoanSuccessful(DebtLoan debtLoan, String message) {
-        
+        getData();
     }
     
 }

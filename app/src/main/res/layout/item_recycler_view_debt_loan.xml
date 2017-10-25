@@ -8,11 +8,11 @@
     android:id="@+id/container_person"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="?selectableItemBackground"
-    android:layout_marginBottom="18dp"
-    android:layout_alignParentTop="true"
+    android:layout_marginBottom="5dp"
     android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true">
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    android:background="?selectableItemBackground">
     <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="80dp"
@@ -32,6 +32,7 @@
         android:id="@+id/linear_layout_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minWidth="100dp"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/rounded_letter"
         android:paddingLeft="10dp"
@@ -55,23 +56,20 @@
             style="@style/ListItemSubTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="100dp"
-            android:textSize="12sp"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"/>
         </RelativeLayout>
       </LinearLayout>
       <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/linear_layout_title"
-        android:paddingLeft="10dp"
         android:orientation="vertical">
         <TextView
           android:id="@+id/txt_status_money_1"
+          android:gravity="end"
           style="@style/ListItemSubTitleStyle"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
@@ -83,9 +81,10 @@
           <TextView
             android:id="@+id/txt_status_money_2"
             style="@style/ListItemSubTitleStyle"
+            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp" />
+            android:textSize="15sp" />
 
         </RelativeLayout>
       </LinearLayout>

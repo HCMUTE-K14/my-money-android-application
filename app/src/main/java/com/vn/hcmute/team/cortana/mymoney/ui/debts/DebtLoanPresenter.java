@@ -36,7 +36,7 @@ public class DebtLoanPresenter extends BasePresenter<DebtLoanContract.View> impl
                           
                           List<DebtLoan> list = (List<DebtLoan>) value;
                           
-                          if (list != null) {
+                          if (list != null && !list.isEmpty()) {
                               ((ShowView) getView()).showList(list);
                           } else {
                               ((ShowView) getView()).showEmpty();
@@ -81,5 +81,10 @@ public class DebtLoanPresenter extends BasePresenter<DebtLoanContract.View> impl
                   }, debtLoan, null, TypeRepository.REMOTE);
         
         mDebtLoanUseCase.subscribe(request);
+    }
+    
+    @Override
+    public void unSubscribe() {
+        mDebtLoanUseCase.unSubscribe();
     }
 }
