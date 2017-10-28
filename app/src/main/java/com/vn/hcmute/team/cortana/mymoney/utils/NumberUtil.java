@@ -28,7 +28,10 @@ public class NumberUtil {
         DecimalFormat formatter = new DecimalFormat(pattern);
         return formatter.format(value);
     }
-    
+    public static float format(float value) {
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        return Float.valueOf(decimalFormat.format(value));
+    }
     public static double exchangeMoney(Context context, String amount, String from, String to) {
         
         PreferencesHelper preferencesHelper = PreferencesHelper

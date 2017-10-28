@@ -185,6 +185,7 @@ public class TransactionBudgetActivity extends BaseActivity implements Transacti
     }
     
     /*Area funcction*/
+    
     public void getData() {
         mBudget = new Budget();
         Intent intent = this.getIntent();

@@ -258,4 +258,5 @@
   <string name="txt_over_current_money">Current money > Goal money!</string>
   <string name="txt_over_view">Overview</string>
   <string name="txt_check_edit_budget">Budget has been applied. Can not edit</string>
+  <string name="txt_overspent">Overspent</string>
 </resources>

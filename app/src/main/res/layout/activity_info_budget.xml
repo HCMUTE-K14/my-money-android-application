@@ -147,6 +147,7 @@
                     android:gravity="center|left"
                     android:orientation="vertical">
                     <TextView
+                      android:id="@+id/txt_spent"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text="@string/spent"
@@ -274,37 +275,66 @@
             <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="200dp"
+              android:padding="10dp"
               android:gravity="center">
-              <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_no_chart"
-                android:textColor="@color/color_orange" />
+              <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/piechart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
             </LinearLayout>
             <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:weightSum="2">
-              <RelativeLayout
+              android:orientation="vertical">
+              <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
-                <TextView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_alignParentLeft="true"
-                  android:paddingLeft="10dp"
-                  android:text="@string/txt_recommend_budget"
-                  android:textSize="12dp" />
-                <TextView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_alignParentRight="true"
-                  android:paddingRight="30dp"
-                  android:text="@string/txt_project_budget"
-                  android:textSize="12dp" />
-              </RelativeLayout>
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:weightSum="2">
+                <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:gravity="center"
+                  android:layout_weight="1">
+                  <TextView
+                    android:id="@+id/lb_daily_spend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txt_recommend_budget"
+                    android:textSize="12dp" />
+                  <TextView
+                    android:id="@+id/daily_spend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    android:text="0"/>
+                </LinearLayout>
+                <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center"
+                  android:orientation="vertical"
+                  android:layout_weight="1">
+                  <TextView
+                    android:id="@+id/lb_project_spend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txt_project_budget"
+                    android:textSize="12dp" />
+                  <TextView
+                    android:id="@+id/project_spend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    android:text="0"/>
+                </LinearLayout>
+              </LinearLayout>
               <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

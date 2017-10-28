@@ -105,7 +105,7 @@ public class MyRecyclerViewBudgetAdapter extends
             if (!checkNegative(budget.getMoneyExpense())) {
                 txt_money_expense.setText("+" + NumberUtil.formatAmount(budget.getMoneyExpense(),budget.getWallet().getCurrencyUnit().getCurSymbol()));
             } else {
-                txt_money_expense.setText("+" + NumberUtil.formatAmount(budget.getMoneyExpense(),budget.getWallet().getCurrencyUnit().getCurSymbol()));
+                txt_money_expense.setText("-" + NumberUtil.formatAmount(budget.getMoneyExpense(),budget.getWallet().getCurrencyUnit().getCurSymbol()));
                 
                 txt_money_expense.setTextColor(ContextCompat.getColor(mContext, R.color.color_red));
                 seek_bar_budget.setProgressDrawable(
