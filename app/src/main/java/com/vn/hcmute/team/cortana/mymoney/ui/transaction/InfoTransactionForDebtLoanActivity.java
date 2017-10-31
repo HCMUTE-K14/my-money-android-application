@@ -14,17 +14,20 @@ import android.widget.Toast;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
+import com.vn.hcmute.team.cortana.mymoney.event.ActivityResultEvent;
 import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.RoundedLetterView;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.DebtLoanUseCase;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
+import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by infamouSs on 10/20/17.
@@ -51,13 +54,12 @@ public class InfoTransactionForDebtLoanActivity extends BaseInfoTransactionActiv
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDebtLoan = getIntent().getParcelableExtra("debt_loan");
+        
     }
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        
         if (requestCode == Constraints.RequestCode.UPDATE_TRANSACTION_REQUEST_CODE &&
             data != null) {
             initCashBack();
@@ -94,6 +96,8 @@ public class InfoTransactionForDebtLoanActivity extends BaseInfoTransactionActiv
         mSeekBar = (SeekBar) mCashBackView.findViewById(R.id.seek_bar);
         
         mType = getIntent().getStringExtra("type");
+        mDebtLoan = getIntent().getParcelableExtra("debt_loan");
+        
         if (mType.equals("debt")) {
             mTextViewType.setText(getString(R.string.txt_lender));
         } else if (mType.equals("loan")) {
@@ -106,8 +110,9 @@ public class InfoTransactionForDebtLoanActivity extends BaseInfoTransactionActiv
     
     @Override
     public void exit() {
-        setResult(Constraints.ResultCode.CHANGE_DEBT_LOAN_RESULT_CODE);
         super.exit();
+        EventBus.getDefault()
+                  .post(new ActivityResultEvent(ResultCode.EDIT_TRANSACTION_RESULT_CODE, null));
     }
     
     @Override
@@ -121,11 +126,14 @@ public class InfoTransactionForDebtLoanActivity extends BaseInfoTransactionActiv
     
     @Override
     public void onDeleteSuccessTransaction(String message) {
-        setResult(Constraints.ResultCode.REMOVE_TRANSACTION_RESULT_CODE);
-        super.exit();
+        super.onDeleteSuccessTransaction(message);
     }
     
     private void initCashBack() {
+        if (mDebtLoan.getStatus() == 1) {
+            mCashBackView.findViewById(R.id.btn_cash_back).setVisibility(View.GONE);
+        }
+        
         if (mTransaction.getPerson() == null) {
             return;
         }
@@ -137,6 +145,9 @@ public class InfoTransactionForDebtLoanActivity extends BaseInfoTransactionActiv
                   .setText("0" + " " + symbolCur);
         mTextViewAmountEnd.setText(
                   NumberUtil.formatAmount(mTransaction.getAmount(), symbolCur));
+        if (mDebtLoan.getStatus() == 1) {
+            mSeekBar.setProgress(100);
+        }
     }
     
     private void cashBack(DebtLoan debtLoan) {

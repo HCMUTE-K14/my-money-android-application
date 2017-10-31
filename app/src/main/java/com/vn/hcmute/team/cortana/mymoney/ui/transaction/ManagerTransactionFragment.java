@@ -32,6 +32,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerTransactionComponen
 import com.vn.hcmute.team.cortana.mymoney.di.component.TransactionComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.TransactionModule;
+import com.vn.hcmute.team.cortana.mymoney.event.ActivityResultEvent;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Image;
@@ -66,6 +67,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by infamouSs on 9/27/17.
@@ -317,17 +319,17 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         
     }
     
-    
+
     @Override
     public void onAddSuccessTransaction(Transaction transaction, String message) {
-        Intent intent = new Intent();
         if (transaction.getPerson() == null && transaction.getPerson().isEmpty()) {
             transaction.setPerson(new ArrayList<Person>() {{
                 add(Constraints.SOME_ONE_PERSON);
             }});
         }
-        intent.putExtra("transaction", transaction);
-        getActivity().setResult(Constraints.ResultCode.ADD_TRANSACTION_RESULT_CODE, intent);
+        
+        EventBus.getDefault().post(new ActivityResultEvent(ResultCode.ADD_TRANSACTION_RESULT_CODE,
+                  transaction));
         getActivity().finish();
     }
     

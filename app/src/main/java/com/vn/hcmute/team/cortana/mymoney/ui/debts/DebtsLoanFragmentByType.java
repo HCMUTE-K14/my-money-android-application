@@ -15,14 +15,20 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerDebtLoanComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DebtLoanComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.DebtLoanModule;
+import com.vn.hcmute.team.cortana.mymoney.event.ActivityResultEvent;
 import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.debts.DebtLoanContract.ShowView;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.InfoTransactionForDebtLoanActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
+import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by infamouSs on 9/27/17.
@@ -105,7 +111,6 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
         this.mDebtLoanPresenter.setView(this);
     }
     
-    
     @Override
     protected void initializeActionBar(View rootView) {
         
@@ -114,8 +119,8 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         if (getArguments() != null) {
-            
             mType = getArguments().getString("type");
         }
     }
@@ -124,19 +129,17 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        MyLogger.d(TAG, mType + " onViewCreated");
         getData();
     }
     
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
         mDebtLoanPresenter.unSubscribe();
     }
     
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
     
     @Override
     public void onFailure(String message) {
@@ -156,9 +159,19 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
         expandsOrCollapse(true);
     }
     
+    @Subscribe
+    public void onEvent(ActivityResultEvent event) {
+        
+        if (event.getResultCode() == ResultCode.REMOVE_TRANSACTION_RESULT_CODE ||
+            event.getResultCode() == ResultCode.EDIT_TRANSACTION_RESULT_CODE) {
+            getData();
+        }
+    }
+    
     @Override
     public void showEmpty() {
-        //TODO: Empty Adapter
+        mDebtLoanAdapter.setData(Collections.<DebtLoan>emptyList());
+        mExpandableListView.setAdapter(mDebtLoanAdapter);
     }
     
     @Override
@@ -168,7 +181,6 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
     }
     
     public void addDebtLoan(Transaction transaction) {
-        
         DebtLoan debtLoan = new DebtLoan();
         debtLoan.setStatus(0);
         debtLoan.setTransaction(transaction);
@@ -189,16 +201,6 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
         debtLoan.setTransaction(transaction);
         
         mDebtLoanPresenter.addDebtLoan(debtLoan);
-    }
-    
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            // load data here
-        }else{
-            // fragment is no longer visible
-        }
     }
     
     public void getData() {

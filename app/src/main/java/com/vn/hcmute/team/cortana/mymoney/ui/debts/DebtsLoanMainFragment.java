@@ -9,6 +9,7 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.R;
+import com.vn.hcmute.team.cortana.mymoney.event.ActivityResultEvent;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.ManagerTransactionActivity;
@@ -16,6 +17,8 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by infamouSs on 9/27/17.
@@ -50,8 +53,16 @@ public class DebtsLoanMainFragment extends BaseFragment {
     
     @Override
     protected void initializeActionBar(View rootView) {
-        
+        getActivity().setTitle(getString(R.string.txt_debt_loan));
     }
+    
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        EventBus.getDefault().register(this);
+    }
+    
     
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -60,22 +71,33 @@ public class DebtsLoanMainFragment extends BaseFragment {
     }
     
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+    
+    
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        MyLogger.d(TAG, resultCode);
-        if (resultCode == ResultCode.ADD_TRANSACTION_RESULT_CODE) {
-            Transaction transaction = data.getParcelableExtra("transaction");
-            
-            if (transaction != null) {
-                ((DebtsLoanFragmentByType) mViewPagerAdapter.getItem(mViewPager.getCurrentItem()))
-                          .addDebtLoan(transaction);
+    }
+    
+    @Subscribe
+    public void onEvent(ActivityResultEvent event) {
+        if (event.getResultCode() == ResultCode.ADD_TRANSACTION_RESULT_CODE) {
+            Transaction transaction = (Transaction) event.getData();
+            MyLogger.d(TAG, transaction, true);
+            if (transaction.getType().equals("income")) {
+                ((DebtsLoanFragmentByType) mViewPagerAdapter.getItem(0))
+                          .addDebtLoan((Transaction) event.getData());
+            } else if (transaction.getType().equals("expense")) {
+                ((DebtsLoanFragmentByType) mViewPagerAdapter.getItem(1))
+                          .addDebtLoan((Transaction) event.getData());
             }
-        } else if (resultCode == ResultCode.CHANGE_DEBT_LOAN_RESULT_CODE ||
-                   resultCode == ResultCode.REMOVE_TRANSACTION_RESULT_CODE) {
-            ((DebtsLoanFragmentByType) mViewPagerAdapter.getItem(mViewPager.getCurrentItem()))
-                      .getData();
+            
         }
     }
+    
     
     @OnClick(R.id.btn_add_debt)
     public void addDebtLoan() {

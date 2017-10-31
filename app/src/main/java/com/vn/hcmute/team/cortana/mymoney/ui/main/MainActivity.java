@@ -47,6 +47,7 @@ import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -248,7 +249,6 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
         if (mPreferenceHelper.getCurrentUser() == null) {
             openLoginActivity();
             return;
@@ -394,12 +394,12 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         GlideImageLoader.load(this, DrawableUtil.getDrawable(this, mCurrentWallet.getWalletImage()),
                   mImageViewIconWallet);
         
-        String value = getString(R.string.txt_show_value_wallet,
-                  mCurrentWallet.getCurrencyUnit().getCurSymbol(),
-                  (TextUtils.isEmpty(mCurrentWallet.getMoney()) ? "0" : mCurrentWallet.getMoney()));
-        
         mTextViewNameWallet.setText(mCurrentWallet.getWalletName());
-        mTextViewValueWallet.setText(value);
+        mTextViewValueWallet.setText(NumberUtil
+                  .formatAmount(TextUtils.isEmpty(mCurrentWallet.getMoney())
+                                      ? "0"
+                                      : mCurrentWallet.getMoney(),
+                            mCurrentWallet.getCurrencyUnit().getCurSymbol()));
     }
     
     
@@ -517,11 +517,10 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     private void updateViewHeaderWithWallet(Wallet wallet) {
         GlideImageLoader.load(MainActivity.this, DrawableUtil
                   .getDrawable(MainActivity.this, wallet.getWalletImage()), mImageViewIconWallet);
-        String value = getString(R.string.txt_show_value_wallet,
-                  wallet.getCurrencyUnit().getCurSymbol(),
-                  (TextUtils.isEmpty(wallet.getMoney()) ? "0" : wallet.getMoney()));
         
-        mTextViewValueWallet.setText(value);
+        mTextViewValueWallet.setText(NumberUtil
+                  .formatAmount(TextUtils.isEmpty(wallet.getMoney()) ? "0" : wallet.getMoney(),
+                            wallet.getCurrencyUnit().getCurSymbol()));
         mTextViewNameWallet.setText(wallet.getWalletName());
     }
     

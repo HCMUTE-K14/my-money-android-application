@@ -23,17 +23,20 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerTransactionComponen
 import com.vn.hcmute.team.cortana.mymoney.di.component.TransactionComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.TransactionModule;
+import com.vn.hcmute.team.cortana.mymoney.event.ActivityResultEvent;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionContract.DeleteView;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
+import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.List;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by infamouSs on 10/25/17.
@@ -73,7 +76,7 @@ public abstract class BaseInfoTransactionActivity extends BaseActivity implement
     protected ProgressDialog mProgressDialog;
     protected Transaction mTransaction;
     
-    protected  TransactionComponent mTransactionComponent;
+    protected TransactionComponent mTransactionComponent;
     
     @Override
     public void showAllListTransaction(List<Transaction> list) {
@@ -103,13 +106,13 @@ public abstract class BaseInfoTransactionActivity extends BaseActivity implement
     protected void initializeDagger() {
         ApplicationComponent applicationComponent = ((MyMoneyApplication) this.getApplication())
                   .getAppComponent();
-    
+        
         mTransactionComponent = DaggerTransactionComponent.builder()
                   .applicationComponent(applicationComponent)
                   .activityModule(new ActivityModule(this))
                   .transactionModule(new TransactionModule())
                   .build();
-    
+        
         mTransactionComponent.inject(this);
     }
     
@@ -203,6 +206,9 @@ public abstract class BaseInfoTransactionActivity extends BaseActivity implement
     
     @Override
     public void onDeleteSuccessTransaction(String message) {
+        EventBus.getDefault()
+                  .post(new ActivityResultEvent(ResultCode.REMOVE_TRANSACTION_RESULT_CODE,
+                            message));
         finish();
     }
     

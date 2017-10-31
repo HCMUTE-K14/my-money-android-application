@@ -311,14 +311,7 @@ public class DebtLoanAdapter extends BaseExpandableListAdapter {
                   .setText(TextUtil.isEmpty(person.getDescribe()) ? "" : person.getDescribe());
     }
     
-    public void add(DebtLoan debtLoan) {
-        //        if (debtLoan.getStatus() == 0) {
-        //            mData.get("not_yet").add(debtLoan);
-        //        } else if (debtLoan.getStatus() == 1) {
-        //            mData.get("done").add(debtLoan);
-        //        }
-        //        notifyDataSetChanged();
-    }
+
     
     
     @Override
@@ -351,6 +344,7 @@ public class DebtLoanAdapter extends BaseExpandableListAdapter {
             mData.clear();
         }
         mData = buildDataForAdapter(list);
+        notifyDataSetChanged();
     }
     
     static class DebtLoanItemViewHolder {
