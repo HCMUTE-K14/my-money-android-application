@@ -294,7 +294,7 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
             alertDiaglog(getString(R.string.select_date));
             return;
         }
-        if (txt_goal_money.getText().toString().substring(1).trim().equals("0")) {
+        if (mGoalMoney.equals("0")) {
             alertDiaglog(getString(R.string.input_money));
             return;
         }

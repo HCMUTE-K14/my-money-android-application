@@ -15,6 +15,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -94,7 +95,8 @@ public class MyRecyclerViewSavingAdapter extends
         
         public void bind(Saving saving) {
             txt_saving_name.setText(saving.getName());
-            txt_money_goal.setText(saving.getGoalMoney());
+            txt_money_goal.setText(NumberUtil
+                      .formatAmount(saving.getGoalMoney(), saving.getCurrencies().getCurSymbol()));
             
             txt_time_rest.setText(mContext
                       .getString(R.string.days_left, getDateRest(saving.getDate()) + ""));

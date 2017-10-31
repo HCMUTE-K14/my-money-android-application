@@ -14,7 +14,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.MenuPopupWithIcon;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
@@ -134,12 +133,8 @@ public class CategoryByTypeAdapter extends BaseExpandableListAdapter {
         }
         
         holder.mTextViewNameCate.setText(category.getName());
-        
-        GlideApp.with(mContext).load(DrawableUtil.getDrawable(mContext, category.getIcon()))
-                  .placeholder(R.drawable.folder_placeholder)
-                  .error(R.drawable.folder_placeholder)
-                  .into(holder.mImageViewIcon);
-        
+        GlideImageLoader.load(mContext, DrawableUtil.getDrawable(mContext, category.getIcon()),
+                  holder.mImageViewIcon);
         if (isCategorySelected(category)) {
             holder.mImageViewSelected.setVisibility(View.VISIBLE);
         } else {

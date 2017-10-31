@@ -1,4 +1,4 @@
-package com.vn.hcmute.team.cortana.mymoney.ui.event.adapter;
+package com.vn.hcmute.team.cortana.mymoney.ui.budget.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,23 +14,24 @@ import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
+import com.vn.hcmute.team.cortana.mymoney.ui.event.adapter.DateObjectTransaction;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by kunsubin on 10/20/2017.
+ * Created by kunsubin on 10/24/2017.
  */
 
-public class TransactionEventAdapter extends BaseExpandableListAdapter {
+public class TransactionBudgetAdapter extends BaseExpandableListAdapter {
     
     private Context mContext;
     private List<DateObjectTransaction> mListDataHeader;
     private HashMap<DateObjectTransaction, List<Transaction>> mListDataChild;
     private ClickChildView mClickChildView;
     
-    public TransactionEventAdapter(Context context, List<DateObjectTransaction> listDataHeader,
+    public TransactionBudgetAdapter(Context context, List<DateObjectTransaction> listDataHeader,
               HashMap<DateObjectTransaction, List<Transaction>> listChildData) {
         this.mContext = context;
         this.mListDataHeader = listDataHeader;

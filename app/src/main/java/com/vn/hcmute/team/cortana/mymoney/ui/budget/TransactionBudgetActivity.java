@@ -1,4 +1,4 @@
-package com.vn.hcmute.team.cortana.mymoney.ui.event;
+package com.vn.hcmute.team.cortana.mymoney.ui.budget;
 
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,13 +20,12 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerTransactionComponen
 import com.vn.hcmute.team.cortana.mymoney.di.component.TransactionComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.TransactionModule;
-import com.vn.hcmute.team.cortana.mymoney.model.Event;
+import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.base.EmptyAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.ExpandableListEmptyAdapter;
+import com.vn.hcmute.team.cortana.mymoney.ui.budget.adapter.TransactionBudgetAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.adapter.DateObjectTransaction;
-import com.vn.hcmute.team.cortana.mymoney.ui.event.adapter.TransactionEventAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionContract;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionPresenter;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
@@ -38,11 +37,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * Created by kunsubin on 10/17/2017.
+ * Created by kunsubin on 10/24/2017.
  */
 
-public class TransactionEventActivity extends BaseActivity implements TransactionContract.View,
-                                                                      TransactionEventAdapter.ClickChildView {
+public class TransactionBudgetActivity extends BaseActivity implements TransactionContract.View,
+                                                                       TransactionBudgetAdapter.ClickChildView {
     
     @BindView(R.id.list_transaction_event)
     ExpandableListView mExpandableListView;
@@ -51,18 +50,16 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
     
-    
     TextView mGoalMoney;
     @Inject
     TransactionPresenter mTransactionPresenter;
     private ExpandableListEmptyAdapter mBaseEmptyAdapter;
-    private Event mEvent;
-    private TransactionEventAdapter mTransactionEventAdapter;
+    private List<Transaction> mTransactionList;
+    private Budget mBudget;
+    private TransactionBudgetAdapter mTransactionBudgetAdapter;
     private List<DateObjectTransaction> mListDataHeader;
     private HashMap<DateObjectTransaction, List<Transaction>> mListDataChild;
     private List<String> mDateList;
-    private EmptyAdapter mEmptyAdapter;
-    private List<Transaction> mTransactionList;
     
     @Override
     public int getLayoutId() {
@@ -108,7 +105,10 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
         mGoalMoney = ButterKnife.findById(header, R.id.txt_goal_money);
         mExpandableListView.addHeaderView(header);
         //get list transaction by event
-        mTransactionPresenter.getTransactionByEvent(mEvent.getEventid());
+        final String[] arr = mBudget.getRangeDate().split("/");
+        mTransactionPresenter.getTransactionByBudget(arr[0], arr[1], mBudget.getCategory().getId(),
+                  mBudget.getWallet().getWalletid());
+        
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -116,10 +116,12 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
                 mDateList.clear();
                 mListDataHeader.clear();
                 mListDataChild.clear();
-                if (mTransactionEventAdapter != null) {
-                    mTransactionEventAdapter.notifyDataSetChanged();
+                if (mTransactionBudgetAdapter != null) {
+                    mTransactionBudgetAdapter.notifyDataSetChanged();
                 }
-                mTransactionPresenter.getTransactionByEvent(mEvent.getEventid());
+                mTransactionPresenter
+                          .getTransactionByBudget(arr[0], arr[1], mBudget.getCategory().getId(),
+                                    mBudget.getWallet().getWalletid());
             }
         });
         
@@ -134,13 +136,13 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
             //set data
             setDataAdapter();
             //set adapter
-            mTransactionEventAdapter = new TransactionEventAdapter(this, mListDataHeader,
+            mTransactionBudgetAdapter = new TransactionBudgetAdapter(this, mListDataHeader,
                       mListDataChild);
-            mTransactionEventAdapter.setClickChildView(this);
+            mTransactionBudgetAdapter.setClickChildView(this);
             
             setGoalMoneyHeader();
             
-            mExpandableListView.setAdapter(mTransactionEventAdapter);
+            mExpandableListView.setAdapter(mTransactionBudgetAdapter);
             mExpandableListView.setGroupIndicator(null);
         } else {
             mBaseEmptyAdapter = new ExpandableListEmptyAdapter(this,
@@ -153,7 +155,6 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
         
         
     }
-    
     
     @Override
     public void onFailure(String message) {
@@ -181,11 +182,12 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
     }
     
     /*Area funcction*/
+    
     public void getData() {
-        mEvent = new Event();
+        mBudget = new Budget();
         Intent intent = this.getIntent();
-        if (intent.getParcelableExtra("event") != null) {
-            mEvent = intent.getParcelableExtra("event");
+        if (intent.getParcelableExtra("budget") != null) {
+            mBudget = intent.getParcelableExtra("budget");
         }
     }
     
@@ -226,14 +228,12 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
         dateObjectTransaction.setDayOfMonth(dayOfMonth);
         dateObjectTransaction.setMonthOfYear(monthOfYear);
         dateObjectTransaction.setYear(yearT);
-        dateObjectTransaction.setCurrencies(mEvent.getCurrencies().getCurSymbol());
+        dateObjectTransaction.setCurrencies(mBudget.getWallet().getCurrencyUnit().getCurSymbol());
         
         double money = 0;
         for (Transaction transaction : mTransactionList) {
             if (DateUtil.convertTimeMillisToDate(transaction.getDate_created()).equals(date)) {
-                money += NumberUtil.exchangeMoney(this, transaction.getAmount(),
-                          transaction.getWallet().getCurrencyUnit().getCurCode(),
-                          mEvent.getCurrencies().getCurCode());
+                money += Double.parseDouble(transaction.getAmount());
             }
         }
         dateObjectTransaction.setMoney(money + "");
@@ -258,7 +258,6 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
             moneyGoal += Double.parseDouble(dateObjectTransaction.getMoney().trim());
         }
         mGoalMoney.setText("-" + NumberUtil.formatAmount(moneyGoal + "",
-                  mEvent.getCurrencies().getCurSymbol()));
+                  mBudget.getWallet().getCurrencyUnit().getCurSymbol()));
     }
-    
 }

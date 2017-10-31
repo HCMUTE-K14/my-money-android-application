@@ -12,6 +12,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase.TransactionRequest;
+import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -84,9 +85,14 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                 doGetTransactionByEvent(requestValues.getCallback(), requestValues.getParams(),
                           requestValues.getTypeRepository());
                 break;
+            case Action.ACTION_GET_TRANSACTION_BY_BUDGET:
+                doGetTransactionByBudget(requestValues.getCallback(), requestValues.getParams(),
+                          requestValues.getTypeRepository());
+                break;
         }
         
     }
+    
     
     private void doDeleteTransaction(final BaseCallBack<Object> callBack, String[] params,
               TypeRepository typeRepository) {
@@ -148,6 +154,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
             this.mCompositeDisposable.add(mDisposable);
         }
     }
+    
     
     @Override
     public void unSubscribe() {
@@ -464,9 +471,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
             }
         };
         if (!this.mCompositeDisposable.isDisposed()) {
-            if (typeRepository == TypeRepository.LOCAL) {
-                
-            } else if (typeRepository == TypeRepository.REMOTE) {
+            if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
                 
@@ -487,6 +492,51 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
+            } else {
+                
+            }
+            this.mCompositeDisposable.add(mDisposable);
+        }
+    }
+    
+    private void doGetTransactionByBudget(final BaseCallBack<Object> callback, String[] params,
+              TypeRepository typeRepository) {
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object result) {
+                callback.onSuccess(result);
+            }
+            
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callback.onFailure(e);
+            }
+        };
+        if (!this.mCompositeDisposable.isDisposed()) {
+            if (typeRepository == TypeRepository.REMOTE) {
+                String userid = mDataRepository.getUserId();
+                String token = mDataRepository.getUserToken();
+                
+                if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                    callback.onFailure(new UserLoginException(
+                              mContext.getString(R.string.message_warning_need_login)));
+                    return;
+                }
+                mDisposable = mDataRepository
+                          .getTransactionByBudget(userid, token, params[0], params[1], params[2],
+                                    params[3])
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callback.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            } else {
+            
             }
             this.mCompositeDisposable.add(mDisposable);
         }
@@ -579,6 +629,8 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                 String token = mDataRepository.getUserToken();
                 
                 transaction.setUser_id(userid);
+                
+                transaction.setTrans_id(SecurityUtil.getRandomUUID());
                 
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(

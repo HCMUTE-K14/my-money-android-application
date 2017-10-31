@@ -129,6 +129,14 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
         return mRemoteRepository.getTransactionByEvent(eventid, userid, token);
     }
     
+    @Override
+    public Observable<List<Transaction>> getTransactionByBudget(String userid, String token,
+              String startDate, String endDate, String categoryId, String walletId) {
+        return mRemoteRepository
+                  .getTransactionByBudget(startDate, endDate, categoryId, walletId, userid, token);
+    }
+    
+    
     public Observable<List<DebtLoan>> getDebtLoanByType(String userid, String token,
               String wallet_id, String type) {
         return mRemoteRepository.getDebtLoan(userid, token, wallet_id, type);

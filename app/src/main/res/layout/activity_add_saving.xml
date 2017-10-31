@@ -84,7 +84,7 @@
             android:id="@+id/image_view_icon_saving"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/icon_not_selected"/>
+            android:src="@drawable/icon_not_selected" />
           <View
             android:layout_width="48dp"
             android:layout_height="2dp"
@@ -178,10 +178,10 @@
         </LinearLayout>
         <LinearLayout
           android:id="@+id/linear_select_date"
-          android:background="@drawable/button_transparent_bounded_darken"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_weight="1"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:gravity="center"
           android:orientation="vertical">
           <RelativeLayout
@@ -273,8 +273,8 @@
           android:id="@+id/linear_select_wallet"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:background="@drawable/button_transparent_bounded_darken"
           android:layout_weight="1"
+          android:background="@drawable/button_transparent_bounded_darken"
           android:gravity="center|left"
           android:orientation="vertical">
           <TextView

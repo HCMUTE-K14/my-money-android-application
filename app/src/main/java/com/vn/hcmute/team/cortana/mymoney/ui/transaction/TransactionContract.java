@@ -15,6 +15,7 @@ public interface TransactionContract {
         
         void showAllListTransaction(List<Transaction> list);
         
+        
         void onFailure(String message);
         
         void loading(boolean isLoading);
@@ -42,6 +43,9 @@ public interface TransactionContract {
         void getAllTransaction();
         
         void getTransactionByEvent(String eventId);
+        
+        void getTransactionByBudget(String startDate, String endDate, String categoryId,
+                  String walletId);
         
         void deleteTransaction(Transaction transaction);
         

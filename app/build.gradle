@@ -105,8 +105,10 @@ dependencies {
 
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 
-    compile 'org.greenrobot:eventbus:3.0.0'
 
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+
+    compile 'org.greenrobot:eventbus:3.0.0'
 
     androidTestCompile 'junit:junit:4.12'
     testCompile 'junit:junit:4.12'

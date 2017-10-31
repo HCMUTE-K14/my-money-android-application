@@ -32,10 +32,10 @@
         android:id="@+id/linear_layout_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="100dp"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/rounded_letter"
         android:paddingLeft="10dp"
+        android:minWidth="100dp"
         android:orientation="vertical">
 
         <TextView
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true" />
         </RelativeLayout>
       </LinearLayout>
       <LinearLayout
@@ -69,10 +69,10 @@
         android:orientation="vertical">
         <TextView
           android:id="@+id/txt_status_money_1"
-          android:gravity="end"
           style="@style/ListItemSubTitleStyle"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
+          android:gravity="end"
           android:textSize="15sp" />
         <RelativeLayout
           android:layout_width="fill_parent"
@@ -81,9 +81,9 @@
           <TextView
             android:id="@+id/txt_status_money_2"
             style="@style/ListItemSubTitleStyle"
-            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="end"
             android:textSize="15sp" />
 
         </RelativeLayout>

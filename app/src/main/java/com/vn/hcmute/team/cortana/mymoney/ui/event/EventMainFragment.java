@@ -36,7 +36,7 @@ public class EventMainFragment extends BaseFragment {
     
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_event;
+        return R.layout.fragment_event;
     }
     
     @Override

@@ -310,8 +310,8 @@
                   android:paddingBottom="10dp"
                   android:paddingLeft="10dp"
                   android:clickable="false"
-                  android:hint="@string/txt_select_location"
                   android:focusable="false"
+                  android:hint="@string/txt_select_location"
                   android:textSize="18dp" />
               </LinearLayout>
             </LinearLayout>

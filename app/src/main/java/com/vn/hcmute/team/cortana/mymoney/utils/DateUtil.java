@@ -1,6 +1,8 @@
 package com.vn.hcmute.team.cortana.mymoney.utils;
 
+import android.content.Context;
 import com.vn.hcmute.team.cortana.mymoney.ApplicationConfig;
+import com.vn.hcmute.team.cortana.mymoney.R;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,6 +37,31 @@ public class DateUtil {
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
         
         return mDay + "/" + mMonth + "/" + mYear;
+    }
+    
+    public static int getDayOfWeek(String timeMillis) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(timeMillis));
+        return calendar.get(Calendar.DAY_OF_WEEK);
+    }
+    
+    public static int getDayOfMonth(String timeMillis) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(timeMillis));
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+    
+    public static int getMonthOfYear(String timeMillis) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(timeMillis));
+        
+        return calendar.get(Calendar.MONTH);
+    }
+    
+    public static int getYear(String timeMillis) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(timeMillis));
+        return calendar.get(Calendar.YEAR);
     }
     
     public static String convertTimeMilisToDateNotYear(String timeMillis) {
@@ -75,5 +102,58 @@ public class DateUtil {
         String pattern = ApplicationConfig.DEFAULT_DATE_PATTERN;
         Format formatter = new SimpleDateFormat(pattern);
         return formatter.format(date);
+    }
+    
+    public static String getDayOfWeek(Context context, int dayOfWeek) {
+        
+        switch (dayOfWeek) {
+            case 2:
+                return context.getString(R.string.txt_monday);
+            case 3:
+                return context.getString(R.string.txt_tuesday);
+            case 4:
+                return context.getString(R.string.txt_wednesday);
+            case 5:
+                return context.getString(R.string.txt_thursday);
+            case 6:
+                return context.getString(R.string.txt_friday);
+            case 7:
+                return context.getString(R.string.txt_saturday);
+            case 1:
+                return context.getString(R.string.txt_sunday);
+            default:
+                return "";
+        }
+    }
+    
+    public static String getMonthOfYear(Context context, int monthOfYear) {
+        switch (monthOfYear) {
+            case 0:
+                return context.getString(R.string.txt_january);
+            case 1:
+                return context.getString(R.string.txt_february);
+            case 2:
+                return context.getString(R.string.txt_march);
+            case 3:
+                return context.getString(R.string.txt_april);
+            case 4:
+                return context.getString(R.string.txt_may);
+            case 5:
+                return context.getString(R.string.txt_june);
+            case 6:
+                return context.getString(R.string.txt_july);
+            case 7:
+                return context.getString(R.string.txt_august);
+            case 8:
+                return context.getString(R.string.txt_september);
+            case 9:
+                return context.getString(R.string.txt_october);
+            case 10:
+                return context.getString(R.string.txt_november);
+            case 11:
+                return context.getString(R.string.txt_december);
+            default:
+                return "";
+        }
     }
 }

@@ -150,6 +150,11 @@ public interface DataSource {
         Observable<List<Transaction>> getTransactionByEvent(String userid, String token,
                   String eventid);
         
+        Observable<List<Transaction>> getTransactionByBudget(String userid,
+                  String token, String startDate, String endDate,
+                  String categoryId, String walletId
+        );
+        
         Observable<List<DebtLoan>> getDebtLoanByType(String userid, String token, String wallet_id,
                   String type);
         

@@ -15,6 +15,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -106,15 +107,16 @@ public class TransactionSavingAdapter extends
             
             if (transaction.getType().equals("expense")) {
                 txt_take_in_out.setText(mContext.getString(R.string.take_in));
-                txt_money.setText("-" + transaction.getAmount() + " " +
-                                  transaction.getWallet().getCurrencyUnit().getCurSymbol());
+                txt_money.setText("-" + NumberUtil.formatAmount(transaction.getAmount(),
+                          transaction.getWallet().getCurrencyUnit().getCurSymbol()));
+                
                 txt_money.setTextColor(ContextCompat.getColor(mContext, R.color.color_red));
                 
             }
             if (transaction.getType().equals("income")) {
                 txt_take_in_out.setText(mContext.getString(R.string.take_out));
-                txt_money.setText("+" + transaction.getAmount() + " " +
-                                  transaction.getSaving().getCurrencies().getCurSymbol());
+                txt_money.setText("+" + NumberUtil.formatAmount(transaction.getAmount(),
+                          transaction.getSaving().getCurrencies().getCurSymbol()));
                 txt_money.setTextColor(ContextCompat.getColor(mContext, R.color.green));
             }
         }

@@ -13,6 +13,7 @@ import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -73,7 +74,6 @@ public class MyRecyclerViewEventAdapter extends
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         
-        
         @BindView(R.id.txt_name_event)
         TextView txt_name_event;
         @BindView(R.id.txt_money)
@@ -91,7 +91,7 @@ public class MyRecyclerViewEventAdapter extends
         
         public void bindView(Event event) {
             txt_name_event.setText(event.getName());
-            txt_money.setText(event.getMoney());
+            txt_money.setText(NumberUtil.formatAmount(event.getMoney(), ""));
             txt_currency.setText(event.getCurrencies().getCurSymbol());
             
             GlideImageLoader.load(mContext, DrawableUtil.getDrawable(mContext, event.getIcon()),

@@ -157,7 +157,7 @@ public class FragmentEventFinished extends BaseFragment implements EventContract
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }
-        mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.txt_no_saving));
+        mEmptyAdapter = new EmptyAdapter(getContext(), getString(R.string.no_event));
         mRecyclerView.setAdapter(mEmptyAdapter);
     }
     

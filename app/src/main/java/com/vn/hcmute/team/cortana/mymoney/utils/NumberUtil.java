@@ -29,6 +29,11 @@ public class NumberUtil {
         return formatter.format(value);
     }
     
+    public static float format(float value) {
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        return Float.valueOf(decimalFormat.format(value));
+    }
+    
     public static double exchangeMoney(Context context, String amount, String from, String to) {
         
         PreferencesHelper preferencesHelper = PreferencesHelper
@@ -49,11 +54,20 @@ public class NumberUtil {
     }
     
     public static String formatAmount(String number, String symbolCurrency) {
+        
         double amount = Double.parseDouble(number);
-        
+        if (number.equals("0")) {
+            return "0" + " " + symbolCurrency;
+        }
         DecimalFormat formatter = new DecimalFormat(ApplicationConfig.DEFAULT_AMOUNT_PATTERN);
+        String format = formatter.format(amount);
+        String[] arr = format.split("\\.");
+        double temp = Double.parseDouble(arr[1].trim());
+        if (temp == 0.0) {
+            return arr[0] + " " + symbolCurrency;
+        } else {
+            return formatter.format(amount) + " " + symbolCurrency;
+        }
         
-        return formatter.format(amount) + " " + symbolCurrency;
     }
-    
 }
