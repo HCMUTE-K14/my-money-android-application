@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:weightSum="5">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="2">
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+          android:id="@+id/txt_inflow"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textColor="@color/black"
+          android:layout_marginLeft="10dp"
+          android:layout_marginTop="10dp"
+          android:textSize="17dp"
+          android:text="@string/txt_inflow"/>
+        <TextView
+          android:id="@+id/txt_outflow"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textColor="@color/black"
+          android:layout_marginLeft="10dp"
+          android:textSize="17dp"
+          android:layout_below="@+id/txt_inflow"
+          android:text="@string/txt_outflow"/>
+        <TextView
+          android:id="@+id/txt_inflow_money"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:textColor="@color/green"
+          android:layout_marginRight="10dp"
+          android:layout_alignParentRight="true"
+          android:textSize="17dp"
+          android:text="0 đ"/>
+        <TextView
+          android:id="@+id/txt_outflow_money"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textColor="@color/color_red"
+          android:textSize="17dp"
+          android:layout_marginRight="10dp"
+          android:layout_alignParentRight="true"
+          android:layout_below="@+id/txt_inflow"
+          android:text="-120000 đ"/>
+      </RelativeLayout>
+    </LinearLayout>
+    <View
+      android:layout_width="200dp"
+      android:layout_height="0.4dp"
+      android:layout_gravity="right"
+      android:background="@color/gray"/>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center|right"
+      android:layout_weight="3">
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:text="- 147,000 đ" />
+    </LinearLayout>
+  </LinearLayout>
+</android.support.v7.widget.CardView>

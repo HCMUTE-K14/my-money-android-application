@@ -1,6 +1,8 @@
 package com.vn.hcmute.team.cortana.mymoney.utils;
 
+import android.content.Context;
 import com.vn.hcmute.team.cortana.mymoney.ApplicationConfig;
+import com.vn.hcmute.team.cortana.mymoney.R;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -98,52 +100,53 @@ public class DateUtil {
         return formatter.format(date);
     }
     
-    public static String getDayOfWeek(int dayOfWeek){
+    public static String getDayOfWeek( Context context,int dayOfWeek){
+        
         switch (dayOfWeek){
             case 2:
-                return "Monday";
+                return context.getString(R.string.txt_monday);
             case 3:
-                return "Tuesday";
+                return context.getString(R.string.txt_tuesday);
             case 4:
-                return "Wednesday";
+                return context.getString(R.string.txt_wednesday);
             case 5:
-                return "Thurday";
+                return context.getString(R.string.txt_thursday);
             case 6:
-                return "Friday";
+                return context.getString(R.string.txt_friday);
             case 7:
-                return "Saturday";
+                return context.getString(R.string.txt_saturday);
             case 1:
-                return "Sunday";
+                return context.getString(R.string.txt_sunday);
             default:
                 return "";
         }
     }
-    public static String getMonthOfYear(int monthOfYear){
+    public static String getMonthOfYear(Context context,int monthOfYear){
         switch (monthOfYear){
             case 0:
-                return "January";
+                return context.getString(R.string.txt_january);
             case 1:
-                return "February";
+                return context.getString(R.string.txt_february);
             case 2:
-                return "March";
+                return context.getString(R.string.txt_march);
             case 3:
-                return "April";
+                return context.getString(R.string.txt_april);
             case 4:
-                return "May";
+                return context.getString(R.string.txt_may);
             case 5:
-                return "June";
+                return context.getString(R.string.txt_june);
             case 6:
-                return "July";
+                return context.getString(R.string.txt_july);
             case 7:
-                return "August";
+                return context.getString(R.string.txt_august);
             case 8:
-                return "September";
+                return context.getString(R.string.txt_september);
             case 9:
-                return "October";
+                return context.getString(R.string.txt_october);
             case 10:
-                return "November ";
+                return context.getString(R.string.txt_november);
             case 11:
-                return "December";
+                return context.getString(R.string.txt_december);
             default:
                 return "";
         }

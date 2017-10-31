@@ -217,9 +217,9 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
         int year = Integer.parseInt(arr[2]);
         String millisecond = DateUtil.getLongAsDate(day, month, year) + "";
         
-        String dayOfWeek = DateUtil.getDayOfWeek(DateUtil.getDayOfWeek(millisecond.trim()));
+        String dayOfWeek = DateUtil.getDayOfWeek(this,DateUtil.getDayOfWeek(millisecond.trim()));
         String dayOfMonth = DateUtil.getDayOfMonth(millisecond.trim()) + "";
-        String monthOfYear = DateUtil.getMonthOfYear(DateUtil.getMonthOfYear(millisecond.trim()));
+        String monthOfYear = DateUtil.getMonthOfYear(this,DateUtil.getMonthOfYear(millisecond.trim()));
         String yearT = DateUtil.getYear(millisecond.trim()) + "";
         
         DateObjectTransaction dateObjectTransaction = new DateObjectTransaction();

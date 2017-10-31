@@ -33,7 +33,7 @@ public class SavingMainFragment extends BaseFragment {
     
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_saving;
+        return R.layout.fragment_saving;
     }
     
     @Override

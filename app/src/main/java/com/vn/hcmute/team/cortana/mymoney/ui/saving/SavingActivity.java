@@ -38,7 +38,7 @@ public class SavingActivity extends BaseActivity {
     
     @Override
     public int getLayoutId() {
-        return R.layout.activity_saving;
+        return R.layout.fragment_saving;
     }
     
     @Override

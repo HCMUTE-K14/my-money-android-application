@@ -259,4 +259,27 @@
   <string name="txt_over_view">Overview</string>
   <string name="txt_check_edit_budget">Budget has been applied. Can not edit</string>
   <string name="txt_overspent">Overspent</string>
+  <string name="txt_inflow">Inflow</string>
+  <string name="txt_outflow">Outflow</string>
+  <!--Date-->
+  <string name="txt_monday">Monday</string>
+  <string name="txt_tuesday">Tuesday</string>
+  <string name="txt_wednesday">Wednesday</string>
+  <string name="txt_thursday">Thurday</string>
+  <string name="txt_friday">Friday</string>
+  <string name="txt_saturday">Saturday</string>
+  <string name="txt_sunday">Sunday</string>
+  <!--Month-->
+  <string name="txt_january">January</string>
+  <string name="txt_february">February</string>
+  <string name="txt_march">March</string>
+  <string name="txt_april">April</string>
+  <string name="txt_may">May</string>
+  <string name="txt_june">June</string>
+  <string name="txt_july">July</string>
+  <string name="txt_august">August</string>
+  <string name="txt_september">September</string>
+  <string name="txt_october">October</string>
+  <string name="txt_november">November</string>
+  <string name="txt_december">December</string>
 </resources>
