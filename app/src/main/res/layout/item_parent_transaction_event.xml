@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical" android:layout_width="match_parent"
+  android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:background="@color/white">
+  android:background="@color/white"
+  android:orientation="vertical">
   <android.support.v7.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -14,51 +15,50 @@
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_weight="5">
+        android:layout_weight="5"
+        android:gravity="center">
         <TextView
           android:id="@+id/txt_day"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:textSize="38dp"
+          android:text="19"
           android:textColor="@color/black"
-          android:text="19"/>
+          android:textSize="38dp" />
       </LinearLayout>
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="5dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:paddingLeft="5dp">
         <RelativeLayout
           android:layout_width="match_parent"
           android:layout_height="match_parent">
           <TextView
             android:id="@+id/txt_mon"
-            android:layout_marginTop="10dp"
-            android:textSize="16dp"
-            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Monday"
-            />
+            android:textColor="@color/black"
+            android:textSize="16dp" />
           <TextView
             android:id="@+id/txt_month_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:layout_centerVertical="true"
             android:layout_below="@+id/txt_mon"
-            android:text="October 2017" />
+            android:layout_centerVertical="true"
+            android:text="October 2017"
+            android:textSize="16dp" />
           <TextView
             android:id="@+id/txt_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:textSize="18dp"
-            android:textColor="@color/black"
             android:layout_marginRight="15dp"
             android:layout_alignParentRight="true"
-            android:text="-23000 đ" />
+            android:layout_centerVertical="true"
+            android:text="-23000 đ"
+            android:textColor="@color/black"
+            android:textSize="18dp" />
         </RelativeLayout>
       </LinearLayout>
     </LinearLayout>

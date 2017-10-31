@@ -55,19 +55,18 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     LinearLayout linear_wallet;
     
     
-    private Wallet mWallet;
-    private String value = "-1";
-    private Saving mSaving;
-    private Wallet mWalletTemp;
-    private Transaction mTransaction;
-    private String mGoalMoney="0";
-    
     @Inject
     SavingPresenter mSavingPresenter;
     @Inject
     PreferencesHelper mPreferencesHelper;
     @Inject
     TransactionUseCase mTransactionUseCase;
+    private Wallet mWallet;
+    private String value = "-1";
+    private Saving mSaving;
+    private Wallet mWalletTemp;
+    private Transaction mTransaction;
+    private String mGoalMoney = "0";
     
     @Override
     public int getLayoutId() {
@@ -120,7 +119,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
             if (resultCode == Activity.RESULT_OK) {
                 
                 mGoalMoney = data.getStringExtra("result");
-                String goalMoneyShow=data.getStringExtra("result_view");
+                String goalMoneyShow = data.getStringExtra("result_view");
                 
                 txt_money.setText(goalMoneyShow);
                 
@@ -344,7 +343,8 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
                           Double.parseDouble(mSaving.getCurrentMoney());
         txt_remainin.setText("+" + NumberUtil.formatAmount(String.valueOf(remainin),
                   mSaving.getCurrencies().getCurSymbol()));
-        txt_money.setText(NumberUtil.formatAmount(mGoalMoney,mSaving.getCurrencies().getCurSymbol()));
+        txt_money.setText(
+                  NumberUtil.formatAmount(mGoalMoney, mSaving.getCurrencies().getCurSymbol()));
         if (value.equals("1")) {
             edit_describe.setText(getString(R.string.deposit));
         } else {

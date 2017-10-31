@@ -51,20 +51,15 @@ public class TransactionBudgetActivity extends BaseActivity implements Transacti
     SwipeRefreshLayout mSwipeRefreshLayout;
     
     TextView mGoalMoney;
-    
+    @Inject
+    TransactionPresenter mTransactionPresenter;
     private ExpandableListEmptyAdapter mBaseEmptyAdapter;
     private List<Transaction> mTransactionList;
     private Budget mBudget;
     private TransactionBudgetAdapter mTransactionBudgetAdapter;
-    
     private List<DateObjectTransaction> mListDataHeader;
     private HashMap<DateObjectTransaction, List<Transaction>> mListDataChild;
-    
     private List<String> mDateList;
-    
-    
-    @Inject
-    TransactionPresenter mTransactionPresenter;
     
     @Override
     public int getLayoutId() {
@@ -160,6 +155,7 @@ public class TransactionBudgetActivity extends BaseActivity implements Transacti
         
         
     }
+    
     @Override
     public void onFailure(String message) {
         mBaseEmptyAdapter = new ExpandableListEmptyAdapter(this, message);
@@ -178,6 +174,7 @@ public class TransactionBudgetActivity extends BaseActivity implements Transacti
     public void onClickChild(Transaction transaction) {
         Toast.makeText(this, transaction.getCategory().getName(), Toast.LENGTH_LONG).show();
     }
+    
     /*Area onClick*/
     @OnClick(R.id.ic_cancel)
     public void onClickCancel(View view) {
@@ -219,9 +216,10 @@ public class TransactionBudgetActivity extends BaseActivity implements Transacti
         int year = Integer.parseInt(arr[2]);
         String millisecond = DateUtil.getLongAsDate(day, month, year) + "";
         
-        String dayOfWeek = DateUtil.getDayOfWeek(this,DateUtil.getDayOfWeek(millisecond.trim()));
+        String dayOfWeek = DateUtil.getDayOfWeek(this, DateUtil.getDayOfWeek(millisecond.trim()));
         String dayOfMonth = DateUtil.getDayOfMonth(millisecond.trim()) + "";
-        String monthOfYear = DateUtil.getMonthOfYear(this,DateUtil.getMonthOfYear(millisecond.trim()));
+        String monthOfYear = DateUtil
+                  .getMonthOfYear(this, DateUtil.getMonthOfYear(millisecond.trim()));
         String yearT = DateUtil.getYear(millisecond.trim()) + "";
         
         DateObjectTransaction dateObjectTransaction = new DateObjectTransaction();
@@ -259,7 +257,7 @@ public class TransactionBudgetActivity extends BaseActivity implements Transacti
         for (DateObjectTransaction dateObjectTransaction : mListDataHeader) {
             moneyGoal += Double.parseDouble(dateObjectTransaction.getMoney().trim());
         }
-       mGoalMoney.setText("-" + NumberUtil.formatAmount(moneyGoal + "",
+        mGoalMoney.setText("-" + NumberUtil.formatAmount(moneyGoal + "",
                   mBudget.getWallet().getCurrencyUnit().getCurSymbol()));
     }
 }

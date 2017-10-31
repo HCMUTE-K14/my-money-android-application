@@ -6,6 +6,8 @@ import com.vn.hcmute.team.cortana.mymoney.di.scope.PerActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.budget.TransactionBudgetActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.TransactionEventActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.TransactionSavingActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.transaction.BaseInfoTransactionActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.transaction.InfoTransactionForDebtLoanActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.ManagerTransactionFragment;
 import dagger.Component;
 
@@ -21,6 +23,13 @@ public interface TransactionComponent {
     
     void inject(TransactionSavingActivity transactionSavingActivity);
     
+    
     void inject(TransactionEventActivity transactionEventActivity);
+    
     void inject(TransactionBudgetActivity transactionBudgetActivity);
+    
+    void inject(InfoTransactionForDebtLoanActivity infoTransactionForDebtLoanActivity);
+    
+    void inject(BaseInfoTransactionActivity baseInfoTransactionActivity);
+    
 }

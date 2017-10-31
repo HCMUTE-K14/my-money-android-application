@@ -93,13 +93,14 @@ public class MyMoneyApi {
     /*-----------------*/
     public static final String ADD_TRANSACTION = "transaction/add";
     public static final String UPDATE_TRANSACTION = "transaction/update";
+    public static final String REMOVE_TRANSACTION = "transaction/remove";
     public static final String GET_TRANSACTION_BY_CATEGORY = "transaction/getByCategory";
     public static final String GET_ALL_TRANSACTION = "transaction/getAll";
     public static final String GET_TRANSACTION_BY_ID = "transaction/get";
     public static final String GET_TRANSACTION_BY_TYPE = "transaction/getByType";
     public static final String GET_TRANSACTION_BY_TIME = "transaction/getByTime";
     public static final String GET_TRANSACTION_BY_EVENT = "transaction/getTransactionByEvent";
-    public static final String GET_TRANSACTION_BY_BUDGET="transaction/getTransactionByBudget";
+    public static final String GET_TRANSACTION_BY_BUDGET = "transaction/getTransactionByBudget";
     public static final String SYNC_TRANSACTION = "transaction/sync";
     
     public static final String GET_ALL_DEBT_LOAN = "debt_loan/get";

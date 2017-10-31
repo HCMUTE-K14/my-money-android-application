@@ -97,15 +97,13 @@ public class CategoryLocalService extends DbContentProvider<Category> {
         return new Callable<Long>() {
             @Override
             public Long call() throws Exception {
-                MyLogger.d(TAG, category.getId() == null ? "Null"
-                          : category.getId());
+                
                 if (category.getParent() != null) {
-                    MyLogger.d(TAG, "add child");
+                    MyLogger.d(TAG, "addChildCategory" + category.getId());
                     return addSubCategory(category);
                 }
-                MyLogger.d(TAG, "add parent");
                 ContentValues contentValues = createContentValues(category);
-                
+                MyLogger.d(TAG, "addCategory" + category.getId());
                 return mDatabase.insert(TABLE_NAME, null, contentValues);
             }
         };
@@ -139,7 +137,6 @@ public class CategoryLocalService extends DbContentProvider<Category> {
                 
                 List<String> ids = new ArrayList<>();
                 for (Category cate : category.getSubcategories()) {
-                    MyLogger.d(TAG, cate.getName());
                     ids.add(cate.getId());
                 }
                 String[] selectionIds = ids.toArray(new String[ids.size()]);
@@ -238,7 +235,12 @@ public class CategoryLocalService extends DbContentProvider<Category> {
         contentValues.put("type", category.getType());
         contentValues.put("trans_type", category.getTransType());
         contentValues.put("user_id", category.getUserid());
-        contentValues.put("parent_id", category.getParent().getId());
+        if (category.getParent() != null) {
+            contentValues.put("parent_id",
+                      category.getParent().getId());
+        } else {
+            contentValues.put("parent_id", "");
+        }
         
         return contentValues;
     }

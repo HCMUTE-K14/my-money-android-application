@@ -91,7 +91,7 @@ public class MyRecyclerViewEventAdapter extends
         
         public void bindView(Event event) {
             txt_name_event.setText(event.getName());
-            txt_money.setText(NumberUtil.formatAmount(event.getMoney(),""));
+            txt_money.setText(NumberUtil.formatAmount(event.getMoney(), ""));
             txt_currency.setText(event.getCurrencies().getCurSymbol());
             
             GlideImageLoader.load(mContext, DrawableUtil.getDrawable(mContext, event.getIcon()),

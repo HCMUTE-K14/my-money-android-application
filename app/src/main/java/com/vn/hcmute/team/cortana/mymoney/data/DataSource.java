@@ -131,6 +131,8 @@ public interface DataSource {
         
         Observable<String> updateTransaction(String userid, String token, Transaction transaction);
         
+        Observable<String> deleteTransaction(String userid, String token, String trans_id);
+        
         Observable<List<Transaction>> getTransactionByCategory(String userid, String token,
                   String categoryId, String walletId);
         
@@ -149,7 +151,7 @@ public interface DataSource {
                   String eventid);
         
         Observable<List<Transaction>> getTransactionByBudget(String userid,
-                  String token,String startDate, String endDate,
+                  String token, String startDate, String endDate,
                   String categoryId, String walletId
         );
         

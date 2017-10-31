@@ -31,7 +31,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.budget.BudgetMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.category.CategoryMainFragment;
-import com.vn.hcmute.team.cortana.mymoney.ui.debts.DebtsMainFragment;
+import com.vn.hcmute.team.cortana.mymoney.ui.debts.DebtsLoanMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.EventMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.login.LoginActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.SavingMainFragment;
@@ -47,7 +47,7 @@ import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -199,7 +199,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         @Override
         public void run() {
             mNavigationView.getMenu().findItem(R.id.navigation_item_debt).setChecked(true);
-            DebtsMainFragment fragment = new DebtsMainFragment();
+            DebtsLoanMainFragment fragment = new DebtsLoanMainFragment();
             mCurrentFragment = fragment;
             getSupportFragmentManager().beginTransaction()
                       .replace(R.id.container_fragment, fragment).commit();
@@ -216,7 +216,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         ApplicationComponent applicationComponent = ((MyMoneyApplication) this.getApplication())
                   .getAppComponent();
         
-        mPreferenceHelper = applicationComponent.prefenencesHelper();
+        mPreferenceHelper = applicationComponent.preferencesHelper();
         
         WalletComponent walletComponent = DaggerWalletComponent.builder()
                   .applicationComponent(applicationComponent)
@@ -249,7 +249,6 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
         if (mPreferenceHelper.getCurrentUser() == null) {
             openLoginActivity();
             return;
@@ -314,7 +313,6 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                         if (wallet.equals(mPreferenceHelper.getCurrentWallet())) {
                             updateViewHeaderWithWallet(wallet);
                         }
-                        MyLogger.d(TAG, wallet, true);
                         mSelectWalletView.updateWallet(wallet);
                     } else if (resultCode == ResultCode.REMOVE_WALLET_RESULT_CODE) {
                         if (wallet.equals(mPreferenceHelper.getCurrentWallet())) {
@@ -396,12 +394,12 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         GlideImageLoader.load(this, DrawableUtil.getDrawable(this, mCurrentWallet.getWalletImage()),
                   mImageViewIconWallet);
         
-        String value = getString(R.string.txt_show_value_wallet,
-                  mCurrentWallet.getCurrencyUnit().getCurSymbol(),
-                  (TextUtils.isEmpty(mCurrentWallet.getMoney()) ? "0" : mCurrentWallet.getMoney()));
-        
         mTextViewNameWallet.setText(mCurrentWallet.getWalletName());
-        mTextViewValueWallet.setText(value);
+        mTextViewValueWallet.setText(NumberUtil
+                  .formatAmount(TextUtils.isEmpty(mCurrentWallet.getMoney())
+                                      ? "0"
+                                      : mCurrentWallet.getMoney(),
+                            mCurrentWallet.getCurrencyUnit().getCurSymbol()));
     }
     
     
@@ -519,11 +517,11 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     private void updateViewHeaderWithWallet(Wallet wallet) {
         GlideImageLoader.load(MainActivity.this, DrawableUtil
                   .getDrawable(MainActivity.this, wallet.getWalletImage()), mImageViewIconWallet);
-        String value = getString(R.string.txt_show_value_wallet,
-                  wallet.getCurrencyUnit().getCurSymbol(),
-                  (TextUtils.isEmpty(wallet.getMoney()) ? "0" : wallet.getMoney()));
         
-        mTextViewValueWallet.setText(value);
+        mTextViewValueWallet.setText(NumberUtil
+                  .formatAmount(TextUtils.isEmpty(wallet.getMoney()) ? "0" : wallet.getMoney(),
+                            wallet.getCurrencyUnit().getCurSymbol()));
+        mTextViewNameWallet.setText(wallet.getWalletName());
     }
     
     private void openEditWalletActivity(Wallet wallet) {

@@ -23,6 +23,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.TransactionModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.base.EmptyAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.ExpandableListEmptyAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.adapter.DateObjectTransaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.adapter.TransactionEventAdapter;
@@ -50,22 +51,18 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
     
+    
     TextView mGoalMoney;
-    
-    private ExpandableListEmptyAdapter mBaseEmptyAdapter;
-    private List<Transaction> mTransactionList;
-    private Event mEvent;
-    private TransactionEventAdapter mTransactionEventAdapter;
-    
-    private List<DateObjectTransaction> mListDataHeader;
-    private HashMap<DateObjectTransaction, List<Transaction>> mListDataChild;
-    
-    private List<String> mDateList;
-
-    
-    
     @Inject
     TransactionPresenter mTransactionPresenter;
+    private ExpandableListEmptyAdapter mBaseEmptyAdapter;
+    private Event mEvent;
+    private TransactionEventAdapter mTransactionEventAdapter;
+    private List<DateObjectTransaction> mListDataHeader;
+    private HashMap<DateObjectTransaction, List<Transaction>> mListDataChild;
+    private List<String> mDateList;
+    private EmptyAdapter mEmptyAdapter;
+    private List<Transaction> mTransactionList;
     
     @Override
     public int getLayoutId() {
@@ -108,7 +105,7 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
         ViewGroup header = (ViewGroup) inflater
                   .inflate(R.layout.item_header_list_view_transaction, mExpandableListView, false);
         
-        mGoalMoney= ButterKnife.findById(header, R.id.txt_goal_money);
+        mGoalMoney = ButterKnife.findById(header, R.id.txt_goal_money);
         mExpandableListView.addHeaderView(header);
         //get list transaction by event
         mTransactionPresenter.getTransactionByEvent(mEvent.getEventid());
@@ -217,9 +214,10 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
         int year = Integer.parseInt(arr[2]);
         String millisecond = DateUtil.getLongAsDate(day, month, year) + "";
         
-        String dayOfWeek = DateUtil.getDayOfWeek(this,DateUtil.getDayOfWeek(millisecond.trim()));
+        String dayOfWeek = DateUtil.getDayOfWeek(this, DateUtil.getDayOfWeek(millisecond.trim()));
         String dayOfMonth = DateUtil.getDayOfMonth(millisecond.trim()) + "";
-        String monthOfYear = DateUtil.getMonthOfYear(this,DateUtil.getMonthOfYear(millisecond.trim()));
+        String monthOfYear = DateUtil
+                  .getMonthOfYear(this, DateUtil.getMonthOfYear(millisecond.trim()));
         String yearT = DateUtil.getYear(millisecond.trim()) + "";
         
         DateObjectTransaction dateObjectTransaction = new DateObjectTransaction();

@@ -9,7 +9,7 @@
     android:id="@+id/action_archive"
     android:icon="@drawable/ic_archives"
     android:title="@string/action_archive"
-    android:visible="false"/>
+    android:visible="false" />
 
   <item
     android:id="@+id/action_remove_wallet"

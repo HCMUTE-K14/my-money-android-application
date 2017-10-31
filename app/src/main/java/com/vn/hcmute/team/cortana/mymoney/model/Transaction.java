@@ -246,4 +246,17 @@ public class Transaction implements Parcelable {
     public void setSaving(Saving saving) {
         this.saving = saving;
     }
+    
+    @Override
+    public String toString() {
+        return "Transaction{" +
+               "trans_id='" + trans_id + '\'' +
+               ", amount='" + amount + '\'' +
+               ", note='" + note + '\'' +
+               ", type='" + type + '\'' +
+               ", date_created='" + date_created + '\'' +
+               ", date_end='" + date_end + '\'' +
+               '}';
+    }
 }
+

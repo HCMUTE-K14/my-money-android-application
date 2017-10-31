@@ -132,7 +132,8 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     @Override
     public Observable<List<Transaction>> getTransactionByBudget(String userid, String token,
               String startDate, String endDate, String categoryId, String walletId) {
-        return mRemoteRepository.getTransactionByBudget(startDate,endDate,categoryId,walletId,userid,token);
+        return mRemoteRepository
+                  .getTransactionByBudget(startDate, endDate, categoryId, walletId, userid, token);
     }
     
     
@@ -436,6 +437,12 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
               Transaction transaction) {
         return mRemoteRepository.updateTransaction(userid, token, transaction);
     }
+    
+    @Override
+    public Observable<String> deleteTransaction(String userid, String token, String trans_id) {
+        return mRemoteRepository.deleteTransaction(userid, token, trans_id);
+    }
+    
     
     @Override
     public Observable<List<Icon>> getListIcon() {

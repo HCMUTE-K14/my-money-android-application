@@ -7,12 +7,14 @@ import com.vn.hcmute.team.cortana.mymoney.data.DataRepository;
 import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.exception.DebtLoanException;
 import com.vn.hcmute.team.cortana.mymoney.exception.UserLoginException;
+import com.vn.hcmute.team.cortana.mymoney.exception.WalletException;
 import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.DebtLoanUseCase.DebtLoanRequest;
+import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -30,8 +32,8 @@ import javax.inject.Singleton;
 public class DebtLoanUseCase extends UseCase<DebtLoanRequest> {
     
     public static final String TAG = DebtLoanUseCase.class.getSimpleName();
-    @Inject
-    PreferencesHelper mPreferenceHelper;
+    
+    private PreferencesHelper mPreferenceHelper;
     private DataRepository mDataRepository;
     private Context mContext;
     private Disposable mDisposable;
@@ -43,6 +45,7 @@ public class DebtLoanUseCase extends UseCase<DebtLoanRequest> {
         this.mContext = context.getApplicationContext();
         this.mDataRepository = dataRepository;
         this.mCompositeDisposable = new CompositeDisposable();
+        this.mPreferenceHelper = PreferencesHelper.getInstance(mContext);
     }
     
     @Override
@@ -216,12 +219,6 @@ public class DebtLoanUseCase extends UseCase<DebtLoanRequest> {
             }
         };
         
-        String wallet_id = mPreferenceHelper.getCurrentWallet().getWalletid();
-        if (TextUtil.isEmpty(wallet_id)) {
-            callBack.onFailure(new RuntimeException(
-                      mContext.getString(R.string.message_warning_choose_wallet)));
-            return;
-        }
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
                 //                mDisposable = mDataRepository.getDebtLoanByType(type)
@@ -238,6 +235,9 @@ public class DebtLoanUseCase extends UseCase<DebtLoanRequest> {
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
+                
+                data.setDebt_loan_id(SecurityUtil.getRandomUUID());
+                data.setUser_id(userid);
                 
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
@@ -277,9 +277,14 @@ public class DebtLoanUseCase extends UseCase<DebtLoanRequest> {
         };
         
         String type = params[0]; //loan or debt
-        if (!type.equals("loan") || !type.equals("debt")) {
+        if (!type.equals("loan") && !type.equals("debt")) {
             callBack.onFailure(new DebtLoanException(
                       mContext.getString(R.string.message_warning_wrong_param_input)));
+            return;
+        }
+        if (mPreferenceHelper.getCurrentWallet() == null) {
+            callBack.onFailure(new WalletException(
+                      mContext.getString(R.string.message_warning_choose_wallet)));
             return;
         }
         String wallet_id = mPreferenceHelper.getCurrentWallet().getWalletid();
@@ -336,8 +341,9 @@ public class DebtLoanUseCase extends UseCase<DebtLoanRequest> {
         private BaseCallBack<Object> callback;
         private TypeRepository typeRepository;
         
-        public DebtLoanRequest(String action, DebtLoan data, String[] param,
-                  BaseCallBack<Object> callback, TypeRepository typeRepository) {
+        public DebtLoanRequest(String action, BaseCallBack<Object> callback, DebtLoan data,
+                  String[] param,
+                  TypeRepository typeRepository) {
             this.action = action;
             this.data = data;
             this.params = param;
@@ -347,7 +353,7 @@ public class DebtLoanUseCase extends UseCase<DebtLoanRequest> {
         
         public DebtLoanRequest(String action, DebtLoan data, String[] param,
                   BaseCallBack<Object> callBack) {
-            this(action, data, param, callBack, TypeRepository.LOCAL);
+            this(action, callBack, data, param, TypeRepository.LOCAL);
         }
         
         public String getAction() {

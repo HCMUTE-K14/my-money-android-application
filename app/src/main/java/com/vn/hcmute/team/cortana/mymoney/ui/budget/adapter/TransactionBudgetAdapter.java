@@ -25,6 +25,7 @@ import java.util.List;
  */
 
 public class TransactionBudgetAdapter extends BaseExpandableListAdapter {
+    
     private Context mContext;
     private List<DateObjectTransaction> mListDataHeader;
     private HashMap<DateObjectTransaction, List<Transaction>> mListDataChild;
@@ -122,7 +123,14 @@ public class TransactionBudgetAdapter extends BaseExpandableListAdapter {
         return false;
     }
     
+    public void setClickChildView(ClickChildView clickChildView) {
+        mClickChildView = clickChildView;
+    }
     
+    public interface ClickChildView {
+        
+        void onClickChild(Transaction transaction);
+    }
     
     public class ViewGroupHoder {
         
@@ -181,11 +189,5 @@ public class TransactionBudgetAdapter extends BaseExpandableListAdapter {
                       .into(image_category);
             
         }
-    }
-    public interface ClickChildView{
-        void onClickChild(Transaction transaction);
-    }
-    public void setClickChildView(ClickChildView clickChildView){
-        mClickChildView=clickChildView;
     }
 }

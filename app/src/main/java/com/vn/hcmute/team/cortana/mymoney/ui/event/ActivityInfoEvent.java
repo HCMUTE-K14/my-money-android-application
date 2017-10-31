@@ -31,7 +31,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase.WalletReq
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -172,8 +171,8 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     
     @OnClick(R.id.btn_list_transaction)
     public void onClickListTransaction(View view) {
-        Intent intent=new Intent(this,TransactionEventActivity.class);
-        intent.putExtra("event",mEvent);
+        Intent intent = new Intent(this, TransactionEventActivity.class);
+        intent.putExtra("event", mEvent);
         startActivity(intent);
     }
     
@@ -266,7 +265,6 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
                       
                       @Override
                       public void onFailure(Throwable throwable) {
-                          MyLogger.d("erro get wallet");
                       }
                       
                       @Override

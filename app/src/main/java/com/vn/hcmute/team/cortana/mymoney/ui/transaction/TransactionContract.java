@@ -23,9 +23,9 @@ public interface TransactionContract {
     
     interface AddUpdateView extends View {
         
-        void onAddSuccessTransaction(String message);
+        void onAddSuccessTransaction(Transaction transaction, String message);
         
-        void onUpdateSuccessTransaction(String message);
+        void onUpdateSuccessTransaction(Transaction transaction, String message);
     }
     
     

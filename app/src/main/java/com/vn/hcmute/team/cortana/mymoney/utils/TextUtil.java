@@ -1,5 +1,10 @@
 package com.vn.hcmute.team.cortana.mymoney.utils;
 
+import android.os.Build;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StrikethroughSpan;
 import java.math.BigDecimal;
 
 /**
@@ -28,6 +33,22 @@ public class TextUtil {
             return true;
         } else {
             return false;
+        }
+    }
+    
+    public static Spanned buildDelString(String str) {
+        SpannableString string = new SpannableString(str);
+        
+        string.setSpan(new StrikethroughSpan(), 0, string.length(), 0);
+        
+        return string;
+    }
+    
+    public static Spanned showTextFromHTML(String html) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT);
+        } else {
+            return Html.fromHtml(html);
         }
     }
 }

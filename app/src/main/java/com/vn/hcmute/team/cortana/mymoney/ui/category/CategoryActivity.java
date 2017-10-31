@@ -32,6 +32,7 @@ public class CategoryActivity extends BaseActivity {
     ViewPager mViewPager;
     
     private String mCategoryIdSelected;
+    private boolean mIsOnyLyDebtLoanCategory;
     
     @Override
     public int getLayoutId() {
@@ -64,6 +65,7 @@ public class CategoryActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCategoryIdSelected = getCategoryIdFromIntent();
+        mIsOnyLyDebtLoanCategory = isOnyLyDebtLoanCategory();
         initializeView();
     }
     
@@ -102,17 +104,18 @@ public class CategoryActivity extends BaseActivity {
                                       .newInstance(mode, Action.ACTION_GET_DEBT_LOAN_CATEGORY,
                                                 mCategoryIdSelected),
                             getString(R.string.txt_debt_loan));
-        
-        viewPagerAdapter.add(CategoryByTypeFragment
-                            .newInstance(mode, Action.ACTION_GET_EXPENSE_CATEGORY, mCategoryIdSelected),
-                  getString(R.string.txt_expense));
-        
-        viewPagerAdapter.add(CategoryByTypeFragment
-                            .newInstance(mode, Action.ACTION_GET_INCOMING_CATEGORY, mCategoryIdSelected),
-                  getString(R.string.txt_incoming));
+        if (!mIsOnyLyDebtLoanCategory) {
+            viewPagerAdapter.add(CategoryByTypeFragment
+                                .newInstance(mode, Action.ACTION_GET_EXPENSE_CATEGORY, mCategoryIdSelected),
+                      getString(R.string.txt_expense));
+            
+            viewPagerAdapter.add(CategoryByTypeFragment
+                                .newInstance(mode, Action.ACTION_GET_INCOMING_CATEGORY, mCategoryIdSelected),
+                      getString(R.string.txt_incoming));
+        }
         
         mViewPager.setAdapter(viewPagerAdapter);
-        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setOffscreenPageLimit(!mIsOnyLyDebtLoanCategory ? 2 : 1);
         
         mTabLayout.setupWithViewPager(mViewPager);
     }
@@ -122,5 +125,9 @@ public class CategoryActivity extends BaseActivity {
             return getIntent().getStringExtra("cate_id");
         }
         return "";
+    }
+    
+    private boolean isOnyLyDebtLoanCategory() {
+        return getIntent().getBooleanExtra("only_debt_loan_category", false);
     }
 }

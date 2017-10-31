@@ -23,7 +23,7 @@ import java.util.List;
  * Created by kunsubin on 10/20/2017.
  */
 
-public class TransactionEventAdapter extends BaseExpandableListAdapter{
+public class TransactionEventAdapter extends BaseExpandableListAdapter {
     
     private Context mContext;
     private List<DateObjectTransaction> mListDataHeader;
@@ -85,7 +85,7 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter{
         
         ViewGroupHoder viewGroupHoder = new ViewGroupHoder(convertView);
         viewGroupHoder.bindView(headerTitle);
-    
+        
         ExpandableListView mExpandableListView = (ExpandableListView) parent;
         mExpandableListView.expandGroup(groupPosition);
         
@@ -122,7 +122,14 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter{
         return false;
     }
     
-
+    public void setClickChildView(ClickChildView clickChildView) {
+        mClickChildView = clickChildView;
+    }
+    
+    public interface ClickChildView {
+        
+        void onClickChild(Transaction transaction);
+    }
     
     public class ViewGroupHoder {
         
@@ -181,11 +188,5 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter{
                       .into(image_category);
             
         }
-    }
-    public interface ClickChildView{
-        void onClickChild(Transaction transaction);
-    }
-    public void setClickChildView(ClickChildView clickChildView){
-        mClickChildView=clickChildView;
     }
 }

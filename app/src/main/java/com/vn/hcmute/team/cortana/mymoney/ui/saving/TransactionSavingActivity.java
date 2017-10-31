@@ -43,16 +43,12 @@ public class TransactionSavingActivity extends BaseActivity implements Transacti
     ProgressBar mProgressBar;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    
+    @Inject
+    TransactionPresenter mTransactionPresenter;
     private TransactionSavingAdapter mTransactionSavingAdapter;
     private EmptyAdapter mEmptyAdapter;
     private List<Transaction> mTransactionList;
     private Saving mSaving;
-    
-    
-    @Inject
-    TransactionPresenter mTransactionPresenter;
-    
     
     @Override
     public int getLayoutId() {
@@ -115,7 +111,7 @@ public class TransactionSavingActivity extends BaseActivity implements Transacti
     
     @Override
     public void showAllListTransaction(List<Transaction> list) {
-        MyLogger.d("size list trana",list.size());
+        MyLogger.d("size list trana", list.size());
         if (list == null || list.isEmpty()) {
             mEmptyAdapter = new EmptyAdapter(this, getString(R.string.txt_no_transaction));
             mRecyclerViewTransaction.setAdapter(mEmptyAdapter);
@@ -127,7 +123,7 @@ public class TransactionSavingActivity extends BaseActivity implements Transacti
                     mTransactionList.add(transaction);
                 }
             }
-            MyLogger.d("size list trana",mTransactionList.size());
+            MyLogger.d("size list trana", mTransactionList.size());
             if (mTransactionList != null && !mTransactionList.isEmpty()) {
                 mTransactionSavingAdapter = new TransactionSavingAdapter(this, mTransactionList);
                 mTransactionSavingAdapter.setClickListener(this);

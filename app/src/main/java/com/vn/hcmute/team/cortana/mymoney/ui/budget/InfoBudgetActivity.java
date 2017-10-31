@@ -41,7 +41,8 @@ import javax.inject.Inject;
  * Created by kunsubin on 9/16/2017.
  */
 
-public class InfoBudgetActivity extends BaseActivity implements BudgetContract.View,CompoundButton.OnCheckedChangeListener{
+public class InfoBudgetActivity extends BaseActivity implements BudgetContract.View,
+                                                                CompoundButton.OnCheckedChangeListener {
     
     @BindView(R.id.image_icon_category)
     ImageView image_icon_category;
@@ -168,14 +169,16 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     public void loading(boolean isLoading) {
         
     }
+    
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(isChecked){
+        if (isChecked) {
             txt_turn_notification.setText(this.getString(R.string.turn_on_notification));
-        }else {
+        } else {
             txt_turn_notification.setText(this.getString(R.string.turn_off_notification));
         }
     }
+    
     /*Area OnClick*/
     @OnClick(R.id.image_view_cancel)
     public void onClickCancel(View view) {
@@ -238,16 +241,14 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
         
         if (checkCurrentMoney()) {
             txt_current_money.setText("+" + NumberUtil.formatAmount(mBudget.getMoneyExpense(), ""));
-            txt_need_money.setText(NumberUtil.formatAmount(getTextNeedMoney(),""));
-            
-          
+            txt_need_money.setText(NumberUtil.formatAmount(getTextNeedMoney(), ""));
             
             seek_bar_saving_info.setProgress(getProgress());
             seek_bar_saving_info.setEnabled(false);
         } else {
             txt_current_money.setText(NumberUtil.formatAmount(mBudget.getMoneyExpense(), ""));
             txt_current_money.setTextColor(ContextCompat.getColor(this, R.color.color_red));
-            if(Double.parseDouble(mBudget.getMoneyExpense())<0){
+            if (Double.parseDouble(mBudget.getMoneyExpense()) < 0) {
                 txt_spent.setText(this.getString(R.string.txt_overspent));
             }
             
@@ -262,10 +263,14 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
                   .getString(R.string.days_left, getTimeRest(mBudget.getRangeDate()) + ""));
         txt_wallet.setText(mBudget.getWallet().getWalletName());
     }
-    public String getRecommendedDailySpend(){
-        double money=Double.parseDouble(getTextNeedMoney())/Double.parseDouble(getTimeRest(mBudget.getRangeDate()));
-        return NumberUtil.formatAmount(money+"",mBudget.getWallet().getCurrencyUnit().getCurSymbol());
+    
+    public String getRecommendedDailySpend() {
+        double money = Double.parseDouble(getTextNeedMoney()) /
+                       Double.parseDouble(getTimeRest(mBudget.getRangeDate()));
+        return NumberUtil
+                  .formatAmount(money + "", mBudget.getWallet().getCurrencyUnit().getCurSymbol());
     }
+    
     public String getTimeRest(String rangeDate) {
         String[] arr = rangeDate.split("/");
         int result = DateUtil.getDateLeft(Long.parseLong(arr[1]));
@@ -293,7 +298,7 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     public String getTextNeedMoney() {
         double needMoney = Double.parseDouble(mBudget.getMoneyGoal()) -
                            Double.parseDouble(mBudget.getMoneyExpense());
-        return needMoney+"";
+        return needMoney + "";
     }
     
     private void onClose() {
@@ -340,11 +345,12 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
         yEntrys.get(0).setLabel("Spent");
         
         String overBudget;
-        if(Double.parseDouble(mBudget.getMoneyExpense())==Double.parseDouble(mBudget.getMoneyGoal())){
-            overBudget="";
-        }else {
-            double moneyOver=Double.parseDouble(mBudget.getMoneyExpense());
-            overBudget="Over budget:"+mBudget.getMoneyExpense();
+        if (Double.parseDouble(mBudget.getMoneyExpense()) ==
+            Double.parseDouble(mBudget.getMoneyGoal())) {
+            overBudget = "";
+        } else {
+            double moneyOver = Double.parseDouble(mBudget.getMoneyExpense());
+            overBudget = "Over budget:" + mBudget.getMoneyExpense();
         }
         
         PieDataSet pieDataSet = new PieDataSet(yEntrys, overBudget);
@@ -375,13 +381,11 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
         yEntrys.add(new PieEntry(moneyTransaction, 0));
         yEntrys.add(new PieEntry(restMoney, 1));
         
-        
         yEntrys.get(0).setLabel("Spent");
         yEntrys.get(1).setLabel("Rest");
         
-        
         //create the data set
-        PieDataSet pieDataSet = new PieDataSet(yEntrys,"");
+        PieDataSet pieDataSet = new PieDataSet(yEntrys, "");
         pieDataSet.setSliceSpace(2);
         pieDataSet.setValueTextSize(12);
         
@@ -410,5 +414,5 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
         mPieChart.setCenterText(null);
     }
     
-   
+    
 }

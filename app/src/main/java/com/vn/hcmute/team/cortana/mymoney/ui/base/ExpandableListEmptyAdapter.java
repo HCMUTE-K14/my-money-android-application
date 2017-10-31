@@ -13,12 +13,13 @@ import com.vn.hcmute.team.cortana.mymoney.R;
  */
 
 public class ExpandableListEmptyAdapter extends BaseExpandableListAdapter {
+    
     private Context mContext;
     private String mMessage;
     
     public ExpandableListEmptyAdapter(Context context, String message) {
-        this.mContext=context;
-        this.mMessage=message;
+        this.mContext = context;
+        this.mMessage = message;
     }
     
     @Override
@@ -64,7 +65,7 @@ public class ExpandableListEmptyAdapter extends BaseExpandableListAdapter {
                       .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.item_empty, null);
         }
-        TextView message=(TextView) convertView.findViewById(R.id.txt_message);
+        TextView message = (TextView) convertView.findViewById(R.id.txt_message);
         message.setText(mMessage);
         return convertView;
     }
@@ -72,7 +73,7 @@ public class ExpandableListEmptyAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
               View convertView, ViewGroup parent) {
-       
+        
         return null;
     }
     

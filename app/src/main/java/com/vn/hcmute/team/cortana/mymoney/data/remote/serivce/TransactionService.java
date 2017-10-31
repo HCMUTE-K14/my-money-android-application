@@ -27,6 +27,11 @@ public interface TransactionService {
               @Query("token") String token,
               @Body Transaction transaction);
     
+    @POST(MyMoneyApi.REMOVE_TRANSACTION)
+    Observable<JsonResponse<String>> deleteTransaction(@Query("uid") String uid,
+              @Query("token") String token, @Query("transactionid") String trans_id);
+    
+    
     @GET(MyMoneyApi.GET_TRANSACTION_BY_CATEGORY + "/{walletId}")
     Observable<JsonResponse<List<Transaction>>> getTransactionByCategory(
               @Path("walletId") String walletId, @Query("uid") String uid,

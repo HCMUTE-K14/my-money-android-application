@@ -14,7 +14,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -107,13 +106,11 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object user) {
-                MyLogger.d(TAG, "ONSUCCESS");
                 callBack.onSuccess(user);
             }
             
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-                MyLogger.d(TAG, "onFAILURE");
                 callBack.onFailure(e);
             }
         };

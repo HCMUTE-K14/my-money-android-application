@@ -62,6 +62,7 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     private int monthOfYearEnd;
     private int dayOfMonthEnd;
     private String mGoalMoney;
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_edit_budget;
@@ -131,7 +132,7 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
         }
         if (requestCode == 38) {
             if (resultCode == Activity.RESULT_OK) {
-                mGoalMoney=data.getStringExtra("result");
+                mGoalMoney = data.getStringExtra("result");
                 mBudget.setMoneyGoal(mGoalMoney);
                 showData();
             }
@@ -240,7 +241,7 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
         String[] arr = mBudget.getRangeDate().split("/");
         setDate(arr[0], arr[1]);
         //set money
-        mGoalMoney=mBudget.getMoneyGoal();
+        mGoalMoney = mBudget.getMoneyGoal();
         
         
     }
@@ -261,7 +262,8 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
                   image_view_icon_budget);
         
         edit_text_name_budget.setText(mCategory.getName());
-        txt_goal_money.setText("+" + NumberUtil.formatAmount(mGoalMoney,mWallet.getCurrencyUnit().getCurSymbol()));
+        txt_goal_money.setText("+" + NumberUtil.formatAmount(mGoalMoney,
+                  mWallet.getCurrencyUnit().getCurSymbol()));
         txt_date_budget.setText(getRangeDate());
         txt_wallet_budget.setText(mWallet.getWalletName());
         

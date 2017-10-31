@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:minHeight="70dp"
   android:layout_weight="1"
+  android:minHeight="70dp"
   android:orientation="horizontal"
   android:weightSum="6">
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="70dp"
     android:layout_weight="5"
-    android:gravity="center">
+    android:gravity="center"
+    android:minHeight="70dp">
     <TextView
       android:id="@+id/txt_date"
       android:layout_width="wrap_content"

@@ -163,7 +163,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
             if (resultCode == Activity.RESULT_OK) {
                 //TODO: View,Result
                 mGoalMoney = data.getStringExtra("result");
-                String goalMoneyShow=data.getStringExtra("result_view");
+                String goalMoneyShow = data.getStringExtra("result_view");
                 txt_goal_money.setText("+" + goalMoneyShow);
                 
             }
@@ -282,7 +282,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
             return;
         }
         //check currentMoney>goalMoney
-        if(checkCurrentMoney()){
+        if (checkCurrentMoney()) {
             alertDiaglog(getString(R.string.txt_over_current_money));
             return;
         }
@@ -398,9 +398,10 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         alert11.show();
         
     }
-    public boolean checkCurrentMoney(){
-        double currentMoney=Double.parseDouble(mSaving.getCurrentMoney());
-        double goalMoney=Double.parseDouble(mGoalMoney);
-        return currentMoney>goalMoney?true:false;
+    
+    public boolean checkCurrentMoney() {
+        double currentMoney = Double.parseDouble(mSaving.getCurrentMoney());
+        double goalMoney = Double.parseDouble(mGoalMoney);
+        return currentMoney > goalMoney ? true : false;
     }
 }

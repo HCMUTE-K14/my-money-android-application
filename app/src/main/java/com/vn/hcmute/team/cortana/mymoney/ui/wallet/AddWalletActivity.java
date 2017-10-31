@@ -33,7 +33,6 @@ import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
-import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -143,11 +142,9 @@ public class AddWalletActivity extends BaseActivity implements View {
                     }
                     break;
                 case RequestCode.CALCULATOR_REQUEST_CODE:
-                    //TODO: View, Reuslt
                     mCurrentBalance = data.getStringExtra("result");
-                    double amount = Double.parseDouble(mCurrentBalance);
-                    String result = NumberUtil.format(amount, "#,###.##");
-                    mEditTextBalance.setText(result);
+                    String result2Show = data.getStringExtra("result_view");
+                    mEditTextBalance.setText(result2Show);
                     break;
                 case RequestCode.SELECT_ICON_REQUEST_CODE:
                     Icon icon = data.getParcelableExtra("icon");
@@ -262,12 +259,11 @@ public class AddWalletActivity extends BaseActivity implements View {
     /*-----------------*/
     private void addWallet() {
         String name = mEditTextNameWallet.getText().toString();
-        String money = mEditTextBalance.getText().toString();
         
         Wallet wallet = new Wallet();
         wallet.setWalletName(name);
         wallet.setCurrencyUnit(mCurrentCurrency);
-        wallet.setMoney(money);
+        wallet.setMoney(mCurrentBalance);
         wallet.setWalletImage(mIconWallet);
         
         mWalletPresenter.addWallet(wallet);
@@ -276,7 +272,7 @@ public class AddWalletActivity extends BaseActivity implements View {
     private void showConfirmQuitDialog() {
         AlertDialog.Builder confirmDialog = new Builder(this);
         
-        confirmDialog.setMessage("Do you want to quit ?");
+        confirmDialog.setMessage(R.string.message_warning_do_u_want_to_quit);
         confirmDialog.setNegativeButton(getString(R.string.txt_yes), new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -308,7 +304,8 @@ public class AddWalletActivity extends BaseActivity implements View {
     
     private void openCalculator() {
         Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("value", mCurrentBalance);
+        intent.putExtra("goal_money", mCurrentBalance);
+        intent.putExtra("currencies", mCurrentCurrency);
         startActivityForResult(intent, RequestCode.CALCULATOR_REQUEST_CODE);
     }
     

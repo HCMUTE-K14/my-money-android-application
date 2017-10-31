@@ -185,6 +185,7 @@ public class ActivitySelectEvent extends BaseActivity implements EventContract.V
             mWallet = intent.getParcelableExtra("wallet");
         }
     }
+    
     public void alertDiaglog(String message) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage(message);

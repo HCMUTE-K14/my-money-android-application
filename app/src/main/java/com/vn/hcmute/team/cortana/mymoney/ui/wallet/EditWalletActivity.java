@@ -233,8 +233,6 @@ public class EditWalletActivity extends BaseActivity implements View {
     private void openSelectIconActivity() {
         Intent intent = new Intent(this, SelectIconActivity.class);
         startActivityForResult(intent, RequestCode.SELECT_ICON_REQUEST_CODE);
-        
-        
     }
     
     

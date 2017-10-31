@@ -255,6 +255,7 @@
   <string name="txt_cash_back">Cash Back</string>
   <string name="txt_left">Left</string>
   <string name="txt_paid">Paid</string>
+
   <string name="txt_over_current_money">Current money > Goal money!</string>
   <string name="txt_over_view">Overview</string>
   <string name="txt_check_edit_budget">Budget has been applied. Can not edit</string>
@@ -282,4 +283,29 @@
   <string name="txt_october">October</string>
   <string name="txt_november">November</string>
   <string name="txt_december">December</string>
+
+  <string name="txt_no_note">No Note</string>
+  <string name="message_warning_do_u_want_to_quit">Do you want to quit ?</string>
+  <string name="txt_lender">Lender</string>
+  <string name="txt_borrower">Borrower</string>
+  <string name="message_warning_fill_amount">You must fill amount</string>
+  <string name="txt_reminder">Reminder</string>
+  <string name="message_warning_delete_transaction">Do you want to delete this transaction ?</string>
+  <string name="txt_deleting_transaction">Deleting Transaction</string>
+  <string name="txt_not_yet_paid">NOT YET PAID</string>
+  <string name="txt_not_yet_received">NOT YET RECEIVED</string>
+  <string name="txt_paid_uppercase">PAID</string>
+  <string name="txt_received">RECEIVED</string>
+
+  <string name="txt_you_owe">You owe %1$s</string>
+  <string name="txt_owes_you">Owes you %1$s</string>
+  <string name="txt_debt_uppercase">DEBT</string>
+  <string name="txt_loan_uppercase">LOAN</string>
+  <string name="message_warning_transaction_cannot_be_null">Transaction cannot be null</string>
+  <string name="message_warning_amount_too_big">This transaction amount seems too big. Are you sure it\'s correct ?</string>
+  <string name="txt_im_wrong">I\'m Wrong</string>
+  <string name="txt_cashing_back">Cashing back...</string>
+  <string name="txt_pls_wait">Please wait......</string>
+
+
 </resources>

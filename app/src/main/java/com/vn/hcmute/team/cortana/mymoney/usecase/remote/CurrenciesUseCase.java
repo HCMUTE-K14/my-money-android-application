@@ -12,7 +12,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.CurrenciesUseCase.CurrenciesRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -97,7 +96,6 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
                           .doOnSubscribe(new Consumer<Disposable>() {
                               @Override
                               public void accept(Disposable disposable) throws Exception {
-                                  MyLogger.d("Currencies Usecacse", "loading");
                                   callBack.onLoading();
                               }
                           })
@@ -110,7 +108,6 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
                           .doOnSubscribe(new Consumer<Disposable>() {
                               @Override
                               public void accept(Disposable disposable) throws Exception {
-                                  MyLogger.d("Currencies Usecacse", "loading");
                                   callBack.onLoading();
                               }
                           })
@@ -142,7 +139,6 @@ public class CurrenciesUseCase extends UseCase<CurrenciesRequest> {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object currencies) {
                 mDataRepository.putRealTimeCurrency((RealTimeCurrency) currencies);
-                MyLogger.d(TAG, (RealTimeCurrency) currencies, true);
                 callBack.onSuccess(currencies);
             }
             

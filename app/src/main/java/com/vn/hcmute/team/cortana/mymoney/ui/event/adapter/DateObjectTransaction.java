@@ -15,14 +15,14 @@ public class DateObjectTransaction {
     private String mDate;
     
     public DateObjectTransaction(String dayOfWeek, String dayOfMonth, String monthOfYear,
-              String year, String money, String currencies,String date) {
+              String year, String money, String currencies, String date) {
         mDayOfWeek = dayOfWeek;
         mDayOfMonth = dayOfMonth;
         mMonthOfYear = monthOfYear;
         mYear = year;
         mMoney = money;
         mCurrencies = currencies;
-        mDate=date;
+        mDate = date;
     }
     
     public DateObjectTransaction() {
@@ -32,7 +32,7 @@ public class DateObjectTransaction {
         mYear = "";
         mMoney = "";
         mCurrencies = "";
-        mDate="";
+        mDate = "";
     }
     
     public String getDayOfWeek() {
@@ -82,11 +82,13 @@ public class DateObjectTransaction {
     public void setCurrencies(String currencies) {
         mCurrencies = currencies;
     }
-    public void setDate(String date){
-        mDate=date;
-    }
-    public String getDate(){
+    
+    public String getDate() {
         return mDate;
+    }
+    
+    public void setDate(String date) {
+        mDate = date;
     }
     
 }

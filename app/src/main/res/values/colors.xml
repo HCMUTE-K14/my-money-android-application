@@ -23,5 +23,12 @@
 
   <color name="color_1e000000">#1e000000</color>
   <color name="press_highlight_darken_medium">#40000000</color>
+
   <color name="blue">#1e02258c</color>
+
+
+  <color name="color_7A7A7A">#7A7A7A</color>
+  <color name="color_31ADE9">#31ADE9</color>
+  <color name="color_E7252C">#E7252C</color>
+
 </resources>

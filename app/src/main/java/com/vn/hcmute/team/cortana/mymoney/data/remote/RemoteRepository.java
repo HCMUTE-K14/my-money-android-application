@@ -36,7 +36,6 @@ import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.User;
 import com.vn.hcmute.team.cortana.mymoney.model.UserCredential;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
@@ -636,12 +635,9 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          MyLogger.d("baodmfds", stringJsonResponse.getMessage());
                           if (stringJsonResponse.getStatus().equals("success")) {
-                              MyLogger.d("skjfdsjksfdsfsfsdfs");
                               return stringJsonResponse.getData();
                           } else {
-                              MyLogger.d("fail update saving");
                               throw new SavingException(stringJsonResponse.getMessage());
                           }
                           
@@ -836,7 +832,6 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                       public List<Budget> apply(
                                 @NonNull JsonResponse<List<Budget>> listJsonResponse)
                                 throws Exception {
-                          MyLogger.d("bdosioiewr", listJsonResponse.getData().size());
                           if (listJsonResponse.getStatus().equals("success")) {
                               return listJsonResponse.getData();
                           } else {
@@ -1180,13 +1175,12 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
         }
         //MyLogger.d(startDate+"kejkwjkr"+endDate);
         return transactionService
-                  .getTransactionByBudget(startDate,endDate,categoryId,walletId,userid,token)
+                  .getTransactionByBudget(startDate, endDate, categoryId, walletId, userid, token)
                   .map(new Function<JsonResponse<List<Transaction>>, List<Transaction>>() {
                       @Override
                       public List<Transaction> apply(
                                 @NonNull JsonResponse<List<Transaction>> stringJsonResponse)
                                 throws Exception {
-                          MyLogger.d("chieu lang thang ghe qua ne");
                           if (stringJsonResponse.getStatus().equals("success")) {
                               return stringJsonResponse.getData();
                           } else {
@@ -1197,7 +1191,8 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     }
     
     @Override
-    public Observable<String> addTransaction(String userid, String token, Transaction transaction) {
+    public Observable<String> addTransaction(String userid, String token,
+              final Transaction transaction) {
         TransactionService transactionService = mServiceGenerator
                   .getService(TransactionService.class);
         if (transactionService == null) {
@@ -1208,7 +1203,6 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
                                 throws Exception {
-                          MyLogger.d(TAG, stringJsonResponse);
                           if (stringJsonResponse.getStatus().equals("success")) {
                               return stringJsonResponse.getMessage();
                           } else {
@@ -1242,7 +1236,31 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     }
     
     @Override
-    public Observable<List<DebtLoan>> getDebtLoan(String userid, String token, String wallet_id,
+    public Observable<String> deleteTransaction(String userid, String token, String trans_id) {
+        TransactionService transactionService = mServiceGenerator
+                  .getService(TransactionService.class);
+        if (transactionService == null) {
+            return null;
+        }
+        
+        return transactionService.deleteTransaction(userid, token, trans_id)
+                  .map(new Function<JsonResponse<String>, String>() {
+                      @Override
+                      public String apply(@NonNull JsonResponse<String> stringJsonResponse)
+                                throws Exception {
+                          
+                          if (stringJsonResponse.getStatus().equals("success")) {
+                              return stringJsonResponse.getMessage();
+                          } else {
+                              throw new TransactionException(stringJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
+    @Override
+    public Observable<List<DebtLoan>> getDebtLoan(String userid, String token, String
+              wallet_id,
               String type) {
         DebtLoanService debtLoanService = mServiceGenerator.getService(DebtLoanService.class);
         
@@ -1309,7 +1327,6 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                       }
                   });
     }
-    
     
     @Override
     public Observable<String> deleteDebtLoan(String userid, String token, DebtLoan debtLoan) {

@@ -38,27 +38,32 @@ public class DateUtil {
         
         return mDay + "/" + mMonth + "/" + mYear;
     }
-    public static int getDayOfWeek(String timeMillis){
+    
+    public static int getDayOfWeek(String timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(timeMillis));
         return calendar.get(Calendar.DAY_OF_WEEK);
     }
-    public static int getDayOfMonth(String timeMillis){
+    
+    public static int getDayOfMonth(String timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(timeMillis));
         return calendar.get(Calendar.DAY_OF_MONTH);
     }
-    public static int getMonthOfYear(String timeMillis){
+    
+    public static int getMonthOfYear(String timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(timeMillis));
         
         return calendar.get(Calendar.MONTH);
     }
-    public static int getYear(String timeMillis){
+    
+    public static int getYear(String timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(timeMillis));
         return calendar.get(Calendar.YEAR);
     }
+    
     public static String convertTimeMilisToDateNotYear(String timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(timeMillis));
@@ -95,14 +100,13 @@ public class DateUtil {
     
     public static String formatDate(Date date) {
         String pattern = ApplicationConfig.DEFAULT_DATE_PATTERN;
-        Calendar calendar = Calendar.getInstance();
         Format formatter = new SimpleDateFormat(pattern);
         return formatter.format(date);
     }
     
-    public static String getDayOfWeek( Context context,int dayOfWeek){
+    public static String getDayOfWeek(Context context, int dayOfWeek) {
         
-        switch (dayOfWeek){
+        switch (dayOfWeek) {
             case 2:
                 return context.getString(R.string.txt_monday);
             case 3:
@@ -121,8 +125,9 @@ public class DateUtil {
                 return "";
         }
     }
-    public static String getMonthOfYear(Context context,int monthOfYear){
-        switch (monthOfYear){
+    
+    public static String getMonthOfYear(Context context, int monthOfYear) {
+        switch (monthOfYear) {
             case 0:
                 return context.getString(R.string.txt_january);
             case 1:

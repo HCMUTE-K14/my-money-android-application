@@ -129,7 +129,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         
         if (requestCode == 3) {
             if (resultCode == Activity.RESULT_OK) {
-                mSaving =  data.getParcelableExtra("saving");
+                mSaving = data.getParcelableExtra("saving");
                 double tmp = (Double.parseDouble(mSaving.getCurrentMoney()) /
                               Double.parseDouble(mSaving.getGoalMoney())) * 100;
                 int temp = (int) tmp;
@@ -293,12 +293,12 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     
     public void showData() {
         txt_saving_name.setText(mSaving.getName());
-        txt_money_goal.setText("+ " + NumberUtil.formatAmount(mSaving.getGoalMoney(),""));
-        txt_current_money.setText(NumberUtil.formatAmount(mSaving.getCurrentMoney(),""));
+        txt_money_goal.setText("+ " + NumberUtil.formatAmount(mSaving.getGoalMoney(), ""));
+        txt_current_money.setText(NumberUtil.formatAmount(mSaving.getCurrentMoney(), ""));
         double need_money = Double.parseDouble(mSaving.getGoalMoney()) -
                             Double.parseDouble(mSaving.getCurrentMoney());
         
-        txt_need_money.setText(NumberUtil.formatAmount(String.valueOf(need_money),""));
+        txt_need_money.setText(NumberUtil.formatAmount(String.valueOf(need_money), ""));
         
         txt_date_saving.setText(DateUtil.convertTimeMillisToDate(mSaving.getDate()));
         
