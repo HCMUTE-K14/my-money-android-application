@@ -44,12 +44,10 @@ public class InfoTransactionForDebtLoanActivity extends BaseInfoTransactionActiv
     RoundedLetterView mRoundedLetterView;
     TextView mTextViewNamePerson;
     SeekBar mSeekBar;
-    
-    private String mType;
-    private DebtLoan mDebtLoan;
-    
     @Inject
     DebtLoanUseCase mDebtLoanUseCase;
+    private String mType;
+    private DebtLoan mDebtLoan;
     
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

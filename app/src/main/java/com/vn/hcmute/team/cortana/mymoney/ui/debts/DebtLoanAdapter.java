@@ -311,8 +311,6 @@ public class DebtLoanAdapter extends BaseExpandableListAdapter {
                   .setText(TextUtil.isEmpty(person.getDescribe()) ? "" : person.getDescribe());
     }
     
-
-    
     
     @Override
     public int getChildType(int groupPosition, int childPosition) {

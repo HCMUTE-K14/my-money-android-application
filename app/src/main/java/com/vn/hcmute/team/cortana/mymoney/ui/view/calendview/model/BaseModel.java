@@ -15,9 +15,8 @@ public abstract class BaseModel {
     public static final int TYPE_DATE = 0;
     public static final int TYPE_WEEK = 1;
     public static final int TYPE_MONTH = 2;
-    
-    private static String DEFAULT_PATTERN = "%s/%s"; //Day/Month
     public static String DEFAULT_PATTERN_TYPE_DATE = "%s %s %s";
+    private static String DEFAULT_PATTERN = "%s/%s"; //Day/Month
     public static String DEFAULT_PATTERN_TYPE_WEEK = DEFAULT_PATTERN + " - " + DEFAULT_PATTERN;
     public static String DEFAULT_PATTERN_TYPE_MOTH = DEFAULT_PATTERN;
     
@@ -29,13 +28,13 @@ public abstract class BaseModel {
     public BaseModel(int type) {
         this.type = type;
         
-       if(type == TYPE_DATE){
-           this.patternDate = DEFAULT_PATTERN_TYPE_DATE;
-       }else if (type == TYPE_WEEK){
-           this.patternDate = DEFAULT_PATTERN_TYPE_WEEK;
-       }else if (type == TYPE_MONTH){
-           this.patternDate = DEFAULT_PATTERN_TYPE_MOTH;
-       }
+        if (type == TYPE_DATE) {
+            this.patternDate = DEFAULT_PATTERN_TYPE_DATE;
+        } else if (type == TYPE_WEEK) {
+            this.patternDate = DEFAULT_PATTERN_TYPE_WEEK;
+        } else if (type == TYPE_MONTH) {
+            this.patternDate = DEFAULT_PATTERN_TYPE_MOTH;
+        }
     }
     
     protected List<String> getData() {

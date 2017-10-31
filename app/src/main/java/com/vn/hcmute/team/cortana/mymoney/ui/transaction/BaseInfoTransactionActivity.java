@@ -45,38 +45,27 @@ import org.greenrobot.eventbus.EventBus;
 public abstract class BaseInfoTransactionActivity extends BaseActivity implements DeleteView {
     
     public static final String TAG = BaseInfoTransactionActivity.class.getSimpleName();
-    
-    @BindView(R.id.image_icon_category)
-    ImageView mImageViewIconCategory;
-    
-    @BindView(R.id.txt_name_category)
-    TextView mTextViewNameCategory;
-    
-    @BindView(R.id.txt_amount)
-    TextView mTextViewAmount;
-    
-    @BindView(R.id.txt_note)
-    TextView mTextViewNote;
-    
-    @BindView(R.id.txt_date)
-    TextView mTextViewDate;
-    
-    @BindView(R.id.txt_wallet)
-    TextView mTextViewNameWallet;
-    
-    @BindView(R.id.txt_remind)
-    TextView mTextViewRemind;
-    
-    @BindView(R.id.layout_container)
-    LinearLayout mViewContainer;
-    
-    @Inject
-    TransactionPresenter mTransactionPresenter;
-    
     protected ProgressDialog mProgressDialog;
     protected Transaction mTransaction;
-    
     protected TransactionComponent mTransactionComponent;
+    @BindView(R.id.image_icon_category)
+    ImageView mImageViewIconCategory;
+    @BindView(R.id.txt_name_category)
+    TextView mTextViewNameCategory;
+    @BindView(R.id.txt_amount)
+    TextView mTextViewAmount;
+    @BindView(R.id.txt_note)
+    TextView mTextViewNote;
+    @BindView(R.id.txt_date)
+    TextView mTextViewDate;
+    @BindView(R.id.txt_wallet)
+    TextView mTextViewNameWallet;
+    @BindView(R.id.txt_remind)
+    TextView mTextViewRemind;
+    @BindView(R.id.layout_container)
+    LinearLayout mViewContainer;
+    @Inject
+    TransactionPresenter mTransactionPresenter;
     
     @Override
     public void showAllListTransaction(List<Transaction> list) {

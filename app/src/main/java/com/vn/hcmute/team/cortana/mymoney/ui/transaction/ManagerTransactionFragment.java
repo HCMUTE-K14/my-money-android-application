@@ -319,7 +319,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         
     }
     
-
+    
     @Override
     public void onAddSuccessTransaction(Transaction transaction, String message) {
         if (transaction.getPerson() == null && transaction.getPerson().isEmpty()) {

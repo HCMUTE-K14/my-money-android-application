@@ -36,7 +36,7 @@ public class DateModel extends BaseModel {
             int day_of_month = calendar.get(Calendar.DAY_OF_MONTH);
             int month = calendar.get(Calendar.MONTH);
             int year = calendar.get(Calendar.YEAR);
-            String value = String.format(this.patternDate,day_of_month,month,year);
+            String value = String.format(this.patternDate, day_of_month, month, year);
             
             list.add(value);
         }

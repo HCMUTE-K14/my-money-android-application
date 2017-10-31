@@ -200,7 +200,7 @@ public class DebtLoanUseCase extends UseCase<DebtLoanRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             }
-
+            
             this.mCompositeDisposable.add(mDisposable);
         }
     }
