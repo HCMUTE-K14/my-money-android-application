@@ -306,6 +306,9 @@
   <string name="txt_im_wrong">I\'m Wrong</string>
   <string name="txt_cashing_back">Cashing back...</string>
   <string name="txt_pls_wait">Please wait......</string>
-
+  <string name="txt_over_time">Over time</string>
+  <string name="txt_net_income">Net Income</string>
+  <string name="txt_by_category">By Category</string>
+  <string name="txt_select_date_start_end">Date start less than date end</string>
 
 </resources>

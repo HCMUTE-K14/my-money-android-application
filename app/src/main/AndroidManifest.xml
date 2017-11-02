@@ -38,7 +38,7 @@
     </activity>
 
     <!-- User -->
-    <activity android:name=".ui.login.LoginActivity">
+    <activity android:name=".ui.statistics.StatisticsActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
@@ -121,6 +121,7 @@
     </activity>
     <!-- Debt & Loan -->
     <activity android:name=".ui.transaction.InfoTransactionForDebtLoanActivity" />
+
   </application>
 
 </manifest>
