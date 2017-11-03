@@ -25,13 +25,12 @@ public class SelectWalletView extends RelativeLayout {
     private Context mContext;
     
     public SelectWalletView(Context context) {
-        super(context);
+        super(context, null);
         initializeView(context);
     }
     
     public SelectWalletView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        
+        super(context, attrs, 0);
         initializeView(context);
     }
     

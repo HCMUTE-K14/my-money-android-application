@@ -208,9 +208,6 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                     return;
                 }
                 
-                wallet.setWalletid(SecurityUtil.getRandomUUID());
-                wallet.setUserid(userid);
-                
                 mDisposable = mDataRepository.updateWallet(wallet, userid, token)
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())

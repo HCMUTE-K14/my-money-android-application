@@ -35,6 +35,9 @@ import com.vn.hcmute.team.cortana.mymoney.ui.debts.DebtsLoanMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.EventMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.login.LoginActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.SavingMainFragment;
+import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionMainFragment;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.BaseModel;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.WeekModel;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletListener;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletView;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.AddWalletActivity;
@@ -48,6 +51,7 @@ import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -137,6 +141,17 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                 mNavigationView.getMenu().clear();
                 mWalletPresenter.getAllWallet();
             }
+        }
+    };
+    
+    private Runnable runnableAttachTransactionFragment = new Runnable() {
+        @Override
+        public void run() {
+            mNavigationView.getMenu().findItem(R.id.navigation_item_categories).setChecked(true);
+            TransactionMainFragment fragment = new TransactionMainFragment();
+            mCurrentFragment = fragment;
+            getSupportFragmentManager().beginTransaction()
+                      .replace(R.id.container_fragment, fragment).commit();
         }
     };
     
@@ -253,6 +268,12 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
             openLoginActivity();
             return;
         }
+        
+        BaseModel model = new WeekModel(this);
+        model.buildData();
+        
+        MyLogger.d(TAG, model.getData(), true);
+        
         mHandler.postDelayed(
                   new Runnable() {
                       @Override
@@ -422,6 +443,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         mRunnable = null;
         switch (item.getItemId()) {
             case R.id.navigation_item_cashbook:
+                mRunnable = runnableAttachTransactionFragment;
                 break;
             case R.id.navigation_item_debt:
                 mRunnable = runnableAttachDebtsFragment;

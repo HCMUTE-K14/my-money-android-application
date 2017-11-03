@@ -87,9 +87,11 @@ public class CardViewActionBar extends RelativeLayout {
         if (a.hasValue(R.styleable.CardViewActionBar_hideAction)) {
             isHideAction = a.getBoolean(R.styleable.CardViewActionBar_hideAction, false);
         }
+        mImageViewBackAction.setImageDrawable(mIconBack);
+        mTextViewTitle.setText(mTitleText);
+        mTextViewAction.setText(mActionText);
+        mTextViewAction.setVisibility(isHideAction ? View.GONE : View.VISIBLE);
         a.recycle();
-        
-        updateView();
     }
     
     public void setTitle(String title) {

@@ -22,6 +22,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.MenuPopupWithIcon;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,9 +141,11 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
             
             item.mTextViewNameWallet.setText(wallet.getWalletName());
             
-            String value = mContext.getString(R.string.txt_show_value_wallet,
-                      wallet.getCurrencyUnit().getCurSymbol(),
-                      (TextUtils.isEmpty(wallet.getMoney()) ? "0" : wallet.getMoney()));
+            String value = NumberUtil
+                      .formatAmount(TextUtils.isEmpty(wallet.getMoney())
+                                          ? "0"
+                                          : wallet.getMoney(),
+                                wallet.getCurrencyUnit().getCurSymbol());
             
             item.mTextViewValueWallet.setText(value);
             item.mImageViewArchive.setVisibility(wallet.isArchive() ? View.VISIBLE : View.GONE);

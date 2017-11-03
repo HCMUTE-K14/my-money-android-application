@@ -49,7 +49,6 @@ public interface TransactionContract {
         
         void deleteTransaction(Transaction transaction);
         
-        
         void unSubscribe();
         
     }

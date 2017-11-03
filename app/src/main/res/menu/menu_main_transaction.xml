@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/action_notification"
+    android:icon="@drawable/ic_bk_notification"
+    android:title="@string/txt_notification"
+    app:showAsAction="always" />
+  <item
+    android:id="@+id/action_jump_to_today"
+    android:title="@string/action_jump_to_today" />
+  <item
+    android:id="@+id/action_select_time_range"
+    android:title="@string/action_select_time_range">
+    <menu>
+      <item
+        android:id="@+id/action_view_by_day"
+        android:title="@string/action_view_by_day" />
+      <item
+        android:id="@+id/action_view_by_week"
+        android:title="@string/action_view_by_week" />
+      <item
+        android:id="@+id/action_view_by_month"
+        android:title="@string/action_view_by_month" />
+      <item
+        android:id="@+id/action_view_by_custom"
+        android:title="@string/action_view_by_custom" />
+      <item
+        android:id="@+id/action_view_by_all_trans"
+        android:title="@string/action_view_by_all_trans" />
+    </menu>
+  </item>
+
+  <item
+    android:id="@+id/action_view_by_transaction_or_category"
+    android:title="@string/action_view_by_transaction" />
+
+</menu>
