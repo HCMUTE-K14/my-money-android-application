@@ -38,7 +38,15 @@ public class DateUtil {
         
         return mDay + "/" + mMonth + "/" + mYear;
     }
+    public static String convertTimeMillisToMonthAnhYear(String timeMillis){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(timeMillis));
     
+        int mYear = calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH) + 1;
+        
+        return mMonth+"/"+mYear;
+    }
     public static int getDayOfWeek(String timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(timeMillis));

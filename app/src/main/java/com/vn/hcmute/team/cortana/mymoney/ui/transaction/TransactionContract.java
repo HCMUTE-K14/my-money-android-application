@@ -49,6 +49,8 @@ public interface TransactionContract {
         
         void deleteTransaction(Transaction transaction);
         
+        void getTransactionByTime(String startDate,String endDate,String idWallet);
+        
         
         void unSubscribe();
         
