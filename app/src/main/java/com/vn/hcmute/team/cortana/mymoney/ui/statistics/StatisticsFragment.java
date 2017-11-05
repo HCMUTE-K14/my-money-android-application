@@ -4,10 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.FragmentHostCallback;
 import android.content.DialogInterface;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -15,8 +12,6 @@ import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
@@ -29,24 +24,23 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.TransactionModule;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
-import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.fragment.FragmentByCategory;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.fragment.FragmentByTime;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionContract;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionPresenter;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.inject.Inject;
 
 /**
- * Created by kunsubin on 11/1/2017.
+ * Created by kunsubin on 11/5/2017.
  */
 
-public class StatisticsActivity extends BaseActivity implements TransactionContract.View {
+public class StatisticsFragment extends BaseFragment implements TransactionContract.View{
     
     @BindView(R.id.txt_category)
     TextView txt_category;
@@ -78,21 +72,21 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
     @Inject
     PreferencesHelper mPreferencesHelper;
     
+    
     @Override
-    public int getLayoutId() {
+    protected int getLayoutId() {
         return R.layout.fragment_statistics;
     }
     
     @Override
     protected void initializeDagger() {
-        ApplicationComponent applicationComponent = ((MyMoneyApplication) getApplication())
+        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity().getApplication())
                   .getAppComponent();
         TransactionComponent transactionComponent = DaggerTransactionComponent.builder()
                   .applicationComponent(applicationComponent)
-                  .activityModule(new ActivityModule(this))
+                  .activityModule(new ActivityModule(getActivity()))
                   .transactionModule(new TransactionModule())
                   .build();
-        
         transactionComponent.inject(this);
     }
     
@@ -108,12 +102,17 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
     }
     
     @Override
+    public void onDestroy() {
+        mTransactionPresenter.unSubscribe();
+        super.onDestroy();
+    }
+    @Override
     protected void initialize() {
         initDate();
         // showChart(null);
         mStringDates=new ArrayList<>();
         mStringDates.clear();
-        mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth+1) + "/" + mYear,(mMonthEnd+1) + "/" + mYearEnd);
+        mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth + 1) + "/" + mYear, (mMonthEnd + 1) + "/" + mYearEnd);
         mIdWallet = mPreferencesHelper.getCurrentWallet().getWalletid();
         mWallet = mPreferencesHelper.getCurrentWallet();
         mTransactionPresenter.getTransactionByTime(DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
@@ -145,7 +144,7 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
     @OnClick(R.id.relative_category_expense)
     public void onClickCategoryExpense(View view) {
         RelativeLayout relativeLayout = (RelativeLayout) view;
-        PopupMenu popupMenu = new PopupMenu(this, relativeLayout);
+        PopupMenu popupMenu = new PopupMenu(getActivity(), relativeLayout);
         popupMenu.getMenuInflater()
                   .inflate(R.menu.menu_popup_select_catetory_expense, popupMenu.getMenu());
         
@@ -175,7 +174,7 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
     @OnClick(R.id.relative_time_or_category)
     public void onClickTimeOrCategory(View view) {
         RelativeLayout relativeLayout = (RelativeLayout) view;
-        PopupMenu popupMenu = new PopupMenu(this, relativeLayout);
+        PopupMenu popupMenu = new PopupMenu(getActivity(), relativeLayout);
         popupMenu.getMenuInflater()
                   .inflate(R.menu.menu_popup_select_time_or_category, popupMenu.getMenu());
         
@@ -209,7 +208,7 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
                     mYear = year;
                     mMonth = month;
                     mDay = dayOfMonth;
-                    txt_start_time.setText(DateUtil.getMonthOfYear(getApplication(), mMonth) + " " +
+                    txt_start_time.setText(DateUtil.getMonthOfYear(getActivity(), mMonth) + " " +
                                            mYear);
                     mStringDates.clear();
                     mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth+1) + "/" + mYear,(mMonthEnd+1) + "/" + mYearEnd);
@@ -223,7 +222,7 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
                 
             }
         };
-        mDatePickerDialog = new DatePickerDialog(this, onDateSetListener, mYear, mMonth, mDay);
+        mDatePickerDialog = new DatePickerDialog(getActivity(), onDateSetListener, mYear, mMonth, mDay);
         mDatePickerDialog.show();
     }
     
@@ -238,7 +237,7 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
                     mMonthEnd = month;
                     mDayEnd = dayOfMonth;
                     txt_end_time
-                              .setText(DateUtil.getMonthOfYear(getApplication(), mMonthEnd) + " " +
+                              .setText(DateUtil.getMonthOfYear(getActivity(), mMonthEnd) + " " +
                                        mYearEnd);
                     mStringDates.clear();
                     mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth+1) + "/" + mYear,(mMonthEnd+1) + "/" + mYearEnd);
@@ -250,7 +249,7 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
                 }
             }
         };
-        mDatePickerDialog = new DatePickerDialog(this, onDateSetListener, mYearEnd, mMonthEnd,
+        mDatePickerDialog = new DatePickerDialog(getActivity(), onDateSetListener, mYearEnd, mMonthEnd,
                   mDayEnd);
         mDatePickerDialog.show();
     }
@@ -299,15 +298,15 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
         
         Calendar calendar = Calendar.getInstance();
         mYearCurrent = calendar.get(Calendar.YEAR);
-        txt_start_time.setText(DateUtil.getMonthOfYear(this, 0) + " " + mYearCurrent);
-        txt_end_time.setText(DateUtil.getMonthOfYear(this, 11) + " " + mYearCurrent);
+        txt_start_time.setText(DateUtil.getMonthOfYear(getActivity(), 0) + " " + mYearCurrent);
+        txt_end_time.setText(DateUtil.getMonthOfYear(getActivity(), 11) + " " + mYearCurrent);
         mYear = mYearCurrent;
         mYearEnd = mYearCurrent;
         
     }
     
     public void alertDiaglog(String message) {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
         builder1.setMessage(message);
         builder1.setCancelable(true);
         builder1.setPositiveButton(
@@ -326,24 +325,22 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
         
         if (idTimeOrCategory == 1) {
             mFragmentByTime = new FragmentByTime(list, idCategory, mWallet,mStringDates);
-            getSupportFragmentManager().beginTransaction()
+            getActivity().getSupportFragmentManager().beginTransaction()
                       .replace(R.id.view_fragment, mFragmentByTime).commit();
             return;
         }
         if (idTimeOrCategory == 2) {
             if(idCategory==3){
                 mFragmentByTime = new FragmentByTime(list, idCategory, mWallet,mStringDates);
-                getSupportFragmentManager().beginTransaction()
+                getActivity().getSupportFragmentManager().beginTransaction()
                           .replace(R.id.view_fragment, mFragmentByTime).commit();
                 return;
             }
             mFragmentByCategory = new FragmentByCategory(list, idCategory,mWallet);
-            getSupportFragmentManager().beginTransaction()
+            getActivity().getSupportFragmentManager().beginTransaction()
                       .replace(R.id.view_fragment, mFragmentByCategory).commit();
             
             return;
         }
     }
-    
-    
 }

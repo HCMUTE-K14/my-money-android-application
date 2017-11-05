@@ -7,6 +7,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.budget.TransactionBudgetActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.TransactionEventActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.TransactionSavingActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.StatisticsActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.statistics.StatisticsFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.BaseInfoTransactionActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.InfoTransactionForDebtLoanActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.ManagerTransactionFragment;
@@ -34,5 +35,7 @@ public interface TransactionComponent {
     void inject(BaseInfoTransactionActivity baseInfoTransactionActivity);
     
     void inject(StatisticsActivity statisticsActivity);
+    
+    void inject(StatisticsFragment statisticsFragment);
     
 }

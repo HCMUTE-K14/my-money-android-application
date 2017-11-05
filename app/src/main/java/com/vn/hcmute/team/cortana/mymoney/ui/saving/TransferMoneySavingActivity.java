@@ -20,6 +20,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerSavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.SavingComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.SavingModule;
+import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
@@ -414,8 +415,17 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         mTransaction.setType(type);
         // mTransaction.setUser_id(mSaving.getUserid());
         mTransaction.setDate_created(String.valueOf(System.currentTimeMillis()));
+        mTransaction.setCategory(createCategoty(type));
     }
-    
+    public Category createCategoty(String type){
+        Category category=new Category();
+        category.setName("Other");
+        category.setIcon("ic_category_other_expense");
+        category.setType(type);
+        category.setTransType(type);
+        category.setSubcategories(null);
+        return category;
+    }
     public void finishTransaction() {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("saving", mSaving);

@@ -310,5 +310,5 @@
   <string name="txt_net_income">Net Income</string>
   <string name="txt_by_category">By Category</string>
   <string name="txt_select_date_start_end">Date start less than date end</string>
-
+  <string name="txt_check_edit_event">Event has been applied. Can not edit</string>
 </resources>

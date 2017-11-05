@@ -184,10 +184,14 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     
     @OnClick(R.id.image_view_edit)
     public void onClickEdit(View view) {
-        Intent intent = new Intent(this, ActivityEditEvent.class);
-        intent.putExtra("event", mEvent);
-        intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
-        startActivityForResult(intent, 17);
+        if(mEvent.getMoney().equals("0")){
+            Intent intent = new Intent(this, ActivityEditEvent.class);
+            intent.putExtra("event", mEvent);
+            intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
+            startActivityForResult(intent, 17);
+        }else {
+            alertDiaglog(getString(R.string.txt_check_edit_event));
+        }
     }
     
     
@@ -280,5 +284,21 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
         finish();
+    }
+    public void alertDiaglog(String message) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(message);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                  getString(R.string.txt_ok),
+                  new DialogInterface.OnClickListener() {
+                      public void onClick(DialogInterface dialog, int id) {
+                          dialog.cancel();
+                      }
+                  });
+        
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+        
     }
 }

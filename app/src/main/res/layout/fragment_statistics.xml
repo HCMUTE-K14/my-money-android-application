@@ -154,7 +154,7 @@
         </LinearLayout>
       </android.support.v7.widget.CardView>
 
-      <View
+      <FrameLayout
         android:id="@+id/view_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

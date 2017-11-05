@@ -3,11 +3,15 @@ package com.vn.hcmute.team.cortana.mymoney.utils;
 import android.content.Context;
 import com.vn.hcmute.team.cortana.mymoney.ApplicationConfig;
 import com.vn.hcmute.team.cortana.mymoney.R;
+import java.text.DateFormat;
 import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * Created by kunsubin on 8/29/2017.
@@ -45,6 +49,9 @@ public class DateUtil {
         int mYear = calendar.get(Calendar.YEAR);
         int mMonth = calendar.get(Calendar.MONTH) + 1;
         
+        if(String.valueOf(mMonth).length()==1) {
+            return "0"+mMonth+"/"+mYear;
+        }
         return mMonth+"/"+mYear;
     }
     public static int getDayOfWeek(String timeMillis) {
@@ -163,5 +170,25 @@ public class DateUtil {
             default:
                 return "";
         }
+    }
+
+    public static List<String> getMonthAndYearBetweenRanges(String dateStart,String dateEnd) {
+        List<String> mDates=new ArrayList<>();
+    
+        DateFormat formatDate = new SimpleDateFormat("MM/yyyy");
+    
+        try {
+            Date start=formatDate.parse(dateStart);
+            Date end=formatDate.parse(dateEnd);
+            while (!start.after(end)){
+                String date=formatDate.format(start);
+                mDates.add(date);
+                start.setMonth(start.getMonth() % 12 + 1);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    
+        return mDates;
     }
 }
