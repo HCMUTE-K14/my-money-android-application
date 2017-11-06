@@ -104,7 +104,6 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     protected void initializeActionBar(View rootView) {
         
     }
-    
     @Override
     protected void initialize() {
         getData();
@@ -113,20 +112,16 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
         showChart();
         mSwitch.setOnCheckedChangeListener(this);
     }
-    
     @Override
     protected void onDestroy() {
         mBudgetPresenter.unSubscribe();
         super.onDestroy();
     }
-    
-    
     @Override
     public void onBackPressed() {
         onClose();
         super.onBackPressed();
     }
-    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 36) {

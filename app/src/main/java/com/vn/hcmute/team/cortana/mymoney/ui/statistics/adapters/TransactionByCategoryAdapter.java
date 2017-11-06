@@ -3,24 +3,17 @@ package com.vn.hcmute.team.cortana.mymoney.ui.statistics.adapters;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects.ObjectByCategory;
-import com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects.ObjectByTime;
-import com.vn.hcmute.team.cortana.mymoney.ui.statistics.adapters.TransactionByTimeAdapter.ItemClickListener;
-import com.vn.hcmute.team.cortana.mymoney.ui.statistics.adapters.TransactionByTimeAdapter.ViewHolder;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.fragment.FragmentByCategory;
-import com.vn.hcmute.team.cortana.mymoney.ui.statistics.fragment.FragmentByTime;
-import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
@@ -86,13 +79,11 @@ public class TransactionByCategoryAdapter extends RecyclerView.Adapter<Transacti
         @BindView(R.id.txt_money)
         TextView txt_money;
         
-       
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
-        
         public void bindView(ObjectByCategory objectByCategory) {
             String curSymbol = mWallet.getCurrencyUnit().getCurSymbol();
             if(mIdCategory==FragmentByCategory.ID_EXPENSE){
