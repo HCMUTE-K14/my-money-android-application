@@ -61,7 +61,6 @@ public interface LocalService {
         int updateMoneyWallet(String idWallet, String money);
         
         Wallet getWalletById(String idWallet);
-        
     }
     
     interface EventLocalService {

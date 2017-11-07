@@ -211,7 +211,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
                       
                       @Override
                       public void onError(FacebookException error) {
-                          
                       }
                   });
     }
@@ -311,36 +310,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     private void openMainActivity() {
         //TODO: CHANGE
         Intent intent = new Intent(this, MainActivity.class);
-        //        Transaction transaction = new Transaction();
-        //        transaction.setUser_id("991f62e3179a4c8c915eff8c82566e13");
-        //        transaction.setTrans_id("4dc752a302f1441295178d90341310d4");
-        //        transaction.setAmount("2000000000");
-        //        Category category = new Category();
-        //        category.setId("55");
-        //        category.setName("Debt Collection");
-        //        category.setIcon("icon_140");
-        //        category.setTransType("debt_loan");
-        //        category.setType("debt");
-        //        transaction.setCategory(category);
-        //
-        //        Wallet wallet = new Wallet();
-        //        wallet.setWalletid("2c526d54d2d340d989e3fabcac32a713");
-        //        wallet.setUserid("991f62e3179a4c8c915eff8c82566e13");
-        //        wallet.setWalletName("Wallet 1");
-        //        wallet.setMoney("1000");
-        //        Currencies currencies = new Currencies();
-        //        currencies.setCurId("1");
-        //        currencies.setCurName("United States Dollar");
-        //        currencies.setCurCode("USD");
-        //        currencies.setCurSymbol("$");
-        //        currencies.setCurDisplayType("0");
-        //        wallet.setWalletImage("ic_saving");
-        //        wallet.setCurrencyUnit(currencies);
-        //        transaction.setWallet(wallet);
-        //        transaction.setDate_created("1505920275350");
-        //        transaction.setDate_end("1505920275350");
-        //        intent.putExtra("type",transaction.getCategory().getType());
-        //        intent.putExtra("transaction", transaction);
         startActivity(intent);
     }
     

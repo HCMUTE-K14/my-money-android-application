@@ -68,6 +68,8 @@ public interface LocalTask {
         Observable<String> deleteWallet(String idWallet);
         
         Observable<String> moveWallet(String idWalletFrom, String idWalletTo, String Money);
+        
+        Observable<Wallet> getWalletById(String wallet_id);
     }
     
     interface EventTask {

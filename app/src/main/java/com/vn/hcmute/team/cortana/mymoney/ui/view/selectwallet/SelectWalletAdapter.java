@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
@@ -171,8 +172,16 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
                                         mSelectWalletListener.onRemoveWallet(position, wallet);
                                         return true;
                                     case R.id.action_transfer_money:
-                                        mSelectWalletListener
-                                                  .onTransferMoneyWallet(position, wallet);
+                                        if (mWallets.size() >= 2) {
+                                            mSelectWalletListener
+                                                      .onTransferMoneyWallet(position, wallet);
+                                            return true;
+                                        } else {
+                                            Toast.makeText(mContext,
+                                                      R.string.message_warning_transfer_money,
+                                                      Toast.LENGTH_SHORT).show();
+                                            return false;
+                                        }
                                     default:
                                         return false;
                                 }

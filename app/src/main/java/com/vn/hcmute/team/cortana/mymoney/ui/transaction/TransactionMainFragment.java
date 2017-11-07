@@ -51,6 +51,7 @@ public class TransactionMainFragment extends BaseFragment {
     
     @Override
     protected void initializeActionBar(View rootView) {
+        getActivity().setTitle(R.string.txt_cash_book);
     }
     
     

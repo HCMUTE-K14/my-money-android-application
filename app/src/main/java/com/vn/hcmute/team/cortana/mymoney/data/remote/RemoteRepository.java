@@ -405,13 +405,14 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     }
     
     @Override
-    public Observable<String> moveWallet(String userid, String token, String wallet1,
-              String wallet2, String money) {
+    public Observable<String> moveWallet(String userid, String token, String walletFrom,
+              String walletTo, String moneyMinus, String moneyPlus, String dateCreated) {
         WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
         if (mWalletService == null) {
             return null;
         }
-        return mWalletService.moveWallet(userid, token, wallet1, wallet2, money)
+        return mWalletService.moveWallet(userid, token, walletFrom, walletTo, moneyMinus, moneyPlus,
+                  dateCreated)
                   .map(new Function<JsonResponse<String>, String>() {
                       @Override
                       public String apply(@NonNull JsonResponse<String> stringJsonResponse)
@@ -425,6 +426,27 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
                       }
                   });
     }
+    
+    @Override
+    public Observable<Wallet> getWalletById(String userid, String token, String wallet_id) {
+        WalletService mWalletService = mServiceGenerator.getService(WalletService.class);
+        if (mWalletService == null) {
+            return null;
+        }
+        return mWalletService.getWalletById(userid, token, wallet_id)
+                  .map(new Function<JsonResponse<Wallet>, Wallet>() {
+                      @Override
+                      public Wallet apply(JsonResponse<Wallet> walletJsonResponse)
+                                throws Exception {
+                          if (walletJsonResponse.getStatus().equals("success")) {
+                              return walletJsonResponse.getData();
+                          } else {
+                              throw new WalletException(walletJsonResponse.getMessage());
+                          }
+                      }
+                  });
+    }
+    
     
     //currencies
     @Override

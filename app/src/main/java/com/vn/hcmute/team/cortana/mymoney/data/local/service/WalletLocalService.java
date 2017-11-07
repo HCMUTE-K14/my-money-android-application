@@ -18,7 +18,7 @@ public class WalletLocalService extends DbContentProvider<Wallet> implements
                                                                   LocalService.WalletLocalService {
     
     public static final String TAG = WalletLocalService.class.getSimpleName();
-    
+    private static WalletLocalService sInstance;
     private final String TABLE_NAME = "tbl_wallet";
     private final String WALLET_ID = "wallet_id";
     private final String USER_ID = "user_id";
@@ -27,15 +27,23 @@ public class WalletLocalService extends DbContentProvider<Wallet> implements
     private final String CUR_ID = "cur_id";
     private final String ICON = "icon";
     private final String ARCHIVE = "archive";
-    
     private CurrencyLocalService mCurrencyLocalService;
     
-    
-    public WalletLocalService(DatabaseHelper mDatabaseHelper) {
+    private WalletLocalService(DatabaseHelper mDatabaseHelper) {
         super(mDatabaseHelper);
-        mCurrencyLocalService = new CurrencyLocalService(mDatabaseHelper);
+        mCurrencyLocalService = CurrencyLocalService.getInstance(mDatabaseHelper);
     }
     
+    public static WalletLocalService getInstance(DatabaseHelper databaseHelper) {
+        if (sInstance == null) {
+            synchronized (BudgetLocalService.class) {
+                if (sInstance == null) {
+                    sInstance = new WalletLocalService(databaseHelper);
+                }
+            }
+        }
+        return sInstance;
+    }
     
     @Override
     protected String[] getAllColumns() {

@@ -41,15 +41,6 @@ public class CalendarTransactionView extends RelativeLayout {
     private long mEndDate;
     
     
-    public Listener getListener() {
-        return mListener;
-    }
-    
-    public void setListener(
-              Listener listener) {
-        mListener = listener;
-    }
-    
     public CalendarTransactionView(Context context) {
         super(context, null);
         this.mContext = context;
@@ -62,6 +53,15 @@ public class CalendarTransactionView extends RelativeLayout {
     
     public CalendarTransactionView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+    
+    public Listener getListener() {
+        return mListener;
+    }
+    
+    public void setListener(
+              Listener listener) {
+        mListener = listener;
     }
     
     private void initView() {
@@ -117,7 +117,8 @@ public class CalendarTransactionView extends RelativeLayout {
                 initTabLayout();
             }
         };
-        runnable.run();
+        new Handler().postDelayed(runnable, 100);
+        
         
     }
     
@@ -126,9 +127,7 @@ public class CalendarTransactionView extends RelativeLayout {
         for (String key : mModel.getData().keySet()) {
             mTabLayout.addTab(mTabLayout.newTab().setText(key));
         }
-        
         jump2ToDay();
-        
         mTabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
             public void onTabSelected(Tab tab) {
@@ -169,11 +168,6 @@ public class CalendarTransactionView extends RelativeLayout {
                   }, 100);
     }
     
-    public interface Listener {
-        
-        void onClickTab(String data);
-    }
-    
     public String getMode() {
         return mode;
     }
@@ -203,5 +197,10 @@ public class CalendarTransactionView extends RelativeLayout {
     
     public void setEndDate(long endDate) {
         mEndDate = endDate;
+    }
+    
+    public interface Listener {
+        
+        void onClickTab(String data);
     }
 }

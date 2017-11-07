@@ -51,6 +51,10 @@ public abstract class BaseModel {
         return this.data;
     }
     
+    public void setData(LinkedHashMap<String, String> data) {
+        this.data = data;
+    }
+    
     public abstract void buildData();
     
     public int getType() {
@@ -72,9 +76,5 @@ public abstract class BaseModel {
     
     public long getEndDate() {
         return endDate;
-    }
-    
-    public void setData(LinkedHashMap<String, String> data) {
-        this.data = data;
     }
 }

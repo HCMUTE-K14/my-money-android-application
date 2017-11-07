@@ -161,7 +161,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         }
         if (requestCode == 5) {
             if (resultCode == Activity.RESULT_OK) {
-                //TODO: View,Result
+                
                 mGoalMoney = data.getStringExtra("result");
                 String goalMoneyShow = data.getStringExtra("result_view");
                 txt_goal_money.setText("+" + goalMoneyShow);

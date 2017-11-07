@@ -18,14 +18,26 @@ public class PersonLocalService extends DbContentProvider<Person> implements
                                                                   LocalService.PersonLocalService {
     
     public static final String TAG = PersonService.class.getSimpleName();
+    private static PersonLocalService sInstance;
     private final String TABLE_NAME = "tbl_person";
     private final String ID = "person_id";
     private final String NAME = "name";
     private final String DESCRIBE = "describe";
     private final String USER_ID = "user_id";
     
-    public PersonLocalService(DatabaseHelper mDatabaseHelper) {
+    private PersonLocalService(DatabaseHelper mDatabaseHelper) {
         super(mDatabaseHelper);
+    }
+    
+    public static PersonLocalService getInstance(DatabaseHelper databaseHelper) {
+        if (sInstance == null) {
+            synchronized (BudgetLocalService.class) {
+                if (sInstance == null) {
+                    sInstance = new PersonLocalService(databaseHelper);
+                }
+            }
+        }
+        return sInstance;
     }
     
     @Override

@@ -56,6 +56,10 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                 doCreate(requestValues.getCallBack(), requestValues.getData(),
                           requestValues.getTypeRepository());
                 break;
+            case Action.ACTION_GET_WALLET_BY_ID:
+                doGetWalletById(requestValues.getCallBack(), requestValues.getParam(),
+                          requestValues.getTypeRepository());
+                break;
             case Action.ACTION_UPDATE_WALLET:
                 doUpdate(requestValues.getCallBack(), requestValues.getData(),
                           requestValues.getTypeRepository());
@@ -73,6 +77,64 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                 break;
             default:
                 break;
+        }
+    }
+    
+    private void doGetWalletById(final BaseCallBack<Object> callBack, String[] param,
+              TypeRepository typeRepository) {
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object list) {
+                
+                callBack.onSuccess(list);
+            }
+            
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
+        
+        if (!this.mCompositeDisposable.isDisposed()) {
+            if (typeRepository == TypeRepository.REMOTE) {
+                String userid = mDataRepository.getUserId();
+                String token = mDataRepository.getUserToken();
+                
+                String wallet_id = param[0];
+                
+                if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                    callBack.onFailure(new UserLoginException(
+                              mContext.getString(R.string.message_warning_need_login)));
+                    return;
+                }
+                mDisposable = mDataRepository.getWalletById(userid, token, wallet_id)
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            } else {
+                String wallet_id = param[0];
+                mDisposable = mDataRepository.getLocalWalletById(wallet_id)
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
+            
+            this.mCompositeDisposable.add(mDisposable);
+            
         }
     }
     
@@ -323,8 +385,15 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                               mContext.getString(R.string.message_warning_need_login)));
                     return;
                 }
+                String wallet_from = params[0];
+                String wallet_to = params[1];
+                String money_minus = params[2];
+                String money_plus = params[3];
+                String date_created = params[4];
+                
                 mDisposable = mDataRepository
-                          .moveWallet(userid, token, params[0], params[1], params[2])
+                          .moveWallet(userid, token, wallet_from, wallet_to, money_minus,
+                                    money_plus, date_created)
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())
                           .doOnSubscribe(new Consumer<Disposable>() {

@@ -68,7 +68,12 @@ public class CategoryByTypeAdapter extends BaseExpandableListAdapter {
         if (mOriginalCategories.size() == 0) {
             return 0;
         }
-        return mOriginalCategories.get(groupPosition).getSubcategories().size();
+        if (!mOriginalCategories.get(groupPosition).getSubcategories().isEmpty()) {
+            return mOriginalCategories.get(groupPosition).getSubcategories().size();
+        } else {
+            return 0;
+        }
+        
     }
     
     @Override

@@ -172,6 +172,7 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             } else {
+                
                 mDisposable = mDataRepository.addLocalBudet(budget)
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())

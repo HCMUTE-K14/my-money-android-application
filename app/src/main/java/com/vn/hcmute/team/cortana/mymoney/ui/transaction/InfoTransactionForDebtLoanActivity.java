@@ -43,9 +43,13 @@ public class InfoTransactionForDebtLoanActivity extends BaseInfoTransactionActiv
     TextView mTextViewType;
     RoundedLetterView mRoundedLetterView;
     TextView mTextViewNamePerson;
+    
     SeekBar mSeekBar;
+    
     @Inject
     DebtLoanUseCase mDebtLoanUseCase;
+    
+    
     private String mType;
     private DebtLoan mDebtLoan;
     
@@ -176,6 +180,8 @@ public class InfoTransactionForDebtLoanActivity extends BaseInfoTransactionActiv
                                     R.string.txt_successful,
                                     Toast.LENGTH_SHORT).show();
                           mSeekBar.setProgress(100);
+                          EventBus.getDefault().post(new ActivityResultEvent(
+                                    ResultCode.NEED_UPDATE_CURRENT_WALLET_RESULT_CODE, null));
                       }
                   }, new Consumer<Throwable>() {
                       @Override

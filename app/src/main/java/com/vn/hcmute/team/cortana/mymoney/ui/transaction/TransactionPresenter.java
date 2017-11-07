@@ -226,6 +226,11 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
     }
     
     @Override
+    public void transferMoney(String walletFrom, String walletTo, String amount) {
+    
+    }
+    
+    @Override
     public void unSubscribe() {
         mTransactionUseCase.unSubscribe();
     }

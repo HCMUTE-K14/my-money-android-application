@@ -32,6 +32,8 @@ public class Constraints {
         public static final int UPDATE_TRANSACTION_REQUEST_CODE = 103;
         public static final int ADD_DEBT_LOAN_REQUEST_CODE = 104;
         public static final int OPEN_INFO_TRANSACTION_MODE_DEBT_LOAN_REQUEST_CODE = 105;
+        public static final int WALLET_FROM_REQUEST_CODE = 106;
+        public static final int WALLET_TO_REQUEST_CODE = 107;
     }
     
     public class ResultCode {
@@ -45,6 +47,8 @@ public class Constraints {
         public static final int EDIT_TRANSACTION_RESULT_CODE = -9;
         public static final int REMOVE_TRANSACTION_RESULT_CODE = -10;
         public static final int CHANGE_DEBT_LOAN_RESULT_CODE = -11;
+        public static final int NEED_UPDATE_CURRENT_WALLET_RESULT_CODE = -12;
+        public static final int NEED_RELOAD_DATA = -13;
     }
     
 }

@@ -328,5 +328,8 @@
   <string name="txt_all_trans">All Transaction</string>
   <string name="message_warning_select_start_date">Please select Start Date !!</string>
   <string name="message_warning_select_end_date">Please select End Date !!</string>
+  <string name="txt_transfer_money">Transfer Money</string>
+  <string name="message_warning_transfer_money">You need more than 2 wallets to transfer money</string>
+  <string name="txt_cash_book">Cash Books</string>
 
 </resources>

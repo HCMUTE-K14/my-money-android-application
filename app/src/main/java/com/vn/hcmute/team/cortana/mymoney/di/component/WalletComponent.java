@@ -8,6 +8,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.wallet.AddWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.EditWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.SelectWalletActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.wallet.TransferMoneyActivity;
 import dagger.Component;
 
 /**
@@ -27,4 +28,6 @@ public interface WalletComponent {
     void inject(EditWalletActivity editWalletActivity);
     
     void inject(MyWalletActivity myWalletActivity);
+    
+    void inject(TransferMoneyActivity transferMoneyActivity);
 }

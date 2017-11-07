@@ -19,9 +19,8 @@ public class BudgetLocalService extends DbContentProvider<Budget> implements
                                                                   LocalService.BudgetLocalService {
     
     public static final String TAG = BudgetLocalService.class.getSimpleName();
-    
+    private static BudgetLocalService sInstance;
     private final String TABLE_NAME = "tbl_budget";
-    
     private final String ID = "budget_id";
     private final String RANGE_DATE = "range_date";
     private final String MONEY_GOAL = "money_goal";
@@ -30,15 +29,24 @@ public class BudgetLocalService extends DbContentProvider<Budget> implements
     private final String MONEY_EXPENSE = "money_expense";
     private final String WALLET_ID = "wallet_id";
     private final String CATE_ID = "cate_id";
-    
     private CategoryLocalService mCategoryLocalService;
     private WalletLocalService mWalletLocalService;
     
-    
-    public BudgetLocalService(DatabaseHelper mDatabaseHelper) {
+    private BudgetLocalService(DatabaseHelper mDatabaseHelper) {
         super(mDatabaseHelper);
-        mCategoryLocalService = new CategoryLocalService(mDatabaseHelper);
-        mWalletLocalService = new WalletLocalService(mDatabaseHelper);
+        mCategoryLocalService = CategoryLocalService.getInstance(mDatabaseHelper);
+        mWalletLocalService = WalletLocalService.getInstance(mDatabaseHelper);
+    }
+    
+    public static BudgetLocalService getInstance(DatabaseHelper databaseHelper) {
+        if (sInstance == null) {
+            synchronized (BudgetLocalService.class) {
+                if (sInstance == null) {
+                    sInstance = new BudgetLocalService(databaseHelper);
+                }
+            }
+        }
+        return sInstance;
     }
     
     @Override

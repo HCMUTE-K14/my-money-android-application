@@ -50,7 +50,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<List<Icon>> getListIcon() {
-        ImageLocalService imageLocalService = new ImageLocalService(mDatabaseHelper);
+        ImageLocalService imageLocalService = ImageLocalService.getInstance(mDatabaseHelper);
         
         Callable<List<Icon>> callable = imageLocalService.getListIcon();
         
@@ -59,7 +59,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<List<Currencies>> getListCurrency() {
-        CurrencyLocalService currencyLocalService = new CurrencyLocalService(mDatabaseHelper);
+        CurrencyLocalService currencyLocalService = CurrencyLocalService
+                  .getInstance(mDatabaseHelper);
         
         Callable<List<Currencies>> callable = currencyLocalService.getListCurrency();
         
@@ -80,9 +81,24 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
         });
     }
     
+    private <T> Observable<T> makeObservable(final T object) {
+        return Observable.create(new ObservableOnSubscribe<T>() {
+            @Override
+            public void subscribe(ObservableEmitter<T> e) throws Exception {
+                try {
+                    e.onNext(object);
+                    e.onComplete();
+                } catch (Exception ex) {
+                    e.onError(ex);
+                }
+            }
+        });
+    }
+    
     @Override
     public Observable<List<Category>> getListCategory(String transType) {
-        CategoryLocalService categoryLocalService = new CategoryLocalService(mDatabaseHelper);
+        CategoryLocalService categoryLocalService = CategoryLocalService
+                  .getInstance(mDatabaseHelper);
         
         String selection = "trans_type = ?";
         String[] selectionArg = new String[]{transType};
@@ -95,7 +111,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<List<Category>> getListCategoryByType(String type, String transType) {
-        CategoryLocalService categoryLocalService = new CategoryLocalService(mDatabaseHelper);
+        CategoryLocalService categoryLocalService = CategoryLocalService
+                  .getInstance(mDatabaseHelper);
         
         String selection = "type = ? and trans_type = ?";
         String[] selectionArg = new String[]{type, transType};
@@ -109,7 +126,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     /*Area saving*/
     @Override
     public Observable<String> addCategory(Category category) {
-        CategoryLocalService categoryLocalService = new CategoryLocalService(mDatabaseHelper);
+        CategoryLocalService categoryLocalService = new CategoryLocalService
+                  (mDatabaseHelper);
         
         Callable<Long> callable = categoryLocalService
                   .addCategory(category);
@@ -128,7 +146,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> updateCategory(Category category) {
-        CategoryLocalService categoryLocalService = new CategoryLocalService(mDatabaseHelper);
+        CategoryLocalService categoryLocalService = CategoryLocalService
+                  .getInstance(mDatabaseHelper);
         
         Callable<Integer> callable = categoryLocalService
                   .updateCategory(category);
@@ -147,7 +166,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> deleteCategory(Category category) {
-        CategoryLocalService categoryLocalService = new CategoryLocalService(mDatabaseHelper);
+        CategoryLocalService categoryLocalService = CategoryLocalService
+                  .getInstance(mDatabaseHelper);
         
         Callable<Integer> callable = categoryLocalService
                   .deleteCategory(category);
@@ -166,14 +186,14 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<List<Saving>> getListSaving(String userId) {
-        SavingLocalService savingLocalService = new SavingLocalService(mDatabaseHelper);
+        SavingLocalService savingLocalService = SavingLocalService.getInstance(mDatabaseHelper);
         Callable<List<Saving>> list = savingLocalService.getListSaving(userId);
         return makeObservable(list);
     }
     
     @Override
     public Observable<String> addSaving(Saving saving) {
-        SavingLocalService savingLocalService = new SavingLocalService(mDatabaseHelper);
+        SavingLocalService savingLocalService = SavingLocalService.getInstance(mDatabaseHelper);
         Callable<Long> callable = savingLocalService.addSaving(saving);
         return makeObservable(callable).map(new Function<Long, String>() {
             @Override
@@ -189,7 +209,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> updateSaving(Saving saving) {
-        SavingLocalService savingLocalService = new SavingLocalService(mDatabaseHelper);
+        SavingLocalService savingLocalService = SavingLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = savingLocalService.updateSaving(saving);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
@@ -205,7 +225,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> deleteSaving(String saving_id) {
-        SavingLocalService savingLocalService = new SavingLocalService(mDatabaseHelper);
+        SavingLocalService savingLocalService = SavingLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = savingLocalService.deleteSaving(saving_id);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
@@ -222,7 +242,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     @Override
     public Observable<String> takeInSaving(String idWallet, String idSaving, String moneyWallet,
               String moneySaving) {
-        SavingLocalService savingLocalService = new SavingLocalService(mDatabaseHelper);
+        SavingLocalService savingLocalService = SavingLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = savingLocalService
                   .takeInSaving(idWallet, idSaving, moneyWallet, moneySaving);
         return makeObservable(callable).map(new Function<Integer, String>() {
@@ -240,7 +260,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     @Override
     public Observable<String> takeOutSaving(String idWallet, String idSaving, String moneyWallet,
               String moneySaving) {
-        SavingLocalService savingLocalService = new SavingLocalService(mDatabaseHelper);
+        SavingLocalService savingLocalService = SavingLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = savingLocalService
                   .takeOutSaving(idWallet, idSaving, moneyWallet, moneySaving);
         return makeObservable(callable).map(new Function<Integer, String>() {
@@ -258,14 +278,14 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     /*Area wallet*/
     @Override
     public Observable<List<Wallet>> getListWallet(String userId) {
-        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        WalletLocalService walletLocalService = WalletLocalService.getInstance(mDatabaseHelper);
         Callable<List<Wallet>> callable = walletLocalService.getListWallet(userId);
         return makeObservable(callable);
     }
     
     @Override
     public Observable<String> addWallet(Wallet wallet) {
-        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        WalletLocalService walletLocalService = WalletLocalService.getInstance(mDatabaseHelper);
         Callable<Long> callable = walletLocalService.addWallet(wallet);
         return makeObservable(callable).map(new Function<Long, String>() {
             @Override
@@ -281,7 +301,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> updateWallet(Wallet wallet) {
-        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        WalletLocalService walletLocalService = WalletLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = walletLocalService.updateWallet(wallet);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
@@ -297,7 +317,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> deleteWallet(String idWallet) {
-        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        WalletLocalService walletLocalService = WalletLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = walletLocalService.deleteWallet(idWallet);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
@@ -313,7 +333,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> moveWallet(String idWalletFrom, String idWalletTo, String Money) {
-        WalletLocalService walletLocalService = new WalletLocalService(mDatabaseHelper);
+        WalletLocalService walletLocalService = WalletLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = walletLocalService.moveWallet(idWalletFrom, idWalletTo, Money);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
@@ -327,17 +347,25 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
         });
     }
     
+    @Override
+    public Observable<Wallet> getWalletById(String wallet_id) {
+        WalletLocalService walletLocalService = WalletLocalService.getInstance(mDatabaseHelper);
+        Wallet wallet = walletLocalService.getWalletById(wallet_id);
+        return makeObservable(wallet);
+    }
+    
+    
     /*Area Event*/
     @Override
     public Observable<List<Event>> getListEvent(String userId) {
-        EventLocalService eventLocalService = new EventLocalService(mDatabaseHelper);
+        EventLocalService eventLocalService = EventLocalService.getInstance(mDatabaseHelper);
         Callable<List<Event>> callable = eventLocalService.getListEvent(userId);
         return makeObservable(callable);
     }
     
     @Override
     public Observable<String> addEvent(Event event) {
-        EventLocalService eventLocalService = new EventLocalService(mDatabaseHelper);
+        EventLocalService eventLocalService = EventLocalService.getInstance(mDatabaseHelper);
         Callable<Long> callable = eventLocalService.addEvent(event);
         return makeObservable(callable).map(new Function<Long, String>() {
             @Override
@@ -353,7 +381,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> updateEvent(Event event) {
-        EventLocalService eventLocalService = new EventLocalService(mDatabaseHelper);
+        EventLocalService eventLocalService = EventLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = eventLocalService.updateEvent(event);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
@@ -369,7 +397,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> deleteEvent(String idEvent) {
-        EventLocalService eventLocalService = new EventLocalService(mDatabaseHelper);
+        EventLocalService eventLocalService = EventLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = eventLocalService.deleteEvent(idEvent);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
@@ -386,14 +414,14 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     /*Area Budget*/
     @Override
     public Observable<List<Budget>> getListBudget(String userId) {
-        BudgetLocalService budgetLocalService = new BudgetLocalService(mDatabaseHelper);
+        BudgetLocalService budgetLocalService = BudgetLocalService.getInstance(mDatabaseHelper);
         Callable<List<Budget>> callable = budgetLocalService.getListBudget(userId);
         return makeObservable(callable);
     }
     
     @Override
     public Observable<String> addBudet(Budget budget) {
-        BudgetLocalService budgetLocalService = new BudgetLocalService(mDatabaseHelper);
+        BudgetLocalService budgetLocalService = BudgetLocalService.getInstance(mDatabaseHelper);
         Callable<Long> callable = budgetLocalService.addBudet(budget);
         return makeObservable(callable).map(new Function<Long, String>() {
             @Override
@@ -409,7 +437,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> updateBudget(Budget budget) {
-        BudgetLocalService budgetLocalService = new BudgetLocalService(mDatabaseHelper);
+        BudgetLocalService budgetLocalService = BudgetLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = budgetLocalService.updateBudget(budget);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
@@ -425,7 +453,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> deleteBudget(String idBudget) {
-        BudgetLocalService budgetLocalService = new BudgetLocalService(mDatabaseHelper);
+        BudgetLocalService budgetLocalService = BudgetLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = budgetLocalService.deleteBudget(idBudget);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
@@ -442,14 +470,14 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     /*Area person*/
     @Override
     public Observable<List<Person>> getListPerson(String userId) {
-        PersonLocalService personLocalService = new PersonLocalService(mDatabaseHelper);
+        PersonLocalService personLocalService = PersonLocalService.getInstance(mDatabaseHelper);
         Callable<List<Person>> callable = personLocalService.getListPerson(userId);
         return makeObservable(callable);
     }
     
     @Override
     public Observable<String> addPerson(Person person) {
-        PersonLocalService personLocalService = new PersonLocalService(mDatabaseHelper);
+        PersonLocalService personLocalService = PersonLocalService.getInstance(mDatabaseHelper);
         Callable<Long> callable = personLocalService.addPerson(person);
         return makeObservable(callable).map(new Function<Long, String>() {
             @Override
@@ -465,7 +493,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> updatePerson(Person person) {
-        PersonLocalService personLocalService = new PersonLocalService(mDatabaseHelper);
+        PersonLocalService personLocalService = PersonLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = personLocalService.updatePerson(person);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
@@ -481,7 +509,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     
     @Override
     public Observable<String> deletePerson(String isPerson) {
-        PersonLocalService personLocalService = new PersonLocalService(mDatabaseHelper);
+        PersonLocalService personLocalService = PersonLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = personLocalService.deletePerson(isPerson);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override

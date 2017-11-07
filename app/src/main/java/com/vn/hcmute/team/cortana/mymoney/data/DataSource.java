@@ -64,8 +64,10 @@ public interface DataSource {
         
         Observable<List<Wallet>> getAllWallet(String userid, String token);
         
-        Observable<String> moveWallet(String userid, String token, String wallet1, String wallet2,
-                  String money);
+        Observable<String> moveWallet(String userid, String token, String walletFrom,
+                  String walletTo, String moneyMinus, String moneyPlus, String dateCreated);
+        
+        Observable<Wallet> getWalletById(String userid, String token, String wallet_id);
         
         Observable<List<Currencies>> getCurrencies();
         
@@ -242,6 +244,8 @@ public interface DataSource {
         Observable<String> deleteLocalWallet(String idWallet);
         
         Observable<String> moveLocalWallet(String idWalletFrom, String idWalletTo, String Money);
+        
+        Observable<Wallet> getLocalWalletById(String wallet_id);
         
         /*Area Event*/
         Observable<List<Event>> getListEvent(String userId);

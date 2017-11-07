@@ -126,6 +126,12 @@ public abstract class BaseInfoTransactionActivity extends BaseActivity implement
     }
     
     @Override
+    protected void onDestroy() {
+        mTransactionPresenter.unSubscribe();
+        super.onDestroy();
+    }
+    
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         
@@ -198,6 +204,9 @@ public abstract class BaseInfoTransactionActivity extends BaseActivity implement
         EventBus.getDefault()
                   .post(new ActivityResultEvent(ResultCode.REMOVE_TRANSACTION_RESULT_CODE,
                             message));
+        EventBus.getDefault()
+                  .post(new ActivityResultEvent(ResultCode.NEED_UPDATE_CURRENT_WALLET_RESULT_CODE,
+                            null));
         finish();
     }
     

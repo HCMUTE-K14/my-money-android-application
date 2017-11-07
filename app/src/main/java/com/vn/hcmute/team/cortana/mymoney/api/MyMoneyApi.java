@@ -35,6 +35,7 @@ public class MyMoneyApi {
     public static final String DELETE_WALLET = "wallet/deleteWallet";
     public static final String GET_ALL_WALLET = "wallet/getInfoWallet";
     public static final String MOVE_WALLET = "wallet/moveMoneyWallet";
+    public static final String GET_WALLET_BY_ID = "wallet/getWalletById";
     
     /*-----------------*/
     /*Currency         */

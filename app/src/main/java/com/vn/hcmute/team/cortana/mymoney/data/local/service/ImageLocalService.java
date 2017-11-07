@@ -17,12 +17,25 @@ import java.util.concurrent.Callable;
 public class ImageLocalService extends DbContentProvider<Image> implements
                                                                 LocalService.ImageLocalService {
     
+    private static ImageLocalService sInstance;
     private final String TABLE_NAME = "tbl_icon";
     private final String COLUMN_ID = "id";
     private final String COLUMN_IMAGE = "image";
     
-    public ImageLocalService(DatabaseHelper databaseHelper) {
-        super(databaseHelper);
+    private ImageLocalService(DatabaseHelper mDatabaseHelper) {
+        super(mDatabaseHelper);
+        
+    }
+    
+    public static ImageLocalService getInstance(DatabaseHelper databaseHelper) {
+        if (sInstance == null) {
+            synchronized (BudgetLocalService.class) {
+                if (sInstance == null) {
+                    sInstance = new ImageLocalService(databaseHelper);
+                }
+            }
+        }
+        return sInstance;
     }
     
     @Override
@@ -38,7 +51,6 @@ public class ImageLocalService extends DbContentProvider<Image> implements
     @Override
     public Callable<List<Icon>> getListIcon() {
         try {
-            this.open();
             return new Callable<List<Icon>>() {
                 @Override
                 public List<Icon> call() throws Exception {
@@ -58,7 +70,6 @@ public class ImageLocalService extends DbContentProvider<Image> implements
                         lists.add(icon);
                     }
                     cursor.close();
-                    ImageLocalService.this.close();
                     return lists;
                 }
             };
