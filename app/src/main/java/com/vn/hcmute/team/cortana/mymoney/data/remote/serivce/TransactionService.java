@@ -69,6 +69,13 @@ public interface TransactionService {
               @Query("uid") String uid,
               @Query("token") String token);
     
+    @GET(MyMoneyApi.GET_TRANSACTION_BY_SAVING + "/{idSaving}")
+    Observable<JsonResponse<List<Transaction>>> getTransactionBySaving(
+              @Path("idSaving") String idSaving,
+              @Query("uid") String uid,
+              @Query("token") String token
+    );
+    
     @POST(MyMoneyApi.SYNC_TRANSACTION)
     Observable<JsonResponse<String>> syncTransaction(@Query("uid") String uid,
               @Query("token") String token);

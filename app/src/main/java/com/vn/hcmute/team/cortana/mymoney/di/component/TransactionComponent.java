@@ -25,7 +25,6 @@ public interface TransactionComponent {
     
     void inject(TransactionSavingActivity transactionSavingActivity);
     
-    
     void inject(TransactionEventActivity transactionEventActivity);
     
     void inject(TransactionBudgetActivity transactionBudgetActivity);
@@ -37,5 +36,6 @@ public interface TransactionComponent {
     void inject(StatisticsActivity statisticsActivity);
     
     void inject(StatisticsFragment statisticsFragment);
+    
     
 }

@@ -31,7 +31,15 @@ public class FragmentByTime extends BaseFragment {
     
     @BindView(R.id.recycler_view_by_time)
     RecyclerView mRecyclerView;
-    
+    ByTimeAdapter.ItemClickListener mItemClickListener = new ItemClickListener() {
+        @Override
+        public void onItemClick(ObjectByTime objectByTime) {
+            Intent intent = new Intent(getActivity(), TransactionStatisticsActivity.class);
+            intent.putExtra("type", "1");
+            intent.putExtra("data", objectByTime);
+            getActivity().startActivity(intent);
+        }
+    };
     private List<Transaction> mTransactions;
     private int mIdCategory;
     private List<ObjectByTime> mObjectByTimes;
@@ -39,11 +47,12 @@ public class FragmentByTime extends BaseFragment {
     private ByTimeAdapter mTransactionByTimeAdapter;
     private Wallet mWallet;
     
-    public FragmentByTime(List<Transaction> transactions, int idCategory,Wallet wallet,List<String> listDates) {
+    public FragmentByTime(List<Transaction> transactions, int idCategory, Wallet wallet,
+              List<String> listDates) {
         this.mTransactions = transactions;
         this.mIdCategory = idCategory;
-        this.mWallet=wallet;
-        this.mStringDates=listDates;
+        this.mWallet = wallet;
+        this.mStringDates = listDates;
     }
     
     @Override
@@ -100,7 +109,7 @@ public class FragmentByTime extends BaseFragment {
                 
                 for (Transaction transaction : mTransactions) {
                     if (DateUtil.convertTimeMillisToMonthAnhYear(transaction.getDate_created())
-                              .equals(string)&&transaction.getType().equals(TYPE_EXPENSE)) {
+                                  .equals(string) && transaction.getType().equals(TYPE_EXPENSE)) {
                         list.add(transaction);
                         sumMoney += Double.parseDouble(transaction.getAmount());
                     }
@@ -112,7 +121,7 @@ public class FragmentByTime extends BaseFragment {
                 mObjectByTimes.add(objectByTime);
             }
         }
-     
+        
     }
     
     public void getDataInCome() {
@@ -127,7 +136,7 @@ public class FragmentByTime extends BaseFragment {
                 
                 for (Transaction transaction : mTransactions) {
                     if (DateUtil.convertTimeMillisToMonthAnhYear(transaction.getDate_created())
-                              .equals(string)&&transaction.getType().equals(TYPE_INCOME)) {
+                                  .equals(string) && transaction.getType().equals(TYPE_INCOME)) {
                         list.add(transaction);
                         sumMoney += Double.parseDouble(transaction.getAmount());
                     }
@@ -143,7 +152,6 @@ public class FragmentByTime extends BaseFragment {
     
     public void getDataNetInCome() {
         mObjectByTimes.clear();
-
         
         if (mStringDates != null && !mStringDates.isEmpty()) {
             for (String string : mStringDates) {
@@ -175,23 +183,13 @@ public class FragmentByTime extends BaseFragment {
         }
     }
     
-    ByTimeAdapter.ItemClickListener mItemClickListener = new ItemClickListener() {
-        @Override
-        public void onItemClick(ObjectByTime objectByTime) {
-            Intent intent=new Intent(getActivity(), TransactionStatisticsActivity.class);
-            intent.putExtra("type","1");
-            intent.putExtra("data", objectByTime);
-            getActivity().startActivity(intent);
-        }
-    };
-    
     public void showData() {
-        if(mTransactionByTimeAdapter!=null){
+        if (mTransactionByTimeAdapter != null) {
             mTransactionByTimeAdapter.notifyDataSetChanged();
         }
         if (mObjectByTimes != null && !mObjectByTimes.isEmpty()) {
             mTransactionByTimeAdapter = new ByTimeAdapter(
-                      getActivity(), mIdCategory, mObjectByTimes,mWallet);
+                      getActivity(), mIdCategory, mObjectByTimes, mWallet);
             mTransactionByTimeAdapter.setClickListener(mItemClickListener);
             mRecyclerView.setAdapter(mTransactionByTimeAdapter);
         }

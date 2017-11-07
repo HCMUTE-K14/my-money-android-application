@@ -13,7 +13,7 @@ import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.ExpandableListEmptyAdapter;
-import com.vn.hcmute.team.cortana.mymoney.ui.event.adapter.DateObjectTransaction;
+import com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects.DateObjectTransaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction.adapter.TransactionByTimeAdapter;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
@@ -40,6 +40,12 @@ public class FragmentTransactionByTime extends BaseFragment {
     
     
     private Context mContext;
+    TransactionByTimeAdapter.ClickChildView mClickChildView = new TransactionByTimeAdapter.ClickChildView() {
+        @Override
+        public void onClickChild(Transaction transaction) {
+            Toast.makeText(mContext, transaction.getAmount(), Toast.LENGTH_SHORT).show();
+        }
+    };
     private List<Transaction> mTransactions;
     private TransactionByTimeAdapter mTransactionByTimeAdapter;
     private List<DateObjectTransaction> mListDataHeader;
@@ -47,7 +53,6 @@ public class FragmentTransactionByTime extends BaseFragment {
     private ExpandableListEmptyAdapter mBaseEmptyAdapter;
     private List<String> mDateList;
     private ViewGroup mHeaderView;
-    
     
     public FragmentTransactionByTime(Context context, List<Transaction> list) {
         this.mContext = context;
@@ -79,13 +84,6 @@ public class FragmentTransactionByTime extends BaseFragment {
         init();
         setData();
     }
-    
-    TransactionByTimeAdapter.ClickChildView mClickChildView = new TransactionByTimeAdapter.ClickChildView() {
-        @Override
-        public void onClickChild(Transaction transaction) {
-            Toast.makeText(mContext, transaction.getAmount(), Toast.LENGTH_SHORT).show();
-        }
-    };
     
     public void init() {
         mDateList = new ArrayList<>();
@@ -188,7 +186,7 @@ public class FragmentTransactionByTime extends BaseFragment {
     
     public void setDataHeader() {
         
-        String curSymbol=mTransactions.get(0).getWallet().getCurrencyUnit().getCurSymbol();
+        String curSymbol = mTransactions.get(0).getWallet().getCurrencyUnit().getCurSymbol();
         
         double moneyIncome = 0;
         double moneyExpense = 0;

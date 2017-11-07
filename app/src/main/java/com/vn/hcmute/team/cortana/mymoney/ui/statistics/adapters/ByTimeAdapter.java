@@ -39,6 +39,7 @@ import java.util.List;
  */
 
 public class ByTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    
     private List<ObjectByTime> mData = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
@@ -140,7 +141,7 @@ public class ByTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             mBarChart.getAxisRight().setEnabled(false);
             mBarChart.getAxisLeft().setDrawGridLines(false);
             mBarChart.getXAxis().setPosition(XAxisPosition.BOTTOM);
-            if(IdCategory==FragmentByTime.ID_NETINCOME){
+            if (IdCategory == FragmentByTime.ID_NETINCOME) {
                 return;
             }
             mBarChart.getAxisLeft().setAxisMinimum(0f);
@@ -178,7 +179,7 @@ public class ByTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             BarData barData = new BarData(barDataSet);
             mBarChart.setData(barData);
             //set label
-            IAxisValueFormatter iAxisValueFormatter=new IAxisValueFormatter() {
+            IAxisValueFormatter iAxisValueFormatter = new IAxisValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, AxisBase axis) {
                     return xLabel.get((int) value);
@@ -194,15 +195,15 @@ public class ByTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             for (int i = 0; i < mData.size(); i++) {
                 xLabel.add(mData.get(i).getDate().split("/")[0]);
                 float value = Float.parseFloat(mData.get(i).getMoneyIncome()) -
-                               Float.parseFloat(mData.get(i).getMoneyExpense());
+                              Float.parseFloat(mData.get(i).getMoneyExpense());
                 yEntrys.add(new BarEntry(i, value));
             }
             BarDataSet barDataSet = new BarDataSet(yEntrys, "");
-            ArrayList<Integer> colors=new ArrayList<>();
-            for (int i=0;i<yEntrys.size();i++){
-                if(yEntrys.get(i).getY()>0){
+            ArrayList<Integer> colors = new ArrayList<>();
+            for (int i = 0; i < yEntrys.size(); i++) {
+                if (yEntrys.get(i).getY() > 0) {
                     colors.add(Color.GREEN);
-                }else {
+                } else {
                     colors.add(Color.RED);
                 }
             }
@@ -214,7 +215,7 @@ public class ByTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             BarData barData = new BarData(barDataSet);
             mBarChart.setData(barData);
             //set label
-            IAxisValueFormatter iAxisValueFormatter=new IAxisValueFormatter() {
+            IAxisValueFormatter iAxisValueFormatter = new IAxisValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, AxisBase axis) {
                     return xLabel.get((int) value);
@@ -316,7 +317,7 @@ public class ByTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
-                mClickListener.onItemClick(getItem(getAdapterPosition()-1));
+                mClickListener.onItemClick(getItem(getAdapterPosition() - 1));
             }
         }
     }

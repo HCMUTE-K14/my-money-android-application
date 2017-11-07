@@ -31,13 +31,14 @@ public class ByCategoryAdapter extends RecyclerView.Adapter<ByCategoryAdapter.Vi
     private Wallet mWallet;
     private ItemClickListener mItemClickListener;
     private int mIdCategory;
+    
     public ByCategoryAdapter(Context context, int idCategory,
               List<ObjectByCategory> data, Wallet wallet) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData=data;
-        this.mContext=context;
-        this.mWallet=wallet;
-        this.mIdCategory=idCategory;
+        this.mData = data;
+        this.mContext = context;
+        this.mWallet = wallet;
+        this.mIdCategory = idCategory;
     }
     
     @Override
@@ -84,26 +85,33 @@ public class ByCategoryAdapter extends RecyclerView.Adapter<ByCategoryAdapter.Vi
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
+        
         public void bindView(ObjectByCategory objectByCategory) {
             String curSymbol = mWallet.getCurrencyUnit().getCurSymbol();
-            if(mIdCategory==FragmentByCategory.ID_EXPENSE){
-                GlideImageLoader.load(mContext, DrawableUtil.getDrawable(mContext, objectByCategory.getCategory().getIcon()),
+            if (mIdCategory == FragmentByCategory.ID_EXPENSE) {
+                GlideImageLoader.load(mContext, DrawableUtil
+                                    .getDrawable(mContext, objectByCategory.getCategory().getIcon()),
                           image_icon_category);
                 txt_category.setText(objectByCategory.getCategory().getName());
-                if(Double.parseDouble(objectByCategory.getMoneyExpense())==0.0){
-                    txt_money.setText(NumberUtil.formatAmount(objectByCategory.getMoneyExpense(),curSymbol));
-                }else {
-                    txt_money.setText("-"+NumberUtil.formatAmount(objectByCategory.getMoneyExpense(),curSymbol));
+                if (Double.parseDouble(objectByCategory.getMoneyExpense()) == 0.0) {
+                    txt_money.setText(NumberUtil.formatAmount(objectByCategory.getMoneyExpense(),
+                              curSymbol));
+                } else {
+                    txt_money.setText("-" +
+                                      NumberUtil.formatAmount(objectByCategory.getMoneyExpense(),
+                                                curSymbol));
                 }
-                txt_money.setTextColor(ContextCompat.getColor(mContext,R.color.color_red));
+                txt_money.setTextColor(ContextCompat.getColor(mContext, R.color.color_red));
                 return;
             }
-            if(mIdCategory==FragmentByCategory.ID_INCOME){
-                GlideImageLoader.load(mContext, DrawableUtil.getDrawable(mContext, objectByCategory.getCategory().getIcon()),
+            if (mIdCategory == FragmentByCategory.ID_INCOME) {
+                GlideImageLoader.load(mContext, DrawableUtil
+                                    .getDrawable(mContext, objectByCategory.getCategory().getIcon()),
                           image_icon_category);
                 txt_category.setText(objectByCategory.getCategory().getName());
-                txt_money.setText(NumberUtil.formatAmount(objectByCategory.getMoneyExpense(),curSymbol));
-                txt_money.setTextColor(ContextCompat.getColor(mContext,R.color.green));
+                txt_money.setText(
+                          NumberUtil.formatAmount(objectByCategory.getMoneyExpense(), curSymbol));
+                txt_money.setTextColor(ContextCompat.getColor(mContext, R.color.green));
                 return;
             }
         }

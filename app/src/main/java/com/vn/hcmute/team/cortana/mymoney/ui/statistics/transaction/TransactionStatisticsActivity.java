@@ -45,10 +45,12 @@ public class TransactionStatisticsActivity extends BaseActivity {
         getData();
         showData();
     }
+    
     @OnClick(R.id.back_button)
-    public void onClickBack(View view){
+    public void onClickBack(View view) {
         finish();
     }
+    
     public void getData() {
         Intent intent = this.getIntent();
         mType = intent.getStringExtra("type");

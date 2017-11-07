@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
-import com.vn.hcmute.team.cortana.mymoney.ui.event.adapter.DateObjectTransaction;
+import com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects.DateObjectTransaction;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.HashMap;
@@ -27,8 +27,8 @@ import java.util.List;
 
 public class TransactionByTimeAdapter extends BaseExpandableListAdapter {
     
-    private  final String EXPENSE="expense";
-    private  final String INCOME="income";
+    private final String EXPENSE = "expense";
+    private final String INCOME = "income";
     
     private Context mContext;
     private List<DateObjectTransaction> mListDataHeader;
@@ -131,13 +131,15 @@ public class TransactionByTimeAdapter extends BaseExpandableListAdapter {
         mClickChildView = clickChildView;
     }
     
+    public List<Transaction> getValuesListTransaction(DateObjectTransaction dateObjectTransaction) {
+        return mListDataChild.get(dateObjectTransaction);
+    }
+    
     public interface ClickChildView {
         
         void onClickChild(Transaction transaction);
     }
-    public List<Transaction> getValuesListTransaction(DateObjectTransaction dateObjectTransaction){
-        return mListDataChild.get(dateObjectTransaction);
-    }
+    
     public class ViewGroupHoder {
         
         @BindView(R.id.txt_mon)
@@ -152,29 +154,32 @@ public class TransactionByTimeAdapter extends BaseExpandableListAdapter {
         public ViewGroupHoder(View view) {
             ButterKnife.bind(this, view);
         }
+        
         public void bindView(DateObjectTransaction dateObjectTransaction) {
             txt_mon.setText(dateObjectTransaction.getDayOfWeek());
             txt_day.setText(dateObjectTransaction.getDayOfMonth());
             txt_month_year.setText(dateObjectTransaction.getMonthOfYear() + " " +
                                    dateObjectTransaction.getYear());
             
-            double value=0;
-            List<Transaction> list=getValuesListTransaction(dateObjectTransaction);
-            if(list!=null&&!list.isEmpty()){
-                for (Transaction transaction:list){
-                    if(transaction.getType().equals(EXPENSE)){
-                        value-=Double.parseDouble(transaction.getAmount());
-                    }else {
-                        value+=Double.parseDouble(transaction.getAmount());
+            double value = 0;
+            List<Transaction> list = getValuesListTransaction(dateObjectTransaction);
+            if (list != null && !list.isEmpty()) {
+                for (Transaction transaction : list) {
+                    if (transaction.getType().equals(EXPENSE)) {
+                        value -= Double.parseDouble(transaction.getAmount());
+                    } else {
+                        value += Double.parseDouble(transaction.getAmount());
                     }
                 }
             }
-            txt_money.setText(NumberUtil.formatAmount(value+"",dateObjectTransaction.getCurrencies()));
+            txt_money.setText(
+                      NumberUtil.formatAmount(value + "", dateObjectTransaction.getCurrencies()));
             
         }
     }
     
     public class ViewChildHoder {
+        
         @BindView(R.id.image_category)
         ImageView image_category;
         @BindView(R.id.txt_category_name)
@@ -197,17 +202,17 @@ public class TransactionByTimeAdapter extends BaseExpandableListAdapter {
                       .error(R.drawable.folder_placeholder)
                       .dontAnimate()
                       .into(image_category);
-    
-            if(transaction.getType().equals(EXPENSE)){
+            
+            if (transaction.getType().equals(EXPENSE)) {
                 txt_money.setText("-" + NumberUtil.formatAmount(transaction.getAmount(),
                           transaction.getWallet().getCurrencyUnit().getCurSymbol()));
-                txt_money.setTextColor(ContextCompat.getColor(mContext,R.color.color_red));
+                txt_money.setTextColor(ContextCompat.getColor(mContext, R.color.color_red));
                 return;
             }
-            if(transaction.getType().equals(INCOME)){
+            if (transaction.getType().equals(INCOME)) {
                 txt_money.setText(NumberUtil.formatAmount(transaction.getAmount(),
                           transaction.getWallet().getCurrencyUnit().getCurSymbol()));
-                txt_money.setTextColor(ContextCompat.getColor(mContext,R.color.green));
+                txt_money.setTextColor(ContextCompat.getColor(mContext, R.color.green));
                 return;
             }
         }

@@ -42,18 +42,20 @@ public class DateUtil {
         
         return mDay + "/" + mMonth + "/" + mYear;
     }
-    public static String convertTimeMillisToMonthAnhYear(String timeMillis){
+    
+    public static String convertTimeMillisToMonthAnhYear(String timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(timeMillis));
-    
+        
         int mYear = calendar.get(Calendar.YEAR);
         int mMonth = calendar.get(Calendar.MONTH) + 1;
         
-        if(String.valueOf(mMonth).length()==1) {
-            return "0"+mMonth+"/"+mYear;
+        if (String.valueOf(mMonth).length() == 1) {
+            return "0" + mMonth + "/" + mYear;
         }
-        return mMonth+"/"+mYear;
+        return mMonth + "/" + mYear;
     }
+    
     public static int getDayOfWeek(String timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(timeMillis));
@@ -171,24 +173,24 @@ public class DateUtil {
                 return "";
         }
     }
-
-    public static List<String> getMonthAndYearBetweenRanges(String dateStart,String dateEnd) {
-        List<String> mDates=new ArrayList<>();
     
+    public static List<String> getMonthAndYearBetweenRanges(String dateStart, String dateEnd) {
+        List<String> mDates = new ArrayList<>();
+        
         DateFormat formatDate = new SimpleDateFormat("MM/yyyy");
-    
+        
         try {
-            Date start=formatDate.parse(dateStart);
-            Date end=formatDate.parse(dateEnd);
-            while (!start.after(end)){
-                String date=formatDate.format(start);
+            Date start = formatDate.parse(dateStart);
+            Date end = formatDate.parse(dateEnd);
+            while (!start.after(end)) {
+                String date = formatDate.format(start);
                 mDates.add(date);
                 start.setMonth(start.getMonth() % 12 + 1);
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-    
+        
         return mDates;
     }
 }

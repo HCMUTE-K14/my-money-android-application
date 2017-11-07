@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
@@ -75,6 +76,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     private Currencies mCurrencies;
     private Saving mSaving;
     private String mGoalMoney;
+    private ProgressDialog mProgressDialog;
     private DatePickerDialog.OnDateSetListener mDatePickerListener
               = new DatePickerDialog.OnDateSetListener() {
         
@@ -124,6 +126,8 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         getData();
         showData();
         initDatePicker();
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
     
     @Override
@@ -238,7 +242,11 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
     
     @Override
     public void loading(boolean isLoading) {
-        
+        if (isLoading) {
+            mProgressDialog.show();
+        } else {
+            mProgressDialog.dismiss();
+        }
     }
     
     /*Area OnClick*/

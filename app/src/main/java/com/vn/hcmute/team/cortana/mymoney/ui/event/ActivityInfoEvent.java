@@ -1,6 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.event;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -59,6 +60,7 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     WalletUseCase mWalletUseCase;
     private Event mEvent;
     private List<Wallet> mWalletList;
+    private ProgressDialog mProgressDialog;
     
     @Override
     public int getLayoutId() {
@@ -95,6 +97,8 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
         getData();
         getWallet();
         showData();
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
     
     @Override
@@ -159,7 +163,11 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     
     @Override
     public void loading(boolean isLoading) {
-        
+        if (isLoading) {
+            mProgressDialog.show();
+        } else {
+            mProgressDialog.dismiss();
+        }
     }
     
     /*Area OnClick*/
@@ -184,12 +192,12 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     
     @OnClick(R.id.image_view_edit)
     public void onClickEdit(View view) {
-        if(mEvent.getMoney().equals("0")){
+        if (mEvent.getMoney().equals("0")) {
             Intent intent = new Intent(this, ActivityEditEvent.class);
             intent.putExtra("event", mEvent);
             intent.putExtra("wallet_name", txt_name_wallet.getText().toString().trim());
             startActivityForResult(intent, 17);
-        }else {
+        } else {
             alertDiaglog(getString(R.string.txt_check_edit_event));
         }
     }
@@ -285,6 +293,7 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
         setResult(Activity.RESULT_CANCELED, returnIntent);
         finish();
     }
+    
     public void alertDiaglog(String message) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage(message);

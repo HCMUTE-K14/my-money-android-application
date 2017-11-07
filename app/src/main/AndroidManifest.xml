@@ -95,9 +95,8 @@
     <activity android:name=".ui.event.ActivityEditEvent" />
     <activity android:name=".ui.event.ActivityAddEvent" />
     <activity android:name=".ui.event.EventActivity" />
-    <activity android:name=".ui.event.TransactionEventActivity" />
     <activity android:name=".ui.event.ActivitySelectEvent" />
-
+    <activity android:name=".ui.event.TransactionEventActivity"/>
 
     <!-- Person -->
     <activity android:name=".ui.person.PersonActivity" />

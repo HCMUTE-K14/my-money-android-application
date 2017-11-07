@@ -1,6 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.budget;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -75,6 +76,7 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     BudgetPresenter mBudgetPresenter;
     
     private Budget mBudget;
+    private ProgressDialog mProgressDialog;
     
     @Override
     public int getLayoutId() {
@@ -104,6 +106,7 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     protected void initializeActionBar(View rootView) {
         
     }
+    
     @Override
     protected void initialize() {
         getData();
@@ -111,17 +114,22 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
         initPieChart();
         showChart();
         mSwitch.setOnCheckedChangeListener(this);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
+    
     @Override
     protected void onDestroy() {
         mBudgetPresenter.unSubscribe();
         super.onDestroy();
     }
+    
     @Override
     public void onBackPressed() {
         onClose();
         super.onBackPressed();
     }
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 36) {
@@ -162,7 +170,11 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     
     @Override
     public void loading(boolean isLoading) {
-        
+        if (isLoading) {
+            mProgressDialog.show();
+        } else {
+            mProgressDialog.dismiss();
+        }
     }
     
     @Override

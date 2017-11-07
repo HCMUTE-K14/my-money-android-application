@@ -1,9 +1,11 @@
-package com.vn.hcmute.team.cortana.mymoney.ui.saving;
+package com.vn.hcmute.team.cortana.mymoney.ui.saving.adapter;
 
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import com.vn.hcmute.team.cortana.mymoney.ui.saving.FragmentFinished;
+import com.vn.hcmute.team.cortana.mymoney.ui.saving.FragmentRunning;
 
 
 /**

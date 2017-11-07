@@ -26,7 +26,6 @@ public class BarCharActivity extends BaseActivity {
     BarChart mBarChart;
     
     
-    
     @Override
     public int getLayoutId() {
         return R.layout.item_header_bar_chart;
@@ -49,27 +48,24 @@ public class BarCharActivity extends BaseActivity {
     
     @Override
     protected void initialize() {
-       initPieChart();
-       showBar();
+        initPieChart();
+        showBar();
     }
     
     private void showBar() {
         ArrayList<BarEntry> yEntrys = new ArrayList<>();
-        yEntrys.add(new BarEntry(0,16));
-        yEntrys.add(new BarEntry(1,-5));
-        yEntrys.add(new BarEntry(2,18));
-        yEntrys.add(new BarEntry(3,12));
+        yEntrys.add(new BarEntry(0, 16));
+        yEntrys.add(new BarEntry(1, -5));
+        yEntrys.add(new BarEntry(2, 18));
+        yEntrys.add(new BarEntry(3, 12));
         
-        
-        
-       final ArrayList<String> xLabel = new ArrayList<>();
+        final ArrayList<String> xLabel = new ArrayList<>();
         xLabel.add("1");
         xLabel.add("2");
         xLabel.add("3");
         xLabel.add("4");
         
-        
-        BarDataSet barDataSet=new BarDataSet(yEntrys,"bom");
+        BarDataSet barDataSet = new BarDataSet(yEntrys, "bom");
         
         barDataSet.setColor(Color.GREEN);
         
@@ -85,23 +81,23 @@ public class BarCharActivity extends BaseActivity {
         mBarChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return xLabel.get((int)value);
+                return xLabel.get((int) value);
             }
         });
         mBarChart.invalidate();
         
         
-        
     }
+    
     public void initPieChart() {
         mBarChart.setDescription(null);
         mBarChart.setFitBars(false);
         mBarChart.setDoubleTapToZoomEnabled(false);
-
-       mBarChart.getXAxis().setDrawGridLines(false);
-       mBarChart.getAxisRight().setEnabled(false);
-       mBarChart.getAxisLeft().setDrawGridLines(false);
-       mBarChart.getXAxis().setPosition(XAxisPosition.BOTTOM);
-       
+        
+        mBarChart.getXAxis().setDrawGridLines(false);
+        mBarChart.getAxisRight().setEnabled(false);
+        mBarChart.getAxisLeft().setDrawGridLines(false);
+        mBarChart.getXAxis().setPosition(XAxisPosition.BOTTOM);
+        
     }
 }

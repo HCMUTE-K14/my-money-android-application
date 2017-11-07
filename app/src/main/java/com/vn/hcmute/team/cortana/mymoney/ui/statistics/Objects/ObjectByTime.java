@@ -10,12 +10,23 @@ import java.util.List;
  * Created by kunsubin on 11/4/2017.
  */
 
-public class ObjectByTime implements Parcelable{
+public class ObjectByTime implements Parcelable {
+    
+    public static final Creator<ObjectByTime> CREATOR = new Creator<ObjectByTime>() {
+        @Override
+        public ObjectByTime createFromParcel(Parcel in) {
+            return new ObjectByTime(in);
+        }
+        
+        @Override
+        public ObjectByTime[] newArray(int size) {
+            return new ObjectByTime[size];
+        }
+    };
     private String mDate;
     private List<Transaction> mTransactionList;
     private String mMoneyExpense;
     private String mMoneyIncome;
-    
     
     public ObjectByTime(String date,
               List<Transaction> transactionList, String moneyExpense, String moneyIncome) {
@@ -38,18 +49,6 @@ public class ObjectByTime implements Parcelable{
         mMoneyExpense = in.readString();
         mMoneyIncome = in.readString();
     }
-    
-    public static final Creator<ObjectByTime> CREATOR = new Creator<ObjectByTime>() {
-        @Override
-        public ObjectByTime createFromParcel(Parcel in) {
-            return new ObjectByTime(in);
-        }
-        
-        @Override
-        public ObjectByTime[] newArray(int size) {
-            return new ObjectByTime[size];
-        }
-    };
     
     public String getDate() {
         return mDate;
@@ -101,7 +100,7 @@ public class ObjectByTime implements Parcelable{
     
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-    
+        
         parcel.writeString(mDate);
         parcel.writeTypedList(mTransactionList);
         parcel.writeString(mMoneyExpense);

@@ -39,7 +39,7 @@ import javax.inject.Inject;
  * Created by kunsubin on 11/5/2017.
  */
 
-public class StatisticsFragment extends BaseFragment implements TransactionContract.View{
+public class StatisticsFragment extends BaseFragment implements TransactionContract.View {
     
     @BindView(R.id.txt_category)
     TextView txt_category;
@@ -49,28 +49,21 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
     TextView txt_start_time;
     @BindView(R.id.txt_end_time)
     TextView txt_end_time;
-    
-    private int idCategory = 1;
-    private int idTimeOrCategory = 1;
-    private DatePickerDialog mDatePickerDialog;
-    private int mYearCurrent;
-    
-    private int mDay, mMonth, mYear;
-    private int mDayEnd, mMonthEnd, mYearEnd;
-    
-    private String mIdWallet;
-    private Wallet mWallet;
-    
-    
-    private FragmentByTime mFragmentByTime;
-    private FragmentByCategory mFragmentByCategory;
-    private List<String> mStringDates;
-    
     @Inject
     TransactionPresenter mTransactionPresenter;
     @Inject
     PreferencesHelper mPreferencesHelper;
-    
+    private int idCategory = 1;
+    private int idTimeOrCategory = 1;
+    private DatePickerDialog mDatePickerDialog;
+    private int mYearCurrent;
+    private int mDay, mMonth, mYear;
+    private int mDayEnd, mMonthEnd, mYearEnd;
+    private String mIdWallet;
+    private Wallet mWallet;
+    private FragmentByTime mFragmentByTime;
+    private FragmentByCategory mFragmentByCategory;
+    private List<String> mStringDates;
     
     @Override
     protected int getLayoutId() {
@@ -79,7 +72,8 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
     
     @Override
     protected void initializeDagger() {
-        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity().getApplication())
+        ApplicationComponent applicationComponent = ((MyMoneyApplication) getActivity()
+                  .getApplication())
                   .getAppComponent();
         TransactionComponent transactionComponent = DaggerTransactionComponent.builder()
                   .applicationComponent(applicationComponent)
@@ -105,13 +99,15 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
         mTransactionPresenter.unSubscribe();
         super.onDestroy();
     }
+    
     @Override
     protected void initialize() {
         initDate();
         // showChart(null);
-        mStringDates=new ArrayList<>();
+        mStringDates = new ArrayList<>();
         mStringDates.clear();
-        mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth + 1) + "/" + mYear, (mMonthEnd + 1) + "/" + mYearEnd);
+        mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth + 1) + "/" + mYear,
+                  (mMonthEnd + 1) + "/" + mYearEnd);
         mIdWallet = mPreferencesHelper.getCurrentWallet().getWalletid();
         mWallet = mPreferencesHelper.getCurrentWallet();
         mTransactionPresenter.getTransactionByTime(DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
@@ -209,7 +205,8 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
                     txt_start_time.setText(DateUtil.getMonthOfYear(getActivity(), mMonth) + " " +
                                            mYear);
                     mStringDates.clear();
-                    mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth+1) + "/" + mYear,(mMonthEnd+1) + "/" + mYearEnd);
+                    mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth + 1) + "/" + mYear,
+                              (mMonthEnd + 1) + "/" + mYearEnd);
                     mTransactionPresenter.getTransactionByTime(
                               DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
                               DateUtil.getLongAsDate(mDayEnd, mMonthEnd, mYearEnd) + "", mIdWallet);
@@ -220,7 +217,8 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
                 
             }
         };
-        mDatePickerDialog = new DatePickerDialog(getActivity(), onDateSetListener, mYear, mMonth, mDay);
+        mDatePickerDialog = new DatePickerDialog(getActivity(), onDateSetListener, mYear, mMonth,
+                  mDay);
         mDatePickerDialog.show();
     }
     
@@ -238,7 +236,8 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
                               .setText(DateUtil.getMonthOfYear(getActivity(), mMonthEnd) + " " +
                                        mYearEnd);
                     mStringDates.clear();
-                    mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth+1) + "/" + mYear,(mMonthEnd+1) + "/" + mYearEnd);
+                    mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth + 1) + "/" + mYear,
+                              (mMonthEnd + 1) + "/" + mYearEnd);
                     mTransactionPresenter.getTransactionByTime(
                               DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
                               DateUtil.getLongAsDate(mDayEnd, mMonthEnd, mYearEnd) + "", mIdWallet);
@@ -247,7 +246,8 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
                 }
             }
         };
-        mDatePickerDialog = new DatePickerDialog(getActivity(), onDateSetListener, mYearEnd, mMonthEnd,
+        mDatePickerDialog = new DatePickerDialog(getActivity(), onDateSetListener, mYearEnd,
+                  mMonthEnd,
                   mDayEnd);
         mDatePickerDialog.show();
     }
@@ -322,19 +322,19 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
     public void showChart(List<Transaction> list) {
         
         if (idTimeOrCategory == 1) {
-            mFragmentByTime = new FragmentByTime(list, idCategory, mWallet,mStringDates);
+            mFragmentByTime = new FragmentByTime(list, idCategory, mWallet, mStringDates);
             getActivity().getSupportFragmentManager().beginTransaction()
                       .replace(R.id.view_fragment, mFragmentByTime).commit();
             return;
         }
         if (idTimeOrCategory == 2) {
-            if(idCategory==3){
-                mFragmentByTime = new FragmentByTime(list, idCategory, mWallet,mStringDates);
+            if (idCategory == 3) {
+                mFragmentByTime = new FragmentByTime(list, idCategory, mWallet, mStringDates);
                 getActivity().getSupportFragmentManager().beginTransaction()
                           .replace(R.id.view_fragment, mFragmentByTime).commit();
                 return;
             }
-            mFragmentByCategory = new FragmentByCategory(list, idCategory,mWallet);
+            mFragmentByCategory = new FragmentByCategory(list, idCategory, mWallet);
             getActivity().getSupportFragmentManager().beginTransaction()
                       .replace(R.id.view_fragment, mFragmentByCategory).commit();
             

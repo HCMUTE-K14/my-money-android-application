@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
@@ -67,6 +68,7 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
     private Currencies mCurrencies;
     private Wallet mWallet;
     private Event mEvent;
+    private ProgressDialog mProgressDialog;
     private DatePickerDialog.OnDateSetListener mDatePickerListener
               = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int selectedYear,
@@ -115,6 +117,8 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
         init();
         initView();
         showIcon();
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
     
     @Override
@@ -185,7 +189,11 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
     
     @Override
     public void loading(boolean isLoading) {
-        
+        if (isLoading) {
+            mProgressDialog.show();
+        } else {
+            mProgressDialog.dismiss();
+        }
     }
     
     /*Area OnClick*/

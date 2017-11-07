@@ -4,10 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.FragmentHostCallback;
 import android.content.DialogInterface;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -15,8 +12,6 @@ import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
@@ -36,7 +31,6 @@ import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionContract;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionPresenter;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -56,27 +50,21 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
     TextView txt_start_time;
     @BindView(R.id.txt_end_time)
     TextView txt_end_time;
-    
-    private int idCategory = 1;
-    private int idTimeOrCategory = 1;
-    private DatePickerDialog mDatePickerDialog;
-    private int mYearCurrent;
-    
-    private int mDay, mMonth, mYear;
-    private int mDayEnd, mMonthEnd, mYearEnd;
-    
-    private String mIdWallet;
-    private Wallet mWallet;
-    
-    
-    private FragmentByTime mFragmentByTime;
-    private FragmentByCategory mFragmentByCategory;
-    private List<String> mStringDates;
-    
     @Inject
     TransactionPresenter mTransactionPresenter;
     @Inject
     PreferencesHelper mPreferencesHelper;
+    private int idCategory = 1;
+    private int idTimeOrCategory = 1;
+    private DatePickerDialog mDatePickerDialog;
+    private int mYearCurrent;
+    private int mDay, mMonth, mYear;
+    private int mDayEnd, mMonthEnd, mYearEnd;
+    private String mIdWallet;
+    private Wallet mWallet;
+    private FragmentByTime mFragmentByTime;
+    private FragmentByCategory mFragmentByCategory;
+    private List<String> mStringDates;
     
     @Override
     public int getLayoutId() {
@@ -111,9 +99,10 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
     protected void initialize() {
         initDate();
         // showChart(null);
-        mStringDates=new ArrayList<>();
+        mStringDates = new ArrayList<>();
         mStringDates.clear();
-        mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth+1) + "/" + mYear,(mMonthEnd+1) + "/" + mYearEnd);
+        mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth + 1) + "/" + mYear,
+                  (mMonthEnd + 1) + "/" + mYearEnd);
         mIdWallet = mPreferencesHelper.getCurrentWallet().getWalletid();
         mWallet = mPreferencesHelper.getCurrentWallet();
         mTransactionPresenter.getTransactionByTime(DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
@@ -212,7 +201,8 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
                     txt_start_time.setText(DateUtil.getMonthOfYear(getApplication(), mMonth) + " " +
                                            mYear);
                     mStringDates.clear();
-                    mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth+1) + "/" + mYear,(mMonthEnd+1) + "/" + mYearEnd);
+                    mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth + 1) + "/" + mYear,
+                              (mMonthEnd + 1) + "/" + mYearEnd);
                     mTransactionPresenter.getTransactionByTime(
                               DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
                               DateUtil.getLongAsDate(mDayEnd, mMonthEnd, mYearEnd) + "", mIdWallet);
@@ -241,7 +231,8 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
                               .setText(DateUtil.getMonthOfYear(getApplication(), mMonthEnd) + " " +
                                        mYearEnd);
                     mStringDates.clear();
-                    mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth+1) + "/" + mYear,(mMonthEnd+1) + "/" + mYearEnd);
+                    mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth + 1) + "/" + mYear,
+                              (mMonthEnd + 1) + "/" + mYearEnd);
                     mTransactionPresenter.getTransactionByTime(
                               DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
                               DateUtil.getLongAsDate(mDayEnd, mMonthEnd, mYearEnd) + "", mIdWallet);
@@ -325,19 +316,19 @@ public class StatisticsActivity extends BaseActivity implements TransactionContr
     public void showChart(List<Transaction> list) {
         
         if (idTimeOrCategory == 1) {
-            mFragmentByTime = new FragmentByTime(list, idCategory, mWallet,mStringDates);
+            mFragmentByTime = new FragmentByTime(list, idCategory, mWallet, mStringDates);
             getSupportFragmentManager().beginTransaction()
                       .replace(R.id.view_fragment, mFragmentByTime).commit();
             return;
         }
         if (idTimeOrCategory == 2) {
-            if(idCategory==3){
-                mFragmentByTime = new FragmentByTime(list, idCategory, mWallet,mStringDates);
+            if (idCategory == 3) {
+                mFragmentByTime = new FragmentByTime(list, idCategory, mWallet, mStringDates);
                 getSupportFragmentManager().beginTransaction()
                           .replace(R.id.view_fragment, mFragmentByTime).commit();
                 return;
             }
-            mFragmentByCategory = new FragmentByCategory(list, idCategory,mWallet);
+            mFragmentByCategory = new FragmentByCategory(list, idCategory, mWallet);
             getSupportFragmentManager().beginTransaction()
                       .replace(R.id.view_fragment, mFragmentByCategory).commit();
             

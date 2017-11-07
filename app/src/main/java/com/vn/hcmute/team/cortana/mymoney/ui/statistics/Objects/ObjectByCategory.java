@@ -11,7 +11,19 @@ import java.util.List;
  * Created by kunsubin on 11/4/2017.
  */
 
-public class ObjectByCategory implements Parcelable{
+public class ObjectByCategory implements Parcelable {
+    
+    public static final Creator<ObjectByCategory> CREATOR = new Creator<ObjectByCategory>() {
+        @Override
+        public ObjectByCategory createFromParcel(Parcel in) {
+            return new ObjectByCategory(in);
+        }
+        
+        @Override
+        public ObjectByCategory[] newArray(int size) {
+            return new ObjectByCategory[size];
+        }
+    };
     private Category mCategory;
     private List<Transaction> mTransactionList;
     private String mMoneyExpense;
@@ -38,18 +50,6 @@ public class ObjectByCategory implements Parcelable{
         mMoneyExpense = in.readString();
         mMoneyIncome = in.readString();
     }
-    
-    public static final Creator<ObjectByCategory> CREATOR = new Creator<ObjectByCategory>() {
-        @Override
-        public ObjectByCategory createFromParcel(Parcel in) {
-            return new ObjectByCategory(in);
-        }
-        
-        @Override
-        public ObjectByCategory[] newArray(int size) {
-            return new ObjectByCategory[size];
-        }
-    };
     
     public Category getCategory() {
         return mCategory;
@@ -101,7 +101,7 @@ public class ObjectByCategory implements Parcelable{
     
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-    
+        
         parcel.writeParcelable(mCategory, i);
         parcel.writeTypedList(mTransactionList);
         parcel.writeString(mMoneyExpense);

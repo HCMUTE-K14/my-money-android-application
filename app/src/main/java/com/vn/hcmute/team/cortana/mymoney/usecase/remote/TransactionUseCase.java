@@ -89,10 +89,55 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                 doGetTransactionByBudget(requestValues.getCallback(), requestValues.getParams(),
                           requestValues.getTypeRepository());
                 break;
+            case Action.ACTION_GET_TRANSACTION_BY_SAVING:
+                doGetTransactionBySaving(requestValues.getCallback(), requestValues.getParams(),
+                          requestValues.getTypeRepository());
+                break;
         }
         
     }
     
+    private void doGetTransactionBySaving(final BaseCallBack<Object> callBack, String[] params,
+              TypeRepository typeRepository) {
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object result) {
+                callBack.onSuccess(result);
+            }
+            
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
+        if (!this.mCompositeDisposable.isDisposed()) {
+            if (typeRepository == TypeRepository.REMOTE) {
+                String userid = mDataRepository.getUserId();
+                String token = mDataRepository.getUserToken();
+                
+                if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                    callBack.onFailure(new UserLoginException(
+                              mContext.getString(R.string.message_warning_need_login)));
+                    return;
+                }
+                mDisposable = mDataRepository
+                          .getTransactionBySaving(userid, token, params[0])
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            } else {
+            
+            }
+            this.mCompositeDisposable.add(mDisposable);
+        }
+    }
     
     private void doDeleteTransaction(final BaseCallBack<Object> callBack, String[] params,
               TypeRepository typeRepository) {

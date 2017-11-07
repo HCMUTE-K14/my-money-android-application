@@ -208,7 +208,6 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                     return;
                 }
                 
-                
                 mDisposable = mDataRepository.updateWallet(wallet, userid, token)
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())

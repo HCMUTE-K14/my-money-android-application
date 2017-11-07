@@ -206,7 +206,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                       .replace(R.id.container_fragment, fragment).commit();
         }
     };
-    private Runnable runnableAttachStatisticsFragment=new Runnable() {
+    private Runnable runnableAttachStatisticsFragment = new Runnable() {
         @Override
         public void run() {
             mNavigationView.getMenu().findItem(R.id.navigation_item_trends).setChecked(true);
@@ -216,6 +216,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                       .replace(R.id.container_fragment, fragment).commit();
         }
     };
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -449,7 +450,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                 mRunnable = runnableAttachEventFragment;
                 break;
             case R.id.navigation_item_trends:
-                mRunnable=runnableAttachStatisticsFragment;
+                mRunnable = runnableAttachStatisticsFragment;
             case R.id.navigation_item_contacts:
                 break;
             default:

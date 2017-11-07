@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
-import com.vn.hcmute.team.cortana.mymoney.ui.event.adapter.DateObjectTransaction;
+import com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects.DateObjectTransaction;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.HashMap;
@@ -130,13 +130,13 @@ public class TransactionByCategoryAdapter extends BaseExpandableListAdapter {
         mClickChildView = clickChildView;
     }
     
+    public List<DateObjectTransaction> getDateObjectByCategory(Category category) {
+        return mListDataChild.get(category);
+    }
+    
     public interface ClickChildView {
         
         void onClickChild(DateObjectTransaction dateObjectTransaction);
-    }
-    
-    public List<DateObjectTransaction> getDateObjectByCategory(Category category) {
-        return mListDataChild.get(category);
     }
     
     public class ViewGroupHoder {
@@ -176,6 +176,7 @@ public class TransactionByCategoryAdapter extends BaseExpandableListAdapter {
     }
     
     public class ViewChildHoder {
+        
         @BindView(R.id.txt_mon)
         TextView txt_mon;
         @BindView(R.id.txt_day)
@@ -188,6 +189,7 @@ public class TransactionByCategoryAdapter extends BaseExpandableListAdapter {
         public ViewChildHoder(View view) {
             ButterKnife.bind(this, view);
         }
+        
         private void bindView(Category category, DateObjectTransaction dateObjectTransaction) {
             txt_mon.setText(dateObjectTransaction.getDayOfWeek());
             txt_day.setText(dateObjectTransaction.getDayOfMonth());
@@ -196,11 +198,11 @@ public class TransactionByCategoryAdapter extends BaseExpandableListAdapter {
             if (category.getType().equals(EXPENSE)) {
                 txt_money.setText("-" + NumberUtil.formatAmount(dateObjectTransaction.getMoney(),
                           dateObjectTransaction.getCurrencies()));
-                txt_money.setTextColor(ContextCompat.getColor(mContext,R.color.color_red));
-            }else {
+                txt_money.setTextColor(ContextCompat.getColor(mContext, R.color.color_red));
+            } else {
                 txt_money.setText(NumberUtil.formatAmount(dateObjectTransaction.getMoney(),
                           dateObjectTransaction.getCurrencies()));
-                txt_money.setTextColor(ContextCompat.getColor(mContext,R.color.green));
+                txt_money.setTextColor(ContextCompat.getColor(mContext, R.color.green));
             }
         }
     }

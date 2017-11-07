@@ -1,4 +1,4 @@
-package com.vn.hcmute.team.cortana.mymoney.ui.event.adapter;
+package com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects;
 
 /**
  * Created by kunsubin on 10/20/2017.

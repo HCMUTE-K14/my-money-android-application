@@ -1,12 +1,14 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.saving;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -70,6 +72,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     private String mProcess;
     private List<Wallet> mWalletList;
     private Wallet mWallet;
+    private ProgressDialog mProgressDialog;
     
     @Override
     public int getLayoutId() {
@@ -116,6 +119,8 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
         getData();
         getWallet();
         showData();
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
     
     @Override
@@ -196,12 +201,16 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
     
     @Override
     public void showError(String message) {
-        
+    
     }
     
     @Override
     public void loading(boolean isLoading) {
-        
+        if (isLoading) {
+            mProgressDialog.show();
+        } else {
+            mProgressDialog.dismiss();
+        }
     }
     
     /*Area OnClick*/
@@ -359,5 +368,22 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
                       }
                   }, null, null);
         mWalletUseCase.subscribe(savingRequest);
+    }
+    
+    public void alertDiaglog(String message) {
+        Builder builder1 = new Builder(this);
+        builder1.setMessage(message);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                  getString(R.string.txt_ok),
+                  new DialogInterface.OnClickListener() {
+                      public void onClick(DialogInterface dialog, int id) {
+                          dialog.cancel();
+                      }
+                  });
+        
+        android.app.AlertDialog alert11 = builder1.create();
+        alert11.show();
+        
     }
 }
