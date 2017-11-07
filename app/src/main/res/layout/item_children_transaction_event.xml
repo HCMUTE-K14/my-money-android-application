@@ -55,7 +55,7 @@
           android:layout_marginTop="15dp"
           android:layout_marginRight="15dp"
           android:layout_alignParentRight="true"
-          android:text="-23000 đ"
+          android:text="0"
           android:textColor="@color/color_red"
           android:textSize="18dp" />
       </RelativeLayout>

@@ -121,6 +121,10 @@
     </activity>
     <!-- Debt & Loan -->
     <activity android:name=".ui.transaction.InfoTransactionForDebtLoanActivity" />
+    <!--Statistic-->
+    <activity android:name=".ui.statistics.transaction.TransactionStatisticsActivity">
+
+    </activity>
 
   </application>
 

@@ -1,20 +1,19 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.statistics.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
-import android.widget.Toast;
 import butterknife.BindView;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
-
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects.ObjectByCategory;
-import com.vn.hcmute.team.cortana.mymoney.ui.statistics.adapters.TransactionByCategoryAdapter;
-import com.vn.hcmute.team.cortana.mymoney.ui.statistics.adapters.TransactionByCategoryAdapter.ItemClickListener;
+import com.vn.hcmute.team.cortana.mymoney.ui.statistics.adapters.ByCategoryAdapter;
+import com.vn.hcmute.team.cortana.mymoney.ui.statistics.adapters.ByCategoryAdapter.ItemClickListener;
+import com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction.TransactionStatisticsActivity;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +35,7 @@ public class FragmentByCategory extends BaseFragment {
     private int mIdCategory;
     private List<ObjectByCategory> mObjectByCategories;
     private List<Category> mCategories;
-    private TransactionByCategoryAdapter mTransactionByCategoryAdapter;
+    private ByCategoryAdapter mTransactionByCategoryAdapter;
     private Wallet mWallet;
     public FragmentByCategory(List<Transaction> transactions,int idCategory,Wallet wallet) {
         this.mTransactions=transactions;
@@ -102,7 +101,7 @@ public class FragmentByCategory extends BaseFragment {
                 List<Transaction> list=new ArrayList<>();
                 double sumMoneyExpense=0;
                 for (Transaction transaction:mTransactions){
-                    if(transaction.getCategory().equals(category)){
+                    if(transaction.getCategory().equals(category)&&transaction.getType().equals(TYPE_EXPENSE)){
                         list.add(transaction);
                         sumMoneyExpense+=Double.parseDouble(transaction.getAmount());
                     }
@@ -133,7 +132,7 @@ public class FragmentByCategory extends BaseFragment {
                 List<Transaction> list=new ArrayList<>();
                 double sumMoneyExpense=0;
                 for (Transaction transaction:mTransactions){
-                    if(transaction.getCategory().equals(category)){
+                    if(transaction.getCategory().equals(category)&&transaction.getType().equals(TYPE_INCOME)){
                         list.add(transaction);
                         sumMoneyExpense+=Double.parseDouble(transaction.getAmount());
                     }
@@ -146,14 +145,17 @@ public class FragmentByCategory extends BaseFragment {
             }
         }
     }
-    TransactionByCategoryAdapter.ItemClickListener mItemClickListener=new ItemClickListener() {
+    ByCategoryAdapter.ItemClickListener mItemClickListener=new ItemClickListener() {
         @Override
         public void onItemClick(ObjectByCategory objectByCategory) {
-            Toast.makeText(getActivity(), objectByCategory.getCategory().getName(), Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(getActivity(), TransactionStatisticsActivity.class);
+            intent.putExtra("type","2");
+            intent.putExtra("data",objectByCategory);
+            getActivity().startActivity(intent);
         }
     };
     public void showData() {
-        mTransactionByCategoryAdapter=new TransactionByCategoryAdapter(getActivity(),mIdCategory,mObjectByCategories,mWallet);
+        mTransactionByCategoryAdapter=new ByCategoryAdapter(getActivity(),mIdCategory,mObjectByCategories,mWallet);
         mTransactionByCategoryAdapter.setClickListener(mItemClickListener);
         mRecyclerView.setAdapter(mTransactionByCategoryAdapter);
     }

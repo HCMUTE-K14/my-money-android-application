@@ -38,8 +38,7 @@ import java.util.List;
  * Created by kunsubin on 11/5/2017.
  */
 
-public class TransactionByTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    
+public class ByTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<ObjectByTime> mData = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
@@ -48,7 +47,7 @@ public class TransactionByTimeAdapter extends RecyclerView.Adapter<RecyclerView.
     private Wallet mWallet;
     
     
-    public TransactionByTimeAdapter(Context context, int idCategory,
+    public ByTimeAdapter(Context context, int idCategory,
               List<ObjectByTime> data, Wallet wallet) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
@@ -317,7 +316,7 @@ public class TransactionByTimeAdapter extends RecyclerView.Adapter<RecyclerView.
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
-                mClickListener.onItemClick(getItem(getAdapterPosition()));
+                mClickListener.onItemClick(getItem(getAdapterPosition()-1));
             }
         }
     }

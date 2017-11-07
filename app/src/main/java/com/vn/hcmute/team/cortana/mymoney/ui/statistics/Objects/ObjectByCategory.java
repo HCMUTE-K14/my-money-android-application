@@ -1,5 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import java.util.ArrayList;
@@ -9,7 +11,7 @@ import java.util.List;
  * Created by kunsubin on 11/4/2017.
  */
 
-public class ObjectByCategory {
+public class ObjectByCategory implements Parcelable{
     private Category mCategory;
     private List<Transaction> mTransactionList;
     private String mMoneyExpense;
@@ -29,6 +31,25 @@ public class ObjectByCategory {
         mMoneyExpense = "0";
         mMoneyIncome = "0";
     }
+    
+    protected ObjectByCategory(Parcel in) {
+        mCategory = in.readParcelable(Category.class.getClassLoader());
+        mTransactionList = in.createTypedArrayList(Transaction.CREATOR);
+        mMoneyExpense = in.readString();
+        mMoneyIncome = in.readString();
+    }
+    
+    public static final Creator<ObjectByCategory> CREATOR = new Creator<ObjectByCategory>() {
+        @Override
+        public ObjectByCategory createFromParcel(Parcel in) {
+            return new ObjectByCategory(in);
+        }
+        
+        @Override
+        public ObjectByCategory[] newArray(int size) {
+            return new ObjectByCategory[size];
+        }
+    };
     
     public Category getCategory() {
         return mCategory;
@@ -71,5 +92,19 @@ public class ObjectByCategory {
                ", mMoneyExpense='" + mMoneyExpense + '\'' +
                ", mMoneyIncome='" + mMoneyIncome + '\'' +
                '}';
+    }
+    
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+    
+        parcel.writeParcelable(mCategory, i);
+        parcel.writeTypedList(mTransactionList);
+        parcel.writeString(mMoneyExpense);
+        parcel.writeString(mMoneyIncome);
     }
 }

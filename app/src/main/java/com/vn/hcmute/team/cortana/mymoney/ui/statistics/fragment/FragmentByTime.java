@@ -1,19 +1,18 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.statistics.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
-import android.widget.Toast;
 import butterknife.BindView;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects.ObjectByTime;
-
-import com.vn.hcmute.team.cortana.mymoney.ui.statistics.adapters.TransactionByTimeAdapter;
-import com.vn.hcmute.team.cortana.mymoney.ui.statistics.adapters.TransactionByTimeAdapter.ItemClickListener;
+import com.vn.hcmute.team.cortana.mymoney.ui.statistics.adapters.ByTimeAdapter;
+import com.vn.hcmute.team.cortana.mymoney.ui.statistics.adapters.ByTimeAdapter.ItemClickListener;
+import com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction.TransactionStatisticsActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class FragmentByTime extends BaseFragment {
     private int mIdCategory;
     private List<ObjectByTime> mObjectByTimes;
     private List<String> mStringDates;
-    private TransactionByTimeAdapter mTransactionByTimeAdapter;
+    private ByTimeAdapter mTransactionByTimeAdapter;
     private Wallet mWallet;
     
     public FragmentByTime(List<Transaction> transactions, int idCategory,Wallet wallet,List<String> listDates) {
@@ -73,7 +72,6 @@ public class FragmentByTime extends BaseFragment {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         getData();
         showData();
-        setHeaderBarChart();
     }
     
     public void getData() {
@@ -177,22 +175,25 @@ public class FragmentByTime extends BaseFragment {
         }
     }
     
-    TransactionByTimeAdapter.ItemClickListener mItemClickListener = new ItemClickListener() {
+    ByTimeAdapter.ItemClickListener mItemClickListener = new ItemClickListener() {
         @Override
         public void onItemClick(ObjectByTime objectByTime) {
-            Toast.makeText(getActivity(), objectByTime.getDate(), Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(getActivity(), TransactionStatisticsActivity.class);
+            intent.putExtra("type","1");
+            intent.putExtra("data", objectByTime);
+            getActivity().startActivity(intent);
         }
     };
     
     public void showData() {
+        if(mTransactionByTimeAdapter!=null){
+            mTransactionByTimeAdapter.notifyDataSetChanged();
+        }
         if (mObjectByTimes != null && !mObjectByTimes.isEmpty()) {
-            mTransactionByTimeAdapter = new TransactionByTimeAdapter(
+            mTransactionByTimeAdapter = new ByTimeAdapter(
                       getActivity(), mIdCategory, mObjectByTimes,mWallet);
             mTransactionByTimeAdapter.setClickListener(mItemClickListener);
             mRecyclerView.setAdapter(mTransactionByTimeAdapter);
         }
-    }
-    public void setHeaderBarChart(){
-    
     }
 }

@@ -30,7 +30,6 @@ import com.vn.hcmute.team.cortana.mymoney.ui.statistics.fragment.FragmentByTime;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionContract;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionPresenter;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -123,7 +122,6 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
     
     @Override
     public void showAllListTransaction(List<Transaction> list) {
-        MyLogger.d("sdlkfds", list.size());
         if (list != null && !list.isEmpty()) {
             showChart(list);
         }

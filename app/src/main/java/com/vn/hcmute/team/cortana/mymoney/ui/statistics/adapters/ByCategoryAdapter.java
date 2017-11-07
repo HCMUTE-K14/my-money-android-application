@@ -23,7 +23,7 @@ import java.util.List;
  * Created by kunsubin on 11/5/2017.
  */
 
-public class TransactionByCategoryAdapter extends RecyclerView.Adapter<TransactionByCategoryAdapter.ViewHolder> {
+public class ByCategoryAdapter extends RecyclerView.Adapter<ByCategoryAdapter.ViewHolder> {
     
     private LayoutInflater mInflater;
     private List<ObjectByCategory> mData;
@@ -31,7 +31,7 @@ public class TransactionByCategoryAdapter extends RecyclerView.Adapter<Transacti
     private Wallet mWallet;
     private ItemClickListener mItemClickListener;
     private int mIdCategory;
-    public TransactionByCategoryAdapter(Context context, int idCategory,
+    public ByCategoryAdapter(Context context, int idCategory,
               List<ObjectByCategory> data, Wallet wallet) {
         this.mInflater = LayoutInflater.from(context);
         this.mData=data;

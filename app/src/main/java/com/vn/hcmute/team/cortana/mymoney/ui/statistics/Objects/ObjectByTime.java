@@ -1,5 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.List;
  * Created by kunsubin on 11/4/2017.
  */
 
-public class ObjectByTime {
+public class ObjectByTime implements Parcelable{
     private String mDate;
     private List<Transaction> mTransactionList;
     private String mMoneyExpense;
@@ -29,6 +31,25 @@ public class ObjectByTime {
         mMoneyExpense = "0";
         mMoneyIncome = "0";
     }
+    
+    protected ObjectByTime(Parcel in) {
+        mDate = in.readString();
+        mTransactionList = in.createTypedArrayList(Transaction.CREATOR);
+        mMoneyExpense = in.readString();
+        mMoneyIncome = in.readString();
+    }
+    
+    public static final Creator<ObjectByTime> CREATOR = new Creator<ObjectByTime>() {
+        @Override
+        public ObjectByTime createFromParcel(Parcel in) {
+            return new ObjectByTime(in);
+        }
+        
+        @Override
+        public ObjectByTime[] newArray(int size) {
+            return new ObjectByTime[size];
+        }
+    };
     
     public String getDate() {
         return mDate;
@@ -71,5 +92,19 @@ public class ObjectByTime {
                ", mMoneyExpense='" + mMoneyExpense + '\'' +
                ", mMoneyIncome='" + mMoneyIncome + '\'' +
                '}';
+    }
+    
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+    
+        parcel.writeString(mDate);
+        parcel.writeTypedList(mTransactionList);
+        parcel.writeString(mMoneyExpense);
+        parcel.writeString(mMoneyIncome);
     }
 }
