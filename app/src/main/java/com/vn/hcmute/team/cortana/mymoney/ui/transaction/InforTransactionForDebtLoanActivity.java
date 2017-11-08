@@ -33,9 +33,9 @@ import org.greenrobot.eventbus.EventBus;
  * Created by infamouSs on 10/20/17.
  */
 
-public class InfoTransactionForDebtLoanActivity extends BaseInfoTransactionActivity {
+public class InforTransactionForDebtLoanActivity extends BaseInfoTransactionActivity {
     
-    public static final String TAG = InfoTransactionForDebtLoanActivity.class.getSimpleName();
+    public static final String TAG = InforTransactionForDebtLoanActivity.class.getSimpleName();
     
     View mCashBackView;
     TextView mTextViewAmountStart;
@@ -79,7 +79,7 @@ public class InfoTransactionForDebtLoanActivity extends BaseInfoTransactionActiv
         super.initializeView();
         
         mCashBackView = LayoutInflater.from(this)
-                  .inflate(R.layout.include_cash_back_view, null, false);
+                  .inflate(R.layout.layout_cash_back_trans, null, false);
         
         this.mViewContainer.addView(mCashBackView);
         
@@ -176,7 +176,7 @@ public class InfoTransactionForDebtLoanActivity extends BaseInfoTransactionActiv
                       @Override
                       public void accept(String s) throws Exception {
                           mProgressDialog.dismiss();
-                          Toast.makeText(InfoTransactionForDebtLoanActivity.this,
+                          Toast.makeText(InforTransactionForDebtLoanActivity.this,
                                     R.string.txt_successful,
                                     Toast.LENGTH_SHORT).show();
                           mSeekBar.setProgress(100);
@@ -187,7 +187,7 @@ public class InfoTransactionForDebtLoanActivity extends BaseInfoTransactionActiv
                       @Override
                       public void accept(Throwable throwable) throws Exception {
                           mProgressDialog.dismiss();
-                          Toast.makeText(InfoTransactionForDebtLoanActivity.this,
+                          Toast.makeText(InforTransactionForDebtLoanActivity.this,
                                     throwable.getMessage(),
                                     Toast.LENGTH_SHORT)
                                     .show();

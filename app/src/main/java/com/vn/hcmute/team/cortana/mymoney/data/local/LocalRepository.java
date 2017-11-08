@@ -27,11 +27,13 @@ import io.reactivex.functions.Function;
 import java.util.List;
 import java.util.concurrent.Callable;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by infamouSs on 8/10/17.
  */
 
+@Singleton
 public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTask,
                                         LocalTask.CategoryTask, LocalTask.SavingTask,
                                         LocalTask.WalletTask, LocalTask.EventTask,
@@ -168,7 +170,6 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     public Observable<String> deleteCategory(Category category) {
         CategoryLocalService categoryLocalService = CategoryLocalService
                   .getInstance(mDatabaseHelper);
-        
         Callable<Integer> callable = categoryLocalService
                   .deleteCategory(category);
         

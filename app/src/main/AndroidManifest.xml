@@ -110,10 +110,9 @@
     <activity android:name=".ui.transaction.ManagerTransactionActivity">
 
     </activity>
+    <activity android:name=".ui.transaction.InforTransactionActivity" />
     <!-- Debt & Loan -->
-    <activity android:name=".ui.transaction.InfoTransactionForDebtLoanActivity" />
-
-
+    <activity android:name=".ui.transaction.InforTransactionForDebtLoanActivity" />
   </application>
 
 </manifest>

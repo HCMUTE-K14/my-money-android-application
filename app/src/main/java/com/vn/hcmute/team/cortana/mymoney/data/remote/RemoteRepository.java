@@ -41,6 +41,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
@@ -48,7 +49,7 @@ import okhttp3.RequestBody;
 /**
  * Created by infamouSs on 8/10/17.
  */
-
+@Singleton
 public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTask,
                                          RemoteTask.WalletTask, RemoteTask.CurrenciesTask,
                                          RemoteTask.EventTask, RemoteTask.SavingTask,

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:minHeight="50dp"
+  android:layout_height="wrap_content">
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="5"
+    android:gravity="center"
+    android:orientation="horizontal">
+    <com.vn.hcmute.team.cortana.mymoney.ui.view.RoundedLetterView
+      android:id="@+id/rounded_letter"
+      android:layout_width="50dp"
+      android:layout_height="wrap_content"
+      app:rlv_backgroundColorValue="#FF5722"
+      app:rlv_titleColor="@color/white"
+      app:rlv_titleSize="25dp"
+      app:rlv_titleText="B" />
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+    <TextView
+      android:id="@+id/txt_name_person"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="12dp"
+      android:text="fdsafsadfasfsafsa"
+      android:textColor="@color/black" />
+  </LinearLayout>
+</LinearLayout>
+
