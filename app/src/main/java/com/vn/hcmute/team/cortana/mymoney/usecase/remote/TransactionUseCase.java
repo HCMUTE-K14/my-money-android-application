@@ -411,6 +411,8 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
         
         String cate_id = params[0];
         String wallet_id = params[1];
+        String start_date = params[2];
+        String end_date = params[3];
         
         if (TextUtil.isEmpty(cate_id) || TextUtil.isEmpty(wallet_id)) {
             callBack.onFailure(new TransactionException("Wrong params"));
@@ -440,7 +442,8 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                     return;
                 }
                 mDisposable = mDataRepository
-                          .getTransactionByCategory(userid, token, cate_id, wallet_id)
+                          .getTransactionByCategory(userid, token, cate_id, wallet_id, start_date,
+                                    end_date)
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())
                           .doOnSubscribe(new Consumer<Disposable>() {

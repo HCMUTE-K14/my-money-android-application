@@ -95,8 +95,10 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     
     @Override
     public Observable<List<Transaction>> getTransactionByCategory(String userid, String token,
-              String categoryId, String walletId) {
-        return mRemoteRepository.getTransactionByCategory(userid, token, categoryId, walletId);
+              String categoryId, String walletId, String startDate, String endDate) {
+        return mRemoteRepository
+                  .getTransactionByCategory(userid, token, categoryId, walletId, startDate,
+                            endDate);
     }
     
     @Override
