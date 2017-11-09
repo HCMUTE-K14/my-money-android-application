@@ -56,7 +56,7 @@ public class NumberUtil {
     public static String formatAmount(String number, String symbolCurrency) {
         
         double amount = Double.parseDouble(number);
-        if (number.equals("0")) {
+        if (amount == 0.0) {
             return "0" + " " + symbolCurrency;
         }
         DecimalFormat formatter = new DecimalFormat(ApplicationConfig.DEFAULT_AMOUNT_PATTERN);

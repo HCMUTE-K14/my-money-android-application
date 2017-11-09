@@ -51,7 +51,11 @@ public interface TransactionContract {
         void getTransactionByBudget(String startDate, String endDate, String categoryId,
                   String walletId);
         
+        void getTransactionBySaving(String savingId);
+        
         void deleteTransaction(Transaction transaction);
+        
+        void getTransactionByTime(String startDate, String endDate, String idWallet);
         
         void transferMoney(String walletFrom, String walletTo, String amount);
         

@@ -14,6 +14,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
+import com.vn.hcmute.team.cortana.mymoney.ui.saving.adapter.PagerAdapter;
 
 /**
  * Created by infamouSs on 9/25/17.

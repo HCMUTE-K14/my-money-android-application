@@ -200,6 +200,32 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
         
     }
     
+    @Override
+    public void getTransactionBySaving(String savingId) {
+        TransactionRequest request = new TransactionRequest(
+                  Action.ACTION_GET_TRANSACTION_BY_SAVING,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().showAllListTransaction((List<Transaction>) value);
+                      }
+                      
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().onFailure(throwable.getMessage());
+                      }
+                      
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, null, new String[]{savingId}, TypeRepository.REMOTE);
+        
+        mTransactionUseCase.subscribe(request);
+    }
+    
     public void deleteTransaction(Transaction transaction) {
         TransactionRequest request = new TransactionRequest(Action.ACTION_DELETE_TRANSACTION,
                   new BaseCallBack<Object>() {
@@ -226,6 +252,31 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
     }
     
     @Override
+    public void getTransactionByTime(String startDate, String endDate, String idWallet) {
+        TransactionRequest request = new TransactionRequest(
+                  Action.ACTION_GET_TRANSACTION_BY_TIME,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().showAllListTransaction((List<Transaction>) value);
+                      }
+    
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().onFailure(throwable.getMessage());
+                      }
+    
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, null, new String[]{startDate, endDate, idWallet},
+                  TypeRepository.REMOTE);
+    
+        mTransactionUseCase.subscribe(request);
+    }
     public void transferMoney(String walletFrom, String walletTo, String amount) {
     
     }

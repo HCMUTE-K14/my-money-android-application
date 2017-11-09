@@ -2,6 +2,7 @@ package com.vn.hcmute.team.cortana.mymoney.ui.budget;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
@@ -62,6 +63,7 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     private int monthOfYearEnd;
     private int dayOfMonthEnd;
     private String mGoalMoney;
+    private ProgressDialog mProgressDialog;
     
     @Override
     public int getLayoutId() {
@@ -102,6 +104,8 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     protected void initialize() {
         getData();
         showData();
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
     
     
@@ -175,7 +179,11 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     
     @Override
     public void loading(boolean isLoading) {
-        
+        if (isLoading) {
+            mProgressDialog.show();
+        } else {
+            mProgressDialog.dismiss();
+        }
     }
     
     /*Area OnClick*/

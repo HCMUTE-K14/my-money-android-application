@@ -306,6 +306,12 @@
   <string name="txt_im_wrong">I\'m Wrong</string>
   <string name="txt_cashing_back">Cashing back...</string>
   <string name="txt_pls_wait">Please wait......</string>
+  <string name="txt_over_time">Over time</string>
+  <string name="txt_net_income">Net Income</string>
+  <string name="txt_by_category">By Category</string>
+  <string name="txt_select_date_start_end">Date start less than date end</string>
+  <string name="txt_check_edit_event">Event has been applied. Can not edit</string>
+  <string name="txt_progress">Processing</string>
   <string name="txt_today">Today</string>
   <string name="txt_tomorrow">Tomorrow</string>
   <string name="txt_next_month">Next Month</string>
@@ -331,5 +337,4 @@
   <string name="txt_transfer_money">Transfer Money</string>
   <string name="message_warning_transfer_money">You need more than 2 wallets to transfer money</string>
   <string name="txt_cash_book">Cash Books</string>
-
 </resources>

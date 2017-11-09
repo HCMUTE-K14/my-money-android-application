@@ -1,6 +1,7 @@
-package com.vn.hcmute.team.cortana.mymoney.ui.event.adapter;
+package com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,23 +15,28 @@ import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.di.module.GlideApp;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
+import com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects.DateObjectTransaction;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by kunsubin on 10/20/2017.
+ * Created by kunsubin on 11/7/2017.
  */
 
-public class TransactionEventAdapter extends BaseExpandableListAdapter {
+public class TransactionByTimeAdapter extends BaseExpandableListAdapter {
+    
+    private final String EXPENSE = "expense";
+    private final String INCOME = "income";
     
     private Context mContext;
     private List<DateObjectTransaction> mListDataHeader;
     private HashMap<DateObjectTransaction, List<Transaction>> mListDataChild;
     private ClickChildView mClickChildView;
     
-    public TransactionEventAdapter(Context context, List<DateObjectTransaction> listDataHeader,
+    
+    public TransactionByTimeAdapter(Context context, List<DateObjectTransaction> listDataHeader,
               HashMap<DateObjectTransaction, List<Transaction>> listChildData) {
         this.mContext = context;
         this.mListDataHeader = listDataHeader;
@@ -80,9 +86,8 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                       .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.item_parent_transaction_event, null);
+            convertView = infalInflater.inflate(R.layout.item_parent_transaction, null);
         }
-        
         ViewGroupHoder viewGroupHoder = new ViewGroupHoder(convertView);
         viewGroupHoder.bindView(headerTitle);
         
@@ -101,7 +106,7 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                       .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.item_children_transaction_event, null);
+            convertView = infalInflater.inflate(R.layout.item_children_transaction, null);
         }
         
         ViewChildHoder viewChildHoder = new ViewChildHoder(convertView);
@@ -124,6 +129,10 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
     
     public void setClickChildView(ClickChildView clickChildView) {
         mClickChildView = clickChildView;
+    }
+    
+    public List<Transaction> getValuesListTransaction(DateObjectTransaction dateObjectTransaction) {
+        return mListDataChild.get(dateObjectTransaction);
     }
     
     public interface ClickChildView {
@@ -151,8 +160,20 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
             txt_day.setText(dateObjectTransaction.getDayOfMonth());
             txt_month_year.setText(dateObjectTransaction.getMonthOfYear() + " " +
                                    dateObjectTransaction.getYear());
-            txt_money.setText("-" + NumberUtil.formatAmount(dateObjectTransaction.getMoney(),
-                      dateObjectTransaction.getCurrencies()));
+            
+            double value = 0;
+            List<Transaction> list = getValuesListTransaction(dateObjectTransaction);
+            if (list != null && !list.isEmpty()) {
+                for (Transaction transaction : list) {
+                    if (transaction.getType().equals(EXPENSE)) {
+                        value -= Double.parseDouble(transaction.getAmount());
+                    } else {
+                        value += Double.parseDouble(transaction.getAmount());
+                    }
+                }
+            }
+            txt_money.setText(
+                      NumberUtil.formatAmount(value + "", dateObjectTransaction.getCurrencies()));
             
         }
     }
@@ -173,13 +194,8 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
         }
         
         private void bindView(Transaction transaction) {
-            
             txt_category_name.setText(transaction.getCategory().getName());
-            txt_money.setText("-" + NumberUtil.formatAmount(transaction.getAmount(),
-                      transaction.getWallet().getCurrencyUnit().getCurSymbol()));
-            
             txt_note.setText(transaction.getNote());
-            
             GlideApp.with(mContext)
                       .load(DrawableUtil.getDrawable(mContext, transaction.getCategory().getIcon()))
                       .placeholder(R.drawable.folder_placeholder)
@@ -187,6 +203,18 @@ public class TransactionEventAdapter extends BaseExpandableListAdapter {
                       .dontAnimate()
                       .into(image_category);
             
+            if (transaction.getType().equals(EXPENSE)) {
+                txt_money.setText("-" + NumberUtil.formatAmount(transaction.getAmount(),
+                          transaction.getWallet().getCurrencyUnit().getCurSymbol()));
+                txt_money.setTextColor(ContextCompat.getColor(mContext, R.color.color_red));
+                return;
+            }
+            if (transaction.getType().equals(INCOME)) {
+                txt_money.setText(NumberUtil.formatAmount(transaction.getAmount(),
+                          transaction.getWallet().getCurrencyUnit().getCurSymbol()));
+                txt_money.setTextColor(ContextCompat.getColor(mContext, R.color.green));
+                return;
+            }
         }
     }
 }
