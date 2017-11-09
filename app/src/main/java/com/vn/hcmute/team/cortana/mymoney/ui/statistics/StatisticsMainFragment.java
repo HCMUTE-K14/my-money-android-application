@@ -39,7 +39,7 @@ import javax.inject.Inject;
  * Created by kunsubin on 11/5/2017.
  */
 
-public class StatisticsFragment extends BaseFragment implements TransactionContract.View {
+public class StatisticsMainFragment extends BaseFragment implements TransactionContract.View {
     
     @BindView(R.id.txt_category)
     TextView txt_category;
@@ -91,7 +91,7 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
     
     @Override
     protected void initializeActionBar(View rootView) {
-    
+        getActivity().setTitle(getString(R.string.txt_statistics));
     }
     
     @Override
@@ -110,17 +110,17 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
                   (mMonthEnd + 1) + "/" + mYearEnd);
         mIdWallet = mPreferencesHelper.getCurrentWallet().getWalletid();
         mWallet = mPreferencesHelper.getCurrentWallet();
-        mTransactionPresenter.getTransactionByTime(DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
-                  DateUtil.getLongAsDate(mDayEnd, mMonthEnd, mYearEnd) + "", mIdWallet);
+        mTransactionPresenter
+                  .getTransactionByTime(DateUtil.getLongAsDate(mDay, (mMonth + 1), mYear) + "",
+                            DateUtil.getLongAsDate(mDayEnd, (mMonthEnd + 1), mYearEnd) + "",
+                            mIdWallet);
         
         
     }
     
     @Override
     public void showAllListTransaction(List<Transaction> list) {
-        if (list != null && !list.isEmpty()) {
-            showChart(list);
-        }
+        showChart(list);
     }
     
     @Override
@@ -208,8 +208,9 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
                     mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth + 1) + "/" + mYear,
                               (mMonthEnd + 1) + "/" + mYearEnd);
                     mTransactionPresenter.getTransactionByTime(
-                              DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
-                              DateUtil.getLongAsDate(mDayEnd, mMonthEnd, mYearEnd) + "", mIdWallet);
+                              DateUtil.getLongAsDate(mDay, (mMonth + 1), mYear) + "",
+                              DateUtil.getLongAsDate(mDayEnd, (mMonthEnd + 1), mYearEnd) + "",
+                              mIdWallet);
                 } else {
                     alertDiaglog(getString(R.string.txt_select_date_start_end));
                 }
@@ -239,8 +240,9 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
                     mStringDates = DateUtil.getMonthAndYearBetweenRanges((mMonth + 1) + "/" + mYear,
                               (mMonthEnd + 1) + "/" + mYearEnd);
                     mTransactionPresenter.getTransactionByTime(
-                              DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
-                              DateUtil.getLongAsDate(mDayEnd, mMonthEnd, mYearEnd) + "", mIdWallet);
+                              DateUtil.getLongAsDate(mDay, (mMonth + 1), mYear) + "",
+                              DateUtil.getLongAsDate(mDayEnd, (mMonthEnd + 1), mYearEnd) + "",
+                              mIdWallet);
                 } else {
                     alertDiaglog(getString(R.string.txt_select_date_start_end));
                 }
@@ -256,36 +258,46 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
     public void selectExpense(MenuItem item) {
         txt_category.setText(item.getTitle());
         idCategory = 1;
-        mTransactionPresenter.getTransactionByTime(DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
-                  DateUtil.getLongAsDate(mDayEnd, mMonthEnd, mYearEnd) + "", mIdWallet);
+        mTransactionPresenter
+                  .getTransactionByTime(DateUtil.getLongAsDate(mDay, (mMonth + 1), mYear) + "",
+                            DateUtil.getLongAsDate(mDayEnd, (mMonthEnd + 1), mYearEnd) + "",
+                            mIdWallet);
     }
     
     public void selectIncome(MenuItem item) {
         txt_category.setText(item.getTitle());
         idCategory = 2;
-        mTransactionPresenter.getTransactionByTime(DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
-                  DateUtil.getLongAsDate(mDayEnd, mMonthEnd, mYearEnd) + "", mIdWallet);
+        mTransactionPresenter
+                  .getTransactionByTime(DateUtil.getLongAsDate(mDay, (mMonth + 1), mYear) + "",
+                            DateUtil.getLongAsDate(mDayEnd, (mMonthEnd + 1), mYearEnd) + "",
+                            mIdWallet);
     }
     
     public void selectNetIncome(MenuItem item) {
         txt_category.setText(item.getTitle());
         idCategory = 3;
-        mTransactionPresenter.getTransactionByTime(DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
-                  DateUtil.getLongAsDate(mDayEnd, mMonthEnd, mYearEnd) + "", mIdWallet);
+        mTransactionPresenter
+                  .getTransactionByTime(DateUtil.getLongAsDate(mDay, (mMonth + 1), mYear) + "",
+                            DateUtil.getLongAsDate(mDayEnd, (mMonthEnd + 1), mYearEnd) + "",
+                            mIdWallet);
     }
     
     public void selectOverTime(MenuItem item) {
         txt_time_or_category.setText(item.getTitle());
         idTimeOrCategory = 1;
-        mTransactionPresenter.getTransactionByTime(DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
-                  DateUtil.getLongAsDate(mDayEnd, mMonthEnd, mYearEnd) + "", mIdWallet);
+        mTransactionPresenter
+                  .getTransactionByTime(DateUtil.getLongAsDate(mDay, (mMonth + 1), mYear) + "",
+                            DateUtil.getLongAsDate(mDayEnd, (mMonthEnd + 1), mYearEnd) + "",
+                            mIdWallet);
     }
     
     public void selectByCategory(MenuItem item) {
         txt_time_or_category.setText(item.getTitle());
         idTimeOrCategory = 2;
-        mTransactionPresenter.getTransactionByTime(DateUtil.getLongAsDate(mDay, mMonth, mYear) + "",
-                  DateUtil.getLongAsDate(mDayEnd, mMonthEnd, mYearEnd) + "", mIdWallet);
+        mTransactionPresenter
+                  .getTransactionByTime(DateUtil.getLongAsDate(mDay, (mMonth + 1), mYear) + "",
+                            DateUtil.getLongAsDate(mDayEnd, (mMonthEnd + 1), mYearEnd) + "",
+                            mIdWallet);
     }
     
     public void initDate() {
@@ -320,7 +332,14 @@ public class StatisticsFragment extends BaseFragment implements TransactionContr
     }
     
     public void showChart(List<Transaction> list) {
-        
+        if (mFragmentByTime != null) {
+            getActivity().getSupportFragmentManager().beginTransaction().remove(mFragmentByTime)
+                      .commit();
+        }
+        if (mFragmentByCategory != null) {
+            getActivity().getSupportFragmentManager().beginTransaction().remove(mFragmentByCategory)
+                      .commit();
+        }
         if (idTimeOrCategory == 1) {
             mFragmentByTime = new FragmentByTime(list, idCategory, mWallet, mStringDates);
             getActivity().getSupportFragmentManager().beginTransaction()
