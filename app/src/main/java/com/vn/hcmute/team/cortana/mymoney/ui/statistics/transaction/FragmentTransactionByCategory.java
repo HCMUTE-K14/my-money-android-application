@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
@@ -34,6 +33,9 @@ public class FragmentTransactionByCategory extends BaseFragment {
     private final String EXPENSE = "expense";
     @BindView(R.id.list_transaction_by_category)
     ExpandableListView mExpandableListView;
+    @BindView(R.id.empty_view)
+    View mEmptyView;
+    
     TextView txt_inflow_money;
     TextView txt_outflow_money;
     TextView txt_goal_money;
@@ -42,7 +44,11 @@ public class FragmentTransactionByCategory extends BaseFragment {
     TransactionByCategoryAdapter.ClickChildView mClickChildView = new ClickChildView() {
         @Override
         public void onClickChild(DateObjectTransaction dateObjectTransaction) {
-            Toast.makeText(mContext, dateObjectTransaction.getDate(), Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(FragmentTransactionByTime.this.getContext(),
+//                      InforTransactionActivity.class);
+//            dateObjectTransaction
+//            intent.putExtra("transaction", transaction);
+//            startActivity(intent);
         }
     };
     private List<Transaction> mTransactions;
@@ -89,6 +95,13 @@ public class FragmentTransactionByCategory extends BaseFragment {
         mListDataChild = new HashMap<>();
     }
     
+    public void setData(List<Transaction> transactions) {
+        mTransactions.clear();
+        mTransactions.addAll(transactions);
+        
+        setData();
+    }
+    
     private void initHeaderExpendableListView() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         mHeaderView = (ViewGroup) inflater
@@ -101,6 +114,8 @@ public class FragmentTransactionByCategory extends BaseFragment {
     
     private void setData() {
         if (mTransactions != null && !mTransactions.isEmpty()) {
+            mEmptyView.setVisibility(View.GONE);
+            mExpandableListView.setVisibility(View.VISIBLE);
             setDataAdapter();
             
             mTransactionByCategoryAdapter = new TransactionByCategoryAdapter(getActivity(),
@@ -112,10 +127,8 @@ public class FragmentTransactionByCategory extends BaseFragment {
             mExpandableListView.setGroupIndicator(null);
             
         } else {
-            mBaseEmptyAdapter = new ExpandableListEmptyAdapter(getActivity(),
-                      getActivity().getString(R.string.txt_no_transaction));
-            mExpandableListView.setAdapter(mBaseEmptyAdapter);
-            mExpandableListView.setGroupIndicator(null);
+            mEmptyView.setVisibility(View.VISIBLE);
+            mExpandableListView.setVisibility(View.GONE);
         }
     }
     

@@ -632,6 +632,8 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         
         updateViewHeaderWithWallet(wallet);
         
+        EventBus.getDefault()
+                  .post(new ActivityResultEvent(ResultCode.CHANGE_WALLET_RESULT_CODE, null));
     }
     
     private void updateViewHeaderWithWallet(Wallet wallet) {

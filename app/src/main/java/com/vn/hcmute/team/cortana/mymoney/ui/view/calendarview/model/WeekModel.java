@@ -1,4 +1,4 @@
-package com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model;
+package com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model;
 
 import android.content.Context;
 import com.vn.hcmute.team.cortana.mymoney.R;

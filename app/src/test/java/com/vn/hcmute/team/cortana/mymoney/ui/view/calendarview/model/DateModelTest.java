@@ -1,4 +1,4 @@
-package com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model;
+package com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model;
 
 import org.junit.Before;
 

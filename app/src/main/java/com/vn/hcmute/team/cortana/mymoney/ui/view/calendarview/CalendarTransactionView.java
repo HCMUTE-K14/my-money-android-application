@@ -1,4 +1,4 @@
-package com.vn.hcmute.team.cortana.mymoney.ui.view.calendview;
+package com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview;
 
 import android.content.Context;
 import android.os.Handler;
@@ -11,12 +11,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.AllTransactionModel;
-import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.BaseModel;
-import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.CustomModel;
-import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.DateModel;
-import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.MonthModel;
-import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.WeekModel;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.AllTransactionModel;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.BaseModel;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.CustomModel;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.DateModel;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.MonthModel;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.WeekModel;
 
 /**
  * Created by infamouSs on 10/31/17.

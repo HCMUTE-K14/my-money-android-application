@@ -282,7 +282,20 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
                         GlideImageLoader.load(this.getContext(), DrawableUtil
                                             .getDrawable(this.getContext(), mCategory.getIcon()),
                                   mImageViewIconCategory);
+                        if (mCategory.getTransType().equals("debt_loan")) {
+                            FLAG_IS_MULTI_SELECT_PERSON = false;
+                            if (mPersonList != null && mPersonList.size() > 1) {
+                                Toast.makeText(getContext(),
+                                          R.string.message_warning_more_than_contact,
+                                          Toast.LENGTH_SHORT).show();
+                                mPersonList.clear();
+                                mTextViewContacts.setText("");
+                            }
+                        } else {
+                            FLAG_IS_MULTI_SELECT_PERSON = true;
+                        }
                     }
+                    
                     break;
                 case RequestCode.CHOOSE_WALLET_REQUEST_CODE:
                     mWallet = data.getParcelableExtra("wallet");
@@ -554,11 +567,12 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     private void prepareTransaction(String action) {
         if (action.equals(Action.ACTION_ADD_TRANSACTION)) {
             mCurrentTransaction = new Transaction();
+            mCurrentTransaction.setTrans_id(SecurityUtil.getRandomUUID());
         }
         String date_created = String.valueOf(DateUtil
-                  .getLongAsDate(mDayOfMonth_StartTime, mMonth_StartTime, mYear_StartTime));
+                  .getLongAsDate(mDayOfMonth_StartTime, mMonth_StartTime + 1, mYear_StartTime));
         String date_end = String.valueOf(DateUtil
-                  .getLongAsDate(mDayOfMonth_EndTime, mMonth_EndTime, mYear_EndTime));
+                  .getLongAsDate(mDayOfMonth_EndTime, mMonth_EndTime + 1, mYear_EndTime));
         Wallet wallet = mWallet;
         Category category = mCategory;
         if (category != null) {
@@ -594,7 +608,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
                       Toast.LENGTH_SHORT).show();
             return;
         }
-        mCurrentTransaction.setTrans_id(SecurityUtil.getRandomUUID());
+        
         mCurrentTransaction.setAmount(mAmount);
         mCurrentTransaction.setNote(note);
         mCurrentTransaction.setCategory(category);

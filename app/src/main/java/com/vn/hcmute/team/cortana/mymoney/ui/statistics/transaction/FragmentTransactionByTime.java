@@ -1,12 +1,12 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
@@ -15,6 +15,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.ExpandableListEmptyAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects.DateObjectTransaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction.adapter.TransactionByTimeAdapter;
+import com.vn.hcmute.team.cortana.mymoney.ui.transaction.InforTransactionActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ public class FragmentTransactionByTime extends BaseFragment {
     @BindView(R.id.list_transaction_by_time)
     ExpandableListView mExpandableListView;
     
+    @BindView(R.id.empty_view)
+    View mEmptyView;
+    
     TextView txt_inflow_money;
     TextView txt_outflow_money;
     TextView txt_goal_money;
@@ -43,7 +47,11 @@ public class FragmentTransactionByTime extends BaseFragment {
     TransactionByTimeAdapter.ClickChildView mClickChildView = new TransactionByTimeAdapter.ClickChildView() {
         @Override
         public void onClickChild(Transaction transaction) {
-            Toast.makeText(mContext, transaction.getAmount(), Toast.LENGTH_SHORT).show();
+            Intent intent;
+            intent = new Intent(FragmentTransactionByTime.this.getContext(),
+                      InforTransactionActivity.class);
+            intent.putExtra("transaction", transaction);
+            startActivity(intent);
         }
     };
     private List<Transaction> mTransactions;
@@ -101,10 +109,13 @@ public class FragmentTransactionByTime extends BaseFragment {
         txt_outflow_money = ButterKnife.findById(mHeaderView, R.id.txt_outflow_money);
         txt_goal_money = ButterKnife.findById(mHeaderView, R.id.txt_goal_money);
         mExpandableListView.addHeaderView(mHeaderView);
+        
     }
     
     private void setData() {
         if (mTransactions != null && !mTransactions.isEmpty()) {
+            mExpandableListView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
             //set data
             setDataAdapter();
             //set adapter
@@ -115,11 +126,9 @@ public class FragmentTransactionByTime extends BaseFragment {
             mExpandableListView.setAdapter(mTransactionByTimeAdapter);
             mExpandableListView.setGroupIndicator(null);
         } else {
-            mExpandableListView.removeHeaderView(mHeaderView);
-            mBaseEmptyAdapter = new ExpandableListEmptyAdapter(getActivity(),
-                      getActivity().getString(R.string.txt_no_transaction));
-            mExpandableListView.setAdapter(mBaseEmptyAdapter);
-            mExpandableListView.setGroupIndicator(null);
+            mExpandableListView.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+            
         }
     }
     
