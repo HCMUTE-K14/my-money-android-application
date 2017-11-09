@@ -65,17 +65,25 @@ public class TransactionStatisticsActivity extends BaseActivity {
     }
     
     public void showData() {
+        if (mFragmentTransactionByTime != null) {
+            getSupportFragmentManager().beginTransaction().remove(mFragmentTransactionByTime)
+                      .commit();
+        }
+        if (mFragmentTransactionByCategory != null) {
+            getSupportFragmentManager().beginTransaction().remove(mFragmentTransactionByCategory)
+                      .commit();
+        }
         if (mType.equals("1")) {
             mFragmentTransactionByTime = new FragmentTransactionByTime(this,
                       mObjectByTime.getTransactionList());
-            this.getSupportFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                       .replace(R.id.view_list_transaction, mFragmentTransactionByTime).commit();
             return;
         }
         if (mType.equals("2")) {
             mFragmentTransactionByCategory = new FragmentTransactionByCategory(this,
                       mObjectByCategory.getTransactionList());
-            this.getSupportFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                       .replace(R.id.view_list_transaction, mFragmentTransactionByCategory).commit();
             return;
         }
