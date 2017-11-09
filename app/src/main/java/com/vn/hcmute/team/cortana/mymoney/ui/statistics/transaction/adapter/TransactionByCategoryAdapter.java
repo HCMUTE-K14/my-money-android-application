@@ -105,7 +105,7 @@ public class TransactionByCategoryAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                       .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.item_parent_transaction_event, null);
+            convertView = infalInflater.inflate(R.layout.item_parent_transaction, null);
         }
         
         ViewChildHoder viewChildHoder = new ViewChildHoder(convertView);

@@ -86,7 +86,7 @@ public class TransactionByTimeAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                       .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.item_parent_transaction_event, null);
+            convertView = infalInflater.inflate(R.layout.item_parent_transaction, null);
         }
         ViewGroupHoder viewGroupHoder = new ViewGroupHoder(convertView);
         viewGroupHoder.bindView(headerTitle);
@@ -106,7 +106,7 @@ public class TransactionByTimeAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                       .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.item_children_transaction_event, null);
+            convertView = infalInflater.inflate(R.layout.item_children_transaction, null);
         }
         
         ViewChildHoder viewChildHoder = new ViewChildHoder(convertView);

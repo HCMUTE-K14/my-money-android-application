@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="?android:attr/selectableItemBackground"
   android:paddingLeft="20dp"
-  android:background="@color/white"
   android:orientation="vertical">
   <LinearLayout
     android:layout_width="match_parent"
@@ -46,7 +46,6 @@
           android:layout_centerVertical="true"
           android:text="Chieu lang "
           android:textSize="16dp"
-
           />
         <TextView
           android:id="@+id/txt_money"
@@ -61,5 +60,4 @@
       </RelativeLayout>
     </LinearLayout>
   </LinearLayout>
-
 </LinearLayout>

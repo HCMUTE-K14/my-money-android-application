@@ -115,6 +115,7 @@ public class FragmentTransactionByCategory extends BaseFragment {
             mBaseEmptyAdapter = new ExpandableListEmptyAdapter(getActivity(),
                       getActivity().getString(R.string.txt_no_transaction));
             mExpandableListView.setAdapter(mBaseEmptyAdapter);
+            mExpandableListView.setGroupIndicator(null);
         }
     }
     
