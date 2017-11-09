@@ -26,8 +26,7 @@
         android:id="@+id/image_view_icon_wallet"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:paddingLeft="5dp"
-        android:src="@drawable/ic_global" />
+        android:paddingLeft="5dp" />
 
     </LinearLayout>
 
@@ -50,15 +49,13 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:maxLines="1"
-          android:text="@string/txt_total"
           android:textSize="18sp" />
         <ImageView
           android:id="@+id/image_view_archive"
           android:layout_width="20dp"
           android:layout_height="20dp"
           android:layout_marginLeft="5dp"
-          android:layout_toRightOf="@id/txt_name_wallet"
-          android:src="@drawable/ic_archives" />
+          android:layout_toRightOf="@id/txt_name_wallet" />
       </RelativeLayout>
 
 
@@ -67,7 +64,6 @@
         style="@style/ListItemSubTitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="fdsafdsafsdafdsa"
         android:textSize="15sp" />
 
     </LinearLayout>

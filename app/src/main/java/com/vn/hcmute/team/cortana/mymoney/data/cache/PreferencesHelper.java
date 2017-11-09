@@ -24,6 +24,8 @@ public class PreferencesHelper {
     private final String PREF_CURRENT_WALLET = "PREF_CURRENT_WALLET";
     private final String PREF_CURRENT_REAL_TIME_CURRENCY = "PREF_CURRENT_REAL_TIME_CURRENCY";
     private final String PREF_FACEBOOK_ACCESS_TOKEN = "PREF_FACEBOOK_ACCESS_TOKEN";
+    private final String PREF_TRANSACTION_VIEW_BY = "PREF_TRANSACTION_VIEW_BY";
+    private final String PREF_TIME_RANGE_TRANSACTION = "PREF_TIME_RANGE_TRANSACTION";
     
     private SharedPreferences mSharedPreferences;
     private Gson mGson;
@@ -116,4 +118,21 @@ public class PreferencesHelper {
         putFacebookAccessToken("");
     }
     
+    public void putTransactionViewBy(int value) {
+        //0: transaction
+        //1: category
+        mSharedPreferences.edit().putInt(PREF_TRANSACTION_VIEW_BY, value).apply();
+    }
+    
+    public int getTransactionViewBy() {
+        return mSharedPreferences.getInt(PREF_TRANSACTION_VIEW_BY, 0);
+    }
+    
+    public void putTransactionTimeRange(String str) {
+        mSharedPreferences.edit().putString(PREF_TIME_RANGE_TRANSACTION, str).apply();
+    }
+    
+    public String getTransactionTimeRange() {
+        return mSharedPreferences.getString(PREF_TIME_RANGE_TRANSACTION, "date");
+    }
 }

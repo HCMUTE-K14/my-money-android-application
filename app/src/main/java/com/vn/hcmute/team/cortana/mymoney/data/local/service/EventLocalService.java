@@ -19,6 +19,7 @@ public class EventLocalService extends DbContentProvider<Event> implements
                                                                 LocalService.EventLocalService {
     
     public static final String TAG = EventLocalService.class.getSimpleName();
+    private static EventLocalService sInstance;
     private final String TABLE_NAME = "tbl_event";
     private final String ID = "event_id";
     private final String NAME = "name";
@@ -29,14 +30,23 @@ public class EventLocalService extends DbContentProvider<Event> implements
     private final String STATUS = "status";
     private final String USER_ID = "user_id";
     private final String ICON = "icon";
-    
     private CurrencyLocalService mCurrencyLocalService;
     
-    
-    public EventLocalService(DatabaseHelper mDatabaseHelper) {
+    private EventLocalService(DatabaseHelper mDatabaseHelper) {
         super(mDatabaseHelper);
-        mCurrencyLocalService = new CurrencyLocalService(mDatabaseHelper);
+        mCurrencyLocalService = CurrencyLocalService.getInstance(mDatabaseHelper);
         
+    }
+    
+    public static EventLocalService getInstance(DatabaseHelper databaseHelper) {
+        if (sInstance == null) {
+            synchronized (BudgetLocalService.class) {
+                if (sInstance == null) {
+                    sInstance = new EventLocalService(databaseHelper);
+                }
+            }
+        }
+        return sInstance;
     }
     
     @Override

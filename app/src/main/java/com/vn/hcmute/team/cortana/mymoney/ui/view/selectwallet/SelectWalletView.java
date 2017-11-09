@@ -24,14 +24,14 @@ public class SelectWalletView extends RelativeLayout {
     private EmptyAdapter mEmptyAdapter;
     private Context mContext;
     
+    
     public SelectWalletView(Context context) {
-        super(context);
+        super(context, null);
         initializeView(context);
     }
     
     public SelectWalletView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        
+        super(context, attrs, 0);
         initializeView(context);
     }
     
@@ -50,6 +50,16 @@ public class SelectWalletView extends RelativeLayout {
         mEmptyAdapter = new EmptyAdapter(context, "");
         
         mRecyclerView.setLayoutManager(new GridLayoutManager(context, 1));
+    }
+    
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+    }
+    
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
     }
     
     public void setData(List<Wallet> wallets) {

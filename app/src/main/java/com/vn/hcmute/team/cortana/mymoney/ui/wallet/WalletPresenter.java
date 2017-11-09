@@ -103,8 +103,9 @@ public class WalletPresenter extends BasePresenter<WalletContract.View> implemen
     }
     
     @Override
-    public void moveWallet(String walletFrom, String walletTo, String money) {
-        String[] params = {walletFrom, walletTo, money};
+    public void moveWallet(String walletFrom, String walletTo, String moneyMinus, String moneyPlus,
+              String dateCreated) {
+        String[] params = {walletFrom, walletTo, moneyMinus, moneyPlus, dateCreated};
         
         WalletUseCase.WalletRequest requestValue = new WalletRequest(Action.ACTION_MOVE_WALLET,
                   new BaseCallBack<Object>() {

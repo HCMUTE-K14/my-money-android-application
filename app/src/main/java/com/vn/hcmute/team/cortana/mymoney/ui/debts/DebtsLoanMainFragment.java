@@ -16,7 +16,6 @@ import com.vn.hcmute.team.cortana.mymoney.ui.transaction.ManagerTransactionActiv
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -86,7 +85,6 @@ public class DebtsLoanMainFragment extends BaseFragment {
     public void onEvent(ActivityResultEvent event) {
         if (event.getResultCode() == ResultCode.ADD_TRANSACTION_RESULT_CODE) {
             Transaction transaction = (Transaction) event.getData();
-            MyLogger.d(TAG, transaction, true);
             if (transaction.getType().equals("income")) {
                 ((DebtsLoanFragmentByType) mViewPagerAdapter.getItem(0))
                           .addDebtLoan((Transaction) event.getData());
@@ -95,6 +93,9 @@ public class DebtsLoanMainFragment extends BaseFragment {
                           .addDebtLoan((Transaction) event.getData());
             }
             
+        } else if (event.getResultCode() == ResultCode.NEED_RELOAD_DATA) {
+            ((DebtsLoanFragmentByType) mViewPagerAdapter.getItem(0)).getData();
+            ((DebtsLoanFragmentByType) mViewPagerAdapter.getItem(1)).getData();
         }
     }
     

@@ -18,9 +18,6 @@ public class ActivityResultEvent {
         this.data = data;
     }
     
-    public ActivityResultEvent(Object data) {
-        this(0, 0, data);
-    }
     
     public ActivityResultEvent(int resultCode, Object data) {
         this.resultCode = resultCode;

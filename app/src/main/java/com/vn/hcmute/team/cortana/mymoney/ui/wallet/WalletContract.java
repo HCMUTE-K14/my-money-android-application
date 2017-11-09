@@ -39,7 +39,8 @@ public interface WalletContract {
         
         void removeWallet(int position, Wallet wallet);
         
-        void moveWallet(String walletFrom, String walletTo, String money);
+        void moveWallet(String walletFrom, String walletTo, String moneyMinus, String moneyPlus,
+                  String dateCreated);
         
         void getAllWallet();
         

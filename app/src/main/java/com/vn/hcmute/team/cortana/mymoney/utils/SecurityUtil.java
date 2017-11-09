@@ -27,8 +27,8 @@ public class SecurityUtil {
             Cipher c = Cipher.getInstance(ALGORITHM);
             c.init(Cipher.ENCRYPT_MODE, key);
             byte[] encValue = c.doFinal(valueToEnc.getBytes());
-            String encryptedValue = Base64.encodeToString(encValue, Base64.NO_WRAP);
-            return encryptedValue;
+            
+            return Base64.encodeToString(encValue, Base64.NO_WRAP);
         } catch (Exception e) {
             throw new UnknownError();
         }
@@ -40,8 +40,8 @@ public class SecurityUtil {
             Key key = generateKey();
             Cipher c = Cipher.getInstance(ALGORITHM);
             c.init(Cipher.DECRYPT_MODE, key);
-            byte[] decordedValue = Base64.decode(encryptedValue, Base64.NO_WRAP);
-            byte[] decValue = c.doFinal(decordedValue);
+            byte[] decodedValue = Base64.decode(encryptedValue, Base64.NO_WRAP);
+            byte[] decValue = c.doFinal(decodedValue);
             return new String(decValue);
         } catch (Exception e) {
             throw new UnknownError();

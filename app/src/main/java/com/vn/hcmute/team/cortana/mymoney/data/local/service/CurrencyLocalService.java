@@ -17,7 +17,7 @@ public class CurrencyLocalService extends DbContentProvider<Currencies> implemen
                                                                         LocalService.CurrencyLocalRepository {
     
     public static final String TAG = CurrencyLocalService.class.getSimpleName();
-    
+    private static CurrencyLocalService sInstance;
     private final String TABLE_NAME = "tbl_currency";
     private final String COLUMN_ID = "cur_id";
     private final String COLUMN_NAME = "cur_name";
@@ -25,8 +25,19 @@ public class CurrencyLocalService extends DbContentProvider<Currencies> implemen
     private final String COLUMN_DISPLAY_TYPE = "cur_display_type";
     private final String COLUMN_CODE = "cur_code";
     
-    public CurrencyLocalService(DatabaseHelper databaseHelper) {
+    private CurrencyLocalService(DatabaseHelper databaseHelper) {
         super(databaseHelper);
+    }
+    
+    public static CurrencyLocalService getInstance(DatabaseHelper databaseHelper) {
+        if (sInstance == null) {
+            synchronized (BudgetLocalService.class) {
+                if (sInstance == null) {
+                    sInstance = new CurrencyLocalService(databaseHelper);
+                }
+            }
+        }
+        return sInstance;
     }
     
     @Override

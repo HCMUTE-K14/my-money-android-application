@@ -57,6 +57,14 @@ public class Category implements Parcelable {
         this.name = name;
     }
     
+    public Category(String id, String name, String icon, String transType, String type) {
+        this.id = id;
+        this.icon = icon;
+        this.name = name;
+        this.transType = transType;
+        this.type = type;
+    }
+    
     public Category() {
         id = "";
         name = "";

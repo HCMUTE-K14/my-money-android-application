@@ -18,7 +18,7 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
                                                                   LocalService.SavingLocalService {
     
     public static final String TAG = SavingLocalService.class.getSimpleName();
-    
+    private static SavingLocalService sInstance;
     private final String TABLE_NAME = "tbl_saving";
     private final String ID = "saving_id";
     private final String NAME = "name";
@@ -31,15 +31,24 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
     private final String STATUS = "status";
     private final String USER_ID = "user_id";
     private final String ICON = "icon";
-    
     CurrencyLocalService mCurrencyLocalService;
     WalletLocalService mWalletLocalService;
     
-    
-    public SavingLocalService(DatabaseHelper mDatabaseHelper) {
+    private SavingLocalService(DatabaseHelper mDatabaseHelper) {
         super(mDatabaseHelper);
-        mCurrencyLocalService = new CurrencyLocalService(mDatabaseHelper);
-        mWalletLocalService = new WalletLocalService(mDatabaseHelper);
+        mCurrencyLocalService = CurrencyLocalService.getInstance(mDatabaseHelper);
+        mWalletLocalService = WalletLocalService.getInstance(mDatabaseHelper);
+    }
+    
+    public static SavingLocalService getInstance(DatabaseHelper databaseHelper) {
+        if (sInstance == null) {
+            synchronized (BudgetLocalService.class) {
+                if (sInstance == null) {
+                    sInstance = new SavingLocalService(databaseHelper);
+                }
+            }
+        }
+        return sInstance;
     }
     
     @Override

@@ -261,21 +261,24 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                           getView().loading(false);
                           getView().showAllListTransaction((List<Transaction>) value);
                       }
-                      
+    
                       @Override
                       public void onFailure(Throwable throwable) {
                           getView().loading(false);
                           getView().onFailure(throwable.getMessage());
                       }
-                      
+    
                       @Override
                       public void onLoading() {
                           getView().loading(true);
                       }
                   }, null, new String[]{startDate, endDate, idWallet},
                   TypeRepository.REMOTE);
-        
+    
         mTransactionUseCase.subscribe(request);
+    }
+    public void transferMoney(String walletFrom, String walletTo, String amount) {
+    
     }
     
     @Override

@@ -215,11 +215,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         mCardViewActionBar.setOnClickAction(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mAction.equals(Action.ACTION_ADD_TRANSACTION)) {
-                    addTransaction();
-                } else if (mAction.equals(Action.ACTION_UPDATE_TRANSACTION)) {
-                    updateTransaction();
-                }
+                doTaskTransaction(mAction);
             }
         });
         mCardViewActionBar.setOnClickBack(new OnClickListener() {
@@ -330,6 +326,9 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         
         EventBus.getDefault().post(new ActivityResultEvent(ResultCode.ADD_TRANSACTION_RESULT_CODE,
                   transaction));
+        EventBus.getDefault()
+                  .post(new ActivityResultEvent(ResultCode.NEED_UPDATE_CURRENT_WALLET_RESULT_CODE,
+                            null));
         getActivity().finish();
     }
     
@@ -342,8 +341,13 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
             }});
         }
         intent.putExtra("transaction", transaction);
+        EventBus.getDefault()
+                  .post(new ActivityResultEvent(ResultCode.NEED_UPDATE_CURRENT_WALLET_RESULT_CODE,
+                            null));
         getActivity().setResult(ResultCode.EDIT_TRANSACTION_RESULT_CODE, intent);
+        
         getActivity().finish();
+        
     }
     
     
@@ -547,15 +551,20 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         mTextViewRemind.setText(DateUtil.formatDate(endTime));
     }
     
-    private void addTransaction() {
-        mCurrentTransaction = new Transaction();
+    private void prepareTransaction(String action) {
+        if (action.equals(Action.ACTION_ADD_TRANSACTION)) {
+            mCurrentTransaction = new Transaction();
+        }
         String date_created = String.valueOf(DateUtil
                   .getLongAsDate(mDayOfMonth_StartTime, mMonth_StartTime, mYear_StartTime));
         String date_end = String.valueOf(DateUtil
                   .getLongAsDate(mDayOfMonth_EndTime, mMonth_EndTime, mYear_EndTime));
         Wallet wallet = mWallet;
         Category category = mCategory;
-        category.setSubcategories(null);
+        if (category != null) {
+            category.setSubcategories(null);
+        }
+        
         String note = mEditTextNote.getText().toString().trim();
         if (mPersonList == null || mPersonList.isEmpty()) {
             mPersonList = new ArrayList<>();
@@ -597,84 +606,30 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         mCurrentTransaction.setDate_end(date_end);
         mCurrentTransaction.setType(mCategory.getType());
         
-        if (mCategory.getType().equals("expense")) {
-            double amountWallet = Double.valueOf(mWallet.getMoney());
-            double amountTrans = Double.valueOf(mAmount);
-            if (amountWallet < amountTrans) {
-                showDialogWarningAmount();
-                return;
-            }
-        }
-        
-        mTransactionPresenter.addTransaction(mCurrentTransaction, mImageGalleries);
-        
     }
     
-    private void updateTransaction() {
-        String date_created = String.valueOf(DateUtil
-                  .getLongAsDate(mDayOfMonth_StartTime, mMonth_StartTime, mYear_StartTime));
-        String date_end = String.valueOf(DateUtil
-                  .getLongAsDate(mDayOfMonth_EndTime, mMonth_EndTime, mYear_EndTime));
-        
-        Wallet wallet = mWallet;
-        
-        mCategory.setSubcategories(null);
-        
-        Category category = mCategory;
-        category.setSubcategories(null);
-        String note = mEditTextNote.getText().toString().trim();
-        if (mPersonList == null) {
-            mPersonList = new ArrayList<>();
-            mPersonList.add(Constraints.SOME_ONE_PERSON);
-        }
-        List<Person> persons = mPersonList;
-        Event event = mEvent;
-        Saving saving = mSaving;
-        
-        if (mCategory == null) {
-            Toast.makeText(this.getContext(), R.string.txt_please_choose_category,
-                      Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (wallet == null || TextUtil.isEmpty(mTextViewNameWallet.getText().toString())) {
-            Toast.makeText(this.getContext(), R.string.txt_please_choose_wallet, Toast.LENGTH_SHORT)
-                      .show();
-            return;
-        }
-        if (Long.valueOf(date_created) > Long.valueOf(date_end)) {
-            Toast.makeText(this.getContext(), R.string.txt_warning_date_created,
-                      Toast.LENGTH_SHORT).show();
-            return;
-        }
-        
-        if (mAmount.equals("0")) {
-            Toast.makeText(this.getContext(), R.string.message_warning_fill_amount,
-                      Toast.LENGTH_SHORT).show();
-            return;
-        }
-        
-        mCurrentTransaction.setAmount(mAmount);
-        mCurrentTransaction.setNote(note);
-        mCurrentTransaction.setCategory(category);
-        mCurrentTransaction.setWallet(wallet);
-        mCurrentTransaction.setDate_created(date_created);
-        mCurrentTransaction.setPerson(persons);
-        mCurrentTransaction.setEvent(event);
-        mCurrentTransaction.setSaving(saving);
-        mCurrentTransaction.setDate_end(date_end);
-        mCurrentTransaction.setType(mCategory.getType());
-        
+    private boolean checkAmountBeforeAddOrUpdateTransaction() {
         if (mCategory.getType().equals("expense")) {
             double amountWallet = Double.valueOf(mWallet.getMoney());
             double amountTrans = Double.valueOf(mAmount);
-            if (amountWallet < amountTrans) {
-                showDialogWarningAmount();
-                return;
-            }
+            return amountWallet < amountTrans;
+        }
+        return false;
+    }
+    
+    private void doTaskTransaction(String action) {
+        prepareTransaction(mAction);
+        
+        if (checkAmountBeforeAddOrUpdateTransaction()) {
+            showDialogWarningAmount();
+            return;
         }
         
-        mTransactionPresenter.updateTransaction(mCurrentTransaction);
-        
+        if (mAction.equals(Action.ACTION_ADD_TRANSACTION)) {
+            mTransactionPresenter.addTransaction(mCurrentTransaction, mImageGalleries);
+        } else if (mAction.equals(Action.ACTION_UPDATE_TRANSACTION)) {
+            mTransactionPresenter.updateTransaction(mCurrentTransaction);
+        }
     }
     
     private void showDialogWarningAmount() {

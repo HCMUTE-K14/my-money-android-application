@@ -27,6 +27,7 @@ public class Action {
     public static final String ACTION_DELETE_WALLET = "action_delete_wallet";
     public static final String ACTION_GET_WALLET = "action_get_wallet";
     public static final String ACTION_MOVE_WALLET = "action_move_wallet";
+    public static final String ACTION_GET_WALLET_BY_ID = "action_get_wallet_by_id";
     
     public static final String ACTION_GET_CURRENCIES = "action_get_currencies";
     public static final String ACTION_CONVERT_CURRENCY_ONLINE = "action_convert_currency_online";
@@ -83,5 +84,6 @@ public class Action {
     public static final String ACTION_ADD_DEBT_LOAN = "action_add_debt_loan";
     public static final String ACTION_UPDATE_DEBT_LOAN = "action_update_debt_loan";
     public static final String ACTION_DELETE_DEBT_LOAN = "action_delete_debt_loan";
+    
     
 }

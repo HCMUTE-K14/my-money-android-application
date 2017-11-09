@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.vn.hcmute.team.cortana.mymoney.R;
@@ -22,6 +23,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.MenuPopupWithIcon;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,9 +142,11 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
             
             item.mTextViewNameWallet.setText(wallet.getWalletName());
             
-            String value = mContext.getString(R.string.txt_show_value_wallet,
-                      wallet.getCurrencyUnit().getCurSymbol(),
-                      (TextUtils.isEmpty(wallet.getMoney()) ? "0" : wallet.getMoney()));
+            String value = NumberUtil
+                      .formatAmount(TextUtils.isEmpty(wallet.getMoney())
+                                          ? "0"
+                                          : wallet.getMoney(),
+                                wallet.getCurrencyUnit().getCurSymbol());
             
             item.mTextViewValueWallet.setText(value);
             item.mImageViewArchive.setVisibility(wallet.isArchive() ? View.VISIBLE : View.GONE);
@@ -168,8 +172,16 @@ public class SelectWalletAdapter extends RecyclerView.Adapter<ViewHolder> {
                                         mSelectWalletListener.onRemoveWallet(position, wallet);
                                         return true;
                                     case R.id.action_transfer_money:
-                                        mSelectWalletListener
-                                                  .onTransferMoneyWallet(position, wallet);
+                                        if (mWallets.size() >= 2) {
+                                            mSelectWalletListener
+                                                      .onTransferMoneyWallet(position, wallet);
+                                            return true;
+                                        } else {
+                                            Toast.makeText(mContext,
+                                                      R.string.message_warning_transfer_money,
+                                                      Toast.LENGTH_SHORT).show();
+                                            return false;
+                                        }
                                     default:
                                         return false;
                                 }

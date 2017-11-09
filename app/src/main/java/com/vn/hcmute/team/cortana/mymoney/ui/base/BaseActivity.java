@@ -38,9 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         setContentView(getLayoutId());
-        
         unbinder = ButterKnife.bind(this);
-        
         initializeDagger();
         initializePresenter();
         initializeActionBar(this.findViewById(android.R.id.content));

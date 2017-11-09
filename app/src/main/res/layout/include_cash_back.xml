@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="12dp">
+
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="12dp"
+      android:orientation="vertical">
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_paid" />
+      <TextView
+        android:id="@+id/txt_amount_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="5dp"
+      android:layout_alignParentRight="true"
+      android:orientation="vertical">
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_left" />
+      <TextView
+        android:id="@+id/txt_amount_end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+  </RelativeLayout>
+  <SeekBar
+    android:id="@+id/seek_bar"
+    android:layout_width="match_parent"
+    android:layout_height="8dp"
+    android:layout_marginTop="5dp"
+    android:max="100"
+    android:progress="0"
+    android:progressDrawable="@drawable/process_saving"
+    android:thumb="@null" />
+  <Button
+    android:id="@+id/btn_cash_back"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dp"
+    android:layout_marginLeft="30dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@color/colorPrimary"
+    android:text="@string/txt_cash_back"
+    android:textColor="@color/white" />
+</LinearLayout>

@@ -15,7 +15,6 @@ public interface TransactionContract {
         
         void showAllListTransaction(List<Transaction> list);
         
-        
         void onFailure(String message);
         
         void loading(boolean isLoading);
@@ -26,6 +25,11 @@ public interface TransactionContract {
         void onAddSuccessTransaction(Transaction transaction, String message);
         
         void onUpdateSuccessTransaction(Transaction transaction, String message);
+    }
+    
+    interface TransferMoney extends View {
+        
+        void onTransferMoneySuccess(String message);
     }
     
     
@@ -53,6 +57,7 @@ public interface TransactionContract {
         
         void getTransactionByTime(String startDate, String endDate, String idWallet);
         
+        void transferMoney(String walletFrom, String walletTo, String amount);
         
         void unSubscribe();
         

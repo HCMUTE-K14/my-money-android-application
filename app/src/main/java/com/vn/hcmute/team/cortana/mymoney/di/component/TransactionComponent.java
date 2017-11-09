@@ -9,7 +9,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.saving.TransactionSavingActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.StatisticsActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.StatisticsFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.BaseInfoTransactionActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.transaction.InfoTransactionForDebtLoanActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.transaction.InforTransactionForDebtLoanActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.ManagerTransactionFragment;
 import dagger.Component;
 
@@ -29,7 +29,7 @@ public interface TransactionComponent {
     
     void inject(TransactionBudgetActivity transactionBudgetActivity);
     
-    void inject(InfoTransactionForDebtLoanActivity infoTransactionForDebtLoanActivity);
+    void inject(InforTransactionForDebtLoanActivity inforTransactionForDebtLoanActivity);
     
     void inject(BaseInfoTransactionActivity baseInfoTransactionActivity);
     

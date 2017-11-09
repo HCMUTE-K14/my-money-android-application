@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
@@ -17,6 +16,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerWalletComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.WalletComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.WalletModule;
+import com.vn.hcmute.team.cortana.mymoney.event.ActivityResultEvent;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletListener;
@@ -24,14 +24,20 @@ import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletView;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletContract.View;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
+import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by infamouSs on 9/6/17.
  */
 
 public class MyWalletActivity extends BaseActivity implements View {
+    
+    public static final String TAG = MyWalletActivity.class.getSimpleName();
     
     public static final int MODE_OPEN_FROM_SELECT_WALLET = 0;
     public static final int MODE_OPEN_FROM_ANOTHER = 1;
@@ -47,6 +53,7 @@ public class MyWalletActivity extends BaseActivity implements View {
     
     private ProgressDialog mProgressDialog;
     private int mMode;
+    private String mExceptWalletId;
     
     private SelectWalletListener mSelectWalletListener = new SelectWalletListener() {
         @Override
@@ -86,7 +93,9 @@ public class MyWalletActivity extends BaseActivity implements View {
         
         @Override
         public void onTransferMoneyWallet(int position, Wallet wallet) {
-            Toast.makeText(MyWalletActivity.this, "MONEY", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MyWalletActivity.this, TransferMoneyActivity.class);
+            intent.putExtra("wallet_from", wallet);
+            startActivity(intent);
         }
     };
     
@@ -128,9 +137,9 @@ public class MyWalletActivity extends BaseActivity implements View {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        EventBus.getDefault().register(this);
         mMode = getIntent().getIntExtra("mode", MODE_OPEN_FROM_ANOTHER);
-        
+        mExceptWalletId = getIntent().getStringExtra("except_wallet");
         initializeView();
         
         getWalletData();
@@ -149,7 +158,15 @@ public class MyWalletActivity extends BaseActivity implements View {
     @Override
     protected void onDestroy() {
         mWalletPresenter.unSubscribe();
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
+    }
+    
+    @Subscribe
+    public void onEvent(ActivityResultEvent event) {
+        if (event.getResultCode() == ResultCode.NEED_UPDATE_CURRENT_WALLET_RESULT_CODE) {
+            getWalletData();
+        }
     }
     
     @Override
@@ -197,6 +214,13 @@ public class MyWalletActivity extends BaseActivity implements View {
     
     @Override
     public void showListWallet(List<Wallet> wallets) {
+        
+        if (!TextUtil.isEmpty(mExceptWalletId)) {
+            MyLogger.d(TAG, mExceptWalletId);
+            Wallet walletExcept = new Wallet();
+            walletExcept.setWalletid(mExceptWalletId);
+            wallets.remove(walletExcept);
+        }
         mSelectWalletView.setData(wallets);
     }
     

@@ -20,7 +20,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.debts.DebtLoanContract.ShowView;
-import com.vn.hcmute.team.cortana.mymoney.ui.transaction.InfoTransactionForDebtLoanActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.transaction.InforTransactionForDebtLoanActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
@@ -57,7 +57,7 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
         @Override
         public void onClick(DebtLoan debtLoan, int groupPosition, int childPosition) {
             Intent intent = new Intent(DebtsLoanFragmentByType.this.getContext(),
-                      InfoTransactionForDebtLoanActivity.class);
+                      InforTransactionForDebtLoanActivity.class);
             
             intent.putExtra("transaction", debtLoan.getTransaction());
             intent.putExtra("debt_loan", debtLoan);

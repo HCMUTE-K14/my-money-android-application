@@ -13,6 +13,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.UseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.CategoryUseCase.CategoryRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
@@ -360,11 +361,13 @@ public class CategoryUseCase extends UseCase<CategoryRequest> {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object result) {
+                MyLogger.d(TAG, "success");
                 callBack.onSuccess(result);
             }
             
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                MyLogger.d(TAG, "faile");
                 callBack.onFailure(e);
             }
         };

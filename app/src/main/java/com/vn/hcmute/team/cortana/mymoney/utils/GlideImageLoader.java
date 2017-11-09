@@ -14,7 +14,6 @@ public class GlideImageLoader {
     public static void load(Context context, Object obj, ImageView imageView) {
         GlideApp.with(context)
                   .load(obj)
-                  .placeholder(R.drawable.folder_placeholder)
                   .error(R.drawable.folder_placeholder)
                   .dontAnimate()
                   .into(imageView);

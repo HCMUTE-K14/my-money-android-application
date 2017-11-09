@@ -7,7 +7,6 @@ import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -19,7 +18,7 @@ import java.util.concurrent.Callable;
 public class CategoryLocalService extends DbContentProvider<Category> {
     
     public static final String TAG = CategoryLocalService.class.getSimpleName();
-    
+    private static CategoryLocalService sInstance;
     private final String TABLE_NAME = "tbl_category";
     private final String COLUMN_ID = "cate_id";
     private final String COLUMN_IMAGE = "icon";
@@ -29,9 +28,15 @@ public class CategoryLocalService extends DbContentProvider<Category> {
     private final String COLUMN_USER_ID = "user_id";
     private final String COULMN_PARENT_ID = "parent_id";
     
-    
     public CategoryLocalService(DatabaseHelper databaseHelper) {
         super(databaseHelper);
+    }
+    
+    public static CategoryLocalService getInstance(DatabaseHelper databaseHelper) {
+        if (sInstance == null) {
+            sInstance = new CategoryLocalService(databaseHelper);
+        }
+        return sInstance;
     }
     
     @Override
@@ -43,7 +48,6 @@ public class CategoryLocalService extends DbContentProvider<Category> {
     
     public Callable<List<Category>> getListCategory(final String selection,
               final String[] selectionArg) {
-        
         return new Callable<List<Category>>() {
             @Override
             public List<Category> call() throws Exception {
@@ -97,13 +101,11 @@ public class CategoryLocalService extends DbContentProvider<Category> {
         return new Callable<Long>() {
             @Override
             public Long call() throws Exception {
-                
                 if (category.getParent() != null) {
-                    MyLogger.d(TAG, "addChildCategory" + category.getId());
                     return addSubCategory(category);
                 }
                 ContentValues contentValues = createContentValues(category);
-                MyLogger.d(TAG, "addCategory" + category.getId());
+                
                 return mDatabase.insert(TABLE_NAME, null, contentValues);
             }
         };

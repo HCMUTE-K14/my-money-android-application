@@ -68,6 +68,7 @@ public class ManagerTransactionActivity extends BaseActivity {
         attachFragment();
     }
     
+    
     private void getDataFromIntent() {
         Intent intent = getIntent();
         if (intent != null) {

@@ -68,8 +68,10 @@ public interface RemoteTask {
         
         Observable<List<Wallet>> getAllWallet(String userid, String token);
         
-        Observable<String> moveWallet(String userid, String token, String wallet1, String wallet2,
-                  String money);
+        Observable<String> moveWallet(String userid, String token, String walletFrom,
+                  String walletTo, String moneyMinus, String moneyPlus, String dateCreated);
+        
+        Observable<Wallet> getWalletById(String userid, String token, String wallet_id);
     }
     
     interface CurrenciesTask {

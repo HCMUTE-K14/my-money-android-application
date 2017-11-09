@@ -1,5 +1,6 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.main;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -27,8 +30,10 @@ import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerWalletComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.WalletComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.module.ActivityModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.WalletModule;
+import com.vn.hcmute.team.cortana.mymoney.event.ActivityResultEvent;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.ui.budget.BudgetMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.category.CategoryMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.debts.DebtsLoanMainFragment;
@@ -36,6 +41,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.event.EventMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.login.LoginActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.SavingMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.StatisticsFragment;
+import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletListener;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletView;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.AddWalletActivity;
@@ -43,6 +49,10 @@ import com.vn.hcmute.team.cortana.mymoney.ui.wallet.EditWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletContract;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletPresenter;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase;
+import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase.WalletRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
@@ -51,6 +61,8 @@ import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import java.util.List;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class MainActivity extends BaseActivity implements WalletContract.View {
     
@@ -67,6 +79,9 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     
     @Inject
     WalletPresenter mWalletPresenter;
+    
+    @Inject
+    WalletUseCase mWalletUseCase;
     
     @Inject
     PreferencesHelper mPreferenceHelper;
@@ -109,8 +124,29 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         }
         
         @Override
-        public void onRemoveWallet(int position, Wallet wallet) {
-            mWalletPresenter.removeWallet(position, wallet);
+        public void onRemoveWallet(final int position, final Wallet wallet) {
+            AlertDialog.Builder dialog = new Builder(MainActivity.this);
+            dialog.setTitle(R.string.txt_wait_a_second);
+            dialog.setMessage(R.string.message_waring_remove_wallet);
+            dialog.setNegativeButton(getString(R.string.txt_yes),
+                      new DialogInterface.OnClickListener() {
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+                              mWalletPresenter.removeWallet(position, wallet);
+                          }
+                      });
+            
+            dialog.setPositiveButton(getString(R.string.txt_no),
+                      new DialogInterface.OnClickListener() {
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+                              dialog.cancel();
+                              dialog.dismiss();
+                          }
+                      });
+            
+            dialog.create().show();
+            
         }
         
         @Override
@@ -138,6 +174,17 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                 mNavigationView.getMenu().clear();
                 mWalletPresenter.getAllWallet();
             }
+        }
+    };
+    
+    private Runnable runnableAttachTransactionFragment = new Runnable() {
+        @Override
+        public void run() {
+            mNavigationView.getMenu().findItem(R.id.navigation_item_cashbook).setChecked(true);
+            TransactionMainFragment fragment = new TransactionMainFragment();
+            mCurrentFragment = fragment;
+            getSupportFragmentManager().beginTransaction()
+                      .replace(R.id.container_fragment, fragment).commit();
         }
     };
     
@@ -251,19 +298,16 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         mActionBar = getSupportActionBar();
     }
     
-    public void setActionBarTitle(String title) {
-        if (mActionBar != null) {
-            mActionBar.setTitle(title);
-        }
-    }
     
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         if (mPreferenceHelper.getCurrentUser() == null) {
             openLoginActivity();
             return;
         }
+        
         mHandler.postDelayed(
                   new Runnable() {
                       @Override
@@ -276,7 +320,39 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         mWalletPresenter.unSubscribe();
+    }
+    
+    
+    @Subscribe
+    public void onEvent(ActivityResultEvent event) {
+        if (event.getResultCode() == ResultCode.NEED_UPDATE_CURRENT_WALLET_RESULT_CODE) {
+            
+            WalletRequest request = new WalletRequest(Action.ACTION_GET_WALLET_BY_ID,
+                      new BaseCallBack<Object>() {
+                          @Override
+                          public void onSuccess(Object value) {
+                              mCurrentWallet = (Wallet) value;
+                              
+                              mPreferenceHelper.putCurrentWallet(mCurrentWallet);
+                              
+                              updateViewHeaderWithWallet(mCurrentWallet);
+                          }
+                          
+                          @Override
+                          public void onFailure(Throwable throwable) {
+                          }
+                          
+                          @Override
+                          public void onLoading() {
+                          
+                          }
+                      }, null, new String[]{mCurrentWallet.getWalletid()});
+            request.setTypeRepository(TypeRepository.REMOTE);
+            
+            mWalletUseCase.subscribe(request);
+        }
     }
     
     @Override
@@ -343,6 +419,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     public void initializeView() {
         initializeHeaderNavView();
         setupNavigationView();
+        runnableAttachTransactionFragment.run();
     }
     
     @Override
@@ -368,6 +445,11 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     @Override
     public void onRemoveWalletSuccess(String message, int position, Wallet wallet) {
         mSelectWalletView.removeWallet(wallet);
+        if (wallet.getWalletid().equals(mCurrentWallet.getWalletid())) {
+            EventBus.getDefault().post(new ActivityResultEvent(ResultCode.NEED_RELOAD_DATA, null));
+            mPreferenceHelper.putCurrentWallet(null);
+            updateViewHeaderWithWallet(null);
+        }
     }
     
     @Override
@@ -427,12 +509,37 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                 return true;
             }
         });
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                if (!shouldShowMenuWallet) {
+                    mSelectWalletView.setVisibility(View.GONE);
+                    mNavigationView.inflateMenu(R.menu.menu_main_drawer);
+                    shouldShowMenuWallet = true;
+                }
+            }
+            
+            @Override
+            public void onDrawerOpened(View drawerView) {
+            
+            }
+            
+            @Override
+            public void onDrawerClosed(View drawerView) {
+            }
+            
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+        });
     }
     
     private void attachFragment(MenuItem item) {
         mRunnable = null;
         switch (item.getItemId()) {
             case R.id.navigation_item_cashbook:
+                mRunnable = runnableAttachTransactionFragment;
                 break;
             case R.id.navigation_item_debt:
                 mRunnable = runnableAttachDebtsFragment;
@@ -528,6 +635,11 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     }
     
     private void updateViewHeaderWithWallet(Wallet wallet) {
+        if (wallet == null) {
+            mTextViewValueWallet.setText("");
+            mTextViewNameWallet.setText("");
+            return;
+        }
         GlideImageLoader.load(MainActivity.this, DrawableUtil
                   .getDrawable(MainActivity.this, wallet.getWalletImage()), mImageViewIconWallet);
         

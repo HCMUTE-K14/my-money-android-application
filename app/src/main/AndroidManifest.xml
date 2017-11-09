@@ -61,20 +61,11 @@
     </activity>
 
     <!-- Wallet -->
-    <activity android:name=".ui.wallet.SelectWalletActivity">
-
-
-    </activity>
-    <activity android:name=".ui.wallet.AddWalletActivity">
-
-    </activity>
-    <activity android:name=".ui.wallet.EditWalletActivity">
-
-    </activity>
-
-    <activity android:name=".ui.wallet.MyWalletActivity">
-
-    </activity>
+    <activity android:name=".ui.wallet.SelectWalletActivity" />
+    <activity android:name=".ui.wallet.AddWalletActivity" />
+    <activity android:name=".ui.wallet.EditWalletActivity" />
+    <activity android:name=".ui.wallet.MyWalletActivity" />
+    <activity android:name=".ui.wallet.TransferMoneyActivity" />
     <!-- Saving -->
 
     <!--<activity android:name=".ui.saving.SavingActivity" />-->
@@ -118,13 +109,13 @@
     <activity android:name=".ui.transaction.ManagerTransactionActivity">
 
     </activity>
+    <activity android:name=".ui.transaction.InforTransactionActivity" />
     <!-- Debt & Loan -->
-    <activity android:name=".ui.transaction.InfoTransactionForDebtLoanActivity" />
+    <activity android:name=".ui.transaction.InforTransactionForDebtLoanActivity" />
     <!--Statistic-->
     <activity android:name=".ui.statistics.transaction.TransactionStatisticsActivity">
 
     </activity>
-
   </application>
 
 </manifest>

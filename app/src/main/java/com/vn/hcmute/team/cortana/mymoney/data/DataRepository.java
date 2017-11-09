@@ -278,9 +278,16 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
-    public Observable<String> moveWallet(String userid, String token, String wallet1,
-              String wallet2, String money) {
-        return mRemoteRepository.moveWallet(userid, token, wallet1, wallet2, money);
+    public Observable<String> moveWallet(String userid, String token, String walletFrom,
+              String walletTo, String moneyMinus, String moneyPlus, String dateCreated) {
+        return mRemoteRepository
+                  .moveWallet(userid, token, walletFrom, walletTo, moneyMinus, moneyPlus,
+                            dateCreated);
+    }
+    
+    @Override
+    public Observable<Wallet> getWalletById(String userid, String token, String wallet_id) {
+        return mRemoteRepository.getWalletById(userid, token, wallet_id);
     }
     
     @Override
@@ -545,6 +552,11 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     public Observable<String> moveLocalWallet(String idWalletFrom, String idWalletTo,
               String Money) {
         return mLocalRepository.moveWallet(idWalletFrom, idWalletTo, Money);
+    }
+    
+    @Override
+    public Observable<Wallet> getLocalWalletById(String wallet_id) {
+        return mLocalRepository.getWalletById(wallet_id);
     }
     
     /*Area Event*/
