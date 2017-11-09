@@ -68,12 +68,10 @@
     <activity android:name=".ui.wallet.TransferMoneyActivity" />
     <!-- Saving -->
 
-    <!--<activity android:name=".ui.saving.SavingActivity" />-->
     <activity android:name=".ui.saving.AddSavingActivity" />
     <activity android:name=".ui.saving.TransferMoneySavingActivity" />
     <activity android:name=".ui.saving.InfoSavingActivity" />
     <activity android:name=".ui.saving.EditSavingActivity" />
-
     <activity android:name=".ui.saving.TransactionSavingActivity" />
     <!--Budget-->
     <activity android:name=".ui.budget.AddBudgetActivity" />
@@ -85,7 +83,6 @@
     <activity android:name=".ui.event.ActivityInfoEvent" />
     <activity android:name=".ui.event.ActivityEditEvent" />
     <activity android:name=".ui.event.ActivityAddEvent" />
-    <activity android:name=".ui.event.EventActivity" />
     <activity android:name=".ui.event.ActivitySelectEvent" />
     <activity android:name=".ui.event.TransactionEventActivity"/>
 
