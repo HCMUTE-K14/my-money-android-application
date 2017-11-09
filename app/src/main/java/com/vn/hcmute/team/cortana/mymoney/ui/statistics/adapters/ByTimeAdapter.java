@@ -47,7 +47,6 @@ public class ByTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private int IdCategory;
     private Wallet mWallet;
     
-    
     public ByTimeAdapter(Context context, int idCategory,
               List<ObjectByTime> data, Wallet wallet) {
         this.mInflater = LayoutInflater.from(context);
@@ -135,7 +134,7 @@ public class ByTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         
         public void initBarChart() {
             mBarChart.setDescription(null);
-            mBarChart.setFitBars(false);
+            mBarChart.setFitBars(true);
             mBarChart.setDoubleTapToZoomEnabled(false);
             mBarChart.getXAxis().setDrawGridLines(false);
             mBarChart.getAxisRight().setEnabled(false);
@@ -182,6 +181,7 @@ public class ByTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             IAxisValueFormatter iAxisValueFormatter = new IAxisValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, AxisBase axis) {
+                    axis.setLabelCount(mData.size());
                     return xLabel.get((int) value);
                 }
             };
@@ -218,9 +218,11 @@ public class ByTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             IAxisValueFormatter iAxisValueFormatter = new IAxisValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, AxisBase axis) {
+                    axis.setLabelCount(mData.size());
                     return xLabel.get((int) value);
                 }
             };
+            
             mBarChart.getXAxis().setValueFormatter(iAxisValueFormatter);
             mBarChart.invalidate();
         }

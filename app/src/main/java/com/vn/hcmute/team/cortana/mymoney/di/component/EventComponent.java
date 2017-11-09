@@ -8,7 +8,6 @@ import com.vn.hcmute.team.cortana.mymoney.ui.event.ActivityAddEvent;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.ActivityEditEvent;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.ActivityInfoEvent;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.ActivitySelectEvent;
-import com.vn.hcmute.team.cortana.mymoney.ui.event.EventActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.FragmentEventFinished;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.FragmentEventRunning;
 import dagger.Component;
@@ -20,8 +19,6 @@ import dagger.Component;
 @Component(modules = {ActivityModule.class,
           EventModule.class, WalletModule.class}, dependencies = ApplicationComponent.class)
 public interface EventComponent {
-    
-    void inject(EventActivity eventActivity);
     
     void inject(FragmentEventRunning fragmentEventRunning);
     

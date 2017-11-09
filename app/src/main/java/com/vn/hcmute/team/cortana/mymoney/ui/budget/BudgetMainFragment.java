@@ -33,7 +33,7 @@ public class BudgetMainFragment extends BaseFragment {
     
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_budget;
+        return R.layout.fragment_budget;
     }
     
     @Override

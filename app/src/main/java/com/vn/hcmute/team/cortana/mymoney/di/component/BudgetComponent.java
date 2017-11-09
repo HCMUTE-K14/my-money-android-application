@@ -6,7 +6,6 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.CategoryModule;
 import com.vn.hcmute.team.cortana.mymoney.di.module.WalletModule;
 import com.vn.hcmute.team.cortana.mymoney.di.scope.PerActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.budget.AddBudgetActivity;
-import com.vn.hcmute.team.cortana.mymoney.ui.budget.BudgetActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.budget.EditBudgetActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.budget.FragmentBudgetFinished;
 import com.vn.hcmute.team.cortana.mymoney.ui.budget.FragmentBudgetRunning;
@@ -21,8 +20,6 @@ import dagger.Component;
           BudgetModule.class, WalletModule.class,
           CategoryModule.class}, dependencies = ApplicationComponent.class)
 public interface BudgetComponent {
-    
-    void inject(BudgetActivity budgetActivity);
     
     void inject(EditBudgetActivity editBudgetActivity);
     
