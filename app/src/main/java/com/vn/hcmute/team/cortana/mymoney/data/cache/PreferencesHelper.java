@@ -17,6 +17,7 @@ public class PreferencesHelper {
     public static final String TAG = PreferencesHelper.class.getSimpleName();
     
     private static final String PREF_NAME = "my_money_pref";
+    
     public static PreferencesHelper sInstance;
     private final String PREF_USER_ID = "PREF_USER_ID";
     private final String PREF_USER_TOKEN = "PREF_USER_TOKEN";
@@ -26,6 +27,7 @@ public class PreferencesHelper {
     private final String PREF_FACEBOOK_ACCESS_TOKEN = "PREF_FACEBOOK_ACCESS_TOKEN";
     private final String PREF_TRANSACTION_VIEW_BY = "PREF_TRANSACTION_VIEW_BY";
     private final String PREF_TIME_RANGE_TRANSACTION = "PREF_TIME_RANGE_TRANSACTION";
+    private final String PREF_START_DATE_AND_END_DATE = "PREF_START_DATE_AND_END_DATE";
     
     private SharedPreferences mSharedPreferences;
     private Gson mGson;
@@ -134,5 +136,13 @@ public class PreferencesHelper {
     
     public String getTransactionTimeRange() {
         return mSharedPreferences.getString(PREF_TIME_RANGE_TRANSACTION, "date");
+    }
+    
+    public void putLastStartDateAndEndDate(String data) {
+        mSharedPreferences.edit().putString(PREF_START_DATE_AND_END_DATE, data).apply();
+    }
+    
+    public String getLastStartDateAndEndDate() {
+        return mSharedPreferences.getString(PREF_START_DATE_AND_END_DATE, "");
     }
 }

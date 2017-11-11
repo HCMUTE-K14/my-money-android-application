@@ -116,7 +116,10 @@ public class DateUtil {
     }
     
     public static String formatDate(Date date) {
-        String pattern = ApplicationConfig.DEFAULT_DATE_PATTERN;
+        return formatDate(date, ApplicationConfig.DEFAULT_DATE_PATTERN);
+    }
+    
+    public static String formatDate(Date date, String pattern) {
         Format formatter = new SimpleDateFormat(pattern);
         return formatter.format(date);
     }

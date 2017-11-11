@@ -28,6 +28,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction.FragmentTransactionByCategory;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction.FragmentTransactionByTime;
+import com.vn.hcmute.team.cortana.mymoney.ui.transaction.SelectTimeRangeDialog.SelectTimeRangeListener;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.CalendarTransactionView;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.CalendarTransactionView.Listener;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
@@ -35,7 +36,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.DebtLoanUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.DebtLoanUseCase.DebtLoanRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
@@ -72,6 +72,21 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
     private String mWalletId;
     private String mStartDate;
     private String mEndDate;
+    
+    private SelectTimeRangeListener mSelectTimeRangeListener = new SelectTimeRangeListener() {
+        @Override
+        public void onSelectTimeRange(String data) {
+            mStartDate = data.split("-")[0];
+            mEndDate = data.split("-")[1];
+            mPreferencesHelper.putLastStartDateAndEndDate(data);
+            mCalendarTransactionView.setStartDate(Long.valueOf(mStartDate));
+            mCalendarTransactionView.setEndDate(Long.valueOf(mEndDate));
+            
+            mCalendarTransactionView.setMode(CalendarTransactionView.MODE_CUSTOM);
+            
+            getData();
+        }
+    };
     
     @Override
     protected int getLayoutId() {
@@ -147,26 +162,30 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
                 return true;
             case R.id.action_view_by_day:
                 mPreferencesHelper.putTransactionTimeRange(CalendarTransactionView.MODE_DATE);
-                mCalendarTransactionView.init(CalendarTransactionView.MODE_DATE);
+                mCalendarTransactionView.setMode(CalendarTransactionView.MODE_DATE);
                 getData();
                 return true;
             case R.id.action_view_by_week:
                 mPreferencesHelper.putTransactionTimeRange(CalendarTransactionView.MODE_WEEK);
-                mCalendarTransactionView.init(CalendarTransactionView.MODE_WEEK);
+                mCalendarTransactionView.setMode(CalendarTransactionView.MODE_WEEK);
                 getData();
                 return true;
             case R.id.action_view_by_month:
                 mPreferencesHelper.putTransactionTimeRange(CalendarTransactionView.MODE_MONTH);
-                mCalendarTransactionView.init(CalendarTransactionView.MODE_MONTH);
+                mCalendarTransactionView.setMode(CalendarTransactionView.MODE_MONTH);
                 getData();
                 return true;
             case R.id.action_view_by_custom:
                 mPreferencesHelper.putTransactionTimeRange(CalendarTransactionView.MODE_CUSTOM);
-                mCalendarTransactionView.init(CalendarTransactionView.MODE_CUSTOM);
+                
+                SelectTimeRangeDialog selectTimeRangeDialog = new SelectTimeRangeDialog(
+                          this.getActivity());
+                selectTimeRangeDialog.setListener(mSelectTimeRangeListener);
+                selectTimeRangeDialog.create().show();
                 return true;
             case R.id.action_view_by_all_trans:
                 mPreferencesHelper.putTransactionTimeRange(CalendarTransactionView.MODE_ALL_TRANS);
-                mCalendarTransactionView.init(CalendarTransactionView.MODE_ALL_TRANS);
+                mCalendarTransactionView.setMode(CalendarTransactionView.MODE_ALL_TRANS);
                 getData();
                 return true;
             default:
@@ -179,24 +198,47 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mCalendarTransactionView = new CalendarTransactionView(this.getContext());
-        mCalendarTransactionView.init(mPreferencesHelper.getTransactionTimeRange());
+        String typeTimeRange = mPreferencesHelper.getTransactionTimeRange();
+        String lastDate = mPreferencesHelper.getLastStartDateAndEndDate();
         
-        mCalendarTransactionView.setListener(new Listener() {
-            @Override
-            public void onClickTab(String data) {
-                mStartDate = data.split("-")[0];
-                mEndDate = data.split("-")[1];
-                MyLogger.d(data);
-                getData();
+        try {
+            mStartDate = lastDate.split("-")[0];
+            mEndDate = lastDate.split("-")[1];
+            if (typeTimeRange.equals(CalendarTransactionView.MODE_CUSTOM)) {
+                mCalendarTransactionView
+                          .setMode(typeTimeRange, Long.valueOf(mStartDate),
+                                    Long.valueOf(mEndDate));
+            } else {
+                mCalendarTransactionView.setMode(typeTimeRange);
             }
-        });
+        } catch (Exception e) {
+            mCalendarTransactionView.setMode(typeTimeRange);
+        }
         
+        mCalendarTransactionView.setListener(mCalendarViewListener);
         mView.addView(mCalendarTransactionView);
         
-        mProgressDialog = new ProgressDialog(this.getActivity());
-        mProgressDialog.setMessage(getString(R.string.txt_pls_wait));
+        mProgressDialog = new
+                  
+                  ProgressDialog(this.getActivity());
+        mProgressDialog.setMessage(
+                  
+                  getString(R.string.txt_pls_wait));
         mProgressDialog.setCanceledOnTouchOutside(false);
+    
+    
+        getData();
     }
+    
+    
+    private Listener mCalendarViewListener = new Listener() {
+        @Override
+        public void onClickTab(String data) {
+            mStartDate = data.split("-")[0];
+            mEndDate = data.split("-")[1];
+            getData();
+        }
+    };
     
     @Subscribe
     public void onEvent(ActivityResultEvent event) {
@@ -243,6 +285,9 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
     
     @Override
     public void showAllListTransaction(List<Transaction> list) {
+        if (list.size() > 0) {
+            mPreferencesHelper.putLastStartDateAndEndDate(mStartDate + "-" + mEndDate);
+        }
         if (mFragment != null) {
             mFramentManager.beginTransaction().remove(mFragment).commitAllowingStateLoss();
         }

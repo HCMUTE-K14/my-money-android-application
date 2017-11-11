@@ -59,17 +59,17 @@ public class FragmentByCategory extends BaseFragment {
     
     @Override
     protected void initializeDagger() {
-    
+
     }
     
     @Override
     protected void initializePresenter() {
-    
+
     }
     
     @Override
     protected void initializeActionBar(View rootView) {
-    
+
     }
     
     @Override

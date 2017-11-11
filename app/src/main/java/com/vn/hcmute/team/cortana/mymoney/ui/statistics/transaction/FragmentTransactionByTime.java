@@ -41,9 +41,6 @@ public class FragmentTransactionByTime extends BaseFragment {
     TextView txt_inflow_money;
     TextView txt_outflow_money;
     TextView txt_goal_money;
-    
-    
-    private Context mContext;
     TransactionByTimeAdapter.ClickChildView mClickChildView = new TransactionByTimeAdapter.ClickChildView() {
         @Override
         public void onClickChild(Transaction transaction) {
@@ -54,6 +51,7 @@ public class FragmentTransactionByTime extends BaseFragment {
             startActivity(intent);
         }
     };
+    private Context mContext;
     private List<Transaction> mTransactions;
     private TransactionByTimeAdapter mTransactionByTimeAdapter;
     private List<DateObjectTransaction> mListDataHeader;

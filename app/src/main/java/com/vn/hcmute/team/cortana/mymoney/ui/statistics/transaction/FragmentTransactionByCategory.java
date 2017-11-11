@@ -39,18 +39,17 @@ public class FragmentTransactionByCategory extends BaseFragment {
     TextView txt_inflow_money;
     TextView txt_outflow_money;
     TextView txt_goal_money;
-    
-    private Context mContext;
     TransactionByCategoryAdapter.ClickChildView mClickChildView = new ClickChildView() {
         @Override
         public void onClickChild(DateObjectTransaction dateObjectTransaction) {
-//            Intent intent = new Intent(FragmentTransactionByTime.this.getContext(),
-//                      InforTransactionActivity.class);
-//            dateObjectTransaction
-//            intent.putExtra("transaction", transaction);
-//            startActivity(intent);
+            //            Intent intent = new Intent(FragmentTransactionByTime.this.getContext(),
+            //                      InforTransactionActivity.class);
+            //            dateObjectTransaction
+            //            intent.putExtra("transaction", transaction);
+            //            startActivity(intent);
         }
     };
+    private Context mContext;
     private List<Transaction> mTransactions;
     private TransactionByCategoryAdapter mTransactionByCategoryAdapter;
     private ExpandableListEmptyAdapter mBaseEmptyAdapter;
