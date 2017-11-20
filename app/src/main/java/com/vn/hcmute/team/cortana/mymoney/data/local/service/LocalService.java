@@ -2,10 +2,12 @@ package com.vn.hcmute.team.cortana.mymoney.data.local.service;
 
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
+import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -44,6 +46,10 @@ public interface LocalService {
         
         Callable<Integer> takeOutSaving(String idWallet, String idSaving, String moneyWallet,
                   String moneySaving);
+        
+        Saving getSavingById(String id);
+        
+        int deleteSavingByWallet(String wallet_id);
     }
     
     interface WalletLocalService {
@@ -56,11 +62,17 @@ public interface LocalService {
         
         Callable<Integer> deleteWallet(String idWallet);
         
-        Callable<Integer> moveWallet(String idWalletFrom, String idWalletTo, String Money);
+        Callable<Integer> moveWallet(String userid, String wallet_id_from, String wallet_id_to,
+                  String moneyMinus,
+                  String moneyPlus, String date_created);
         
         int updateMoneyWallet(String idWallet, String money);
         
         Wallet getWalletById(String idWallet);
+        
+        Callable<Integer> takeInWallet(String wallet_id, String money);
+        
+        Callable<Integer> takeOutWallet(String wallet_id, String money);
     }
     
     interface EventLocalService {
@@ -72,6 +84,10 @@ public interface LocalService {
         Callable<Integer> updateEvent(Event event);
         
         Callable<Integer> deleteEvent(String idEvent);
+        
+        Event getEventById(String id);
+        
+        int deleteEventByWallet(String wallet_id);
     }
     
     interface BudgetLocalService {
@@ -83,6 +99,8 @@ public interface LocalService {
         Callable<Integer> updateBudget(Budget budget);
         
         Callable<Integer> deleteBudget(String idBudget);
+        
+        int deleteBudgetFromWallet(String wallet_id);
     }
     
     interface PersonLocalService {
@@ -94,5 +112,56 @@ public interface LocalService {
         Callable<Integer> updatePerson(Person person);
         
         Callable<Integer> deletePerson(String idPerson);
+        
+        Person getPersonById(String person_id);
+    }
+    
+    interface TransactionLocalService {
+        
+        Callable<Long> addTransaction(Transaction transaction);
+        
+        Callable<Integer> updateTransaction(Transaction transaction);
+        
+        Callable<Integer> deleteTransaction(Transaction transaction);
+        
+        Callable<List<Transaction>> getTransactionByTime(String user_id, String start, String end,
+                  String wallet_id);
+        
+        Transaction getTransactionById(String trans_id);
+        
+        Callable<Transaction> getTransactionByIdUseCallable(String trans_id);
+        
+        Callable<List<Transaction>> getAllTransaction(String user_id);
+        
+        Callable<List<Transaction>> getTransactionByEvent(String user_id, String event_id);
+        
+        Callable<List<Transaction>> getTransactionByBudget(String user_id, String start, String end,
+                  String cate_id, String wallet_id);
+    }
+    
+    interface TransPersonLocalService {
+        
+        List<Person> getPersonByTransactionId(String trans_id);
+        
+        long add(String[] values);
+        
+        int update(String[] values);
+        
+        int delete(String[] values);
+    }
+    
+    interface DebtLoanLocalService {
+        
+        Callable<List<DebtLoan>> getDebtLoanByWalletId(String wallet_id);
+        
+        Callable<List<DebtLoan>> getDebtLoanByType(String wallet_id, String type);
+        
+        Callable<Long> addDebtLoan(DebtLoan debtLoan);
+        
+        Callable<Integer> updateDebtLoan(DebtLoan debtLoan);
+        
+        Callable<Integer> deleteDebtLoan(DebtLoan debtLoan);
+        
+        int deleteDebtLoanByTransaction(String trans_id);
     }
 }

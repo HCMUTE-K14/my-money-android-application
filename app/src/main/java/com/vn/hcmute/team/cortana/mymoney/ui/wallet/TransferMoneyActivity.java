@@ -323,7 +323,7 @@ public class TransferMoneyActivity extends BaseActivity implements WalletContrac
         String curTo = walletTo.getCurrencyUnit().getCurCode();
         String amountPlus = NumberUtil.exchangeMoney(this, amount, curFrom, curTo) + "";
         String date_created = String.valueOf(DateUtil
-                  .getLongAsDate(mDayOfMonth_StartTime, mMonth_StartTime, mYear_StartTime));
+                  .getLongAsDate(mDayOfMonth_StartTime, mMonth_StartTime + 1, mYear_StartTime));
         
         double amountWallet = Double.valueOf(walletFrom.getMoney());
         double amountTrans = Double.valueOf(amount);
@@ -374,8 +374,8 @@ public class TransferMoneyActivity extends BaseActivity implements WalletContrac
     }
     
     private void resetWallet() {
-        String wallet_id_from = mWalletFrom.getWalletid();
-        String wallet_id_to = mWalletTo.getWalletid();
+        String wallet_id_from = mWalletFrom == null ? "" : mWalletFrom.getWalletid();
+        String wallet_id_to = mWalletTo == null ? "" : mWalletTo.getWalletid();
         
         if (!TextUtil.isEmpty(wallet_id_from) &&
             !TextUtil.isEmpty(wallet_id_to) &&

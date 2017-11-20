@@ -59,7 +59,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                           requestValues.getTypeRepository());
                 break;
             case Action.ACTION_DELETE_TRANSACTION:
-                doDeleteTransaction(requestValues.getCallback(), requestValues.getParams(),
+                doDeleteTransaction(requestValues.getCallback(), requestValues.getTransaction(),
                           requestValues.getTypeRepository());
                 break;
             case Action.ACTION_GET_TRANSACTION_BY_CATEGORY:
@@ -139,7 +139,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
         }
     }
     
-    private void doDeleteTransaction(final BaseCallBack<Object> callBack, String[] params,
+    private void doDeleteTransaction(final BaseCallBack<Object> callBack, Transaction transaction,
               TypeRepository typeRepository) {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
@@ -153,7 +153,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
             }
         };
         
-        String trans_id = params[0];
+        String trans_id = transaction.getTrans_id();
         
         if (TextUtil.isEmpty(trans_id)) {
             callBack.onFailure(new TransactionException("Wrong params"));
@@ -162,17 +162,17 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.getListLocalCategory(type)
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository.deleteLocalTransaction(transaction)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
@@ -233,7 +233,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.getListLocalCategory(type)
+                //                mDisposable = mDataRepository.getLocalTran(type)
                 //                          .subscribeOn(Schedulers.computation())
                 //                          .observeOn(AndroidSchedulers.mainThread())
                 //                          .doOnSubscribe(new Consumer<Disposable>() {
@@ -291,17 +291,18 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.getListLocalCategory(type)
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository
+                          .getLocalTransactionByTime("", startDate, endDate, wallet_id)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
@@ -347,17 +348,17 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.getListLocalCategory(type)
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository.getLocalTransactionByIdUseCallable(id)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
@@ -398,22 +399,22 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                 callBack.onFailure(e);
             }
         };
+        String userid = mDataRepository.getUserId();
         
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.getListLocalCategory(type)
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository.getListLocalCategory(userid)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
-                String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
                 
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
@@ -518,9 +519,10 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                 callBack.onFailure(e);
             }
         };
+        String userid = mDataRepository.getUserId();
+        String event_id = params[0];
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.REMOTE) {
-                String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
                 
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
@@ -529,7 +531,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                     return;
                 }
                 mDisposable = mDataRepository
-                          .getTransactionByEvent(userid, token, params[0])
+                          .getTransactionByEvent(userid, token, event_id)
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())
                           .doOnSubscribe(new Consumer<Disposable>() {
@@ -540,8 +542,18 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            } else {
-                
+            } else if (typeRepository == TypeRepository.LOCAL) {
+                mDisposable = mDataRepository.getLocalTransactionByEvent(userid, event_id)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             }
             this.mCompositeDisposable.add(mDisposable);
         }
@@ -583,8 +595,8 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                           })
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
-            } else {
-            
+            } else if (typeRepository == TypeRepository.LOCAL) {
+                //TODO: getByBudget
             }
             this.mCompositeDisposable.add(mDisposable);
         }
@@ -607,17 +619,17 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.getListLocalCategory(type)
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository.updateLocalTransaction(transaction)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
@@ -661,17 +673,17 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
         
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.getListLocalCategory(type)
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository.addLocalTransaction(transaction)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();

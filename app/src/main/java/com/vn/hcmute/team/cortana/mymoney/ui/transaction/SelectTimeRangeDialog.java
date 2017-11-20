@@ -85,19 +85,12 @@ public class SelectTimeRangeDialog extends AlertDialog.Builder {
     }
     
     
-    
     public SelectTimeRangeDialog(Context context, int themeResId) {
         super(context, themeResId);
     }
     
     public void setListener(SelectTimeRangeListener selectTimeRangeListener) {
         this.mListener = selectTimeRangeListener;
-    }
-    
-    
-    public interface SelectTimeRangeListener {
-        
-        void onSelectTimeRange(String data);
     }
     
     private void initDatePickerDialog() {
@@ -147,5 +140,10 @@ public class SelectTimeRangeDialog extends AlertDialog.Builder {
         
         mTextViewEndDate.setText(dateNow);
         mTextViewStartDate.setText(dateNow);
+    }
+    
+    public interface SelectTimeRangeListener {
+        
+        void onSelectTimeRange(String data);
     }
 }

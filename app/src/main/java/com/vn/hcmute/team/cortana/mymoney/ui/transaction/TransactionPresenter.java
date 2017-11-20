@@ -56,7 +56,7 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, transaction, null, TypeRepository.REMOTE);
+                  }, transaction, null, TypeRepository.LOCAL);
         
         if (galleryList != null && !galleryList.isEmpty()) {
             List<String> paths = new ArrayList<>();
@@ -114,7 +114,7 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, transaction, null, TypeRepository.REMOTE);
+                  }, transaction, null, TypeRepository.LOCAL);
         
         mTransactionUseCase.subscribe(request);
     }
@@ -140,7 +140,7 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, null, null, TypeRepository.REMOTE);
+                  }, null, null, TypeRepository.LOCAL);
         
         mTransactionUseCase.subscribe(request);
     }
@@ -166,7 +166,7 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, null, new String[]{eventId}, TypeRepository.REMOTE);
+                  }, null, new String[]{eventId}, TypeRepository.LOCAL);
         
         mTransactionUseCase.subscribe(request);
     }
@@ -221,7 +221,7 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, null, new String[]{savingId}, TypeRepository.REMOTE);
+                  }, null, new String[]{savingId}, TypeRepository.LOCAL);
         
         mTransactionUseCase.subscribe(request);
     }
@@ -245,7 +245,7 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, null, new String[]{transaction.getTrans_id()}, TypeRepository.REMOTE);
+                  }, transaction, null, TypeRepository.LOCAL);
         
         mTransactionUseCase.subscribe(request);
         
@@ -273,7 +273,7 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                           getView().loading(true);
                       }
                   }, null, new String[]{startDate, endDate, idWallet},
-                  TypeRepository.REMOTE);
+                  TypeRepository.LOCAL);
         
         mTransactionUseCase.subscribe(request);
     }

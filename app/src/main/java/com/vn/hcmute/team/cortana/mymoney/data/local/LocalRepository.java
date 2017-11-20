@@ -6,18 +6,30 @@ import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.service.BudgetLocalService;
 import com.vn.hcmute.team.cortana.mymoney.data.local.service.CategoryLocalService;
 import com.vn.hcmute.team.cortana.mymoney.data.local.service.CurrencyLocalService;
+import com.vn.hcmute.team.cortana.mymoney.data.local.service.DebtLoanLocalService;
 import com.vn.hcmute.team.cortana.mymoney.data.local.service.EventLocalService;
 import com.vn.hcmute.team.cortana.mymoney.data.local.service.ImageLocalService;
 import com.vn.hcmute.team.cortana.mymoney.data.local.service.PersonLocalService;
 import com.vn.hcmute.team.cortana.mymoney.data.local.service.SavingLocalService;
+import com.vn.hcmute.team.cortana.mymoney.data.local.service.TransactionLocalService;
 import com.vn.hcmute.team.cortana.mymoney.data.local.service.WalletLocalService;
+import com.vn.hcmute.team.cortana.mymoney.exception.BudgetException;
+import com.vn.hcmute.team.cortana.mymoney.exception.CategoryException;
+import com.vn.hcmute.team.cortana.mymoney.exception.DebtLoanException;
+import com.vn.hcmute.team.cortana.mymoney.exception.EventException;
+import com.vn.hcmute.team.cortana.mymoney.exception.PersonException;
+import com.vn.hcmute.team.cortana.mymoney.exception.SavingException;
+import com.vn.hcmute.team.cortana.mymoney.exception.TransactionException;
+import com.vn.hcmute.team.cortana.mymoney.exception.WalletException;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
+import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -37,7 +49,8 @@ import javax.inject.Singleton;
 public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTask,
                                         LocalTask.CategoryTask, LocalTask.SavingTask,
                                         LocalTask.WalletTask, LocalTask.EventTask,
-                                        LocalTask.BudgetTask, LocalTask.PersonTask {
+                                        LocalTask.BudgetTask, LocalTask.PersonTask,
+                                        LocalTask.TransactionTask, LocalTask.DebtLoanTask {
     
     public static final String TAG = LocalRepository.class.getSimpleName();
     
@@ -140,7 +153,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (aLong > 0) {
                     return mContext.getString(R.string.message_add_category_success);
                 } else {
-                    return mContext.getString(R.string.message_category_fail);
+                    throw new Exception(mContext.getString(R.string.message_category_fail));
                 }
             }
         });
@@ -160,7 +173,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (aLong > 0) {
                     return mContext.getString(R.string.message_update_category_success);
                 } else {
-                    return mContext.getString(R.string.message_category_fail);
+                    throw new CategoryException(mContext.getString(R.string.message_category_fail));
                 }
             }
         });
@@ -179,7 +192,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (aLong > 0) {
                     return mContext.getString(R.string.message_delete_category_success);
                 } else {
-                    return mContext.getString(R.string.message_category_fail);
+                    throw new CategoryException(mContext.getString(R.string.message_category_fail));
                 }
             }
         });
@@ -202,7 +215,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (aLong > 0) {
                     return mContext.getString(R.string.txt_add_saving_success);
                 } else {
-                    return mContext.getString(R.string.txt_add_saving_fail);
+                    throw new SavingException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -218,7 +231,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (integer > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new SavingException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -234,7 +247,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (integer > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new SavingException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -252,7 +265,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (integer > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new SavingException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -270,7 +283,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (integer > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new SavingException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -294,7 +307,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (aLong > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new WalletException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -310,7 +323,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (integer > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new WalletException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -326,23 +339,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (integer > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
-                }
-            }
-        });
-    }
-    
-    @Override
-    public Observable<String> moveWallet(String idWalletFrom, String idWalletTo, String Money) {
-        WalletLocalService walletLocalService = WalletLocalService.getInstance(mDatabaseHelper);
-        Callable<Integer> callable = walletLocalService.moveWallet(idWalletFrom, idWalletTo, Money);
-        return makeObservable(callable).map(new Function<Integer, String>() {
-            @Override
-            public String apply(@NonNull Integer integer) throws Exception {
-                if (integer > 0) {
-                    return mContext.getString(R.string.txt_success);
-                } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new WalletException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -353,6 +350,25 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
         WalletLocalService walletLocalService = WalletLocalService.getInstance(mDatabaseHelper);
         Wallet wallet = walletLocalService.getWalletById(wallet_id);
         return makeObservable(wallet);
+    }
+    
+    @Override
+    public Observable<String> moveWallet(String userid, String wallet_id_from, String wallet_id_to,
+              String moneyMinus, String moneyPlus, String date_created) {
+        WalletLocalService walletLocalService = WalletLocalService.getInstance(mDatabaseHelper);
+        
+        return makeObservable(walletLocalService
+                  .moveWallet(userid, wallet_id_from, wallet_id_to, moneyMinus, moneyPlus,
+                            date_created)).map(new Function<Integer, String>() {
+            @Override
+            public String apply(Integer integer) throws Exception {
+                if (integer > 0) {
+                    return mContext.getString(R.string.txt_success);
+                } else {
+                    throw new WalletException(mContext.getString(R.string.txt_add_saving_fail));
+                }
+            }
+        });
     }
     
     
@@ -374,7 +390,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (aLong > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new EventException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -390,7 +406,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (integer > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new EventException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -406,7 +422,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (integer > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new EventException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -430,7 +446,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (aLong > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new BudgetException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -446,7 +462,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (integer > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new BudgetException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -462,7 +478,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (integer > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new BudgetException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -486,7 +502,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (aLong > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new PersonException(mContext.getString(R.string.txt_fail));
                 }
             }
         });
@@ -502,7 +518,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (integer > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new PersonException(mContext.getString(R.string.txt_add_saving_fail));
                 }
             }
         });
@@ -518,7 +534,182 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                 if (integer > 0) {
                     return mContext.getString(R.string.txt_success);
                 } else {
-                    return mContext.getString(R.string.txt_fail);
+                    throw new PersonException(mContext.getString(R.string.txt_add_saving_fail));
+                }
+            }
+        });
+    }
+    
+    @Override
+    public Observable<String> addTransaction(Transaction transaction) {
+        TransactionLocalService transactionLocalService = TransactionLocalService
+                  .getInstance(mDatabaseHelper);
+        Callable<Long> callable = transactionLocalService.addTransaction(transaction);
+        
+        return makeObservable(callable).map(new Function<Long, String>() {
+            @Override
+            public String apply(Long aLong) throws Exception {
+                if (aLong > 0) {
+                    return mContext.getString(R.string.txt_success);
+                } else {
+                    throw new TransactionException(
+                              mContext.getString(R.string.txt_add_saving_fail));
+                }
+            }
+        });
+    }
+    
+    @Override
+    public Observable<String> updateTransaction(Transaction transaction) {
+        TransactionLocalService transactionLocalService = TransactionLocalService
+                  .getInstance(mDatabaseHelper);
+        Callable<Integer> callable = transactionLocalService.updateTransaction(transaction);
+        
+        return makeObservable(callable).map(new Function<Integer, String>() {
+            @Override
+            public String apply(Integer aLong) throws Exception {
+                if (aLong > 0) {
+                    return mContext.getString(R.string.txt_success);
+                } else {
+                    throw new TransactionException(
+                              mContext.getString(R.string.txt_add_saving_fail));
+                }
+            }
+        });
+    }
+    
+    @Override
+    public Observable<String> deleteTransaction(Transaction transaction) {
+        TransactionLocalService transactionLocalService = TransactionLocalService
+                  .getInstance(mDatabaseHelper);
+        Callable<Integer> callable = transactionLocalService.deleteTransaction(transaction);
+        
+        return makeObservable(callable).map(new Function<Integer, String>() {
+            @Override
+            public String apply(Integer aLong) throws Exception {
+                if (aLong > 0) {
+                    return mContext.getString(R.string.txt_success);
+                } else {
+                    throw new TransactionException(
+                              mContext.getString(R.string.txt_add_saving_fail));
+                }
+            }
+        });
+    }
+    
+    @Override
+    public Observable<List<Transaction>> getTransactionByTime(String user_id, String start,
+              String end, String wallet_id) {
+        TransactionLocalService transactionLocalService = TransactionLocalService
+                  .getInstance(mDatabaseHelper);
+        Callable<List<Transaction>> callable = transactionLocalService
+                  .getTransactionByTime(user_id, start, end, wallet_id);
+        
+        return makeObservable(callable);
+    }
+    
+    @Override
+    public Observable<Transaction> getTransactionByIdUseCallable(String trans_id) {
+        TransactionLocalService transactionLocalService = TransactionLocalService
+                  .getInstance(mDatabaseHelper);
+        Callable<Transaction> callable = transactionLocalService
+                  .getTransactionByIdUseCallable(trans_id);
+        
+        return makeObservable(callable);
+    }
+    
+    @Override
+    public Observable<List<Transaction>> getAllTransaction(String user_id) {
+        TransactionLocalService transactionLocalService = TransactionLocalService
+                  .getInstance(mDatabaseHelper);
+        Callable<List<Transaction>> callable = transactionLocalService
+                  .getAllTransaction(user_id);
+        
+        return makeObservable(callable);
+    }
+    
+    @Override
+    public Observable<List<Transaction>> getTransactionByEvent(String user_id, String event_id) {
+        TransactionLocalService transactionLocalService = TransactionLocalService
+                  .getInstance(mDatabaseHelper);
+        Callable<List<Transaction>> callable = transactionLocalService
+                  .getTransactionByEvent(user_id, event_id);
+        
+        return makeObservable(callable);
+    }
+    
+    @Override
+    public Observable<List<DebtLoan>> getDebtLoanByWalletId(String wallet_id) {
+        DebtLoanLocalService debtLoanLocalService = DebtLoanLocalService
+                  .getInstance(mDatabaseHelper);
+        
+        Callable<List<DebtLoan>> callable = debtLoanLocalService.getDebtLoanByWalletId(wallet_id);
+        
+        return makeObservable(callable);
+    }
+    
+    @Override
+    public Observable<List<DebtLoan>> getDebtLoanByType(String wallet_id, String type) {
+        DebtLoanLocalService debtLoanLocalService = DebtLoanLocalService
+                  .getInstance(mDatabaseHelper);
+        
+        Callable<List<DebtLoan>> callable = debtLoanLocalService.getDebtLoanByType(wallet_id, type);
+        
+        return makeObservable(callable);
+    }
+    
+    @Override
+    public Observable<String> addDebtLoan(DebtLoan debtLoan) {
+        DebtLoanLocalService debtLoanLocalService = DebtLoanLocalService
+                  .getInstance(mDatabaseHelper);
+        
+        Callable<Long> callable = debtLoanLocalService.addDebtLoan(debtLoan);
+        
+        return makeObservable(callable).map(new Function<Long, String>() {
+            @Override
+            public String apply(Long aLong) throws Exception {
+                if (aLong > 0) {
+                    return mContext.getString(R.string.txt_success);
+                } else {
+                    throw new DebtLoanException(mContext.getString(R.string.txt_fail));
+                }
+            }
+        });
+    }
+    
+    @Override
+    public Observable<String> updateDebtLoan(DebtLoan debtLoan) {
+        DebtLoanLocalService debtLoanLocalService = DebtLoanLocalService
+                  .getInstance(mDatabaseHelper);
+        
+        Callable<Integer> callable = debtLoanLocalService.updateDebtLoan(debtLoan);
+        
+        return makeObservable(callable).map(new Function<Integer, String>() {
+            @Override
+            public String apply(Integer aLong) throws Exception {
+                if (aLong > 0) {
+                    return mContext.getString(R.string.txt_success);
+                } else {
+                    throw new DebtLoanException(mContext.getString(R.string.txt_fail));
+                }
+            }
+        });
+    }
+    
+    @Override
+    public Observable<String> deleteDebtLoan(DebtLoan debtLoan) {
+        DebtLoanLocalService debtLoanLocalService = DebtLoanLocalService
+                  .getInstance(mDatabaseHelper);
+        
+        Callable<Integer> callable = debtLoanLocalService.deleteDebtLoan(debtLoan);
+        
+        return makeObservable(callable).map(new Function<Integer, String>() {
+            @Override
+            public String apply(Integer aLong) throws Exception {
+                if (aLong > 0) {
+                    return mContext.getString(R.string.txt_success);
+                } else {
+                    throw new DebtLoanException(mContext.getString(R.string.txt_fail));
                 }
             }
         });

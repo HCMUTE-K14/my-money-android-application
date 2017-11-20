@@ -246,7 +246,10 @@ public interface DataSource {
         
         Observable<String> deleteLocalWallet(String idWallet);
         
-        Observable<String> moveLocalWallet(String idWalletFrom, String idWalletTo, String Money);
+        Observable<String> moveLocalWallet(String userid, String wallet_id_from,
+                  String wallet_id_to,
+                  String moneyMinus,
+                  String moneyPlus, String date_created);
         
         Observable<Wallet> getLocalWalletById(String wallet_id);
         
@@ -276,5 +279,29 @@ public interface DataSource {
         Observable<String> updateLocalPerson(Person person);
         
         Observable<String> deleteLocalPeron(String idPerson);
+        
+        
+        Observable<String> addLocalTransaction(Transaction transaction);
+        
+        Observable<String> updateLocalTransaction(Transaction transaction);
+        
+        Observable<String> deleteLocalTransaction(Transaction transaction);
+        
+        Observable<List<Transaction>> getLocalTransactionByTime(String user_id, String start,
+                  String end, String wallet_id);
+        
+        Observable<List<Transaction>> getLocalTransactionByEvent(String user_id, String event_id);
+        
+        Observable<Transaction> getLocalTransactionByIdUseCallable(String trans_id);
+        
+        Observable<List<DebtLoan>> getLocalDebtLoanByWalletId(String wallet_id);
+        
+        Observable<List<DebtLoan>> getLocalDebtLoanByType(String wallet_id, String type);
+        
+        Observable<String> addLocalDebtLoan(DebtLoan debtLoan);
+        
+        Observable<String> updateLocalDebtLoan(DebtLoan debtLoan);
+        
+        Observable<String> deleteLocalDebtLoan(DebtLoan debtLoan);
     }
 }

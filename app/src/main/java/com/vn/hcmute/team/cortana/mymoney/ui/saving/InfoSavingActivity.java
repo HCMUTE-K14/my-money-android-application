@@ -27,6 +27,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
+import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase.WalletRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
@@ -367,6 +368,7 @@ public class InfoSavingActivity extends BaseActivity implements SavingContract.V
                           
                       }
                   }, null, null);
+        savingRequest.setTypeRepository(TypeRepository.LOCAL);
         mWalletUseCase.subscribe(savingRequest);
     }
     

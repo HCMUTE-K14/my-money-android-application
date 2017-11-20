@@ -304,8 +304,8 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         if (mPreferenceHelper.getCurrentUser() == null) {
-            openLoginActivity();
-            return;
+            //            openLoginActivity();
+            //            return;
         }
         
         mHandler.postDelayed(
@@ -327,6 +327,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     
     @Subscribe
     public void onEvent(ActivityResultEvent event) {
+        
         if (event.getResultCode() == ResultCode.NEED_UPDATE_CURRENT_WALLET_RESULT_CODE) {
             
             WalletRequest request = new WalletRequest(Action.ACTION_GET_WALLET_BY_ID,
@@ -349,7 +350,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                           
                           }
                       }, null, new String[]{mCurrentWallet.getWalletid()});
-            request.setTypeRepository(TypeRepository.REMOTE);
+            request.setTypeRepository(TypeRepository.LOCAL);
             
             mWalletUseCase.subscribe(request);
         }

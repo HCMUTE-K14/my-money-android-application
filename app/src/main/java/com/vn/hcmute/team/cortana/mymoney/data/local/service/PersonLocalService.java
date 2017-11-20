@@ -6,6 +6,7 @@ import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.data.remote.serivce.PersonService;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
+import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -56,6 +57,34 @@ public class PersonLocalService extends DbContentProvider<Person> implements
     }
     
     @Override
+    protected List<Person> makeListObjectFromCursor(Cursor cursor) {
+        List<Person> persons = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            Person person = makeSingleObjectFromCursor(cursor);
+            persons.add(person);
+        }
+        cursor.close();
+        return persons;
+    }
+    
+    @Override
+    protected Person makeSingleObjectFromCursor(Cursor cursor) {
+        Person person = new Person();
+        String id = cursor.getString(0);
+        if (id.equals("some_one_id")) {
+            person = Constraints.SOME_ONE_PERSON;
+            
+            return person;
+        }
+        person.setPersonid(id);
+        person.setName(cursor.getString(1));
+        person.setDescribe(cursor.getString(2));
+        person.setUserid(cursor.getString(3));
+        
+        return person;
+    }
+    
+    @Override
     public Callable<List<Person>> getListPerson(final String userId) {
         return new Callable<List<Person>>() {
             @Override
@@ -67,19 +96,7 @@ public class PersonLocalService extends DbContentProvider<Person> implements
                 if (cursor == null) {
                     return null;
                 }
-                List<Person> persons = new ArrayList<>();
-                while (cursor.moveToNext()) {
-                    Person person = new Person();
-                    
-                    person.setPersonid(cursor.getString(0));
-                    person.setName(cursor.getString(1));
-                    person.setDescribe(cursor.getString(2));
-                    person.setUserid(cursor.getString(3));
-                    
-                    persons.add(person);
-                }
-                cursor.close();
-                return persons;
+                return makeListObjectFromCursor(cursor);
             }
         };
     }
@@ -117,5 +134,22 @@ public class PersonLocalService extends DbContentProvider<Person> implements
                 return mDatabase.delete(TABLE_NAME, whereClause, new String[]{idPerson});
             }
         };
+    }
+    
+    @Override
+    public Person getPersonById(String person_id) {
+        String selection = "person_id = ?";
+        String[] selectionArg = new String[]{person_id};
+        Cursor cursor = this.query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
+        if (cursor == null) {
+            return null;
+        }
+        Person person = null;
+        if (cursor.moveToNext()) {
+            person = makeSingleObjectFromCursor(cursor);
+        }
+        cursor.close();
+        
+        return person;
     }
 }

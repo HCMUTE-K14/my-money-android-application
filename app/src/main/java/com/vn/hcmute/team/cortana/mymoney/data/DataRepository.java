@@ -551,9 +551,11 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
-    public Observable<String> moveLocalWallet(String idWalletFrom, String idWalletTo,
-              String Money) {
-        return mLocalRepository.moveWallet(idWalletFrom, idWalletTo, Money);
+    public Observable<String> moveLocalWallet(String userid, String wallet_id_from,
+              String wallet_id_to, String moneyMinus, String moneyPlus, String date_created) {
+        return mLocalRepository
+                  .moveWallet(userid, wallet_id_from, wallet_id_to, moneyMinus, moneyPlus,
+                            date_created);
     }
     
     @Override
@@ -622,6 +624,63 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     @Override
     public Observable<String> deleteLocalPeron(String idPerson) {
         return mLocalRepository.deletePerson(idPerson);
+    }
+    
+    @Override
+    public Observable<String> addLocalTransaction(Transaction transaction) {
+        return mLocalRepository.addTransaction(transaction);
+    }
+    
+    @Override
+    public Observable<String> updateLocalTransaction(Transaction transaction) {
+        return mLocalRepository.updateTransaction(transaction);
+    }
+    
+    @Override
+    public Observable<String> deleteLocalTransaction(Transaction transaction) {
+        return mLocalRepository.deleteTransaction(transaction);
+    }
+    
+    @Override
+    public Observable<List<Transaction>> getLocalTransactionByTime(String user_id, String start,
+              String end, String wallet_id) {
+        return mLocalRepository.getTransactionByTime(user_id, start, end, wallet_id);
+    }
+    
+    @Override
+    public Observable<List<Transaction>> getLocalTransactionByEvent(String user_id,
+              String event_id) {
+        return mLocalRepository.getTransactionByEvent(user_id, event_id);
+    }
+    
+    @Override
+    public Observable<Transaction> getLocalTransactionByIdUseCallable(String trans_id) {
+        return mLocalRepository.getTransactionByIdUseCallable(trans_id);
+    }
+    
+    @Override
+    public Observable<List<DebtLoan>> getLocalDebtLoanByWalletId(String wallet_id) {
+        return mLocalRepository.getDebtLoanByWalletId(wallet_id);
+    }
+    
+    @Override
+    public Observable<List<DebtLoan>> getLocalDebtLoanByType(String wallet_id, String type) {
+        return mLocalRepository.getDebtLoanByType(wallet_id, type);
+    }
+    
+    @Override
+    public Observable<String> addLocalDebtLoan(DebtLoan debtLoan) {
+        return mLocalRepository.addDebtLoan(debtLoan);
+    }
+    
+    @Override
+    public Observable<String> updateLocalDebtLoan(DebtLoan debtLoan) {
+        return mLocalRepository.updateDebtLoan(debtLoan);
+    }
+    
+    @Override
+    public Observable<String> deleteLocalDebtLoan(DebtLoan debtLoan) {
+        return mLocalRepository.deleteDebtLoan(debtLoan);
     }
     
 }

@@ -336,7 +336,6 @@ public class PersonActivity extends BaseActivity implements PersonContract.View 
         if (mRecyclerView.getAdapter() instanceof EmptyAdapter) {
             mRecyclerView.setAdapter(mPersonAdapter);
         }
-        
         mPersonAdapter.add(person);
     }
     

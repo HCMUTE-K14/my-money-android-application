@@ -374,10 +374,16 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                 callBack.onFailure(e);
             }
         };
+        String userid = mDataRepository.getUserId();
+        
+        String wallet_from = params[0];
+        String wallet_to = params[1];
+        String money_minus = params[2];
+        String money_plus = params[3];
+        String date_created = params[4];
         
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.REMOTE) {
-                String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
                 
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
@@ -385,11 +391,6 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                               mContext.getString(R.string.message_warning_need_login)));
                     return;
                 }
-                String wallet_from = params[0];
-                String wallet_to = params[1];
-                String money_minus = params[2];
-                String money_plus = params[3];
-                String date_created = params[4];
                 
                 mDisposable = mDataRepository
                           .moveWallet(userid, token, wallet_from, wallet_to, money_minus,
@@ -405,7 +406,9 @@ public class WalletUseCase extends UseCase<WalletUseCase.WalletRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             } else {
-                mDisposable = mDataRepository.moveLocalWallet(params[0], params[1], params[2])
+                mDisposable = mDataRepository
+                          .moveLocalWallet(userid, wallet_from, wallet_to, money_minus, money_plus,
+                                    date_created)
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
                           .doOnSubscribe(new Consumer<Disposable>() {

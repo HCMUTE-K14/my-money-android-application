@@ -51,7 +51,7 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                           getView().loading(true);
                       }
                   }, null, null);
-        savingRequest.setTypeRepository(TypeRepository.REMOTE);
+        savingRequest.setTypeRepository(TypeRepository.LOCAL);
         mSavingUseCase.subscribe(savingRequest);
     }
     
@@ -82,7 +82,7 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                           getView().loading(true);
                       }
                   }, saving, null);
-        savingRequest.setTypeRepository(TypeRepository.REMOTE);
+        savingRequest.setTypeRepository(TypeRepository.LOCAL);
         mSavingUseCase.subscribe(savingRequest);
     }
     
@@ -108,7 +108,7 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                           getView().loading(true);
                       }
                   }, saving, null);
-        savingRequest.setTypeRepository(TypeRepository.REMOTE);
+        savingRequest.setTypeRepository(TypeRepository.LOCAL);
         mSavingUseCase.subscribe(savingRequest);
     }
     
@@ -135,7 +135,7 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                           getView().loading(true);
                       }
                   }, null, params);
-        savingRequest.setTypeRepository(TypeRepository.REMOTE);
+        savingRequest.setTypeRepository(TypeRepository.LOCAL);
         mSavingUseCase.subscribe(savingRequest);
     }
     
@@ -163,7 +163,7 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                           getView().loading(true);
                       }
                   }, null, params);
-        savingRequest.setTypeRepository(TypeRepository.REMOTE);
+        savingRequest.setTypeRepository(TypeRepository.LOCAL);
         mSavingUseCase.subscribe(savingRequest);
     }
     
@@ -191,7 +191,7 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                           getView().loading(true);
                       }
                   }, null, params);
-        savingRequest.setTypeRepository(TypeRepository.REMOTE);
+        savingRequest.setTypeRepository(TypeRepository.LOCAL);
         mSavingUseCase.subscribe(savingRequest);
     }
     

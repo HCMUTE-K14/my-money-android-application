@@ -24,6 +24,7 @@ import com.vn.hcmute.team.cortana.mymoney.di.module.TransactionModule;
 import com.vn.hcmute.team.cortana.mymoney.event.ActivityResultEvent;
 import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
+import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.listener.BaseCallBack;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction.FragmentTransactionByCategory;
@@ -31,6 +32,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction.FragmentTran
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.SelectTimeRangeDialog.SelectTimeRangeListener;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.CalendarTransactionView;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.CalendarTransactionView.Listener;
+import com.vn.hcmute.team.cortana.mymoney.ui.wallet.AddWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.DebtLoanUseCase;
@@ -87,6 +89,14 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
             getData();
         }
     };
+    private Listener mCalendarViewListener = new Listener() {
+        @Override
+        public void onClickTab(String data) {
+            mStartDate = data.split("-")[0];
+            mEndDate = data.split("-")[1];
+            getData();
+        }
+    };
     
     @Override
     protected int getLayoutId() {
@@ -118,14 +128,20 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
         getActivity().setTitle(R.string.txt_cash_book);
     }
     
-    
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         mPreferencesHelper = PreferencesHelper.getInstance(this.getContext());
-        mWalletId = mPreferencesHelper.getCurrentWallet().getWalletid();
-        
+        Wallet currentWallet = mPreferencesHelper.getCurrentWallet();
+        if (currentWallet == null) {
+            //TODO: OPEN SLASH SCREEN
+            Intent intent = new Intent(this.getContext(), AddWalletActivity.class);
+            startActivity(intent);
+            
+        } else {
+            mWalletId = currentWallet.getWalletid();
+        }
     }
     
     @Override
@@ -193,7 +209,6 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
         }
     }
     
-    
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -225,20 +240,9 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
                   
                   getString(R.string.txt_pls_wait));
         mProgressDialog.setCanceledOnTouchOutside(false);
-    
-    
+        
         getData();
     }
-    
-    
-    private Listener mCalendarViewListener = new Listener() {
-        @Override
-        public void onClickTab(String data) {
-            mStartDate = data.split("-")[0];
-            mEndDate = data.split("-")[1];
-            getData();
-        }
-    };
     
     @Subscribe
     public void onEvent(ActivityResultEvent event) {
@@ -272,7 +276,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
         Intent intent = new Intent(this.getContext(), ManagerTransactionActivity.class);
         intent.putExtra(ManagerTransactionActivity.EXTRA_ACTION, Action.ACTION_ADD_TRANSACTION);
         intent.putExtra(ManagerTransactionActivity.EXTRA_UPLOAD_IMAGE, false);
-        
+        intent.putExtra("date", Long.valueOf(mStartDate));
         startActivity(intent);
     }
     
@@ -302,7 +306,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
     
     @Override
     public void onFailure(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
     
     
@@ -358,7 +362,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
                       public void onLoading() {
                           mProgressDialog.show();
                       }
-                  }, debtLoan, null, TypeRepository.REMOTE);
+                  }, debtLoan, null, TypeRepository.LOCAL);
         
         mDebtLoanUseCase.subscribe(request);
         

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import java.util.List;
 
 /**
  * Created by infamouSs on 9/11/17.
@@ -21,11 +22,16 @@ public abstract class DbContentProvider<T> {
     }
     
     protected boolean isOpen() {
+        if (mDatabase == null) {
+            return false;
+        }
         return mDatabase.isOpen();
     }
     
-    protected void open() {
-        mDatabase = mDatabaseHelper.getWritableDatabase();
+    protected synchronized void open() {
+        if (!isOpen()) {
+            mDatabase = mDatabaseHelper.getWritableDatabase();
+        }
     }
     
     protected void close() {
@@ -35,15 +41,6 @@ public abstract class DbContentProvider<T> {
     protected abstract String[] getAllColumns();
     
     protected abstract ContentValues createContentValues(T values);
-    
-    protected int delete(String tableName, String selection,
-              String[] selectionArgs) {
-        return mDatabase.delete(tableName, selection, selectionArgs);
-    }
-    
-    protected long insert(String tableName, ContentValues values) {
-        return mDatabase.insert(tableName, null, values);
-    }
     
     protected Cursor query(String tableName, String[] columns,
               String selection, String[] selectionArgs, String sortOrder) {
@@ -77,4 +74,8 @@ public abstract class DbContentProvider<T> {
     protected Cursor rawQuery(String sql, String[] selectionArgs) {
         return mDatabase.rawQuery(sql, selectionArgs);
     }
+    
+    protected abstract List<T> makeListObjectFromCursor(Cursor cursor);
+    
+    protected abstract T makeSingleObjectFromCursor(Cursor cursor);
 }

@@ -53,7 +53,7 @@ public class DebtLoanPresenter extends BasePresenter<DebtLoanContract.View> impl
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, null, new String[]{type}, TypeRepository.REMOTE);
+                  }, null, new String[]{type}, TypeRepository.LOCAL);
         
         mDebtLoanUseCase.subscribe(request);
     }
@@ -78,7 +78,7 @@ public class DebtLoanPresenter extends BasePresenter<DebtLoanContract.View> impl
                       public void onLoading() {
                           getView().loading(true);
                       }
-                  }, debtLoan, null, TypeRepository.REMOTE);
+                  }, debtLoan, null, TypeRepository.LOCAL);
         
         mDebtLoanUseCase.subscribe(request);
     }

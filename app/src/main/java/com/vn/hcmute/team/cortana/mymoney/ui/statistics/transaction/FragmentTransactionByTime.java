@@ -44,10 +44,11 @@ public class FragmentTransactionByTime extends BaseFragment {
     TransactionByTimeAdapter.ClickChildView mClickChildView = new TransactionByTimeAdapter.ClickChildView() {
         @Override
         public void onClickChild(Transaction transaction) {
-            Intent intent;
-            intent = new Intent(FragmentTransactionByTime.this.getContext(),
+            Intent intent = new Intent(FragmentTransactionByTime.this.getContext(),
                       InforTransactionActivity.class);
+            
             intent.putExtra("transaction", transaction);
+            
             startActivity(intent);
         }
     };

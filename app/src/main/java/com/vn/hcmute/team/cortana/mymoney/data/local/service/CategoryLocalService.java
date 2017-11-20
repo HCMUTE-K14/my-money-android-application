@@ -158,6 +158,7 @@ public class CategoryLocalService extends DbContentProvider<Category> {
         };
     }
     
+    
     private List<Category> getListSubCategory(String parentId) {
         String selection = "parent_id = ?";
         String[] selectionArg = new String[]{parentId};
@@ -245,6 +246,16 @@ public class CategoryLocalService extends DbContentProvider<Category> {
         }
         
         return contentValues;
+    }
+    
+    @Override
+    protected List<Category> makeListObjectFromCursor(Cursor cursor) {
+        return null;
+    }
+    
+    @Override
+    protected Category makeSingleObjectFromCursor(Cursor cursor) {
+        return null;
     }
     
     public Category getCategoryById(String idCategory) {

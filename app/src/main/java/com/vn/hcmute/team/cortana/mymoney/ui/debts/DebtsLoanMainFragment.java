@@ -92,7 +92,6 @@ public class DebtsLoanMainFragment extends BaseFragment {
                 ((DebtsLoanFragmentByType) mViewPagerAdapter.getItem(1))
                           .addDebtLoan((Transaction) event.getData());
             }
-            
         } else if (event.getResultCode() == ResultCode.NEED_RELOAD_DATA) {
             ((DebtsLoanFragmentByType) mViewPagerAdapter.getItem(0)).getData();
             ((DebtsLoanFragmentByType) mViewPagerAdapter.getItem(1)).getData();
@@ -107,7 +106,6 @@ public class DebtsLoanMainFragment extends BaseFragment {
         intent.putExtra(ManagerTransactionActivity.EXTRA_MULTIPLE_SELECT_CONTACT, false);
         intent.putExtra(ManagerTransactionActivity.EXTRA_UPLOAD_IMAGE, false);
         intent.putExtra(ManagerTransactionActivity.EXTRA_ONLY_DEBT_LOAN_CATEGORY, true);
-        
         startActivityForResult(intent, Constraints.RequestCode.ADD_DEBT_LOAN_REQUEST_CODE);
     }
     

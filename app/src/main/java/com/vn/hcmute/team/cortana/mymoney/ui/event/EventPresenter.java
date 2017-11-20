@@ -53,7 +53,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
             }
         };
         EventRequest eventRequest = new EventRequest(Action.ACTION_GET_EVENT, callBack, null, null);
-        eventRequest.setTypeRepository(TypeRepository.REMOTE);
+        eventRequest.setTypeRepository(TypeRepository.LOCAL);
         mEventUseCase.subscribe(eventRequest);
     }
     
@@ -80,7 +80,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
         
         EventRequest eventRequest = new EventRequest(Action.ACTION_CREATE_EVENT,
                   mObjectBaseCallBack, event, null);
-        eventRequest.setTypeRepository(TypeRepository.REMOTE);
+        eventRequest.setTypeRepository(TypeRepository.LOCAL);
         mEventUseCase.subscribe(eventRequest);
     }
     
@@ -106,7 +106,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
         };
         EventRequest eventRequest = new EventRequest(Action.ACTION_UPDATE_EVENT,
                   mObjectBaseCallBack, event, null);
-        eventRequest.setTypeRepository(TypeRepository.REMOTE);
+        eventRequest.setTypeRepository(TypeRepository.LOCAL);
         mEventUseCase.subscribe(eventRequest);
     }
     
@@ -133,7 +133,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
         String[] params = {idEvent};
         EventRequest eventRequest = new EventRequest(Action.ACTION_DELETE_EVENT,
                   mObjectBaseCallBack, null, params);
-        eventRequest.setTypeRepository(TypeRepository.REMOTE);
+        eventRequest.setTypeRepository(TypeRepository.LOCAL);
         mEventUseCase.subscribe(eventRequest);
     }
 }

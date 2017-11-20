@@ -40,7 +40,29 @@ public class CalendarTransactionView extends RelativeLayout {
     
     private long mStartDate;
     private long mEndDate;
-    
+    private OnTabSelectedListener mOnTabSelectedListener = new OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(Tab tab) {
+            String key = "";
+            if (!TextUtils.isEmpty(tab.getText())) {
+                key = tab.getText().toString().trim();
+            }
+            final String value = mModel.getData().get(key);
+            if (mListener != null) {
+                mListener.onClickTab(value);
+            }
+        }
+        
+        @Override
+        public void onTabUnselected(Tab tab) {
+        
+        }
+        
+        @Override
+        public void onTabReselected(Tab tab) {
+        
+        }
+    };
     
     public CalendarTransactionView(Context context) {
         super(context, null);
@@ -126,40 +148,15 @@ public class CalendarTransactionView extends RelativeLayout {
         new Handler().postDelayed(runnable, 100);
     }
     
-    
     private void initTabLayout() {
         mTabLayout.removeAllTabs();
         for (String key : mModel.getData().keySet()) {
             mTabLayout.addTab(mTabLayout.newTab().setText(key));
         }
-
+        
         mTabLayout.addOnTabSelectedListener(mOnTabSelectedListener);
         jump2ToDay();
     }
-    
-    private OnTabSelectedListener mOnTabSelectedListener = new OnTabSelectedListener() {
-        @Override
-        public void onTabSelected(Tab tab) {
-            String key = "";
-            if (!TextUtils.isEmpty(tab.getText())) {
-                key = tab.getText().toString().trim();
-            }
-            final String value = mModel.getData().get(key);
-            if (mListener != null) {
-                mListener.onClickTab(value);
-            }
-        }
-        
-        @Override
-        public void onTabUnselected(Tab tab) {
-        
-        }
-        
-        @Override
-        public void onTabReselected(Tab tab) {
-        
-        }
-    };
     
     public void jump2Day(String value) {
         if (TextUtil.isEmpty(value)) {

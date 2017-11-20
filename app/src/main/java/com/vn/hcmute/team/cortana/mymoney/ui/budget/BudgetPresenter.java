@@ -48,7 +48,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
         
         BudgetRequest budgetRequest = new BudgetRequest(Action.ACTION_GET_BUDGET,
                   mObjectBaseCallBack, null, null);
-        budgetRequest.setTypeRepository(TypeRepository.REMOTE);
+        budgetRequest.setTypeRepository(TypeRepository.LOCAL);
         mBudgetUseCase.subscribe(budgetRequest);
     }
     
@@ -74,7 +74,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
         };
         BudgetRequest budgetRequest = new BudgetRequest(Action.ACTION_CREATE_BUDGET,
                   mObjectBaseCallBack, budget, null);
-        budgetRequest.setTypeRepository(TypeRepository.REMOTE);
+        budgetRequest.setTypeRepository(TypeRepository.LOCAL);
         mBudgetUseCase.subscribe(budgetRequest);
     }
     
@@ -100,7 +100,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
         };
         BudgetRequest budgetRequest = new BudgetRequest(Action.ACTION_UPDATE_BUDGET,
                   mObjectBaseCallBack, budget, null);
-        budgetRequest.setTypeRepository(TypeRepository.REMOTE);
+        budgetRequest.setTypeRepository(TypeRepository.LOCAL);
         mBudgetUseCase.subscribe(budgetRequest);
     }
     
@@ -128,7 +128,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
         String[] params = {budgetId};
         BudgetRequest budgetRequest = new BudgetRequest(Action.ACTION_DELETE_BUDGET,
                   mObjectBaseCallBack, null, params);
-        budgetRequest.setTypeRepository(TypeRepository.REMOTE);
+        budgetRequest.setTypeRepository(TypeRepository.LOCAL);
         mBudgetUseCase.subscribe(budgetRequest);
     }
     
