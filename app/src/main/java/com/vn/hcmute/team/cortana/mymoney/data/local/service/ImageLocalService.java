@@ -49,6 +49,16 @@ public class ImageLocalService extends DbContentProvider<Image> implements
     }
     
     @Override
+    protected List<Image> makeListObjectFromCursor(Cursor cursor) {
+        return null;
+    }
+    
+    @Override
+    protected Image makeSingleObjectFromCursor(Cursor cursor) {
+        return null;
+    }
+    
+    @Override
     public Callable<List<Icon>> getListIcon() {
         try {
             return new Callable<List<Icon>>() {

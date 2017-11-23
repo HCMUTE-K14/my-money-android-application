@@ -106,17 +106,17 @@ public class DebtLoanUseCase extends UseCase<DebtLoanRequest> {
         }
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.getDebtLoanByType(type)
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository.deleteLocalDebtLoan(data)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
@@ -167,17 +167,17 @@ public class DebtLoanUseCase extends UseCase<DebtLoanRequest> {
         }
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.getDebtLoanByType(type)
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository.updateLocalDebtLoan(data)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
@@ -218,26 +218,26 @@ public class DebtLoanUseCase extends UseCase<DebtLoanRequest> {
                 callBack.onFailure(e);
             }
         };
+        String userid = mDataRepository.getUserId();
+        
+        data.setDebt_loan_id(SecurityUtil.getRandomUUID());
+        data.setUser_id(userid);
         
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.getDebtLoanByType(type)
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository.addLocalDebtLoan(data)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
-                String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-                
-                data.setDebt_loan_id(SecurityUtil.getRandomUUID());
-                data.setUser_id(userid);
                 
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
@@ -295,17 +295,17 @@ public class DebtLoanUseCase extends UseCase<DebtLoanRequest> {
         }
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
-                //                mDisposable = mDataRepository.getDebtLoanByType(type)
-                //                          .subscribeOn(Schedulers.computation())
-                //                          .observeOn(AndroidSchedulers.mainThread())
-                //                          .doOnSubscribe(new Consumer<Disposable>() {
-                //                              @Override
-                //                              public void accept(Disposable disposable) throws Exception {
-                //                                  callBack.onLoading();
-                //                              }
-                //                          })
-                //                          .singleOrError()
-                //                          .subscribeWith(this.mDisposableSingleObserver);
+                mDisposable = mDataRepository.getLocalDebtLoanByType(wallet_id, type)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();

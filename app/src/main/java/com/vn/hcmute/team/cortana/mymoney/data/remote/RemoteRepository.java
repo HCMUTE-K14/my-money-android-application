@@ -1049,13 +1049,14 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
     
     @Override
     public Observable<List<Transaction>> getTransactionByCategory(String userid, String token,
-              String categoryId, String walletId) {
+              String categoryId, String walletId, String startDate, String endDate) {
         TransactionService transactionService = mServiceGenerator
                   .getService(TransactionService.class);
         if (transactionService == null) {
             return null;
         }
-        return transactionService.getTransactionByCategory(walletId, userid, token, categoryId)
+        return transactionService
+                  .getTransactionByCategory(walletId, userid, token, categoryId, startDate, endDate)
                   .map(new Function<JsonResponse<List<Transaction>>, List<Transaction>>() {
                       @Override
                       public List<Transaction> apply(
@@ -1124,7 +1125,7 @@ public class RemoteRepository implements RemoteTask.UserTask, RemoteTask.ImageTa
         if (transactionService == null) {
             return null;
         }
-        return transactionService.getTransactionByCategory(walletId, userid, token, type)
+        return transactionService.getTransactionByType(walletId, userid, token, type)
                   .map(new Function<JsonResponse<List<Transaction>>, List<Transaction>>() {
                       @Override
                       public List<Transaction> apply(

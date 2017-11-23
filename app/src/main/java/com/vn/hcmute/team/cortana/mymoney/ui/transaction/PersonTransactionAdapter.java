@@ -54,7 +54,8 @@ public class PersonTransactionAdapter extends
     @Override
     public void onBindViewHolder(PersonTransactionViewHolder holder, int position) {
         final Person person = mData.get(position);
-        int color = mData.get(position).getColor();
+        
+        int color = person.getColor();
         
         if (color == 0) {
             color = Color.parseColor(ColorUtil.getRandomColor());
@@ -68,6 +69,7 @@ public class PersonTransactionAdapter extends
         if (!TextUtils.isEmpty(person.getName())) {
             final String startLetter = String.valueOf(person.getName().charAt(0)).toUpperCase();
             holder.mLetterView.setTitleText(startLetter);
+            holder.mTextViewNamePerson.setText(person.getName());
         }
     }
     

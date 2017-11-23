@@ -30,11 +30,9 @@ public class EventLocalService extends DbContentProvider<Event> implements
     private final String STATUS = "status";
     private final String USER_ID = "user_id";
     private final String ICON = "icon";
-    private CurrencyLocalService mCurrencyLocalService;
     
     private EventLocalService(DatabaseHelper mDatabaseHelper) {
         super(mDatabaseHelper);
-        mCurrencyLocalService = CurrencyLocalService.getInstance(mDatabaseHelper);
         
     }
     
@@ -71,6 +69,44 @@ public class EventLocalService extends DbContentProvider<Event> implements
     }
     
     @Override
+    protected List<Event> makeListObjectFromCursor(Cursor cursor) {
+        List<Event> events = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            Event event = makeSingleObjectFromCursor(cursor);
+            events.add(event);
+        }
+        cursor.close();
+        return events;
+    }
+    
+    @Override
+    protected Event makeSingleObjectFromCursor(Cursor cursor) {
+        Event event = new Event();
+        
+        event.setEventid(cursor.getString(0));
+        event.setName(cursor.getString(1));
+        event.setMoney(cursor.getString(2));
+        event.setDate(cursor.getString(3));
+        
+        if (cursor.getString(4) == null) {
+            event.setIdWallet("");
+        } else {
+            event.setIdWallet(cursor.getString(4));
+        }
+        //currencies
+        Currencies currencies = getCurrencies(cursor.getString(5));
+        event.setCurrencies(currencies);
+        
+        event.setStatus(cursor.getString(6));
+        if (cursor.getString(7) != null) {
+            event.setUserid(cursor.getString(7));
+        }
+        event.setIcon(cursor.getString(8));
+        
+        return event;
+    }
+    
+    @Override
     public Callable<List<Event>> getListEvent(final String userId) {
         return new Callable<List<Event>>() {
             @Override
@@ -82,33 +118,7 @@ public class EventLocalService extends DbContentProvider<Event> implements
                 if (cursor == null) {
                     return null;
                 }
-                List<Event> events = new ArrayList<>();
-                while (cursor.moveToNext()) {
-                    Event event = new Event();
-                    event.setEventid(cursor.getString(0));
-                    event.setName(cursor.getString(1));
-                    event.setMoney(cursor.getString(2));
-                    event.setDate(cursor.getString(3));
-                    
-                    if (cursor.getString(4) == null) {
-                        event.setIdWallet("");
-                    } else {
-                        event.setIdWallet(cursor.getString(4));
-                    }
-                    //currencies
-                    Currencies currencies = getCurrencies(cursor.getString(5));
-                    event.setCurrencies(currencies);
-                    
-                    event.setStatus(cursor.getString(6));
-                    if (cursor.getString(7) != null) {
-                        event.setUserid(cursor.getString(7));
-                    }
-                    event.setIcon(cursor.getString(8));
-                    
-                    events.add(event);
-                }
-                cursor.close();
-                return events;
+                return makeListObjectFromCursor(cursor);
             }
         };
     }
@@ -148,7 +158,30 @@ public class EventLocalService extends DbContentProvider<Event> implements
         };
     }
     
+    @Override
+    public Event getEventById(String id) {
+        String selection = "event_id = ?";
+        String[] selectionArg = new String[]{id};
+        Cursor cursor = EventLocalService.this
+                  .query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
+        if (cursor == null) {
+            return null;
+        }
+        Event event = null;
+        if (cursor.moveToNext()) {
+            event = makeSingleObjectFromCursor(cursor);
+        }
+        cursor.close();
+        return event;
+    }
+    
+    @Override
+    public int deleteEventByWallet(String wallet_id) {
+        String whereClause = "wallet_id = ?";
+        return mDatabase.delete(TABLE_NAME, whereClause, new String[]{whereClause});
+    }
+    
     public Currencies getCurrencies(String idCurrencies) {
-        return mCurrencyLocalService.getCurrency(idCurrencies);
+        return CurrencyLocalService.getInstance(mDatabaseHelper).getCurrency(idCurrencies);
     }
 }

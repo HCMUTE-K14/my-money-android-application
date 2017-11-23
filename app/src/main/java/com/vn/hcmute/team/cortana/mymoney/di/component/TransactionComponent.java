@@ -10,6 +10,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.statistics.StatisticsMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.BaseInfoTransactionActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.InforTransactionForDebtLoanActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.ManagerTransactionFragment;
+import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionMainFragment;
 import dagger.Component;
 
 /**
@@ -34,5 +35,6 @@ public interface TransactionComponent {
     
     void inject(StatisticsMainFragment statisticsMainFragment);
     
+    void inject(TransactionMainFragment transactionMainFragment);
     
 }

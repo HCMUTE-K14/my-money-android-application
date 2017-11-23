@@ -1,4 +1,4 @@
-package com.vn.hcmute.team.cortana.mymoney.ui.view.calendview;
+package com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview;
 
 import android.content.Context;
 import android.os.Handler;
@@ -11,12 +11,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.vn.hcmute.team.cortana.mymoney.R;
-import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.AllTransactionModel;
-import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.BaseModel;
-import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.CustomModel;
-import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.DateModel;
-import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.MonthModel;
-import com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model.WeekModel;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.AllTransactionModel;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.BaseModel;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.CustomModel;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.DateModel;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.MonthModel;
+import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.WeekModel;
+import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 
 /**
  * Created by infamouSs on 10/31/17.
@@ -39,7 +40,29 @@ public class CalendarTransactionView extends RelativeLayout {
     
     private long mStartDate;
     private long mEndDate;
-    
+    private OnTabSelectedListener mOnTabSelectedListener = new OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(Tab tab) {
+            String key = "";
+            if (!TextUtils.isEmpty(tab.getText())) {
+                key = tab.getText().toString().trim();
+            }
+            final String value = mModel.getData().get(key);
+            if (mListener != null) {
+                mListener.onClickTab(value);
+            }
+        }
+        
+        @Override
+        public void onTabUnselected(Tab tab) {
+        
+        }
+        
+        @Override
+        public void onTabReselected(Tab tab) {
+        
+        }
+    };
     
     public CalendarTransactionView(Context context) {
         super(context, null);
@@ -61,6 +84,9 @@ public class CalendarTransactionView extends RelativeLayout {
     
     public void setListener(
               Listener listener) {
+        if (mListener != null) {
+            mListener = null;
+        }
         mListener = listener;
     }
     
@@ -70,7 +96,7 @@ public class CalendarTransactionView extends RelativeLayout {
         mTabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
     }
     
-    public void init(final String mode) {
+    private void init(final String mode) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -110,6 +136,7 @@ public class CalendarTransactionView extends RelativeLayout {
                         mModel = null;
                         break;
                 }
+                
                 if (mModel != null) {
                     mModel.buildData();
                 }
@@ -117,9 +144,8 @@ public class CalendarTransactionView extends RelativeLayout {
                 initTabLayout();
             }
         };
+        
         new Handler().postDelayed(runnable, 100);
-        
-        
     }
     
     private void initTabLayout() {
@@ -127,45 +153,61 @@ public class CalendarTransactionView extends RelativeLayout {
         for (String key : mModel.getData().keySet()) {
             mTabLayout.addTab(mTabLayout.newTab().setText(key));
         }
+        
+        mTabLayout.addOnTabSelectedListener(mOnTabSelectedListener);
         jump2ToDay();
-        mTabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(Tab tab) {
-                String key = "";
-                if (!TextUtils.isEmpty(tab.getText())) {
-                    key = tab.getText().toString().trim();
-                }
-                final String value = mModel.getData().get(key);
-                if (mListener != null) {
-                    mListener.onClickTab(value);
-                }
-            }
-            
-            @Override
-            public void onTabUnselected(Tab tab) {
-            
-            }
-            
-            @Override
-            public void onTabReselected(Tab tab) {
-            
-            }
-        });
     }
     
-    public void jump2ToDay() {
+    public void jump2Day(String value) {
+        if (TextUtil.isEmpty(value)) {
+            jump2ToDay();
+        } else {
+            String _key = "";
+            for (String key : mModel.getData().keySet()) {
+                if (value.equals(mModel.getData().get(key))) {
+                    _key = key;
+                    break;
+                }
+            }
+            int index = -1;
+            for (int i = 0; i <= mTabLayout.getTabCount(); i++) {
+                Tab tab = mTabLayout.getTabAt(i);
+                if (tab != null && tab.getText().equals(_key)) {
+                    index = i;
+                    break;
+                }
+            }
+            
+            if (index != -1) {
+                jump2Tab(index);
+            } else {
+                jump2ToDay();
+            }
+            
+        }
+    }
+    
+    private void jump2Tab(final int index) {
         new Handler().postDelayed(
                   new Runnable() {
                       @Override
                       public void run() {
-                          if (mTabLayout.getTabCount() >= 3) {
-                              Tab tab = mTabLayout.getTabAt(mTabLayout.getTabCount() - 2);
-                              if (tab != null) {
-                                  tab.select();
-                              }
+                          Tab tab = mTabLayout.getTabAt(index);
+                          if (tab != null) {
+                              tab.select();
                           }
+                          
                       }
                   }, 100);
+    }
+    
+    public void jump2ToDay() {
+        if (mTabLayout.getTabCount() >= 3) {
+            jump2Tab(mTabLayout.getTabCount() - 2);
+        } else {
+            jump2Tab(0);
+        }
+        
     }
     
     public String getMode() {
@@ -173,6 +215,9 @@ public class CalendarTransactionView extends RelativeLayout {
     }
     
     public void setMode(String mode) {
+        if (!TextUtil.isEmpty(this.mode) && this.mode.equals(mode)) {
+            return;
+        }
         this.mode = mode;
         init(this.mode);
     }

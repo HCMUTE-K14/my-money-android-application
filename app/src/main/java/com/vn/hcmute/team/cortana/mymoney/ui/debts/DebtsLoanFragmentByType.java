@@ -23,7 +23,6 @@ import com.vn.hcmute.team.cortana.mymoney.ui.debts.DebtLoanContract.ShowView;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.InforTransactionForDebtLoanActivity;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
@@ -129,7 +128,6 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MyLogger.d(TAG, mType + " onViewCreated");
         getData();
     }
     
@@ -199,7 +197,6 @@ public class DebtsLoanFragmentByType extends BaseFragment implements ShowView,
         }
         debtLoan.setType(typeDebtLoan);
         debtLoan.setTransaction(transaction);
-        
         mDebtLoanPresenter.addDebtLoan(debtLoan);
     }
     

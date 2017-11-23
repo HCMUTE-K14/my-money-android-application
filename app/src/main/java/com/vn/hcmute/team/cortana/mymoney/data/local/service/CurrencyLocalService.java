@@ -52,6 +52,30 @@ public class CurrencyLocalService extends DbContentProvider<Currencies> implemen
     }
     
     @Override
+    protected List<Currencies> makeListObjectFromCursor(Cursor cursor) {
+        List<Currencies> lists = new ArrayList<>();
+        
+        while (cursor.moveToNext()) {
+            Currencies currencies = makeSingleObjectFromCursor(cursor);
+            lists.add(currencies);
+        }
+        cursor.close();
+        return lists;
+    }
+    
+    @Override
+    protected Currencies makeSingleObjectFromCursor(Cursor cursor) {
+        String id = cursor.getString(0);
+        String name = cursor.getString(1);
+        String symbol = cursor.getString(2);
+        String display_type = cursor.getString(3);
+        String code = cursor.getString(4);
+        
+        return new Currencies(id, name, symbol, display_type,
+                  code);
+    }
+    
+    @Override
     public Callable<List<Currencies>> getListCurrency() {
         try {
             return new Callable<List<Currencies>>() {
@@ -62,23 +86,9 @@ public class CurrencyLocalService extends DbContentProvider<Currencies> implemen
                     if (cursor == null) {
                         return null;
                     }
-                    List<Currencies> lists = new ArrayList<>();
                     
-                    while (cursor.moveToNext()) {
-                        
-                        String id = cursor.getString(0);
-                        String name = cursor.getString(1);
-                        String symbol = cursor.getString(2);
-                        String display_type = cursor.getString(3);
-                        String code = cursor.getString(4);
-                        
-                        Currencies currencies = new Currencies(id, name, symbol, display_type,
-                                  code);
-                        
-                        lists.add(currencies);
-                    }
-                    cursor.close();
-                    return lists;
+                    return makeListObjectFromCursor(cursor);
+                    
                 }
             };
         } catch (Exception e) {

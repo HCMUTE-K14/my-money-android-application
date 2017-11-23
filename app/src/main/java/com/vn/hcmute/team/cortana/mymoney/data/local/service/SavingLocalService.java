@@ -31,13 +31,9 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
     private final String STATUS = "status";
     private final String USER_ID = "user_id";
     private final String ICON = "icon";
-    CurrencyLocalService mCurrencyLocalService;
-    WalletLocalService mWalletLocalService;
     
     private SavingLocalService(DatabaseHelper mDatabaseHelper) {
         super(mDatabaseHelper);
-        mCurrencyLocalService = CurrencyLocalService.getInstance(mDatabaseHelper);
-        mWalletLocalService = WalletLocalService.getInstance(mDatabaseHelper);
     }
     
     public static SavingLocalService getInstance(DatabaseHelper databaseHelper) {
@@ -75,6 +71,45 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
     }
     
     @Override
+    protected List<Saving> makeListObjectFromCursor(Cursor cursor) {
+        List<Saving> savings = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            Saving saving = makeSingleObjectFromCursor(cursor);
+            
+            savings.add(saving);
+        }
+        cursor.close();
+        return savings;
+    }
+    
+    @Override
+    protected Saving makeSingleObjectFromCursor(Cursor cursor) {
+        Saving saving = new Saving();
+        
+        saving.setSavingid(cursor.getString(0));
+        saving.setName(cursor.getString(1));
+        saving.setGoalMoney(cursor.getString(2));
+        saving.setStartMoney(cursor.getString(3));
+        saving.setCurrentMoney(cursor.getString(4));
+        saving.setDate(cursor.getString(5));
+        if (cursor.getString(6) == null) {
+            saving.setIdWallet("");
+        } else {
+            saving.setIdWallet(cursor.getString(6));
+        }
+        //currencies 7
+        Currencies currencies = getCurrencies(cursor.getString(7));
+        saving.setCurrencies(currencies);
+        saving.setStatus(cursor.getString(8));
+        if (cursor.getString(9) != null) {
+            saving.setUserid(cursor.getString(9));
+        }
+        saving.setIcon(cursor.getString(10));
+        
+        return saving;
+    }
+    
+    @Override
     public Callable<List<Saving>> getListSaving(final String userId) {
         return new Callable<List<Saving>>() {
             @Override
@@ -87,35 +122,7 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
                 if (cursor == null) {
                     return null;
                 }
-                List<Saving> savings = new ArrayList<>();
-                while (cursor.moveToNext()) {
-                    Saving saving = new Saving();
-                    saving.setSavingid(cursor.getString(0));
-                    saving.setName(cursor.getString(1));
-                    saving.setGoalMoney(cursor.getString(2));
-                    saving.setStartMoney(cursor.getString(3));
-                    saving.setCurrentMoney(cursor.getString(4));
-                    saving.setDate(cursor.getString(5));
-                    if (cursor.getString(6) == null) {
-                        saving.setIdWallet("");
-                    } else {
-                        saving.setIdWallet(cursor.getString(6));
-                    }
-                    //currencies 7
-                    Currencies currencies = getCurrencies(cursor.getString(7));
-                    saving.setCurrencies(currencies);
-                    saving.setStatus(cursor.getString(8));
-                    if (cursor.getString(9) != null) {
-                        saving.setUserid(cursor.getString(9));
-                    }
-                    saving.setIcon(cursor.getString(10));
-                    
-                    savings.add(saving);
-                    
-                    
-                }
-                cursor.close();
-                return savings;
+                return makeListObjectFromCursor(cursor);
             }
         };
     }
@@ -181,10 +188,35 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
         };
     }
     
+    @Override
+    public Saving getSavingById(String id) {
+        String selection = "saving_id = ?";
+        String[] selectionArg = new String[]{id};
+        Cursor cursor = SavingLocalService.this
+                  .query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
+        
+        if (cursor == null) {
+            return null;
+        }
+        Saving saving = null;
+        if (cursor.moveToNext()) {
+            saving = makeSingleObjectFromCursor(cursor);
+        }
+        cursor.close();
+        return saving;
+    }
+    
+    @Override
+    public int deleteSavingByWallet(String wallet_id) {
+        String whereClause = "wallet_id = ?";
+        return mDatabase.delete(TABLE_NAME, whereClause, new String[]{wallet_id});
+    }
+    
     public int takeSaving(String idWallet, String idSaving, String moneyWallet,
               String moneySaving) {
         //wallet
-        int updateMoneyWallet = mWalletLocalService.updateMoneyWallet(idWallet, moneyWallet);
+        int updateMoneyWallet = WalletLocalService.getInstance(mDatabaseHelper)
+                  .updateMoneyWallet(idWallet, moneyWallet);
         //saving
         ContentValues contentValuesSaving = new ContentValues();
         contentValuesSaving.put("current_money", moneySaving);
@@ -197,6 +229,6 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
     }
     
     public Currencies getCurrencies(String idCurrencies) {
-        return mCurrencyLocalService.getCurrency(idCurrencies);
+        return CurrencyLocalService.getInstance(mDatabaseHelper).getCurrency(idCurrencies);
     }
 }

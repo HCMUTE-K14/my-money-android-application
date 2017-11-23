@@ -28,6 +28,7 @@ public class ManagerTransactionActivity extends BaseActivity {
     private String mAction;
     private Transaction mTransaction;
     private Fragment mFragment;
+    private long mDate;
     
     private boolean isEnableUploadImage = true;
     private boolean isEnableMultipleSelectContact = true;
@@ -63,7 +64,8 @@ public class ManagerTransactionActivity extends BaseActivity {
         params.put("multiple_select_contact", isEnableMultipleSelectContact);
         params.put("only_debt_loan_category", isLoadOnlyDebtLoanCategory);
         
-        mFragment = ManagerTransactionFragment.newInstance(mAction, params, mTransaction, null);
+        mFragment = ManagerTransactionFragment
+                  .newInstance(mAction, params, mTransaction, mDate, null);
         
         attachFragment();
     }
@@ -77,6 +79,7 @@ public class ManagerTransactionActivity extends BaseActivity {
             isEnableUploadImage = intent.getBooleanExtra("upload_image", true);
             isEnableMultipleSelectContact = intent.getBooleanExtra("multiple_select_contact", true);
             isLoadOnlyDebtLoanCategory = intent.getBooleanExtra("only_debt_loan_category", false);
+            mDate = intent.getLongExtra("date", 0);
         }
     }
     

@@ -127,7 +127,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     private SelectedImageAdapter mSelectedImageAdapter;
     private Saving mSaving;
     private String mAmount = "0";
-    
+    private long mDate = 0;
     private ProgressDialog mProgressDialog;
     
     private OnDateSetListener mOnDateSetListenerStartTime = new OnDateSetListener() {
@@ -160,7 +160,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     };
     
     public static ManagerTransactionFragment newInstance(String action, Map<String, Boolean> params,
-              Transaction transaction,
+              Transaction transaction, long date,
               Saving saving) {
         ManagerTransactionFragment fragment = new ManagerTransactionFragment();
         Bundle bundle = new Bundle();
@@ -178,6 +178,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
             default:
                 break;
         }
+        bundle.putLong("date", date);
         bundle.putBoolean("upload_image", params.get("upload_image"));
         bundle.putBoolean("multiple_select_contact", params.get("multiple_select_contact"));
         bundle.putBoolean("only_debt_loan_category", params.get("only_debt_loan_category"));
@@ -239,6 +240,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
             FLAG_IS_ENABLE_UPLOAD_IMAGE = bundle.getBoolean("upload_image");
             FLAG_IS_MULTI_SELECT_PERSON = bundle.getBoolean("multiple_select_contact");
             FLAG_IS_ONLY_DEBT_LOAN_CATEGORY = bundle.getBoolean("only_debt_loan_category");
+            mDate = bundle.getLong("date");
         }
     }
     
@@ -282,7 +284,20 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
                         GlideImageLoader.load(this.getContext(), DrawableUtil
                                             .getDrawable(this.getContext(), mCategory.getIcon()),
                                   mImageViewIconCategory);
+                        if (mCategory.getTransType().equals("debt_loan")) {
+                            FLAG_IS_MULTI_SELECT_PERSON = false;
+                            if (mPersonList != null && mPersonList.size() > 1) {
+                                Toast.makeText(getContext(),
+                                          R.string.message_warning_more_than_contact,
+                                          Toast.LENGTH_SHORT).show();
+                                mPersonList.clear();
+                                mTextViewContacts.setText("");
+                            }
+                        } else {
+                            FLAG_IS_MULTI_SELECT_PERSON = true;
+                        }
                     }
+                    
                     break;
                 case RequestCode.CHOOSE_WALLET_REQUEST_CODE:
                     mWallet = data.getParcelableExtra("wallet");
@@ -323,7 +338,6 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
                 add(Constraints.SOME_ONE_PERSON);
             }});
         }
-        
         EventBus.getDefault().post(new ActivityResultEvent(ResultCode.ADD_TRANSACTION_RESULT_CODE,
                   transaction));
         EventBus.getDefault()
@@ -478,7 +492,9 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     private void initializeView() {
         
         Calendar calendar = Calendar.getInstance();
-        
+        if (mDate != 0) {
+            calendar.setTimeInMillis(mDate);
+        }
         mYear_StartTime = calendar.get(Calendar.YEAR);
         mMonth_StartTime = calendar.get(Calendar.MONTH);
         mDayOfMonth_StartTime = calendar.get(Calendar.DAY_OF_MONTH);
@@ -554,11 +570,12 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     private void prepareTransaction(String action) {
         if (action.equals(Action.ACTION_ADD_TRANSACTION)) {
             mCurrentTransaction = new Transaction();
+            mCurrentTransaction.setTrans_id(SecurityUtil.getRandomUUID());
         }
         String date_created = String.valueOf(DateUtil
-                  .getLongAsDate(mDayOfMonth_StartTime, mMonth_StartTime, mYear_StartTime));
+                  .getLongAsDate(mDayOfMonth_StartTime, mMonth_StartTime + 1, mYear_StartTime));
         String date_end = String.valueOf(DateUtil
-                  .getLongAsDate(mDayOfMonth_EndTime, mMonth_EndTime, mYear_EndTime));
+                  .getLongAsDate(mDayOfMonth_EndTime, mMonth_EndTime + 1, mYear_EndTime));
         Wallet wallet = mWallet;
         Category category = mCategory;
         if (category != null) {
@@ -594,7 +611,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
                       Toast.LENGTH_SHORT).show();
             return;
         }
-        mCurrentTransaction.setTrans_id(SecurityUtil.getRandomUUID());
+        
         mCurrentTransaction.setAmount(mAmount);
         mCurrentTransaction.setNote(note);
         mCurrentTransaction.setCategory(category);
@@ -609,7 +626,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     }
     
     private boolean checkAmountBeforeAddOrUpdateTransaction() {
-        if (mCategory.getType().equals("expense")) {
+        if (mCategory != null && mCategory.getType().equals("expense")) {
             double amountWallet = Double.valueOf(mWallet.getMoney());
             double amountTrans = Double.valueOf(mAmount);
             return amountWallet < amountTrans;

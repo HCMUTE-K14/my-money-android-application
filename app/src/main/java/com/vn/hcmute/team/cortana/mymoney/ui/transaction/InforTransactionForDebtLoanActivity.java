@@ -3,7 +3,6 @@ package com.vn.hcmute.team.cortana.mymoney.ui.transaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -157,19 +156,19 @@ public class InforTransactionForDebtLoanActivity extends BaseInfoTransactionActi
         debtLoan.setStatus(1);
         ApplicationComponent applicationComponent = ((MyMoneyApplication) this.getApplication())
                   .getAppComponent();
-        String user_id = applicationComponent.preferencesHelper().getUserId();
-        String token = applicationComponent.preferencesHelper().getUserToken();
-        String wallet_id = applicationComponent.preferencesHelper().getCurrentWallet()
-                  .getWalletid();
-        if (TextUtils.isEmpty(user_id) || TextUtils.isEmpty(token) ||
-            TextUtils.isEmpty(wallet_id)) {
-            return;
-        }
+        //        String user_id = applicationComponent.preferencesHelper().getUserId();
+        //        String token = applicationComponent.preferencesHelper().getUserToken();
+        //        String wallet_id = applicationComponent.preferencesHelper().getCurrentWallet()
+        //                  .getWalletid();
+        //        if (TextUtils.isEmpty(user_id) || TextUtils.isEmpty(token) ||
+        //            TextUtils.isEmpty(wallet_id)) {
+        //            return;
+        //        }
         
         applicationComponent
                   .dataRepository()
-                  .updateDebtLoan(user_id, token, wallet_id, debtLoan)
-                  .subscribeOn(Schedulers.io())
+                  .updateLocalDebtLoan(debtLoan)
+                  .subscribeOn(Schedulers.computation())
                   .observeOn(AndroidSchedulers.mainThread())
                   .singleOrError()
                   .subscribe(new Consumer<String>() {

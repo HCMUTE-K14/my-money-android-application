@@ -35,7 +35,8 @@ public interface TransactionService {
     @GET(MyMoneyApi.GET_TRANSACTION_BY_CATEGORY + "/{walletId}")
     Observable<JsonResponse<List<Transaction>>> getTransactionByCategory(
               @Path("walletId") String walletId, @Query("uid") String uid,
-              @Query("token") String token, @Query("categoryid") String categoryId);
+              @Query("token") String token, @Query("categoryid") String categoryId,
+              @Query("start_date") String startDate, @Query("end_date") String endDate);
     
     @GET(MyMoneyApi.GET_TRANSACTION_BY_ID + "{id}")
     Observable<JsonResponse<Transaction>> getTransactionById(@Path("id") String id,

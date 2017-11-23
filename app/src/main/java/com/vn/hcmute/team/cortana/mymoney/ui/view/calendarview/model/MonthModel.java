@@ -1,4 +1,4 @@
-package com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model;
+package com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model;
 
 import android.content.Context;
 import com.vn.hcmute.team.cortana.mymoney.R;
@@ -16,11 +16,11 @@ public class MonthModel extends BaseModel {
     public MonthModel(Context context) {
         super(context, BaseModel.TYPE_MONTH);
         this.mContext = context;
-        final int day_of_month = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        
         final int month = Calendar.getInstance().get(Calendar.MONTH);
         final int year = Calendar.getInstance().get(Calendar.YEAR);
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day_of_month);
+        calendar.set(year, month, 1, 0, 0, 0);
         startDate = calendar.getTimeInMillis();
     }
     
@@ -37,35 +37,49 @@ public class MonthModel extends BaseModel {
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
         
         for (int i = -LIMIT_MONTH; i <= 0; i++) {
+            
             calendar.setTimeInMillis(this.startDate);
             calendar.add(Calendar.MONTH, i);
-            final int day_of_month = calendar.get(Calendar.DAY_OF_MONTH);
             final int month = calendar.get(Calendar.MONTH) + 1;
             final int year = calendar.get(Calendar.YEAR);
             String key = "";
             
+            long start_date = calendar.getTimeInMillis();
+            long end_date = calcEndDate(start_date,
+                      calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+            String value = String.valueOf(start_date) + "-" + String.valueOf(end_date);
             if (i == -1) {
-                map.put(mContext.getString(R.string.txt_last_month),
-                          String.valueOf(calendar.getTimeInMillis()));
+                map.put(mContext.getString(R.string.txt_last_month), value);
                 continue;
             }
             
             if (i == 0) {
-                map.put(mContext.getString(R.string.txt_this_month),
-                          String.valueOf(calendar.getTimeInMillis()));
+                map.put(mContext.getString(R.string.txt_this_month), value);
                 calendar.setTimeInMillis(this.startDate);
                 calendar.add(Calendar.MONTH, 1);
-                map.put(mContext.getString(R.string.txt_next_month),
-                          String.valueOf(calendar.getTimeInMillis()));
+                
+                long endDateForNextMonth = calcEndDate(calendar.getTimeInMillis(),
+                          calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+                String valueForNextMonth = String.valueOf(calendar.getTimeInMillis()) + "-" +
+                                           String.valueOf(endDateForNextMonth);
+                map.put(mContext.getString(R.string.txt_next_month), valueForNextMonth);
                 break;
             }
             
             key = String.format(this.patternDate, month, year);
             
-            map.put(key, String.valueOf(calendar.getTimeInMillis()));
-            
+            map.put(key, value);
         }
         this.endDate = calendar.getTimeInMillis();
         this.data.putAll(map);
+    }
+    
+    
+    private long calcSecondOfMonth(int day) {
+        return SECOND_OF_DAY * day;
+    }
+    
+    private long calcEndDate(long startDate, int day) {
+        return startDate + calcSecondOfMonth(day) - ONE_SECOND;
     }
 }

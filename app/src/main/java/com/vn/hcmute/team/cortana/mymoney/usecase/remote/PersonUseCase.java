@@ -256,10 +256,11 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                 callBack.onFailure(e);
             }
         };
+        person.setPersonid(SecurityUtil.getRandomUUID());
+        String userid = mDataRepository.getUserId();
         
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.REMOTE) {
-                String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
                 
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
@@ -268,7 +269,6 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                     return;
                 }
                 
-                person.setPersonid(SecurityUtil.getRandomUUID());
                 person.setUserid(userid);
                 
                 mDisposable = mDataRepository.addPerson(person, userid, token)
@@ -283,7 +283,6 @@ public class PersonUseCase extends UseCase<PersonRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             } else {
-                String userid = mDataRepository.getUserId();
                 person.setUserid(userid);
                 mDisposable = mDataRepository.addLocalPerson(person)
                           .subscribeOn(Schedulers.computation())

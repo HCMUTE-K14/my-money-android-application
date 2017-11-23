@@ -3,10 +3,12 @@ package com.vn.hcmute.team.cortana.mymoney.data.local;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
+import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Icon;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
+import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import io.reactivex.Observable;
 import java.util.List;
@@ -67,9 +69,11 @@ public interface LocalTask {
         
         Observable<String> deleteWallet(String idWallet);
         
-        Observable<String> moveWallet(String idWalletFrom, String idWalletTo, String Money);
-        
         Observable<Wallet> getWalletById(String wallet_id);
+        
+        Observable<String> moveWallet(String userid, String wallet_id_from, String wallet_id_to,
+                  String moneyMinus,
+                  String moneyPlus, String date_created);
     }
     
     interface EventTask {
@@ -103,5 +107,37 @@ public interface LocalTask {
         Observable<String> updatePerson(Person person);
         
         Observable<String> deletePerson(String idPerson);
+    }
+    
+    interface TransactionTask {
+        
+        Observable<String> addTransaction(Transaction transaction);
+        
+        Observable<String> updateTransaction(Transaction transaction);
+        
+        Observable<String> deleteTransaction(Transaction transaction);
+        
+        Observable<List<Transaction>> getTransactionByTime(String user_id, String start,
+                  String end, String wallet_id);
+        
+        Observable<Transaction> getTransactionByIdUseCallable(String trans_id);
+        
+        Observable<List<Transaction>> getAllTransaction(String user_id);
+        
+        Observable<List<Transaction>> getTransactionByEvent(String user_id, String event_id);
+    }
+    
+    interface DebtLoanTask {
+        
+        Observable<List<DebtLoan>> getDebtLoanByWalletId(String wallet_id);
+        
+        Observable<List<DebtLoan>> getDebtLoanByType(String wallet_id, String type);
+        
+        Observable<String> addDebtLoan(DebtLoan debtLoan);
+        
+        Observable<String> updateDebtLoan(DebtLoan debtLoan);
+        
+        Observable<String> deleteDebtLoan(DebtLoan debtLoan);
+        
     }
 }

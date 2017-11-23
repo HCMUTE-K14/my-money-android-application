@@ -1,4 +1,4 @@
-package com.vn.hcmute.team.cortana.mymoney.ui.view.calendview.model;
+package com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model;
 
 import android.content.Context;
 import java.util.LinkedHashMap;
@@ -20,6 +20,8 @@ public abstract class BaseModel {
     public static final int TYPE_CUSTOM = 3;
     public static final int TYPE_ALL_TRANS = 4;
     
+    public static final long SECOND_OF_DAY = 86400000;
+    public static final long ONE_SECOND = 1000;
     public static String DEFAULT_PATTERN = "%s/%s"; //Day/Month
     
     public static String DEFAULT_PATTERN_TYPE_DATE = "%s %s %s";

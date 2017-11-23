@@ -8,7 +8,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.remote.ImageUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase;
 import dagger.Module;
 import dagger.Provides;
-import javax.inject.Inject;
 
 /**
  * Created by infamouSs on 9/28/17.
@@ -36,7 +35,7 @@ public class TransactionModule {
         return new DebtLoanUseCase(context, dataRepository);
     }
     
-    @Inject
+    @Provides
     TransactionPresenter provideTransactionPresenter(TransactionUseCase transactionUseCase,
               ImageUseCase imageUseCase) {
         return new TransactionPresenter(transactionUseCase, imageUseCase);

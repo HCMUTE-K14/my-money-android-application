@@ -29,13 +29,10 @@ public class BudgetLocalService extends DbContentProvider<Budget> implements
     private final String MONEY_EXPENSE = "money_expense";
     private final String WALLET_ID = "wallet_id";
     private final String CATE_ID = "cate_id";
-    private CategoryLocalService mCategoryLocalService;
-    private WalletLocalService mWalletLocalService;
     
     private BudgetLocalService(DatabaseHelper mDatabaseHelper) {
         super(mDatabaseHelper);
-        mCategoryLocalService = CategoryLocalService.getInstance(mDatabaseHelper);
-        mWalletLocalService = WalletLocalService.getInstance(mDatabaseHelper);
+        
     }
     
     public static BudgetLocalService getInstance(DatabaseHelper databaseHelper) {
@@ -70,6 +67,41 @@ public class BudgetLocalService extends DbContentProvider<Budget> implements
     }
     
     @Override
+    protected List<Budget> makeListObjectFromCursor(Cursor cursor) {
+        List<Budget> budgets = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            Budget budget = makeSingleObjectFromCursor(cursor);
+            
+            budgets.add(budget);
+        }
+        cursor.close();
+        
+        return budgets;
+    }
+    
+    @Override
+    protected Budget makeSingleObjectFromCursor(Cursor cursor) {
+        Budget budget = new Budget();
+        
+        budget.setBudgetId(cursor.getString(0));
+        budget.setRangeDate(cursor.getString(1));
+        budget.setMoneyGoal(cursor.getString(2));
+        budget.setStatus(cursor.getString(3));
+        if (cursor.getString(4) != null) {
+            budget.setUserid(cursor.getString(4));
+        }
+        budget.setMoneyExpense(cursor.getString(5));
+        //get wallet
+        Wallet wallet = getWalletById(cursor.getString(6));
+        budget.setWallet(wallet);
+        //getCategory
+        Category category = getCategoryById(cursor.getString(7));
+        budget.setCategory(category);
+        
+        return budget;
+    }
+    
+    @Override
     public Callable<List<Budget>> getListBudget(final String userId) {
         return new Callable<List<Budget>>() {
             @Override
@@ -81,29 +113,9 @@ public class BudgetLocalService extends DbContentProvider<Budget> implements
                 if (cursor == null) {
                     return null;
                 }
-                List<Budget> budgets = new ArrayList<>();
-                while (cursor.moveToNext()) {
-                    Budget budget = new Budget();
-                    budget.setBudgetId(cursor.getString(0));
-                    budget.setRangeDate(cursor.getString(1));
-                    budget.setMoneyGoal(cursor.getString(2));
-                    budget.setStatus(cursor.getString(3));
-                    if (cursor.getString(4) != null) {
-                        budget.setUserid(cursor.getString(4));
-                    }
-                    budget.setMoneyExpense(cursor.getString(5));
-                    //get wallet
-                    Wallet wallet = getWalletById(cursor.getString(6));
-                    budget.setWallet(wallet);
-                    //getCategory
-                    Category category = getCategoryById(cursor.getString(7));
-                    budget.setCategory(category);
-                    
-                    budgets.add(budget);
-                }
-                cursor.close();
                 
-                return budgets;
+                return makeListObjectFromCursor(cursor);
+                
             }
         };
     }
@@ -143,11 +155,17 @@ public class BudgetLocalService extends DbContentProvider<Budget> implements
         };
     }
     
+    @Override
+    public int deleteBudgetFromWallet(String wallet_id) {
+        String whereClause = "wallet_id = ?";
+        return mDatabase.delete(TABLE_NAME, whereClause, new String[]{whereClause});
+    }
+    
     public Wallet getWalletById(String idWallet) {
-        return mWalletLocalService.getWalletById(idWallet);
+        return WalletLocalService.getInstance(mDatabaseHelper).getWalletById(idWallet);
     }
     
     public Category getCategoryById(String idCategory) {
-        return mCategoryLocalService.getCategoryById(idCategory);
+        return CategoryLocalService.getInstance(mDatabaseHelper).getCategoryById(idCategory);
     }
 }
