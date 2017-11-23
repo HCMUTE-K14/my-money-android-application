@@ -111,7 +111,7 @@ dependencies {
 
     compile 'com.borax12.materialdaterangepicker:library:1.9'
 
-    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.facebook.android:facebook-android-sdk:4.28.0'
 
 
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'

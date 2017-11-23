@@ -118,6 +118,7 @@ public class ActivityAddEvent extends BaseActivity implements EventContract.View
         initView();
         showIcon();
         mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
     

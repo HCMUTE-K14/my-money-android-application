@@ -127,6 +127,7 @@ public class EditSavingActivity extends BaseActivity implements SavingContract.V
         showData();
         initDatePicker();
         mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
     

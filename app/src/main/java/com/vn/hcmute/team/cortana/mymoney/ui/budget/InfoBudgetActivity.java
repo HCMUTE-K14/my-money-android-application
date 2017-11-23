@@ -115,6 +115,7 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
         showChart();
         mSwitch.setOnCheckedChangeListener(this);
         mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
     
