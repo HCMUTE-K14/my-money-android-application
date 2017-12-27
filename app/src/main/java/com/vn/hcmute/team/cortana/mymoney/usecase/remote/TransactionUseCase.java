@@ -572,9 +572,14 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                 callback.onFailure(e);
             }
         };
+        String userid = mDataRepository.getUserId();
+        String start = params[0];
+        String end = params[1];
+        String category_id = params[2];
+        String wallet_id = params[3];
+        
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.REMOTE) {
-                String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
                 
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
@@ -583,8 +588,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                     return;
                 }
                 mDisposable = mDataRepository
-                          .getTransactionByBudget(userid, token, params[0], params[1], params[2],
-                                    params[3])
+                          .getTransactionByBudget(userid, token, start, end, category_id, wallet_id)
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())
                           .doOnSubscribe(new Consumer<Disposable>() {
@@ -596,7 +600,18 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.LOCAL) {
-                //TODO: getByBudget
+                mDisposable = mDataRepository
+                          .getLocalTransactionByBudget(userid, start, end, category_id, wallet_id)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callback.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
             }
             this.mCompositeDisposable.add(mDisposable);
         }

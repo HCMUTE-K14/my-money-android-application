@@ -669,6 +669,13 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
+    public Observable<List<Transaction>> getLocalTransactionByBudget(String user_id, String start,
+              String end, String cate_id, String wallet_id) {
+        return mLocalRepository.getTransactionByBudget(user_id, start, end
+                  , cate_id, wallet_id);
+    }
+    
+    @Override
     public Observable<String> addLocalDebtLoan(DebtLoan debtLoan) {
         return mLocalRepository.addDebtLoan(debtLoan);
     }

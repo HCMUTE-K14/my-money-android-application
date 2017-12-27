@@ -59,6 +59,7 @@ import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
@@ -273,7 +274,8 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     protected void initializeDagger() {
         ApplicationComponent applicationComponent = ((MyMoneyApplication) this.getApplication())
                   .getAppComponent();
-        
+        MyLogger.d(this.getDatabasePath("dbo_my_money.db"));
+    
         mPreferenceHelper = applicationComponent.preferencesHelper();
         
         WalletComponent walletComponent = DaggerWalletComponent.builder()

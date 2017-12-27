@@ -5,6 +5,7 @@ import android.database.Cursor;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.data.local.service.LocalService.TransPersonLocalService;
+import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
@@ -151,7 +152,8 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 
                 callTransPerson("add", transaction);
                 updateMoneyWalletWhenAddOrDeleteTransaction("add", transaction);
-                
+                updateBudget(transaction.getCategory().getId(), transaction.getType(),
+                          transaction.getAmount(), 0);
                 return mDatabase.insert(TABLE_NAME, null, contentValues);
             }
         };
@@ -171,6 +173,8 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 callTransPerson("update", transaction);
                 updateMoneyWalletWhenUpdateTransaction(transaction);
                 updateOrDeleteDebtLoanWhenUpdateTransaction("update", transaction);
+                updateBudget(transaction.getCategory().getId(), transaction.getType(),
+                          transaction.getAmount(), 1);
                 
                 return mDatabase.update(TABLE_NAME, contentValues, selection, selectionArg);
             }
@@ -189,7 +193,9 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 updateMoneyWalletWhenAddOrDeleteTransaction("delete", transaction);
                 
                 updateOrDeleteDebtLoanWhenUpdateTransaction("delete", transaction);
-                
+                updateBudget(transaction.getCategory().getId(), transaction.getType(),
+                          transaction.getAmount(), 2);
+
                 TransPersonService.getInstance(mDatabaseHelper).delete(transaction.getTrans_id());
                 
                 return mDatabase.delete(TABLE_NAME, selection, selectionArg);
@@ -312,13 +318,13 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
             @Override
             public List<Transaction> call() throws Exception {
                 StringBuilder query = new StringBuilder(
-                          "select " + makeSelectionTransaction(getAllColumns()) +
+                          "select " + makeSelectionTransaction(getAllColumns()) + " " +
                           "from tbl_transaction, tbl_category " +
                           "where tbl_transaction.wallet_id = ? and " +
                           "tbl_transaction.cate_id = tbl_category.cate_id and " +
                           "tbl_category.cate_id = ? and " +
-                          "date_create >= ? and date_create <= ?");
-                
+                          "tbl_transaction.date_create >= ? and tbl_transaction.date_create <= ?");
+                MyLogger.d("QUERY: " + query.toString());
                 Cursor cursor = rawQuery(query.toString(),
                           new String[]{wallet_id, cate_id, start, end});
                 
@@ -329,6 +335,30 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 return makeListObjectFromCursor(cursor);
             }
         };
+    }
+    
+    private void updateBudget(String categoryId, String typeTrans, String money, int action)
+              throws Exception {
+        BudgetLocalService budgetLocalService = BudgetLocalService.getInstance(mDatabaseHelper);
+        List<Budget> budgets = budgetLocalService.getBudgetsByCategory(categoryId);
+        for (Budget budget : budgets) {
+            String moneyBeforeUpdate = budget.getMoneyExpense();
+            MyLogger.d("BEFORE: " + budget.getMoneyExpense());
+            if (action == 0) { // ADD
+                double moneyUpdate = Double.valueOf(moneyBeforeUpdate) + Double.valueOf(money);
+                budget.setMoneyExpense(String.valueOf(moneyUpdate));
+            } else if (action == 1) { //Update
+                double moneyUpdate = typeTrans.equals("expense")
+                          ? Double.valueOf(moneyBeforeUpdate) - Double.valueOf(money)
+                          : Double.valueOf(moneyBeforeUpdate) + Double.valueOf(money);
+                budget.setMoneyExpense(String.valueOf(moneyUpdate));
+            } else if (action == 2) { //Delete
+                double moneyUpdate = Double.valueOf(moneyBeforeUpdate) - Double.valueOf(money);
+                budget.setMoneyExpense(String.valueOf(moneyUpdate));
+            }
+            
+            budgetLocalService.updateBudget(budget).call();
+        }
     }
     
     private void callTransPerson(String method, Transaction transaction) {
@@ -363,7 +393,7 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
         } else if (method.equals("delete")) {
             DebtLoan debtLoan = DebtLoanLocalService.getInstance(mDatabaseHelper)
                       .getDebtLoanByTransactionId(transaction.getTrans_id());
-            if (debtLoan.getStatus() == 1) {
+            if (debtLoan != null && debtLoan.getStatus() == 1) {
                 return;
             }
             
