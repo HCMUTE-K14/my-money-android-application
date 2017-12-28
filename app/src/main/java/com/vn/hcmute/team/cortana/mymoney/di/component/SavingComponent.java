@@ -33,4 +33,5 @@ public interface SavingComponent {
     void inject(AddSavingActivity addSavingActivity);
     
     void inject(TransferMoneySavingActivity transferMoneySavingActivity);
+    
 }

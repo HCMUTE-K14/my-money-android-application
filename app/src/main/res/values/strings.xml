@@ -341,4 +341,7 @@
   <string name="txt_from">From</string>
   <string name="txt_to">To</string>
   <string name="txt_select_time">Select time</string>
+
+  <string name="txt_logout">Logout</string>
+  <string name="txt_welcome">Welcome</string>
 </resources>

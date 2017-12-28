@@ -37,11 +37,13 @@ public class Action {
     public static final String ACTION_GET_EVENT = "action_get_event";
     public static final String ACTION_CREATE_EVENT = "action_create_event";
     public static final String ACTION_UPDATE_EVENT = "action_update_event";
+    public static final String ACTION_UPDATE_STATUS_EVENT="action_update_status_event";
     public static final String ACTION_DELETE_EVENT = "action_delete_event";
     
     public static final String ACTION_GET_SAVING = "action_get_saving";
     public static final String ACTION_CREATE_SAVING = "action_create_saving";
     public static final String ACTION_UPDATE_SAVING = "action_update_saving";
+    public static final String ACTION_UPDATE_STATUS_SAVING = "action_update_status_saving";
     public static final String ACTION_DELETE_SAVING = "action_delete_saving";
     public static final String ACTION_TAKE_IN_SAVING = "action_take_in";
     public static final String ACTION_TAKE_OUT_SAVING = "action_take_out";
@@ -55,6 +57,7 @@ public class Action {
     public static final String ACTION_GET_BUDGET = "action_get_budget";
     public static final String ACTION_CREATE_BUDGET = "action_create_budget";
     public static final String ACTION_UPDATE_BUDGET = "action_update_budget";
+    public static final String ACTION_UPDATE_STATUS_BUDGET="action_update_status_budget";
     public static final String ACTION_DELETE_BUDGET = "action_delete_budget";
     
     public static final String ACTION_GET_CATEGORY = "action_get_category";

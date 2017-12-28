@@ -63,18 +63,20 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
             
             @Override
             public void onSuccess(Object value) {
+                getView().loading(false);
                 getView().onSuccessCreateEvent((String) value);
                 
             }
             
             @Override
             public void onFailure(Throwable throwable) {
+                getView().loading(false);
                 getView().onFailure(throwable.getMessage());
             }
             
             @Override
             public void onLoading() {
-                
+                getView().loading(true);
             }
         };
         
@@ -90,18 +92,20 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
             
             @Override
             public void onSuccess(Object value) {
+                getView().loading(false);
                 getView().onSuccessUpdateEvent((String) value);
                 
             }
             
             @Override
             public void onFailure(Throwable throwable) {
+                getView().loading(false);
                 getView().onFailure(throwable.getMessage());
             }
             
             @Override
             public void onLoading() {
-                
+                getView().loading(true);
             }
         };
         EventRequest eventRequest = new EventRequest(Action.ACTION_UPDATE_EVENT,
@@ -111,23 +115,54 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
     }
     
     @Override
+    public void updateStatusEvent(List<Event> eventList) {
+        BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
+        
+            @Override
+            public void onSuccess(Object value) {
+                getView().loading(false);
+                getView().onSuccessUpdateEvent((String) value);
+            
+            }
+        
+            @Override
+            public void onFailure(Throwable throwable) {
+                getView().loading(false);
+                getView().onFailure(throwable.getMessage());
+            }
+        
+            @Override
+            public void onLoading() {
+                getView().loading(true);
+            }
+        };
+        EventRequest eventRequest = new EventRequest(Action.ACTION_UPDATE_STATUS_EVENT,
+                  mObjectBaseCallBack, null, null);
+        eventRequest.setTypeRepository(TypeRepository.LOCAL);
+        eventRequest.setEventList(eventList);
+        mEventUseCase.subscribe(eventRequest);
+    }
+    
+    @Override
     public void deleteEvent(String idEvent) {
         BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
             
             @Override
             public void onSuccess(Object value) {
+                getView().loading(false);
                 getView().onSuccessDeleteEvent((String) value);
                 
             }
             
             @Override
             public void onFailure(Throwable throwable) {
+                getView().loading(false);
                 getView().onFailure(throwable.getMessage());
             }
             
             @Override
             public void onLoading() {
-                
+                getView().loading(true);
             }
         };
         String[] params = {idEvent};

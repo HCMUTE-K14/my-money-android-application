@@ -254,6 +254,22 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     }
     
     @Override
+    public Observable<String> updateStatusSaving(List<Saving> savingList) {
+        SavingLocalService savingLocalService = SavingLocalService.getInstance(mDatabaseHelper);
+        Callable<Integer> callable = savingLocalService.updateStatusSaving(savingList);
+        return makeObservable(callable).map(new Function<Integer, String>() {
+            @Override
+            public String apply(@NonNull Integer integer) throws Exception {
+                if (integer > 0) {
+                    return mContext.getString(R.string.txt_success);
+                } else {
+                    throw new SavingException(mContext.getString(R.string.txt_add_saving_fail));
+                }
+            }
+        });
+    }
+    
+    @Override
     public Observable<String> takeInSaving(String idWallet, String idSaving, String moneyWallet,
               String moneySaving) {
         SavingLocalService savingLocalService = SavingLocalService.getInstance(mDatabaseHelper);
@@ -413,6 +429,22 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     }
     
     @Override
+    public Observable<String> updateStatusEvent(List<Event> eventList) {
+        EventLocalService eventLocalService = EventLocalService.getInstance(mDatabaseHelper);
+        Callable<Integer> callable = eventLocalService.updateStatusEvent(eventList);
+        return makeObservable(callable).map(new Function<Integer, String>() {
+            @Override
+            public String apply(@NonNull Integer integer) throws Exception {
+                if (integer > 0) {
+                    return mContext.getString(R.string.txt_success);
+                } else {
+                    throw new EventException(mContext.getString(R.string.txt_add_saving_fail));
+                }
+            }
+        });
+    }
+    
+    @Override
     public Observable<String> deleteEvent(String idEvent) {
         EventLocalService eventLocalService = EventLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = eventLocalService.deleteEvent(idEvent);
@@ -456,6 +488,22 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     public Observable<String> updateBudget(Budget budget) {
         BudgetLocalService budgetLocalService = BudgetLocalService.getInstance(mDatabaseHelper);
         Callable<Integer> callable = budgetLocalService.updateBudget(budget);
+        return makeObservable(callable).map(new Function<Integer, String>() {
+            @Override
+            public String apply(@NonNull Integer integer) throws Exception {
+                if (integer > 0) {
+                    return mContext.getString(R.string.txt_success);
+                } else {
+                    throw new BudgetException(mContext.getString(R.string.txt_add_saving_fail));
+                }
+            }
+        });
+    }
+    
+    @Override
+    public Observable<String> updateStatusBudget(List<Budget> budgetList) {
+        BudgetLocalService budgetLocalService = BudgetLocalService.getInstance(mDatabaseHelper);
+        Callable<Integer> callable = budgetLocalService.updateStatusBudget(budgetList);
         return makeObservable(callable).map(new Function<Integer, String>() {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {

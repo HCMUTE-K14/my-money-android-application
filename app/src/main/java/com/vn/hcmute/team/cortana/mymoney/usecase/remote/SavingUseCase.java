@@ -19,6 +19,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -70,10 +71,14 @@ public class SavingUseCase extends UseCase<SavingRequest> {
                 doTakeOutSaving(requestValues.getCallBack(), requestValues.getParam(),
                           requestValues.getTypeRepository());
                 break;
+            case Action.ACTION_UPDATE_STATUS_SAVING:
+                doUpdateStatusSaving(requestValues.callBack,requestValues.getSavingList(),requestValues.getTypeRepository());
+                break;
             default:
                 break;
         }
     }
+    
     
     @Override
     public void unSubscribe() {
@@ -256,7 +261,42 @@ public class SavingUseCase extends UseCase<SavingRequest> {
             
         }
     }
+    private void doUpdateStatusSaving(final BaseCallBack<Object> callBack, List<Saving> savingList,
+              TypeRepository typeRepository) {
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
+            
+                callBack.onSuccess(object);
+            }
+        
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
     
+        if (!this.mCompositeDisposable.isDisposed()) {
+            if (typeRepository == TypeRepository.REMOTE) {
+              //
+            } else {
+                mDisposable = mDataRepository.updateStatusLocalSaving(savingList)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
+        
+            this.mCompositeDisposable.add(mDisposable);
+        
+        }
+    }
     private void doDeleteSaving(final BaseCallBack<Object> callBack, String[] params,
               TypeRepository typeRepository) {
         
@@ -437,7 +477,8 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         private Saving mSaving;
         private String[] params;
         private TypeRepository typeRepository;
-        
+    
+        private List<Saving> mSavingList;
         public SavingRequest(@NonNull String action, @Nullable BaseCallBack<Object> callBack,
                   @Nullable Saving saving, @Nullable String[] params) {
             this.action = action;
@@ -473,7 +514,17 @@ public class SavingUseCase extends UseCase<SavingRequest> {
         public String[] getParam() {
             return params;
         }
-        
+    
+    
+        public List<Saving> getSavingList() {
+            return mSavingList;
+        }
+    
+        public void setSavingList(List<Saving> savingList) {
+            mSavingList = savingList;
+        }
+    
+    
         public TypeRepository getTypeRepository() {
             return typeRepository;
         }

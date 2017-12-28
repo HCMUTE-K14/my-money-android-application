@@ -105,6 +105,33 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
     }
     
     @Override
+    public void updateStatusBudget(List<Budget> budgetList) {
+        BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
+            @Override
+            public void onSuccess(Object value) {
+                getView().loading(false);
+                getView().onSuccessUpdateBudget((String) value);
+            }
+        
+            @Override
+            public void onFailure(Throwable throwable) {
+                getView().loading(false);
+                getView().onFailure(throwable.getMessage());
+            }
+        
+            @Override
+            public void onLoading() {
+                getView().loading(false);
+            }
+        };
+        BudgetRequest budgetRequest = new BudgetRequest(Action.ACTION_UPDATE_STATUS_BUDGET,
+                  mObjectBaseCallBack, null, null);
+        budgetRequest.setBudgetList(budgetList);
+        budgetRequest.setTypeRepository(TypeRepository.LOCAL);
+        mBudgetUseCase.subscribe(budgetRequest);
+    }
+    
+    @Override
     public void deleteBudget(String budgetId) {
         BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
             @Override

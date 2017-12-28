@@ -42,6 +42,8 @@ public interface SavingContract {
         
         void updateSaving(Saving saving);
         
+        void updateStatusSaving(List<Saving> savingList);
+        
         void deleteSaving(String idSaving);
         
         void takeIn(String idWallet, String idSaving, String moneyUpdateWallet,

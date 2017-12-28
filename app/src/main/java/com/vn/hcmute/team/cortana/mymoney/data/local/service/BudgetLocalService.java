@@ -156,11 +156,31 @@ public class BudgetLocalService extends DbContentProvider<Budget> implements
     }
     
     @Override
+    public Callable<Integer> updateStatusBudget(final List<Budget> budgetList) {
+       
+        return new Callable<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                for (Budget budget: budgetList) {
+                   updateItemBudget(budget);
+                }
+                return 1;
+            }
+        };
+    }
+    
+    @Override
     public int deleteBudgetFromWallet(String wallet_id) {
         String whereClause = "wallet_id = ?";
         return mDatabase.delete(TABLE_NAME, whereClause, new String[]{whereClause});
     }
-    
+    public void updateItemBudget(Budget budget){
+        budget.setStatus("1");
+        ContentValues contentValues = createContentValues(budget);
+        String selection = "budget_id=?";
+        String[] selectionArg = new String[]{budget.getBudgetId()};
+        mDatabase.update(TABLE_NAME, contentValues, selection, selectionArg);
+    }
     public Wallet getWalletById(String idWallet) {
         return WalletLocalService.getInstance(mDatabaseHelper).getWalletById(idWallet);
     }

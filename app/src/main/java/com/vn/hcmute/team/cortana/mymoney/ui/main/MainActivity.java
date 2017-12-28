@@ -561,6 +561,12 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                 mRunnable = runnableAttachStatisticsFragment;
             case R.id.navigation_item_contacts:
                 break;
+            case R.id.navigation_item_login:
+                
+                break;
+            case R.id.navigation_item_logout:
+                
+                break;
             default:
                 break;
         }

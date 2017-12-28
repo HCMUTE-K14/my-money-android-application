@@ -192,7 +192,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
                       public void onLoading() {
                           
                       }
-                  }, mTransaction, null, TypeRepository.REMOTE);
+                  }, mTransaction, null, TypeRepository.LOCAL);
         mTransactionUseCase.subscribe(transactionRequest);
     }
     
@@ -217,7 +217,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
                       public void onLoading() {
                           
                       }
-                  }, mTransaction, null, TypeRepository.REMOTE);
+                  }, mTransaction, null, TypeRepository.LOCAL);
         mTransactionUseCase.subscribe(transactionRequest);
     }
     

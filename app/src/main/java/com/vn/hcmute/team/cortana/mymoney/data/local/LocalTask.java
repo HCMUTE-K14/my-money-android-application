@@ -52,6 +52,8 @@ public interface LocalTask {
         
         Observable<String> deleteSaving(String saving_id);
         
+        Observable<String> updateStatusSaving(List<Saving> savingList);
+        
         Observable<String> takeInSaving(String idWallet, String idSaving, String moneyWallet,
                   String moneySaving);
         
@@ -84,6 +86,8 @@ public interface LocalTask {
         
         Observable<String> updateEvent(Event event);
         
+        Observable<String> updateStatusEvent(List<Event> eventList);
+        
         Observable<String> deleteEvent(String idEvent);
     }
     
@@ -94,6 +98,8 @@ public interface LocalTask {
         Observable<String> addBudet(Budget budget);
         
         Observable<String> updateBudget(Budget budget);
+        
+        Observable<String> updateStatusBudget(List<Budget> budgetList);
         
         Observable<String> deleteBudget(String idBudget);
     }

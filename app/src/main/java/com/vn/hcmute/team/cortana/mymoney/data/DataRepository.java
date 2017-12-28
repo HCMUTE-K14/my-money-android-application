@@ -511,6 +511,11 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
+    public Observable<String> updateStatusLocalSaving(List<Saving> savingList) {
+        return mLocalRepository.updateStatusSaving(savingList);
+    }
+    
+    @Override
     public Observable<String> deleteLocalSaving(String saving_id) {
         return mLocalRepository.deleteSaving(saving_id);
     }
@@ -580,6 +585,11 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
+    public Observable<String> updateStatusLocalEvent(List<Event> eventList) {
+        return mLocalRepository.updateStatusEvent(eventList);
+    }
+    
+    @Override
     public Observable<String> deleteLocalEvent(String idEvent) {
         return mLocalRepository.deleteEvent(idEvent);
     }
@@ -598,6 +608,11 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     @Override
     public Observable<String> updateLocalBudget(Budget budget) {
         return mLocalRepository.updateBudget(budget);
+    }
+    
+    @Override
+    public Observable<String> updateStatusLocalBudget(List<Budget> budgetList) {
+        return mLocalRepository.updateStatusBudget(budgetList);
     }
     
     @Override

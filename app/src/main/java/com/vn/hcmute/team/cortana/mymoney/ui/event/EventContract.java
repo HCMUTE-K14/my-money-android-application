@@ -32,6 +32,7 @@ public interface EventContract {
         void createEvent(Event event);
         
         void updateEvent(Event event);
+        void updateStatusEvent(List<Event> eventList);
         
         void deleteEvent(String idEvent);
         

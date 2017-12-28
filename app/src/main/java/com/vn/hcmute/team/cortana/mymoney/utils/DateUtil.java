@@ -42,7 +42,6 @@ public class DateUtil {
         
         return mDay + "/" + mMonth + "/" + mYear;
     }
-    
     public static String convertTimeMillisToMonthAnhYear(String timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(timeMillis));
@@ -103,6 +102,9 @@ public class DateUtil {
         calendar.set(Calendar.DAY_OF_MONTH, day);
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
         return calendar.getTimeInMillis();
     }
     

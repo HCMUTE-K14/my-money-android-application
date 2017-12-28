@@ -33,11 +33,6 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                       public void onSuccess(Object value) {
                           getView().loading(false);
                           getView().showListSaving((List<Saving>) value);
-                        /*  if(value!=null){
-                              String saving=((List<Saving>)value).get(0).getCurrencies().getCurName();
-                              MyLogger.d("localSaving",saving);
-                          }*/
-                          
                       }
                       
                       @Override
@@ -109,6 +104,33 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                       }
                   }, saving, null);
         savingRequest.setTypeRepository(TypeRepository.LOCAL);
+        mSavingUseCase.subscribe(savingRequest);
+    }
+    
+    @Override
+    public void updateStatusSaving(List<Saving> savingList) {
+        SavingRequest savingRequest = new SavingRequest(Action.ACTION_UPDATE_STATUS_SAVING,
+                  new BaseCallBack<Object>() {
+                      @Override
+                      public void onSuccess(Object value) {
+                          getView().loading(false);
+                          getView().onSuccessUpdateSaving();
+                      
+                      }
+                  
+                      @Override
+                      public void onFailure(Throwable throwable) {
+                          getView().loading(false);
+                          getView().showError(throwable.getMessage());
+                      }
+                  
+                      @Override
+                      public void onLoading() {
+                          getView().loading(true);
+                      }
+                  }, null, null);
+        savingRequest.setTypeRepository(TypeRepository.LOCAL);
+        savingRequest.setSavingList(savingList);
         mSavingUseCase.subscribe(savingRequest);
     }
     

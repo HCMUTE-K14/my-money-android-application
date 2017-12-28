@@ -194,7 +194,7 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                           getView().loading(true);
                       }
                   }, null, new String[]{startDate, endDate, categoryId, walletId},
-                  TypeRepository.REMOTE);
+                  TypeRepository.LOCAL);
         
         mTransactionUseCase.subscribe(request);
         

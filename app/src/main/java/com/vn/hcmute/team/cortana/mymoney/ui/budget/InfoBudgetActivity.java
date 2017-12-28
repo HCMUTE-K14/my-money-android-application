@@ -254,9 +254,10 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
             seek_bar_saving_info.setProgress(getProgress());
             seek_bar_saving_info.setEnabled(false);
         } else {
-            txt_current_money.setText(NumberUtil.formatAmount(mBudget.getMoneyExpense(), ""));
+            double money=Double.parseDouble(mBudget.getMoneyGoal())-Double.parseDouble(mBudget.getMoneyExpense());
+            txt_current_money.setText(NumberUtil.formatAmount(String.valueOf(money), ""));
             txt_current_money.setTextColor(ContextCompat.getColor(this, R.color.color_red));
-            if (Double.parseDouble(mBudget.getMoneyExpense()) < 0) {
+            if (money < 0) {
                 txt_spent.setText(this.getString(R.string.txt_overspent));
             }
             
@@ -287,7 +288,8 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     
     public boolean checkCurrentMoney() {
         double currentMoney = Double.parseDouble(mBudget.getMoneyExpense());
-        return currentMoney >= 0 ? true : false;
+        double goalMoney=Double.parseDouble(mBudget.getMoneyGoal());
+        return currentMoney < goalMoney ? true : false;
     }
     
     public String getRangeDate() {

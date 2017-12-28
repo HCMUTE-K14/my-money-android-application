@@ -31,4 +31,5 @@ public interface EventComponent {
     void inject(ActivityAddEvent activityAddEvent);
     
     void inject(ActivitySelectEvent activitySelectEvent);
+    
 }

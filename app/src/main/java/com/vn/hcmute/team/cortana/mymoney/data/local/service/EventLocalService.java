@@ -176,11 +176,30 @@ public class EventLocalService extends DbContentProvider<Event> implements
     }
     
     @Override
+    public Callable<Integer> updateStatusEvent(final List<Event> eventList) {
+        return new Callable<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                for (Event event: eventList) {
+                    updateItemEvent(event);
+                }
+                return 1;
+            }
+        };
+    }
+    
+    @Override
     public int deleteEventByWallet(String wallet_id) {
         String whereClause = "wallet_id = ?";
         return mDatabase.delete(TABLE_NAME, whereClause, new String[]{whereClause});
     }
-    
+    public void updateItemEvent(Event event){
+        event.setStatus("1");
+        ContentValues contentValues = createContentValues(event);
+        String selection = "event_id=?";
+        String[] selectionArg = new String[]{event.getEventid()};
+        mDatabase.update(TABLE_NAME, contentValues, selection, selectionArg);
+    }
     public Currencies getCurrencies(String idCurrencies) {
         return CurrencyLocalService.getInstance(mDatabaseHelper).getCurrency(idCurrencies);
     }

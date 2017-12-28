@@ -19,6 +19,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -62,10 +63,15 @@ public class EventUseCase extends UseCase<EventRequest> {
                 doDeleteEvent(requestValues.getCallBack(), requestValues.getParam(),
                           requestValues.getTypeRepository());
                 break;
+            case Action.ACTION_UPDATE_STATUS_EVENT:
+                doUpdateStatusEvent(requestValues.getCallBack(),requestValues.getEventList(),requestValues.getTypeRepository());
+                break;
             default:
                 break;
         }
     }
+    
+    
     
     @Override
     public void unSubscribe() {
@@ -243,7 +249,41 @@ public class EventUseCase extends UseCase<EventRequest> {
             
         }
     }
+    private void doUpdateStatusEvent(final BaseCallBack<Object> callBack, List<Event> eventList,
+              TypeRepository typeRepository) {
+        this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
+            @Override
+            public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
+            
+                callBack.onSuccess(object);
+            }
+        
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                callBack.onFailure(e);
+            }
+        };
     
+        if (!this.mCompositeDisposable.isDisposed()) {
+            
+            if (typeRepository == TypeRepository.REMOTE) {
+               //
+            } else {
+                mDisposable = mDataRepository.updateStatusLocalEvent(eventList)
+                          .subscribeOn(Schedulers.computation())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .doOnSubscribe(new Consumer<Disposable>() {
+                              @Override
+                              public void accept(Disposable disposable) throws Exception {
+                                  callBack.onLoading();
+                              }
+                          })
+                          .singleOrError()
+                          .subscribeWith(this.mDisposableSingleObserver);
+            }
+            this.mCompositeDisposable.add(mDisposable);
+        }
+    }
     private void doDeleteEvent(final BaseCallBack<Object> callBack, final String[] params,
               TypeRepository typeRepository) {
         
@@ -308,7 +348,7 @@ public class EventUseCase extends UseCase<EventRequest> {
         private Event mEvent;
         private String[] params;
         private TypeRepository typeRepository;
-        
+        private List<Event> mEventList;
         public EventRequest(@NonNull String action, @Nullable BaseCallBack<Object> callBack,
                   @Nullable Event event, @Nullable String[] params) {
             this.action = action;
@@ -345,6 +385,13 @@ public class EventUseCase extends UseCase<EventRequest> {
             return params;
         }
         
+        public List<Event> getEventList() {
+            return mEventList;
+        }
+    
+        public void setEventList(List<Event> eventList) {
+            mEventList = eventList;
+        }
         public TypeRepository getTypeRepository() {
             return typeRepository;
         }

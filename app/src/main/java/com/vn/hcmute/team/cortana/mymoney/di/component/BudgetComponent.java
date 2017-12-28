@@ -30,4 +30,5 @@ public interface BudgetComponent {
     void inject(FragmentBudgetRunning fragmentBudgetRunning);
     
     void inject(FragmentBudgetFinished fragmentBudgetFinished);
+
 }

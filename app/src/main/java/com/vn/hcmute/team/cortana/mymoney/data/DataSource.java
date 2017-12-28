@@ -228,6 +228,8 @@ public interface DataSource {
         
         Observable<String> updateLocalSaving(Saving saving);
         
+        Observable<String> updateStatusLocalSaving(List<Saving> savingList);
+        
         Observable<String> deleteLocalSaving(String saving_id);
         
         Observable<String> takeInLocalSaving(String idWallet, String idSaving, String moneyWallet,
@@ -260,6 +262,8 @@ public interface DataSource {
         
         Observable<String> updateLocalEvent(Event event);
         
+        Observable<String> updateStatusLocalEvent(List<Event> eventList);
+        
         Observable<String> deleteLocalEvent(String idEvent);
         
         /*Area Budget*/
@@ -268,6 +272,8 @@ public interface DataSource {
         Observable<String> addLocalBudet(Budget budget);
         
         Observable<String> updateLocalBudget(Budget budget);
+        
+        Observable<String> updateStatusLocalBudget(List<Budget> budgetList);
         
         Observable<String> deleteLocalBudget(String idBudget);
         

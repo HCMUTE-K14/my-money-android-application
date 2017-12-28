@@ -51,6 +51,18 @@
           android:checkable="false"
           android:icon="@drawable/ic_bk_settings"
           android:title="@string/txt_navigation_settings" />
+        <item
+          android:id="@+id/navigation_item_login"
+          android:checkable="false"
+          android:icon="@drawable/ic_male_user"
+          android:title="@string/txt_login"
+          android:visible="true"/>
+        <item
+          android:id="@+id/navigation_item_logout"
+          android:checkable="false"
+          android:icon="@drawable/ic_shutdown"
+          android:title="@string/txt_logout"
+          android:visible="false"/>
       </menu>
     </item>
 

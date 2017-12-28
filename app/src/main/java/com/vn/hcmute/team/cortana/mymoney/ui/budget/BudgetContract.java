@@ -33,6 +33,8 @@ public interface BudgetContract {
         
         void updateBudget(Budget budget);
         
+        void updateStatusBudget(List<Budget> budgetList);
+        
         void deleteBudget(String budgetId);
         
         void unSubscribe();

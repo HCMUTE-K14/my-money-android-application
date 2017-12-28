@@ -52,7 +52,7 @@
       android:screenOrientation="portrait" />
 
     <!-- Main -->
-    <activity android:name=".ui.main.MainActivity">
+    <activity android:name=".ui.welcome.WelcomeActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
@@ -113,6 +113,9 @@
     <activity android:name=".ui.statistics.transaction.TransactionStatisticsActivity">
 
     </activity>
+    <!---->
+    <activity android:name=".ui.main.MainActivity"/>
+
   </application>
 
 </manifest>

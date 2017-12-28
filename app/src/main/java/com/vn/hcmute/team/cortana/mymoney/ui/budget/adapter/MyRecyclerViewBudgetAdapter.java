@@ -102,11 +102,12 @@ public class MyRecyclerViewBudgetAdapter extends
             txt_range_date.setText(getRangeDate(budget.getRangeDate()));
             seek_bar_budget
                       .setProgress(getProgress(budget.getMoneyExpense(), budget.getMoneyGoal()));
-            if (!checkNegative(budget.getMoneyExpense())) {
+            if (checkNegative(budget.getMoneyExpense(),budget.getMoneyGoal())) {
                 txt_money_expense.setText("+" + NumberUtil.formatAmount(budget.getMoneyExpense(),
                           budget.getWallet().getCurrencyUnit().getCurSymbol()));
             } else {
-                txt_money_expense.setText("-" + NumberUtil.formatAmount(budget.getMoneyExpense(),
+                double money=Double.parseDouble(budget.getMoneyExpense())-Double.parseDouble(budget.getMoneyGoal());
+                txt_money_expense.setText("-" + NumberUtil.formatAmount(String.valueOf(money),
                           budget.getWallet().getCurrencyUnit().getCurSymbol()));
                 
                 txt_money_expense.setTextColor(ContextCompat.getColor(mContext, R.color.color_red));
@@ -148,9 +149,10 @@ public class MyRecyclerViewBudgetAdapter extends
             return (int) proportion;
         }
         
-        public boolean checkNegative(String moneyExpense) {
+        public boolean checkNegative(String moneyExpense, String goalMoney) {
             double money = Double.parseDouble(moneyExpense);
-            return money < 0 ? true : false;
+            double moneyGoal=Double.parseDouble(goalMoney);
+            return money<moneyGoal ? true : false;
         }
         
         @Override

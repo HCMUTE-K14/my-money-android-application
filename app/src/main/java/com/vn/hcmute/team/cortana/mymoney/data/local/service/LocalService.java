@@ -46,6 +46,7 @@ public interface LocalService {
         
         Callable<Integer> takeOutSaving(String idWallet, String idSaving, String moneyWallet,
                   String moneySaving);
+        Callable<Integer> updateStatusSaving(List<Saving> savingList);
         
         Saving getSavingById(String id);
         
@@ -87,6 +88,8 @@ public interface LocalService {
         
         Event getEventById(String id);
         
+        Callable<Integer> updateStatusEvent(List<Event> eventList);
+        
         int deleteEventByWallet(String wallet_id);
     }
     
@@ -99,6 +102,8 @@ public interface LocalService {
         Callable<Integer> updateBudget(Budget budget);
         
         Callable<Integer> deleteBudget(String idBudget);
+        
+        Callable<Integer> updateStatusBudget(List<Budget> budgetList);
         
         int deleteBudgetFromWallet(String wallet_id);
     }
