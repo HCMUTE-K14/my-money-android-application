@@ -338,8 +338,6 @@
   <string name="message_warning_transfer_money">You need more than 2 wallets to transfer money</string>
   <string name="txt_cash_book">Cash Books</string>
   <string name="message_warning_more_than_contact">Can not more than 1 contact</string>
-  <string name="txt_from">From</string>
-  <string name="txt_to">To</string>
   <string name="txt_select_time">Select time</string>
 
   <string name="txt_logout">Logout</string>
@@ -347,4 +345,7 @@
   <string name="txt_calculator">Calculator</string>
   <string name="txt_export_excel">Export Excel</string>
   <string name="txt_convert_currency">Convert currency</string>
+  <string name="txt_from">From</string>
+  <string name="txt_to">To</string>
+  <string name="txt_enter_money">Enter money</string>
 </resources>

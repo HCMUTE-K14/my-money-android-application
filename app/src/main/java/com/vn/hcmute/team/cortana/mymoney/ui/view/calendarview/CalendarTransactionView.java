@@ -145,7 +145,7 @@ public class CalendarTransactionView extends RelativeLayout {
             }
         };
         
-        new Handler().postDelayed(runnable, 100);
+        new Handler().postDelayed(runnable, 200);
     }
     
     private void initTabLayout() {

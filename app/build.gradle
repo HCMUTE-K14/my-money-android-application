@@ -118,6 +118,8 @@ dependencies {
 
     compile 'org.greenrobot:eventbus:3.0.0'
 
+    compile 'de.hdodenhof:circleimageview:2.2.0'
+
     androidTestCompile 'junit:junit:4.12'
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

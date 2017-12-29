@@ -10,6 +10,7 @@ import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.toolsui.ToolsAdapter.ItemClickListener;
+import com.vn.hcmute.team.cortana.mymoney.ui.tools.toolsui.exchanger.ExchangerCurrency;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class ToolsMainFragment extends BaseFragment {
     RecyclerView mRecyclerView;
     List<ItemTool> mItemTools;
     private ToolsAdapter mToolsAdapter;
-    
+    private ExchangerCurrency mExchangerCurrency;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_main_tools;
@@ -47,6 +48,14 @@ public class ToolsMainFragment extends BaseFragment {
     protected void initializeActionBar(View rootView) {
         getActivity().setTitle(getString(R.string.txt_navigation_tools));
     }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==150||requestCode==151){
+            mExchangerCurrency.onActivityResult(requestCode,resultCode,data);
+        }
+    }
+    
     private ToolsAdapter.ItemClickListener mItemClickListener=new ItemClickListener() {
         @Override
         public void onItemClick(ItemTool itemTool) {
@@ -57,8 +66,8 @@ public class ToolsMainFragment extends BaseFragment {
                     startActivity(intent);
                     break;
                 case Type.CONVERT_CURRENCY:
-                    
-                    Toast.makeText(getActivity(), itemTool.getName(), Toast.LENGTH_SHORT).show();
+                    mExchangerCurrency=new ExchangerCurrency();
+                    mExchangerCurrency.show(getFragmentManager(),"");
                     break;
                 case Type.EXPORT_EXCEL:
                     Toast.makeText(getActivity(), itemTool.getName(), Toast.LENGTH_SHORT).show();
@@ -72,7 +81,7 @@ public class ToolsMainFragment extends BaseFragment {
         mToolsAdapter=new ToolsAdapter(getActivity(),mItemTools);
         mToolsAdapter.setItemClickListener(mItemClickListener);
         mRecyclerView.setAdapter(mToolsAdapter);
-    }
+}
     private void init(){
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         mItemTools=this.getListItemTools();

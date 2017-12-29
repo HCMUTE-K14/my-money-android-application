@@ -424,6 +424,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                 
             }
         }
+        
     }
     
     @Override

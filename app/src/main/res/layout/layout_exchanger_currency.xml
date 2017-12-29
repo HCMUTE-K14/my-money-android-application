@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="280dp"
+    android:orientation="vertical"
+    android:weightSum="6">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="5">
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|left"
+        android:paddingLeft="20dp"
+        android:text="@string/enter_currencies"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
+    </LinearLayout>
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="0.8dp"
+      android:background="@color/gray" />
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:orientation="vertical"
+      android:weightSum="5">
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:weightSum="2">
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:orientation="horizontal"
+          android:weightSum="9">
+          <LinearLayout
+            android:id="@+id/linear_currency_from"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:background="@drawable/button_transparent_bounded_darken"
+            android:gravity="center|left">
+            <ImageView
+              android:id="@+id/image_from"
+              android:layout_width="60dp"
+              android:layout_height="40dp"
+              android:layout_marginLeft="5dp"
+              android:src="@drawable/icon_1"/>
+            <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginLeft="3dp"
+              android:gravity="center|left">
+              <TextView
+                android:id="@+id/txt_from_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_from"
+                android:textSize="13dp" />
+              <TextView
+                android:id="@+id/txt_currency_from"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_from_currency"
+                android:text="USD"
+                android:textSize="17dp" />
+            </RelativeLayout>
+
+          </LinearLayout>
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <EditText
+              android:id="@+id/edit_money_from"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="10dp"
+              android:layout_marginRight="15dp"
+              android:backgroundTint="@color/green"
+              android:text="1"
+              android:textSize="25dp" />
+          </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:weightSum="9"
+          android:orientation="horizontal">
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:gravity="center">
+              <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_switch"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:tint="@color/green"
+                android:background="@drawable/custom_bg_item_tool"
+                android:src="@drawable/ic_move"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/green" />
+          </LinearLayout>
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="3">
+            <View
+              android:layout_width="match_parent"
+              android:layout_height="0.8dp"
+              android:background="@color/gray" />
+          </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:orientation="horizontal"
+          android:weightSum="9">
+          <LinearLayout
+            android:id="@+id/linear_currency_to"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:gravity="center|left">
+            <ImageView
+              android:id="@+id/image_to"
+              android:layout_width="60dp"
+              android:layout_height="40dp"
+              android:layout_marginLeft="5dp"
+              android:src="@drawable/icon_1"/>
+            <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginLeft="3dp"
+              android:gravity="center|left">
+              <TextView
+                android:id="@+id/txt_to_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_to"
+                android:textSize="13dp" />
+              <TextView
+                android:id="@+id/txt_currency_to"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_to_currency"
+                android:text="VND"
+                android:textSize="17dp" />
+            </RelativeLayout>
+          </LinearLayout>
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
+            <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+              <TextView
+                android:id="@+id/txt_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:hint="Money"
+                android:text=""
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="20dp" />
+
+            </RelativeLayout>
+          </LinearLayout>
+        </LinearLayout>
+      </LinearLayout>
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="@color/gray" />
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="2"
+        android:layout_weight="4">
+        <LinearLayout
+          android:id="@+id/linear_exchange"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:background="@drawable/button_transparent_bounded_darken"
+          android:gravity="center">
+          <ImageView
+            android:id="@+id/image_sync"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:tint="@color/green"
+            android:src="@drawable/ic_sync" />
+        </LinearLayout>
+        <View
+          android:layout_width="0.8dp"
+          android:layout_height="match_parent"
+          android:background="@color/gray" />
+        <LinearLayout
+          android:id="@+id/linear_transfer"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:background="@drawable/button_transparent_bounded_darken"
+          android:gravity="center">
+          <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:tint="@color/green"
+            android:src="@drawable/ic_cancel" />
+        </LinearLayout>
+      </LinearLayout>
+
+    </LinearLayout>
+
+  </LinearLayout>
+
+</android.support.v7.widget.CardView>
