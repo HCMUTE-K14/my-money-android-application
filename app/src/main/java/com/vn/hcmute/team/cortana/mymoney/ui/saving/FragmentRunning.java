@@ -44,7 +44,7 @@ public class FragmentRunning extends BaseFragment implements
     private List<Saving> mSavingList;
     private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
     private EmptyAdapter mEmptyAdapter;
-    
+    private List<Saving> mSavingsStatusUpdate;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_saving_running;
@@ -165,8 +165,21 @@ public class FragmentRunning extends BaseFragment implements
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }
+        checkUpdateStatus(mSavingList);
     }
-    
+    private void checkUpdateStatus(List<Saving> savingList) {
+        mSavingsStatusUpdate.clear();
+        long currentMillisecond=System.currentTimeMillis();
+        for(Saving saving:savingList){
+            long millisecondEndSaving=Long.parseLong(saving.getDate());
+            if(millisecondEndSaving<currentMillisecond){
+                mSavingsStatusUpdate.add(saving);
+            }
+        }
+        if(mSavingsStatusUpdate!=null&&mSavingsStatusUpdate.size()>0){
+            mSavingPresenter.updateStatusSaving(mSavingsStatusUpdate);
+        }
+    }
     @Override
     public void showSaving() {
         
@@ -184,7 +197,11 @@ public class FragmentRunning extends BaseFragment implements
     
     @Override
     public void onSuccessUpdateSaving() {
-        
+        mSavingList.clear();
+        if (mMyRecyclerViewSavingAdapter != null) {
+            mMyRecyclerViewSavingAdapter.notifyDataSetChanged();
+        }
+        mSavingPresenter.getSaving();
     }
     
     @Override
@@ -234,5 +251,6 @@ public class FragmentRunning extends BaseFragment implements
     public void init() {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         mSavingList = new ArrayList<>();
+        mSavingsStatusUpdate=new ArrayList<>();
     }
 }

@@ -44,7 +44,7 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
     private MyRecyclerViewBudgetAdapter mMyRecyclerViewBudgetAdapter;
     private List<Budget> mBudgetList;
     private EmptyAdapter mEmptyAdapter;
-    
+    private List<Budget> mBudgetsUpdateStatus;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_budget_running;
@@ -86,6 +86,7 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
     protected void initialize() {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         mBudgetList = new ArrayList<>();
+        mBudgetsUpdateStatus=new ArrayList<>();
         mBudgetPresenter.getBudget();
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -122,6 +123,22 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
         }
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
+        }
+        checkUpdateStatus(mBudgetList);
+    }
+    
+    private void checkUpdateStatus(List<Budget> budgetList) {
+        mBudgetsUpdateStatus.clear();
+        long currentMillisecond=System.currentTimeMillis();
+        for(Budget budget:budgetList){
+            String millisecond=budget.getRangeDate().split("/")[1];
+            long millisecondEndBudget=Long.parseLong(millisecond);
+            if(millisecondEndBudget<currentMillisecond){
+                mBudgetsUpdateStatus.add(budget);
+            }
+        }
+        if(mBudgetsUpdateStatus!=null&&mBudgetsUpdateStatus.size()>0){
+            mBudgetPresenter.updateStatusBudget(mBudgetsUpdateStatus);
         }
     }
     
@@ -178,7 +195,11 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
     
     @Override
     public void onSuccessUpdateBudget(String message) {
-        
+        mBudgetList.clear();
+        if (mMyRecyclerViewBudgetAdapter != null) {
+            mMyRecyclerViewBudgetAdapter.notifyDataSetChanged();
+        }
+        mBudgetPresenter.getBudget();
     }
     
     @Override

@@ -41,6 +41,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.event.EventMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.login.LoginActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.SavingMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.StatisticsMainFragment;
+import com.vn.hcmute.team.cortana.mymoney.ui.tools.toolsui.ToolsMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletListener;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletView;
@@ -263,7 +264,16 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                       .replace(R.id.container_fragment, fragment).commit();
         }
     };
-    
+    private Runnable runnableAttachToolsFragment = new Runnable() {
+        @Override
+        public void run() {
+            mNavigationView.getMenu().findItem(R.id.navigation_item_tools).setChecked(true);
+            ToolsMainFragment fragment = new ToolsMainFragment();
+            mCurrentFragment = fragment;
+            getSupportFragmentManager().beginTransaction()
+                      .replace(R.id.container_fragment, fragment).commit();
+        }
+    };
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -560,6 +570,9 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
             case R.id.navigation_item_trends:
                 mRunnable = runnableAttachStatisticsFragment;
             case R.id.navigation_item_contacts:
+                break;
+            case R.id.navigation_item_tools:
+                mRunnable=runnableAttachToolsFragment;
                 break;
             case R.id.navigation_item_login:
                 

@@ -311,7 +311,7 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     }
     
     public boolean checkRangeDate() {
-        return DateUtil.getLongAsDate(dayOfMonth, monthOfYear, monthOfYear) >
-               DateUtil.getLongAsDate(dayOfMonthEnd, monthOfYearEnd, monthOfYearEnd) ? false : true;
+        return DateUtil.getLongAsDate(dayOfMonth, monthOfYear, year) >
+               DateUtil.getLongAsDate(dayOfMonthEnd, monthOfYearEnd, yearEnd) ? false : true;
     }
 }

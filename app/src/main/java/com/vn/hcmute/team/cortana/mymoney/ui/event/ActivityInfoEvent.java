@@ -33,6 +33,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.remote.WalletUseCase.WalletReq
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -175,8 +176,10 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
     /*Area OnClick*/
     @OnClick(R.id.btn_mark_as_finished)
     public void onClickMarkAsFinished(View view) {
+        MyLogger.d("updateStatus1");
         mEvent.setStatus("1");
         mEventPresenter.updateEvent(mEvent);
+        MyLogger.d("updateStatus2");
     }
     
     @OnClick(R.id.btn_list_transaction)

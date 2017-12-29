@@ -307,8 +307,8 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     }
     
     public boolean checkRangeDate() {
-        return DateUtil.getLongAsDate(dayOfMonth, monthOfYear, monthOfYear) >
-               DateUtil.getLongAsDate(dayOfMonthEnd, monthOfYearEnd, monthOfYearEnd) ? false : true;
+        return DateUtil.getLongAsDate(dayOfMonth, monthOfYear, year) >
+               DateUtil.getLongAsDate(dayOfMonthEnd, monthOfYearEnd, yearEnd) ? false : true;
     }
     
     public void alertDiaglog(String message) {

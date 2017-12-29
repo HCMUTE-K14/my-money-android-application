@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -30,10 +32,16 @@ public class CalculatorActivity extends BaseActivity implements DialogCallback {
     TextView txt_input;
     @BindView(R.id.txt_currency)
     TextView txt_currency;
-    
+    @BindView(R.id.txt_title)
+    TextView txt_title;
+    @BindView(R.id.image_check)
+    ImageView image_check;
+    @BindView(R.id.linear_currencies_big)
+    LinearLayout linear_currencies_big;
     Currencies mCurrencies;
+    private boolean mFlag=false;
     private DialogFragmentTransferCurrencies mDialogFragmentTransferCurrencies;
-    
+ 
     @Override
     public int getLayoutId() {
         return R.layout.activity_calculator;
@@ -59,6 +67,7 @@ public class CalculatorActivity extends BaseActivity implements DialogCallback {
         super.onCreate(savedInstanceState);
         
         showData();
+        
         if (mCurrencies == null) {
             mDialogFragmentTransferCurrencies = new DialogFragmentTransferCurrencies("VND");
         } else {
@@ -140,6 +149,9 @@ public class CalculatorActivity extends BaseActivity implements DialogCallback {
     
     @OnClick(R.id.check_box)
     public void onClickCheck(View view) {
+        if(mFlag){
+            finish();
+        }
         try {
             Double.parseDouble(txt_input.getText().toString().trim());
             
@@ -157,14 +169,13 @@ public class CalculatorActivity extends BaseActivity implements DialogCallback {
     @OnClick(R.id.linear_currencies)
     public void onClickCurrencies(View view) {
         mDialogFragmentTransferCurrencies.show(getSupportFragmentManager(), "");
-        
     }
     
     public void showData() {
         Intent intent = getIntent();
         String goalMoney = intent.getStringExtra("goal_money");
         mCurrencies = intent.getParcelableExtra("currencies");
-        
+        mFlag=intent.getBooleanExtra("flag",false);
         if (goalMoney != null) {
             txt_input.setText(goalMoney);
         } else {
@@ -173,6 +184,11 @@ public class CalculatorActivity extends BaseActivity implements DialogCallback {
         
         if (mCurrencies != null) {
             txt_currency.setText(mCurrencies.getCurSymbol());
+        }
+        if(mFlag){
+            linear_currencies_big.setVisibility(View.GONE);
+            txt_title.setText(getString(R.string.txt_calculator));
+            image_check.setImageResource(R.drawable.ic_back);
         }
         
     }
@@ -202,13 +218,15 @@ public class CalculatorActivity extends BaseActivity implements DialogCallback {
             alertDiaglog(getString(R.string.erro_negative));
             return;
         }
-        Intent returnIntent = new Intent();
-        String amount = txt_input.getText().toString();
-        returnIntent.putExtra("result_view",
-                  NumberUtil.formatAmount(amount, txt_currency.getText().toString().trim()));
-        returnIntent.putExtra("result", amount);
-        setResult(Activity.RESULT_OK, returnIntent);
-        finish();
+        if(!mFlag){
+            Intent returnIntent = new Intent();
+            String amount = txt_input.getText().toString();
+            returnIntent.putExtra("result_view",
+                      NumberUtil.formatAmount(amount, txt_currency.getText().toString().trim()));
+            returnIntent.putExtra("result", amount);
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
+        }
     }
     
     

@@ -210,16 +210,17 @@ public class EventUseCase extends UseCase<EventRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-            String userid = mDataRepository.getUserId();
-            String token = mDataRepository.getUserToken();
-            
-            if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
-                callBack.onFailure(new UserLoginException(
-                          mContext.getString(R.string.message_warning_need_login)));
-                return;
-            }
+           
             
             if (typeRepository == TypeRepository.REMOTE) {
+                String userid = mDataRepository.getUserId();
+                String token = mDataRepository.getUserToken();
+    
+                if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
+                    callBack.onFailure(new UserLoginException(
+                              mContext.getString(R.string.message_warning_need_login)));
+                    return;
+                }
                 mDisposable = mDataRepository.updateEvent(event, userid, token)
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())

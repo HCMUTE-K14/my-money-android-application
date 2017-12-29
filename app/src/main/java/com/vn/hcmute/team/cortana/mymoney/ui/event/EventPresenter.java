@@ -7,6 +7,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.EventUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.EventUseCase.EventRequest;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -88,10 +89,12 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
     
     @Override
     public void updateEvent(Event event) {
+       
         BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
             
             @Override
             public void onSuccess(Object value) {
+                MyLogger.d("succcess");
                 getView().loading(false);
                 getView().onSuccessUpdateEvent((String) value);
                 
@@ -99,6 +102,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
             
             @Override
             public void onFailure(Throwable throwable) {
+                MyLogger.d("fail");
                 getView().loading(false);
                 getView().onFailure(throwable.getMessage());
             }
