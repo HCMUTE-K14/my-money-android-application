@@ -47,6 +47,10 @@ public class FragmentByTime extends BaseFragment {
     private ByTimeAdapter mTransactionByTimeAdapter;
     private Wallet mWallet;
     
+    public FragmentByTime() {
+    
+    }
+    
     public FragmentByTime(List<Transaction> transactions, int idCategory, Wallet wallet,
               List<String> listDates) {
         this.mTransactions = transactions;
@@ -62,17 +66,17 @@ public class FragmentByTime extends BaseFragment {
     
     @Override
     protected void initializeDagger() {
-
+    
     }
     
     @Override
     protected void initializePresenter() {
-
+    
     }
     
     @Override
     protected void initializeActionBar(View rootView) {
-
+    
     }
     
     @Override

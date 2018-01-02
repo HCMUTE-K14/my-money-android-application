@@ -293,7 +293,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
             mPreferencesHelper.putLastStartDateAndEndDate(mStartDate + "-" + mEndDate);
         }
         if (mFragment != null) {
-            mFramentManager.beginTransaction().remove(mFragment).commitAllowingStateLoss();
+            mFramentManager.beginTransaction().remove(mFragment).commit();
         }
         if (mIsViewByCategory) {
             mFragment = new FragmentTransactionByCategory(this.getContext(), list);
@@ -301,7 +301,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
             mFragment = new FragmentTransactionByTime(this.getContext(), list);
         }
         mFramentManager.beginTransaction().replace(R.id.container, mFragment)
-                  .commitAllowingStateLoss();
+                  .commit();
     }
     
     @Override
