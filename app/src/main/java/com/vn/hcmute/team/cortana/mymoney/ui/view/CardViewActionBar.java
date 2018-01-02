@@ -21,7 +21,6 @@ public class CardViewActionBar extends RelativeLayout {
     
     public static final String DEFAULT_TITLE = "Title";
     public static final int DEFAULT_BACK_ACTION = R.drawable.ic_cancel;
-    public static final String DEFAULT_TEXT_ACTION = "Done";
     
     View mRootView;
     
@@ -30,7 +29,7 @@ public class CardViewActionBar extends RelativeLayout {
     TextView mTextViewAction;
     LinearLayout mBackButton;
     String mTitleText = DEFAULT_TITLE;
-    String mActionText = DEFAULT_TEXT_ACTION;
+    String mActionText = "Done";
     Drawable mIconBack;
     boolean isHideAction;
     

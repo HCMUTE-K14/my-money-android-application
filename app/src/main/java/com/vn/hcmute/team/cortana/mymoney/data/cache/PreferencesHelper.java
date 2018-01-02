@@ -28,6 +28,7 @@ public class PreferencesHelper {
     private final String PREF_TRANSACTION_VIEW_BY = "PREF_TRANSACTION_VIEW_BY";
     private final String PREF_TIME_RANGE_TRANSACTION = "PREF_TIME_RANGE_TRANSACTION";
     private final String PREF_START_DATE_AND_END_DATE = "PREF_START_DATE_AND_END_DATE";
+    private final String PREF_LANGUAGE = "PREF_LANGUAGE";
     
     private SharedPreferences mSharedPreferences;
     private Gson mGson;
@@ -144,5 +145,13 @@ public class PreferencesHelper {
     
     public String getLastStartDateAndEndDate() {
         return mSharedPreferences.getString(PREF_START_DATE_AND_END_DATE, "");
+    }
+    
+    public void putLanguage(String code){
+        mSharedPreferences.edit().putString(PREF_LANGUAGE, code).apply();
+    }
+    
+    public String getLanguage(){
+        return mSharedPreferences.getString(PREF_LANGUAGE, "en");
     }
 }

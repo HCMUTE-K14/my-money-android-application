@@ -398,8 +398,8 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
         
         //add colors to dataset
         ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(Color.RED);
-        colors.add(Color.GREEN);
+        colors.add(Color.parseColor("#990000"));
+        colors.add(Color.parseColor("#108445"));
         pieDataSet.setColors(colors);
         
         //add legend to chart

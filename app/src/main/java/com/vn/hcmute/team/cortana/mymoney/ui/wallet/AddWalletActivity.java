@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.MyMoneyApplication;
 import com.vn.hcmute.team.cortana.mymoney.R;
+import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.di.component.ApplicationComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.DaggerWalletComponent;
 import com.vn.hcmute.team.cortana.mymoney.di.component.WalletComponent;
@@ -26,6 +27,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.currencies.CurrenciesActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.iconshop.SelectIconActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.main.MainActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.CardViewActionBar;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.WalletContract.View;
@@ -43,6 +45,10 @@ import javax.inject.Inject;
 public class AddWalletActivity extends BaseActivity implements View {
     
     public static final String TAG = AddWalletActivity.class.getSimpleName();
+    
+    public static final String FIRST_TIME_RUNNING = "FIRST_TIME_RUNNING";
+    
+    private boolean FLAG_FIRST_TIME_RUNNING = false;
     
     @BindView(R.id.card_view_action_bar)
     CardViewActionBar mCardViewActionBar;
@@ -122,6 +128,11 @@ public class AddWalletActivity extends BaseActivity implements View {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        if (intent != null) {
+            FLAG_FIRST_TIME_RUNNING = intent
+                      .getBooleanExtra(AddWalletActivity.FIRST_TIME_RUNNING, false);
+        }
         initializeView();
     }
     
@@ -291,10 +302,17 @@ public class AddWalletActivity extends BaseActivity implements View {
     }
     
     private void finishAddWallet(Wallet wallet) {
-        Intent intent = new Intent();
-        intent.putExtra("wallet", wallet);
-        setResult(ResultCode.ADD_WALLET_RESULT_CODE, intent);
-        finish();
+        if (FLAG_FIRST_TIME_RUNNING) {
+            PreferencesHelper.getInstance(this).putCurrentWallet(wallet);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent();
+            intent.putExtra("wallet", wallet);
+            setResult(ResultCode.ADD_WALLET_RESULT_CODE, intent);
+            finish();
+        }
     }
     
     private void openCurrencyActivity() {

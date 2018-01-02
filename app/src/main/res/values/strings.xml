@@ -341,4 +341,14 @@
   <string name="txt_from">From</string>
   <string name="txt_to">To</string>
   <string name="txt_select_time">Select time</string>
+  <string name="settings_choose_language">Choose Language</string>
+  <string name="settings_backup_database">Backup Database</string>
+  <string name="settings_restore_database">Restore Database</string>
+  <string name="settings_about_me">About</string>
+  <string name="choose_language">Choose Language</string>
+  <string name="backup_file_name">Backup to file</string>
+  <string name="backup_file_ext">.db</string>
+  <string name="message_backup_failed">Backup Failed</string>
+  <string name="message_backup_successfully">Backup Successfully. File save at %1$s</string>
+  <string name="txt_welcome">Welcome</string>
 </resources>

@@ -4,9 +4,12 @@ import android.content.Context;
 import com.vn.hcmute.team.cortana.mymoney.ApplicationConfig;
 import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Created by infamouSs on 9/9/17.
@@ -59,14 +62,22 @@ public class NumberUtil {
         if (amount == 0.0) {
             return "0" + " " + symbolCurrency;
         }
-        DecimalFormat formatter = new DecimalFormat(ApplicationConfig.DEFAULT_AMOUNT_PATTERN);
+        NumberFormat nf = NumberFormat.getNumberInstance(Locale.ENGLISH);
+        DecimalFormat formatter = (DecimalFormat) nf;
+        formatter.applyPattern(ApplicationConfig.DEFAULT_AMOUNT_PATTERN);
         String format = formatter.format(amount);
         String[] arr = format.split("\\.");
-        double temp = Double.parseDouble(arr[1].trim());
-        if (temp == 0.0) {
-            return arr[0] + " " + symbolCurrency;
-        } else {
-            return formatter.format(amount) + " " + symbolCurrency;
+        MyLogger.d(number);
+        MyLogger.d(arr, true);
+        try {
+            double temp = Double.parseDouble(arr[1].trim());
+            if (temp == 0.0) {
+                return arr[0] + " " + symbolCurrency;
+            } else {
+                return formatter.format(amount) + " " + symbolCurrency;
+            }
+        } catch (Exception exx) {
+            return "";
         }
         
     }

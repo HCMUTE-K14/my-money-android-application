@@ -32,7 +32,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction.FragmentTran
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.SelectTimeRangeDialog.SelectTimeRangeListener;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.CalendarTransactionView;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.CalendarTransactionView.Listener;
-import com.vn.hcmute.team.cortana.mymoney.ui.wallet.AddWalletActivity;
+import com.vn.hcmute.team.cortana.mymoney.ui.welcome.WelcomeActivity;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.DebtLoanUseCase;
@@ -136,7 +136,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
         Wallet currentWallet = mPreferencesHelper.getCurrentWallet();
         if (currentWallet == null) {
             //TODO: OPEN SLASH SCREEN
-            Intent intent = new Intent(this.getContext(), AddWalletActivity.class);
+            Intent intent = new Intent(this.getContext(), WelcomeActivity.class);
             startActivity(intent);
             
         } else {

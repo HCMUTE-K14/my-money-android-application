@@ -40,6 +40,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.debts.DebtsLoanMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.EventMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.login.LoginActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.SavingMainFragment;
+import com.vn.hcmute.team.cortana.mymoney.ui.settings.SettingsActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.StatisticsMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet.SelectWalletListener;
@@ -59,7 +60,6 @@ import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
@@ -274,8 +274,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     protected void initializeDagger() {
         ApplicationComponent applicationComponent = ((MyMoneyApplication) this.getApplication())
                   .getAppComponent();
-        MyLogger.d(this.getDatabasePath("dbo_my_money.db"));
-    
+        
         mPreferenceHelper = applicationComponent.preferencesHelper();
         
         WalletComponent walletComponent = DaggerWalletComponent.builder()
@@ -486,7 +485,6 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         if (mCurrentWallet == null) {
             return;
         }
-        mCurrentWallet = mPreferenceHelper.getCurrentWallet();
         GlideImageLoader.load(this, DrawableUtil.getDrawable(this, mCurrentWallet.getWalletImage()),
                   mImageViewIconWallet);
         
@@ -562,6 +560,10 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
             case R.id.navigation_item_trends:
                 mRunnable = runnableAttachStatisticsFragment;
             case R.id.navigation_item_contacts:
+                break;
+            case R.id.navigation_item_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                mDrawerLayout.closeDrawers();
                 break;
             default:
                 break;

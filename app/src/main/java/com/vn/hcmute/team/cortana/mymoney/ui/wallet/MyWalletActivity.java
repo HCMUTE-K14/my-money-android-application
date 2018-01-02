@@ -216,7 +216,6 @@ public class MyWalletActivity extends BaseActivity implements View {
     public void showListWallet(List<Wallet> wallets) {
         
         if (!TextUtil.isEmpty(mExceptWalletId)) {
-            MyLogger.d(TAG, mExceptWalletId);
             Wallet walletExcept = new Wallet();
             walletExcept.setWalletid(mExceptWalletId);
             wallets.remove(walletExcept);
@@ -226,7 +225,7 @@ public class MyWalletActivity extends BaseActivity implements View {
     
     @Override
     public void onAddWalletSuccess(String message, Wallet wallet) {
-        
+        MyLogger.d(TAG, wallet.getWalletName());
     }
     
     @Override

@@ -111,13 +111,13 @@
   <string name="txt_select_wallet">Chọn ví</string>
   <string name="txt_total">Tổng cộng</string>
   <string name="txt_include_in_total">Bao gồm trong tổng</string>
-  <string name="txt_add_wallet">Thêm</string>
+  <string name="txt_add_wallet">Thêm ví</string>
   <string name="txt_my_wallet">Quản lý ví</string>
   <string name="action_edit">Sửa</string>
   <string name="action_remove_wallet">Xóa</string>
   <string name="title_activity_main2">Main2Activity</string>
   <string name="action_archive">Archive</string>
-  <string name="txt_init_balance">Initial Balance</string>
+  <string name="txt_init_balance">Khoản tiền ban đầu</string>
   <string name="txt_currency">Đơn vị tiền tệ</string>
   <string name="txt_enable_notify">Bật thông báo</string>
   <string name="txt_quick_help_transaction_notification">Get notified when there are changes to this wallet\'s transactions.</string>
@@ -125,7 +125,7 @@
   <string name="txt_quick_help_exclude_from_total">Ignore this wallet and its balance in the "Total"  mode.</string>
   <string name="txt_archive">Archive</string>
   <string name="txt_info__archive"><![CDATA[Freeze this wallet and stop generating bills &amp; recurring transactions.]]></string>
-  <string name="txt_remove_wallet">Xóa</string>
+  <string name="txt_remove_wallet">Xóa ví</string>
   <string name="message_validate_name_wallet">Tên của ví không thể bỏ trống</string>
   <string name="message_validate_currency_wallet">Hãy chọn đơn vị tiền tệ</string>
   <string name="txt_creating_wallet">Đang tạo ví...</string>
@@ -341,4 +341,8 @@
   <string name="txt_from">Từ</string>
   <string name="txt_to">Đến</string>
   <string name="txt_select_time">Chọn thời gian</string>
+  <string name="settings_choose_language">Chọn ngôn ngữ</string>
+  <string name="settings_backup_database">Sao lưu dữ liệu</string>
+  <string name="settings_restore_database">Khôi phục dữ liệu</string>
+  <string name="settings_about_me">Về chúng tôi</string>
 </resources>

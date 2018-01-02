@@ -13,6 +13,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
+import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
@@ -195,7 +196,7 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 updateOrDeleteDebtLoanWhenUpdateTransaction("delete", transaction);
                 updateBudget(transaction.getCategory().getId(), transaction.getType(),
                           transaction.getAmount(), 2);
-
+                
                 TransPersonService.getInstance(mDatabaseHelper).delete(transaction.getTrans_id());
                 
                 return mDatabase.delete(TABLE_NAME, selection, selectionArg);
@@ -209,12 +210,12 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
             public Integer call() throws Exception {
                 String selection = "wallet_id = ?";
                 String[] selectionArg = new String[]{wallet_id};
-                
-                //                updateMoneyWalletWhenAddOrDeleteTransaction("delete", transaction);
-                //
-                //                updateOrDeleteDebtLoanWhenUpdateTransaction("delete", transaction);
-                //
-                //                TransPersonService.getInstance(mDatabaseHelper).delete(transaction.getTrans_id());
+    
+//                updateMoneyWalletWhenAddOrDeleteTransaction("delete", transaction);
+//
+//                updateOrDeleteDebtLoanWhenUpdateTransaction("delete", transaction);
+//
+//                TransPersonService.getInstance(mDatabaseHelper).delete(transaction.getTrans_id());
                 
                 return mDatabase.delete(TABLE_NAME, selection, selectionArg);
             }
@@ -227,7 +228,12 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
         return new Callable<List<Transaction>>() {
             @Override
             public List<Transaction> call() throws Exception {
-                String selection = "wallet_id = ? and date_create >= ? and date_create <= ?";
+                String selection;
+                if (TextUtil.isEmpty(wallet_id)) {
+                    selection = "date_create >= ? and date_create <= ?";
+                } else {
+                    selection = "wallet_id = ? and date_create >= ? and date_create <= ?";
+                }
                 String[] selectionArg = new String[]{wallet_id, start, end};
                 
                 Cursor cursor = query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
@@ -324,7 +330,6 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                           "tbl_transaction.cate_id = tbl_category.cate_id and " +
                           "tbl_category.cate_id = ? and " +
                           "tbl_transaction.date_create >= ? and tbl_transaction.date_create <= ?");
-                MyLogger.d("QUERY: " + query.toString());
                 Cursor cursor = rawQuery(query.toString(),
                           new String[]{wallet_id, cate_id, start, end});
                 
