@@ -47,27 +47,19 @@ public class AddWalletActivity extends BaseActivity implements View {
     public static final String TAG = AddWalletActivity.class.getSimpleName();
     
     public static final String FIRST_TIME_RUNNING = "FIRST_TIME_RUNNING";
-    
-    private boolean FLAG_FIRST_TIME_RUNNING = false;
-    
     @BindView(R.id.card_view_action_bar)
     CardViewActionBar mCardViewActionBar;
-    
     @BindView(R.id.image_view_icon)
     ImageView mImageViewIcon;
-    
     @BindView(R.id.txt_name_wallet)
     EditText mEditTextNameWallet;
-    
     @BindView(R.id.txt_currency)
     EditText mEditTextCurrency;
-    
     @BindView(R.id.txt_balance)
     EditText mEditTextBalance;
-    
     @Inject
     WalletPresenter mWalletPresenter;
-    
+    private boolean FLAG_FIRST_TIME_RUNNING = false;
     private Currencies mCurrentCurrency;
     private String mIconWallet;
     private String mCurrentBalance;

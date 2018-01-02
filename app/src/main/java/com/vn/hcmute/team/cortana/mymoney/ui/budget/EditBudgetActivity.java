@@ -105,6 +105,7 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
         getData();
         showData();
         mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
     

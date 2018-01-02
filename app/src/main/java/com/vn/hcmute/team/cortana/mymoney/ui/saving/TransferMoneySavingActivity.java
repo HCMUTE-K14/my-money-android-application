@@ -97,6 +97,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
         showData();
         mTransaction = new Transaction();
         mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
     

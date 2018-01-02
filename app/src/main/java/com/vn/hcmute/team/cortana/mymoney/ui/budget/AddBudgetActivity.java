@@ -102,6 +102,7 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
         init();
         showData();
         mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
     

@@ -644,8 +644,8 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
         TransactionLocalService transactionLocalService = TransactionLocalService
                   .getInstance(mDatabaseHelper);
         Callable<List<Transaction>> callable = transactionLocalService
-                  .getTransactionByBudget(user_id, start,end,cate_id, wallet_id);
-    
+                  .getTransactionByBudget(user_id, start, end, cate_id, wallet_id);
+        
         return makeObservable(callable);
     }
     

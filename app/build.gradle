@@ -104,6 +104,7 @@ dependencies {
     compile 'net.objecthunter:exp4j:0.4.8'
     compile 'com.borax12.materialdaterangepicker:library:1.9'
     compile 'com.facebook.android:facebook-android-sdk:4.28.0'
+
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'org.greenrobot:eventbus:3.0.0'
     androidTestCompile 'junit:junit:4.12'

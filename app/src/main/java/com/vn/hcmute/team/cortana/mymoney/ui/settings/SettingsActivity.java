@@ -24,15 +24,12 @@ import java.util.List;
 
 public class SettingsActivity extends BaseActivity {
     
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    
     private final String[] LANGUAGE = new String[]{ApplicationConfig.LANGUAGE.EN.getData(),
               ApplicationConfig.LANGUAGE.VI.getData()};
-    
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     private SettingsAdapter mSettingsAdapter;
     
     
@@ -67,12 +64,12 @@ public class SettingsActivity extends BaseActivity {
     
     @Override
     protected void initializeDagger() {
-    
+
     }
     
     @Override
     protected void initializePresenter() {
-    
+
     }
     
     @Override

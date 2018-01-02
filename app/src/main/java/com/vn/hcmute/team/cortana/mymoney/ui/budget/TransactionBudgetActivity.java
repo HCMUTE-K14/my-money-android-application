@@ -62,7 +62,7 @@ public class TransactionBudgetActivity extends BaseActivity implements Transacti
     
     @Override
     protected void initializeActionBar(View rootView) {
-    
+
     }
     
     @Override
@@ -113,7 +113,7 @@ public class TransactionBudgetActivity extends BaseActivity implements Transacti
     
     @Override
     public void loading(boolean isLoading) {
-    
+
     }
     
     /*Area onClick*/

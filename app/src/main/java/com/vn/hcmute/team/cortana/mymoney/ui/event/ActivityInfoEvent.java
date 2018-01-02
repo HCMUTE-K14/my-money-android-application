@@ -99,6 +99,7 @@ public class ActivityInfoEvent extends BaseActivity implements EventContract.Vie
         getWallet();
         showData();
         mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
     

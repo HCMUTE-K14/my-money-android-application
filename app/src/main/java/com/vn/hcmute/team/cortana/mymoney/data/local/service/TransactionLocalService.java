@@ -210,12 +210,12 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
             public Integer call() throws Exception {
                 String selection = "wallet_id = ?";
                 String[] selectionArg = new String[]{wallet_id};
-    
-//                updateMoneyWalletWhenAddOrDeleteTransaction("delete", transaction);
-//
-//                updateOrDeleteDebtLoanWhenUpdateTransaction("delete", transaction);
-//
-//                TransPersonService.getInstance(mDatabaseHelper).delete(transaction.getTrans_id());
+                
+                //                updateMoneyWalletWhenAddOrDeleteTransaction("delete", transaction);
+                //
+                //                updateOrDeleteDebtLoanWhenUpdateTransaction("delete", transaction);
+                //
+                //                TransPersonService.getInstance(mDatabaseHelper).delete(transaction.getTrans_id());
                 
                 return mDatabase.delete(TABLE_NAME, selection, selectionArg);
             }

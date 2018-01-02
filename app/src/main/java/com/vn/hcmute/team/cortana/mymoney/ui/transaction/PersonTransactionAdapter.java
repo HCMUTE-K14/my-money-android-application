@@ -32,7 +32,7 @@ public class PersonTransactionAdapter extends
     private List<Person> mData;
     
     public PersonTransactionAdapter() {
-    
+
     }
     
     public void setData(List<Person> data) {

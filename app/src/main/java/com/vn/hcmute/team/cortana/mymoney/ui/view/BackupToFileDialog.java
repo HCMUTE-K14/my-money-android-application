@@ -29,14 +29,8 @@ import com.vn.hcmute.team.cortana.mymoney.utils.permission.PermissionHelper;
 
 public class BackupToFileDialog extends DialogFragment {
     
-    public static BackupToFileDialog newInstance() {
-        
-        return new BackupToFileDialog();
-    }
-    
     private EditText mEditTextFileName;
     private ProgressDialog mProgressDialog;
-    
     private PermissionCallBack mPermissionCallBack = new PermissionCallBack() {
         @Override
         public void onPermissionGranted() {
@@ -48,6 +42,11 @@ public class BackupToFileDialog extends DialogFragment {
             BackupToFileDialog.this.dismiss();
         }
     };
+    
+    public static BackupToFileDialog newInstance() {
+        
+        return new BackupToFileDialog();
+    }
     
     @Nullable
     @Override

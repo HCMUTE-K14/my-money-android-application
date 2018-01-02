@@ -106,7 +106,7 @@ public class TransactionSavingActivity extends BaseActivity implements Transacti
     
     @Override
     public void loading(boolean isLoading) {
-    
+
     }
     
     /*Area onClick*/

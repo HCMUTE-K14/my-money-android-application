@@ -279,7 +279,7 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
     }
     
     public void transferMoney(String walletFrom, String walletTo, String amount) {
-    
+
     }
     
     @Override

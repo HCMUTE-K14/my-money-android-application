@@ -79,29 +79,29 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsViewHolder> {
         return mData.size();
     }
     
+    public interface SettingsListener {
+
+        void onChooseLanguage();
+
+        void onBackupDatabase();
+
+        void onRestoreDatabase();
+
+        void onShowAbout();
+    }
+    
     class SettingsViewHolder extends RecyclerView.ViewHolder {
-        
+
         @BindView(R.id.text)
         TextView mTextView;
-        
+
         @BindView(R.id.text_sub)
         TextView mTextViewSub;
-        
+
         SettingsViewHolder(android.view.View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             mTextView.setTextColor(Color.BLACK);
         }
-    }
-    
-    public interface SettingsListener {
-        
-        void onChooseLanguage();
-        
-        void onBackupDatabase();
-        
-        void onRestoreDatabase();
-        
-        void onShowAbout();
     }
 }

@@ -123,6 +123,7 @@ public class AddSavingActivity extends BaseActivity implements SavingContract.Vi
     protected void initialize() {
         initDatePicker();
         mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMessage(this.getString(R.string.txt_progress));
     }
     

@@ -147,11 +147,11 @@ public class PreferencesHelper {
         return mSharedPreferences.getString(PREF_START_DATE_AND_END_DATE, "");
     }
     
-    public void putLanguage(String code){
+    public void putLanguage(String code) {
         mSharedPreferences.edit().putString(PREF_LANGUAGE, code).apply();
     }
     
-    public String getLanguage(){
+    public String getLanguage() {
         return mSharedPreferences.getString(PREF_LANGUAGE, "en");
     }
 }

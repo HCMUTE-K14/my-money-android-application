@@ -120,15 +120,15 @@ public class BudgetLocalService extends DbContentProvider<Budget> implements
         };
     }
     
-    public List<Budget> getBudgetsByCategory(final String categoryId){
+    public List<Budget> getBudgetsByCategory(final String categoryId) {
         String selection = "cate_id = ? and status = 0";
-        String[] selectionArg =  new String[]{categoryId};
+        String[] selectionArg = new String[]{categoryId};
         
         Cursor cursor = this.query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
         if (cursor == null) {
             return null;
         }
-    
+        
         return makeListObjectFromCursor(cursor);
     }
     

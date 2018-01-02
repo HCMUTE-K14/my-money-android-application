@@ -55,12 +55,12 @@ public class CalendarTransactionView extends RelativeLayout {
         
         @Override
         public void onTabUnselected(Tab tab) {
-        
+
         }
         
         @Override
         public void onTabReselected(Tab tab) {
-        
+
         }
     };
     
