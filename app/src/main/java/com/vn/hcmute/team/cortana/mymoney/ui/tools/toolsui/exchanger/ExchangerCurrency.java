@@ -97,7 +97,7 @@ public class ExchangerCurrency extends DialogFragment {
     @OnClick(R.id.linear_exchange)
     public void onClickImageSync(View view){
         if(edit_money_from.getText().toString().trim().equals("")){
-            alertDiaglog(getString(R.string.txt_enter_money));
+            alertDialog(getString(R.string.txt_enter_money));
         }
         if(mCurrenciesFrom.getCurCode().equals(mCurrenciesTo.getCurCode())){
             txt_money.setText(edit_money_from.getText());
@@ -111,7 +111,7 @@ public class ExchangerCurrency extends DialogFragment {
                                 mCurrenciesTo.getCurCode());
             txt_money.setText(TextUtil.doubleToString(exchangeMoney));
         } catch (Exception e) {
-            alertDiaglog(getActivity().getString(R.string.txt_invalid_input));
+            alertDialog(getActivity().getString(R.string.txt_invalid_input));
         }
     }
     @OnClick(R.id.linear_transfer)
@@ -169,7 +169,7 @@ public class ExchangerCurrency extends DialogFragment {
         mCurrenciesFrom=mCurrenciesTo;
         mCurrenciesTo=currencies;
     }
-    public void alertDiaglog(String message) {
+    public void alertDialog(String message) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
         builder1.setMessage(message);
         builder1.setCancelable(true);

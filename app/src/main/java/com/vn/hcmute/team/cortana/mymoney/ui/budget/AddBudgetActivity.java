@@ -193,7 +193,7 @@ public class AddBudgetActivity extends BaseActivity implements OnDateSetListener
     }
     
     @Override
-    public void onSucsessDeleteBudget(String message) {
+    public void onSuccessDeleteBudget(String message) {
         
     }
     

@@ -157,7 +157,7 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
     }
     
     @Override
-    public void onSucsessDeleteBudget(String message) {
+    public void onSuccessDeleteBudget(String message) {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("result", mBudget.getBudgetId());
         setResult(Activity.RESULT_OK, returnIntent);

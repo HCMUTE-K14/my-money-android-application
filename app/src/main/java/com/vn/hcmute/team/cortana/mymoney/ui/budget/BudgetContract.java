@@ -18,7 +18,7 @@ public interface BudgetContract {
         
         void onSuccessUpdateBudget(String message);
         
-        void onSucsessDeleteBudget(String message);
+        void onSuccessDeleteBudget(String message);
         
         void onFailure(String message);
         

@@ -137,7 +137,7 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
-                getView().onSucsessDeleteBudget((String) value);
+                getView().onSuccessDeleteBudget((String) value);
             }
             
             @Override

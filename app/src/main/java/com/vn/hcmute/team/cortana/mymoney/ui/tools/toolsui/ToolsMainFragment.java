@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 import butterknife.BindView;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.calculator.CalculatorActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.toolsui.ToolsAdapter.ItemClickListener;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.toolsui.exchanger.ExchangerCurrency;
+import com.vn.hcmute.team.cortana.mymoney.ui.tools.toolsui.export_excel.ExportExcel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +19,13 @@ import java.util.List;
  */
 
 public class ToolsMainFragment extends BaseFragment {
+    
     @BindView(R.id.recycler_view_tools)
     RecyclerView mRecyclerView;
     List<ItemTool> mItemTools;
     private ToolsAdapter mToolsAdapter;
     private ExchangerCurrency mExchangerCurrency;
+    private ExportExcel mExportExcel;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_main_tools;
@@ -70,7 +72,8 @@ public class ToolsMainFragment extends BaseFragment {
                     mExchangerCurrency.show(getFragmentManager(),"");
                     break;
                 case Type.EXPORT_EXCEL:
-                    Toast.makeText(getActivity(), itemTool.getName(), Toast.LENGTH_SHORT).show();
+                    mExportExcel=new ExportExcel();
+                    mExportExcel.show(getFragmentManager(),"");
                     break;
                 default:
                     break;

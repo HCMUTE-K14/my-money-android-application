@@ -203,7 +203,7 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
     }
     
     @Override
-    public void onSucsessDeleteBudget(String message) {
+    public void onSuccessDeleteBudget(String message) {
         
     }
     

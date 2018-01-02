@@ -12,6 +12,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
+import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
@@ -221,8 +222,16 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
         return new Callable<List<Transaction>>() {
             @Override
             public List<Transaction> call() throws Exception {
-                String selection = "wallet_id = ? and date_create >= ? and date_create <= ?";
-                String[] selectionArg = new String[]{wallet_id, start, end};
+                String selection;
+                String[] selectionArg;
+                
+                if(TextUtil.isEmpty(wallet_id)){
+                    selection = "date_create >= ? and date_create <= ?";
+                    selectionArg = new String[]{start, end};
+                }else {
+                    selection = "wallet_id = ? and date_create >= ? and date_create <= ?";
+                    selectionArg = new String[]{wallet_id, start, end};
+                }
                 
                 Cursor cursor = query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
                 

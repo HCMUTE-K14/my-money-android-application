@@ -198,4 +198,10 @@ public class DateUtil {
         
         return mDates;
     }
+    public static String dateStringForFile() {
+        Calendar calendar = Calendar.getInstance();
+        StringBuilder builder = new StringBuilder();
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy_hhmmss");
+        return sdf.format(calendar.getTime());
+    }
 }

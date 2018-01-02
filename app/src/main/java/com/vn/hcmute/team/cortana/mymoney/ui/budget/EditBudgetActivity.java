@@ -169,7 +169,7 @@ public class EditBudgetActivity extends BaseActivity implements BudgetContract.V
     }
     
     @Override
-    public void onSucsessDeleteBudget(String message) {
+    public void onSuccessDeleteBudget(String message) {
         
     }
     

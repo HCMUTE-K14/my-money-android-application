@@ -157,7 +157,7 @@ public class FragmentBudgetFinished extends BaseFragment implements BudgetContra
     }
     
     @Override
-    public void onSucsessDeleteBudget(String message) {
+    public void onSuccessDeleteBudget(String message) {
         
     }
     

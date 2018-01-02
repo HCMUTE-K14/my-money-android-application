@@ -348,4 +348,9 @@
   <string name="txt_from">From</string>
   <string name="txt_to">To</string>
   <string name="txt_enter_money">Enter money</string>
+  <string name="txt_select_range_date">Select range date</string>
+  <string name="txt_error_excel">Cannot export excel</string>
+  <string name="txt_empty_transaction">Empty Transaction</string>
+  <string name="txt_export_success">Export xls success path folder: storage/MyMoney</string>
+
 </resources>
