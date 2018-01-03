@@ -553,7 +553,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                     return mContext.getString(R.string.txt_success);
                 } else {
                     throw new TransactionException(
-                              mContext.getString(R.string.txt_add_saving_fail));
+                              mContext.getString(R.string.txt_fail));
                 }
             }
         });
@@ -572,7 +572,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                     return mContext.getString(R.string.txt_success);
                 } else {
                     throw new TransactionException(
-                              mContext.getString(R.string.txt_add_saving_fail));
+                              mContext.getString(R.string.txt_fail));
                 }
             }
         });
@@ -591,7 +591,7 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                     return mContext.getString(R.string.txt_success);
                 } else {
                     throw new TransactionException(
-                              mContext.getString(R.string.txt_add_saving_fail));
+                              mContext.getString(R.string.txt_fail));
                 }
             }
         });
@@ -634,7 +634,6 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
                   .getInstance(mDatabaseHelper);
         Callable<List<Transaction>> callable = transactionLocalService
                   .getTransactionByEvent(user_id, event_id);
-        
         return makeObservable(callable);
     }
     

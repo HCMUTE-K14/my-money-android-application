@@ -5,6 +5,7 @@ import android.database.Cursor;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.data.local.service.LocalService.TransPersonLocalService;
+import com.vn.hcmute.team.cortana.mymoney.exception.TransactionException;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
@@ -13,6 +14,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Person;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
+import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
@@ -91,7 +93,6 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
         
         while (cursor.moveToNext()) {
             Transaction transaction = makeSingleObjectFromCursor(cursor);
-            
             transactions.add(transaction);
         }
         
@@ -139,7 +140,11 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
         transaction.setEvent(event);
         transaction.setSaving(saving);
         transaction.setType(type);
-        transaction.setCategory(category);
+        if (category == null && type.equals("income")) {
+            transaction.setCategory(Constraints.CATEGORY_OTHER_INCOME);
+        } else if (category == null && type.equals("expense")) {
+            transaction.setCategory(Constraints.CATEGORY_OTHER_EXPENSE);
+        }
         
         return transaction;
     }
@@ -155,6 +160,8 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 updateMoneyWalletWhenAddOrDeleteTransaction("add", transaction);
                 updateBudget(transaction.getCategory().getId(), transaction.getType(),
                           transaction.getAmount(), 0);
+                updateSaving(transaction.getSaving().getSavingid(), transaction.getType(),
+                          transaction.getAmount(), 0);
                 return mDatabase.insert(TABLE_NAME, null, contentValues);
             }
         };
@@ -167,6 +174,11 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
             @Override
             public Integer call() throws Exception {
                 ContentValues contentValues = createContentValues(transaction);
+                
+                if (transaction.getSaving() != null) {
+                    throw new TransactionException(
+                              "Cannot update this transaction because It's belong a saving");
+                }
                 
                 String selection = "trans_id = ?";
                 String[] selectionArg = new String[]{transaction.getTrans_id()};
@@ -196,6 +208,8 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 updateOrDeleteDebtLoanWhenUpdateTransaction("delete", transaction);
                 updateBudget(transaction.getCategory().getId(), transaction.getType(),
                           transaction.getAmount(), 2);
+                updateSaving(transaction.getSaving().getSavingid(), transaction.getType(),
+                          transaction.getAmount(), 1);
                 
                 TransPersonService.getInstance(mDatabaseHelper).delete(transaction.getTrans_id());
                 
@@ -229,19 +243,20 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
             @Override
             public List<Transaction> call() throws Exception {
                 String selection;
+                String[] selectionArg;
                 if (TextUtil.isEmpty(wallet_id)) {
                     selection = "date_create >= ? and date_create <= ?";
+                    selectionArg = new String[]{start, end};
                 } else {
                     selection = "wallet_id = ? and date_create >= ? and date_create <= ?";
+                    selectionArg = new String[]{wallet_id, start, end};
                 }
-                String[] selectionArg = new String[]{wallet_id, start, end};
                 
                 Cursor cursor = query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
                 
                 if (cursor == null) {
                     return null;
                 }
-                MyLogger.d("GETBYTIME", cursor.getCount());
                 return makeListObjectFromCursor(cursor);
             }
         };
@@ -303,8 +318,15 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
         return new Callable<List<Transaction>>() {
             @Override
             public List<Transaction> call() throws Exception {
-                String selection = "user_id = ? and event_id = ?";
-                String[] selectionArg = new String[]{user_id, event_id};
+                String selection;
+                String[] selectionArg;
+                if (TextUtil.isEmpty(user_id)) {
+                    selection = "event_id = ?";
+                    selectionArg = new String[]{event_id};
+                } else {
+                    selection = "user_id = ? and event_id = ?";
+                    selectionArg = new String[]{user_id, event_id};
+                }
                 
                 Cursor cursor = query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
                 
@@ -342,13 +364,45 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
         };
     }
     
+    private void updateSaving(String saving_id, String type, String amount, int action) {
+        
+        try {
+            Saving saving = SavingLocalService.getInstance(mDatabaseHelper)
+                      .getSavingById(saving_id);
+            
+            if (saving == null) {
+                return;
+            }
+            
+            if (action == 0) { //ADD
+                String moneyBefore = saving.getCurrentMoney();
+                double moneyAfter =
+                          type.equals("expense") ? Double.valueOf(moneyBefore) +
+                                                   Double.valueOf(amount)
+                                    : Double.valueOf(moneyBefore) - Double.valueOf(amount);
+                
+                saving.setCurrentMoney(String.valueOf(moneyAfter));
+                
+            } else if (action == 1) { //Remove
+                String moneyBefore = saving.getCurrentMoney();
+                double moneyAfter =
+                          type.equals("expense") ? Double.valueOf(moneyBefore) -
+                                                   Double.valueOf(amount)
+                                    : Double.valueOf(moneyBefore) + Double.valueOf(amount);
+                saving.setCurrentMoney(String.valueOf(moneyAfter));
+            }
+            SavingLocalService.getInstance(mDatabaseHelper).updateSaving(saving).call();
+        } catch (Exception e) {
+            
+        }
+    }
+    
     private void updateBudget(String categoryId, String typeTrans, String money, int action)
               throws Exception {
         BudgetLocalService budgetLocalService = BudgetLocalService.getInstance(mDatabaseHelper);
         List<Budget> budgets = budgetLocalService.getBudgetsByCategory(categoryId);
         for (Budget budget : budgets) {
             String moneyBeforeUpdate = budget.getMoneyExpense();
-            MyLogger.d("BEFORE: " + budget.getMoneyExpense());
             if (action == 0) { // ADD
                 double moneyUpdate = Double.valueOf(moneyBeforeUpdate) + Double.valueOf(money);
                 budget.setMoneyExpense(String.valueOf(moneyUpdate));

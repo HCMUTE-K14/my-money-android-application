@@ -336,7 +336,7 @@
   <string name="message_warning_select_end_date">Hãy chọn ngày kết thúc !!</string>
   <string name="txt_transfer_money">Chuyển tiền</string>
   <string name="message_warning_transfer_money">Bạn cần nhiều hơn một ví để thực hiện việc này</string>
-  <string name="txt_cash_book">Cashbook</string>
+  <string name="txt_cash_book">Sổ tiền</string>
   <string name="message_warning_more_than_contact">Chỉ có thể chọn 1 địa chỉ liên lạc</string>
   <string name="txt_from">Từ</string>
   <string name="txt_to">Đến</string>

@@ -212,6 +212,7 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
         return mDatabase.delete(TABLE_NAME, whereClause, new String[]{wallet_id});
     }
     
+    
     public int takeSaving(String idWallet, String idSaving, String moneyWallet,
               String moneySaving) {
         //wallet

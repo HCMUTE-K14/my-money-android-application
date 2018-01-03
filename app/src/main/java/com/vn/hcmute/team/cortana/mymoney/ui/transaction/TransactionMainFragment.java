@@ -38,6 +38,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.DebtLoanUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.DebtLoanUseCase.DebtLoanRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
@@ -293,7 +294,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
             mPreferencesHelper.putLastStartDateAndEndDate(mStartDate + "-" + mEndDate);
         }
         if (mFragment != null) {
-            mFramentManager.beginTransaction().remove(mFragment).commit();
+            mFramentManager.beginTransaction().remove(mFragment).commitAllowingStateLoss();
         }
         if (mIsViewByCategory) {
             mFragment = new FragmentTransactionByCategory(this.getContext(), list);
@@ -301,7 +302,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
             mFragment = new FragmentTransactionByTime(this.getContext(), list);
         }
         mFramentManager.beginTransaction().replace(R.id.container, mFragment)
-                  .commit();
+                  .commitAllowingStateLoss();
     }
     
     @Override
@@ -320,7 +321,12 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
     }
     
     private void getData() {
+        MyLogger.d("sss");
         mTransactionPresenter.getTransactionByTime(mStartDate, mEndDate, mWalletId);
+    }
+    
+    public void jump2ToDay() {
+        mCalendarTransactionView.jump2ToDay();
     }
     
     public void addDebtLoan(Transaction transaction) {

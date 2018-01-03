@@ -1,5 +1,6 @@
 package com.vn.hcmute.team.cortana.mymoney.utils;
 
+import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
 
 /**
@@ -9,7 +10,10 @@ import com.vn.hcmute.team.cortana.mymoney.model.Person;
 public class Constraints {
     
     public static final Person SOME_ONE_PERSON = new Person("some_one_id", "someone", "");
-    
+    public static final Category CATEGORY_OTHER_INCOME = new Category("99", "Income Other",
+              "ic_category_other_income", "income", "income");
+    public static final Category CATEGORY_OTHER_EXPENSE = new Category("100", "Expense Other",
+              "ic_category_other_expense", "income", "income");
     
     public class RequestCode {
         

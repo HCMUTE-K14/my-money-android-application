@@ -33,7 +33,9 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase.TransactionRequest;
+import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.SecurityUtil;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -192,7 +194,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
                       public void onLoading() {
                           
                       }
-                  }, mTransaction, null, TypeRepository.REMOTE);
+                  }, mTransaction, null, TypeRepository.LOCAL);
         mTransactionUseCase.subscribe(transactionRequest);
     }
     
@@ -217,7 +219,7 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
                       public void onLoading() {
                           
                       }
-                  }, mTransaction, null, TypeRepository.REMOTE);
+                  }, mTransaction, null, TypeRepository.LOCAL);
         mTransactionUseCase.subscribe(transactionRequest);
     }
     
@@ -416,25 +418,21 @@ public class TransferMoneySavingActivity extends BaseActivity implements SavingC
     }
     
     public void setTransaction(String type) {
-        //mTransaction.setTrans_id(SecurityUtil.getRandomUUID());
+        mTransaction.setTrans_id(SecurityUtil.getRandomUUID());
         mTransaction.setAmount(mGoalMoney);
         mTransaction.setWallet(mWallet);
         mTransaction.setSaving(mSaving);
         mTransaction.setNote(edit_describe.getText().toString());
         mTransaction.setType(type);
-        // mTransaction.setUser_id(mSaving.getUserid());
+        mTransaction.setUser_id(mSaving.getUserid());
         mTransaction.setDate_created(String.valueOf(System.currentTimeMillis()));
         mTransaction.setCategory(createCategoty(type));
     }
     
     public Category createCategoty(String type) {
-        Category category = new Category();
-        category.setName("Other");
-        category.setIcon("ic_category_other_expense");
-        category.setType(type);
-        category.setTransType(type);
-        category.setSubcategories(null);
-        return category;
+        
+        return type.equals("income") ? Constraints.CATEGORY_OTHER_INCOME
+                  : Constraints.CATEGORY_OTHER_EXPENSE;
     }
     
     public void finishTransaction() {

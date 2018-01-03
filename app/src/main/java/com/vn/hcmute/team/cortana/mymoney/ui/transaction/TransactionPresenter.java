@@ -13,6 +13,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.remote.ImageUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.ImageUseCase.ImageRequest;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase.TransactionRequest;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -153,11 +154,14 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
+                          MyLogger.d("GET_BY_EVENT_TRUE", ((List<Transaction>) value).size());
                           getView().showAllListTransaction((List<Transaction>) value);
                       }
                       
                       @Override
                       public void onFailure(Throwable throwable) {
+                          MyLogger.d("GET_BY_EVENT", "false");
+                          
                           getView().loading(false);
                           getView().onFailure(throwable.getMessage());
                       }
@@ -279,7 +283,7 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
     }
     
     public void transferMoney(String walletFrom, String walletTo, String amount) {
-
+    
     }
     
     @Override

@@ -1,7 +1,6 @@
 package com.vn.hcmute.team.cortana.mymoney.data.local.base;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import java.util.List;
@@ -14,7 +13,6 @@ public abstract class DbContentProvider<T> {
     
     protected DatabaseHelper mDatabaseHelper;
     protected SQLiteDatabase mDatabase;
-    private Context mContext;
     
     public DbContentProvider(DatabaseHelper mDatabaseHelper) {
         this.mDatabaseHelper = mDatabaseHelper;

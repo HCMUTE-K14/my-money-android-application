@@ -18,6 +18,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.DateModel;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.MonthModel;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.calendarview.model.WeekModel;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 
 /**
  * Created by infamouSs on 10/31/17.
@@ -31,6 +32,7 @@ public class CalendarTransactionView extends RelativeLayout {
     public static final String MODE_CUSTOM = "custom";
     public static final String MODE_ALL_TRANS = "all_trans";
     
+    
     private String mode;
     private BaseModel mModel;
     private TabLayout mTabLayout;
@@ -43,6 +45,7 @@ public class CalendarTransactionView extends RelativeLayout {
     private OnTabSelectedListener mOnTabSelectedListener = new OnTabSelectedListener() {
         @Override
         public void onTabSelected(Tab tab) {
+            MyLogger.d("TAB_POSITION", tab.getPosition());
             String key = "";
             if (!TextUtils.isEmpty(tab.getText())) {
                 key = tab.getText().toString().trim();
@@ -55,12 +58,12 @@ public class CalendarTransactionView extends RelativeLayout {
         
         @Override
         public void onTabUnselected(Tab tab) {
-
+        
         }
         
         @Override
         public void onTabReselected(Tab tab) {
-
+        
         }
     };
     
@@ -153,9 +156,8 @@ public class CalendarTransactionView extends RelativeLayout {
         for (String key : mModel.getData().keySet()) {
             mTabLayout.addTab(mTabLayout.newTab().setText(key));
         }
-        
-        mTabLayout.addOnTabSelectedListener(mOnTabSelectedListener);
         jump2ToDay();
+        mTabLayout.addOnTabSelectedListener(mOnTabSelectedListener);
     }
     
     public void jump2Day(String value) {
