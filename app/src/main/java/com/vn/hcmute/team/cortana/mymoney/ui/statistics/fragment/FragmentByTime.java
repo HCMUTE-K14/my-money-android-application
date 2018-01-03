@@ -47,6 +47,10 @@ public class FragmentByTime extends BaseFragment {
     private ByTimeAdapter mTransactionByTimeAdapter;
     private Wallet mWallet;
     
+    public FragmentByTime() {
+    
+    }
+    
     public FragmentByTime(List<Transaction> transactions, int idCategory, Wallet wallet,
               List<String> listDates) {
         this.mTransactions = transactions;

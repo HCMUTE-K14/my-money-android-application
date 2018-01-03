@@ -38,6 +38,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.DebtLoanUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.DebtLoanUseCase.DebtLoanRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
@@ -289,6 +290,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
     
     @Override
     public void showAllListTransaction(List<Transaction> list) {
+        MyLogger.d("dsfds",list.size());
         if (list.size() > 0) {
             mPreferencesHelper.putLastStartDateAndEndDate(mStartDate + "-" + mEndDate);
         }
@@ -320,6 +322,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
     }
     
     private void getData() {
+        MyLogger.d("run");
         mTransactionPresenter.getTransactionByTime(mStartDate, mEndDate, mWalletId);
     }
     

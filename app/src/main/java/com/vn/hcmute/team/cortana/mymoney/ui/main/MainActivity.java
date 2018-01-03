@@ -40,6 +40,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.debts.DebtsLoanMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.event.EventMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.login.LoginActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.saving.SavingMainFragment;
+import com.vn.hcmute.team.cortana.mymoney.ui.settings.SettingsActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.StatisticsMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.tools.toolsui.ToolsMainFragment;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionMainFragment;
@@ -575,6 +576,10 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                 break;
             case R.id.navigation_item_tools:
                 mRunnable = runnableAttachToolsFragment;
+                break;
+            case R.id.navigation_item_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                mDrawerLayout.closeDrawers();
                 break;
             case R.id.navigation_item_login:
                 

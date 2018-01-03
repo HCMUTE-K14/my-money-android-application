@@ -129,6 +129,8 @@ public interface LocalTask {
         Observable<Transaction> getTransactionByIdUseCallable(String trans_id);
         
         Observable<List<Transaction>> getAllTransaction(String user_id);
+    
+        Observable<List<Transaction>> getTransactionBySaving(String user_id, String saving_id);
         
         Observable<List<Transaction>> getTransactionByEvent(String user_id, String event_id);
         

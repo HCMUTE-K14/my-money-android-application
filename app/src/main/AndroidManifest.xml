@@ -40,9 +40,10 @@
     </activity>
 
     <!-- User -->
-    <activity android:name=".ui.login.LoginActivity">
-
-    </activity>
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.login.LoginActivity"
+      android:screenOrientation="portrait" />
     <activity
       android:launchMode="singleTop"
       android:name=".ui.register.RegisterActivity"
@@ -54,69 +55,167 @@
       android:screenOrientation="portrait" />
 
     <!-- Main -->
-    <activity android:name=".ui.welcome.WelcomeActivity">
+    <activity android:name=".ui.welcome.WelcomeActivity"
+      android:configChanges="orientation"
+      android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <activity android:name=".ui.main.MainActivity"></activity>
+    <activity
+
+      android:configChanges="orientation"
+      android:name=".ui.main.MainActivity"
+      android:screenOrientation="portrait" />
 
     <!-- Wallet -->
-    <activity android:name=".ui.wallet.SelectWalletActivity" />
-    <activity android:name=".ui.wallet.AddWalletActivity" />
-    <activity android:name=".ui.wallet.EditWalletActivity" />
-    <activity android:name=".ui.wallet.MyWalletActivity" />
-    <activity android:name=".ui.wallet.TransferMoneyActivity" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.wallet.SelectWalletActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.wallet.AddWalletActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.wallet.EditWalletActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.wallet.MyWalletActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.wallet.TransferMoneyActivity"
+      android:screenOrientation="portrait" />
     <!-- Saving -->
 
-    <activity android:name=".ui.saving.AddSavingActivity" />
-    <activity android:name=".ui.saving.TransferMoneySavingActivity" />
-    <activity android:name=".ui.saving.InfoSavingActivity" />
-    <activity android:name=".ui.saving.EditSavingActivity" />
-    <activity android:name=".ui.saving.TransactionSavingActivity" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.saving.AddSavingActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.saving.TransferMoneySavingActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.saving.InfoSavingActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.saving.EditSavingActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.saving.TransactionSavingActivity"
+      android:screenOrientation="portrait" />
     <!--Budget-->
-    <activity android:name=".ui.budget.AddBudgetActivity" />
-    <activity android:name=".ui.budget.EditBudgetActivity" />
-    <activity android:name=".ui.budget.InfoBudgetActivity" />
-    <activity android:name=".ui.budget.TransactionBudgetActivity" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.budget.AddBudgetActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.budget.EditBudgetActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.budget.InfoBudgetActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.budget.TransactionBudgetActivity"
+      android:screenOrientation="portrait" />
 
     <!-- Event -->
-    <activity android:name=".ui.event.ActivityInfoEvent" />
-    <activity android:name=".ui.event.ActivityEditEvent" />
-    <activity android:name=".ui.event.ActivityAddEvent" />
-    <activity android:name=".ui.event.ActivitySelectEvent" />
-    <activity android:name=".ui.event.TransactionEventActivity" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.event.ActivityInfoEvent"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.event.ActivityEditEvent"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.event.ActivityAddEvent"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.event.ActivitySelectEvent"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.event.TransactionEventActivity"
+      android:screenOrientation="portrait" />
 
     <!-- Person -->
-    <activity android:name=".ui.person.PersonActivity" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.person.PersonActivity"
+      android:screenOrientation="portrait" />
 
     <!-- Currency -->
-    <activity android:name=".ui.currencies.CurrenciesActivity" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.currencies.CurrenciesActivity"
+      android:screenOrientation="portrait" />
 
     <!-- Tool -->
-    <activity android:name=".ui.tools.galleryloader.ui.GalleryLoaderActivity" />
-    <activity android:name=".ui.iconshop.SelectIconActivity" />
-    <activity android:name=".ui.tools.calculator.CalculatorActivity" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.tools.galleryloader.ui.GalleryLoaderActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.iconshop.SelectIconActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.tools.calculator.CalculatorActivity"
+      android:screenOrientation="portrait" />
     <!-- Category -->
-    <activity android:name=".ui.category.CategoryActivity" />
-    <activity android:name=".ui.category.ManagerCategoryActivity" />
-    <activity android:name=".ui.category.ListParentCategoryActivity" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.category.CategoryActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.category.ManagerCategoryActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.category.ListParentCategoryActivity"
+      android:screenOrientation="portrait" />
 
     <!-- Transaction -->
 
-    <activity android:name=".ui.transaction.ManagerTransactionActivity">
-
-    </activity>
-    <activity android:name=".ui.transaction.InforTransactionActivity" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.transaction.ManagerTransactionActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.transaction.InforTransactionActivity"
+      android:screenOrientation="portrait" />
     <!-- Debt & Loan -->
-    <activity android:name=".ui.transaction.InforTransactionForDebtLoanActivity" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.transaction.InforTransactionForDebtLoanActivity"
+      android:screenOrientation="portrait" />
     <!--Statistic-->
-    <activity android:name=".ui.statistics.transaction.TransactionStatisticsActivity">
-
-    </activity>
-    <activity android:name=".ui.settings.SettingsActivity" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.statistics.transaction.TransactionStatisticsActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.settings.SettingsActivity"
+      android:screenOrientation="portrait" />
 
   </application>
 

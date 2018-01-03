@@ -295,6 +295,8 @@ public interface DataSource {
         
         Observable<List<Transaction>> getLocalTransactionByTime(String user_id, String start,
                   String end, String wallet_id);
+    
+        Observable<List<Transaction>> getLocalTransactionBySaving(String user_id, String saving);
         
         Observable<List<Transaction>> getLocalTransactionByEvent(String user_id, String event_id);
         

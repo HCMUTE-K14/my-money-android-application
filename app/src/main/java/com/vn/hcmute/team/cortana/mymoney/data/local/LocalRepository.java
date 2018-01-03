@@ -677,6 +677,16 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
     }
     
     @Override
+    public Observable<List<Transaction>> getTransactionBySaving(String user_id, String saving_id) {
+        TransactionLocalService transactionLocalService = TransactionLocalService
+                  .getInstance(mDatabaseHelper);
+        Callable<List<Transaction>> callable = transactionLocalService
+                  .getTransactionBySaving(user_id, saving_id);
+    
+        return makeObservable(callable);
+    }
+    
+    @Override
     public Observable<List<Transaction>> getTransactionByEvent(String user_id, String event_id) {
         TransactionLocalService transactionLocalService = TransactionLocalService
                   .getInstance(mDatabaseHelper);

@@ -663,6 +663,12 @@ public class DataRepository implements DataSource.RemoteDataSource, DataSource.C
     }
     
     @Override
+    public Observable<List<Transaction>> getLocalTransactionBySaving(String user_id,
+              String saving) {
+        return mLocalRepository.getTransactionBySaving(user_id, saving);
+    }
+    
+    @Override
     public Observable<List<Transaction>> getLocalTransactionByEvent(String user_id,
               String event_id) {
         return mLocalRepository.getTransactionByEvent(user_id, event_id);

@@ -295,6 +295,27 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
     }
     
     @Override
+    public Callable<List<Transaction>> getTransactionBySaving(final String user_id, final String saving_id) {
+        MyLogger.d("lang kdshfkdsf");
+        return new Callable<List<Transaction>>() {
+            @Override
+            public List<Transaction> call() throws Exception {
+                MyLogger.d("thingdsfs:",user_id);
+                String selection = "user_id = ? and saving_id = ?";
+                String[] selectionArg = new String[]{user_id, saving_id};
+            
+                Cursor cursor = query(TABLE_NAME, getAllColumns(), selection, selectionArg, null);
+            
+                if (cursor == null) {
+                    return null;
+                }
+            
+                return makeListObjectFromCursor(cursor);
+            }
+        };
+    }
+    
+    @Override
     public Callable<List<Transaction>> getTransactionByEvent(final String user_id,
               final String event_id) {
         return new Callable<List<Transaction>>() {

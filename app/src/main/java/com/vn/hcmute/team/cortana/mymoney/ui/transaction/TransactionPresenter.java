@@ -13,6 +13,7 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.remote.ImageUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.ImageUseCase.ImageRequest;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.TransactionUseCase.TransactionRequest;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -127,7 +128,13 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
-                          getView().showAllListTransaction((List<Transaction>) value);
+                          List<Transaction> list =(List<Transaction>) value;
+                          if(list == null){
+                              getView().onFailure("Cannot get transactions");
+                              return;
+                          }
+                          getView().showAllListTransaction(list);
+                          
                       }
                       
                       @Override
@@ -259,11 +266,19 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
-                          getView().showAllListTransaction((List<Transaction>) value);
+                          List<Transaction> list =(List<Transaction>) value;
+                          if(list == null){
+                              getView().onFailure("Cannot get transactions");
+                              MyLogger.d("langthang","sdkjfds");
+                              return;
+                          }
+                          MyLogger.d("langthang",list.size());
+                          getView().showAllListTransaction(list);
                       }
                       
                       @Override
                       public void onFailure(Throwable throwable) {
+                          MyLogger.d("langthang",throwable.getMessage());
                           getView().loading(false);
                           getView().onFailure(throwable.getMessage());
                       }

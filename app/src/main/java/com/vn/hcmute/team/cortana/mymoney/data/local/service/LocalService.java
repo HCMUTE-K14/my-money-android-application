@@ -139,6 +139,8 @@ public interface LocalService {
         
         Callable<List<Transaction>> getAllTransaction(String user_id);
         
+        Callable<List<Transaction>> getTransactionBySaving(String user_id,String saving_id);
+        
         Callable<List<Transaction>> getTransactionByEvent(String user_id, String event_id);
         
         Callable<List<Transaction>> getTransactionByBudget(String user_id, String start, String end,
