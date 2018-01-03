@@ -193,7 +193,7 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
         return new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
-                for (Saving saving: savingList) {
+                for (Saving saving : savingList) {
                     updateItemSaving(saving);
                 }
                 return 1;
@@ -224,13 +224,15 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
         String whereClause = "wallet_id = ?";
         return mDatabase.delete(TABLE_NAME, whereClause, new String[]{wallet_id});
     }
-    public void updateItemSaving(Saving saving){
+    
+    public void updateItemSaving(Saving saving) {
         saving.setStatus("1");
         ContentValues contentValues = createContentValues(saving);
         String selection = "saving_id=?";
         String[] selectionArg = new String[]{saving.getSavingid()};
         mDatabase.update(TABLE_NAME, contentValues, selection, selectionArg);
     }
+    
     public int takeSaving(String idWallet, String idSaving, String moneyWallet,
               String moneySaving) {
         //wallet

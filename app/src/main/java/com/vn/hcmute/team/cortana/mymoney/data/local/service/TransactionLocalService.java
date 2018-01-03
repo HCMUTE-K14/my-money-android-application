@@ -225,10 +225,10 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 String selection;
                 String[] selectionArg;
                 
-                if(TextUtil.isEmpty(wallet_id)){
+                if (TextUtil.isEmpty(wallet_id)) {
                     selection = "date_create >= ? and date_create <= ?";
                     selectionArg = new String[]{start, end};
-                }else {
+                } else {
                     selection = "wallet_id = ? and date_create >= ? and date_create <= ?";
                     selectionArg = new String[]{wallet_id, start, end};
                 }

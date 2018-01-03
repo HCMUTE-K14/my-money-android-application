@@ -62,24 +62,37 @@ public class ExportExcel extends DialogFragment implements OnDateSetListener {
     
     @BindView(R.id.txt_range_date)
     TextView mTextViewRangeDate;
+    DataRepository mDataRepository;
     private int year;
     private int monthOfYear;
     private int dayOfMonth;
     private int yearEnd;
     private int monthOfYearEnd;
     private int dayOfMonthEnd;
-    DataRepository mDataRepository;
     private ProgressDialog mProgressDialog;
+    private PermissionCallBack mPermissionCallBack = new PermissionCallBack() {
+        @Override
+        public void onPermissionGranted() {
+            getData();
+        }
+        
+        @Override
+        public void onPermissionDenied() {
+            getDialog().dismiss();
+        }
+    };
     
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return super.onCreateDialog(savedInstanceState);
     }
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
               Bundle savedInstanceState) {
-        mDataRepository=((MyMoneyApplication) this.getActivity().getApplication()).getAppComponent().dataRepository();
+        mDataRepository = ((MyMoneyApplication) this.getActivity().getApplication())
+                  .getAppComponent().dataRepository();
         View view = inflater.inflate(R.layout.layout_export_excel, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -94,7 +107,7 @@ public class ExportExcel extends DialogFragment implements OnDateSetListener {
     }
     
     @OnClick(R.id.linear_select_date)
-    public void onClickSelectDate(View view){
+    public void onClickSelectDate(View view) {
         Calendar now = Calendar.getInstance();
         DatePickerDialog dpd = DatePickerDialog.newInstance(
                   ExportExcel.this,
@@ -104,13 +117,15 @@ public class ExportExcel extends DialogFragment implements OnDateSetListener {
         );
         dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
     }
+    
     @OnClick(R.id.linear_cancel)
-    public void onClickCancel(View view){
+    public void onClickCancel(View view) {
         getDialog().dismiss();
     }
+    
     @OnClick(R.id.linear_export_excel)
-    public void onClickExportExcel(View view){
-        if(mTextViewRangeDate.getText().equals("")){
+    public void onClickExportExcel(View view) {
+        if (mTextViewRangeDate.getText().equals("")) {
             alertDialog(getActivity().getString(R.string.select_date));
             return;
         }
@@ -119,39 +134,30 @@ public class ExportExcel extends DialogFragment implements OnDateSetListener {
         } else {
             getData();
         }
-       
+        
     }
+    
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth,
               int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
-        this.year=year;
-        this.monthOfYear=monthOfYear+1;
-        this.dayOfMonth=dayOfMonth;
-        this.yearEnd=yearEnd;
-        this.monthOfYearEnd=monthOfYearEnd+1;
-        this.dayOfMonthEnd=dayOfMonthEnd;
-    
+        this.year = year;
+        this.monthOfYear = monthOfYear + 1;
+        this.dayOfMonth = dayOfMonth;
+        this.yearEnd = yearEnd;
+        this.monthOfYearEnd = monthOfYearEnd + 1;
+        this.dayOfMonthEnd = dayOfMonthEnd;
+        
         mTextViewRangeDate
                   .setText(this.dayOfMonth + "/" + this.monthOfYear + "/" + this.year + " - " +
                            this.dayOfMonthEnd +
                            "/" + this.monthOfYearEnd + "/" +
                            this.yearEnd);
     }
-    private PermissionCallBack mPermissionCallBack = new PermissionCallBack() {
-        @Override
-        public void onPermissionGranted() {
-            getData();
-        }
-        
-        @Override
-        public void onPermissionDenied() {
-            getDialog().dismiss();
-        }
-    };
+    
     public void requirePermission() {
         if (PermissionHelper
                   .isHasPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-           getData();
+            getData();
         } else {
             if (PermissionHelper.shouldShowRequestPermissionRationale(getActivity(),
                       Permission.WRITE_EXTERNAL_STORAGE)) {
@@ -179,25 +185,27 @@ public class ExportExcel extends DialogFragment implements OnDateSetListener {
             }
         }
     }
+    
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
               @NonNull int[] grantResults) {
         PermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+    
     public void exportExcel(List<Transaction> transactionList) {
         //filter data
-        List<Transaction> transactionsExpense=new ArrayList<>();
-        List<Transaction> transactionsIncome=new ArrayList<>();
-        double sumExpense=0;
-        double sumIncome=0;
-        for(Transaction transaction:transactionList){
-            if(transaction.getType().equals("expense")){
+        List<Transaction> transactionsExpense = new ArrayList<>();
+        List<Transaction> transactionsIncome = new ArrayList<>();
+        double sumExpense = 0;
+        double sumIncome = 0;
+        for (Transaction transaction : transactionList) {
+            if (transaction.getType().equals("expense")) {
                 transactionsExpense.add(transaction);
-            }else {
+            } else {
                 transactionsIncome.add(transaction);
             }
         }
-        final String fileName = "MyMoney_" + DateUtil.dateStringForFile()+".xls";
+        final String fileName = "MyMoney_" + DateUtil.dateStringForFile() + ".xls";
         //Saving file in external storage
         File sdCard = Environment.getExternalStorageDirectory();
         File directory = new File(sdCard.getAbsolutePath() + "/MyMoney");
@@ -213,90 +221,92 @@ public class ExportExcel extends DialogFragment implements OnDateSetListener {
             workbook = Workbook.createWorkbook(file, wbSettings);
             //Excel sheet name. 0 represents first sheet
             WritableSheet sheet = workbook.createSheet("MyMoney", 0);
-            int i=0;
+            int i = 0;
             try {
-    
+                
                 // Create cell font and format
                 WritableFont cellFont = new WritableFont(WritableFont.TIMES, 12);
                 cellFont.setColour(Colour.BLACK);
-    
+                
                 WritableCellFormat cellFormat = new WritableCellFormat(cellFont);
                 cellFormat.setBackground(Colour.YELLOW);
                 cellFormat.setBorder(Border.ALL, BorderLineStyle.THIN);
-    
-                WritableCellFormat  cellFormatHeader=new WritableCellFormat();
+                
+                WritableCellFormat cellFormatHeader = new WritableCellFormat();
                 cellFormatHeader.setAlignment(Alignment.CENTRE);
                 sheet.mergeCells(0, i, 6, i);
                 Label label = new Label(0, i,
-                          "Statistics",cellFormatHeader);
+                          "Statistics", cellFormatHeader);
                 sheet.addCell(label);
                 
                 i++;
                 
-               sheet.setColumnView(0,20);
-                sheet.addCell(new Label(0, i, "Date",cellFormat));
-               sheet.setColumnView(1,30);
-                sheet.addCell(new Label(1, i, "Name",cellFormat));
-               sheet.setColumnView(2,20);
-                sheet.addCell(new Label(2, i, "Money",cellFormat));
-               sheet.setColumnView(3,15);
-                sheet.addCell(new Label(3, i, "Type",cellFormat));
-                sheet.setColumnView(4,30);
-                sheet.addCell(new Label(4, i, "Wallet",cellFormat));
-                sheet.setColumnView(5,40);
-                sheet.addCell(new Label(5, i, "Person",cellFormat));
-                sheet.setColumnView(6,70);
-                sheet.addCell(new Label(6, i, "Note",cellFormat));
+                sheet.setColumnView(0, 20);
+                sheet.addCell(new Label(0, i, "Date", cellFormat));
+                sheet.setColumnView(1, 30);
+                sheet.addCell(new Label(1, i, "Name", cellFormat));
+                sheet.setColumnView(2, 20);
+                sheet.addCell(new Label(2, i, "Money", cellFormat));
+                sheet.setColumnView(3, 15);
+                sheet.addCell(new Label(3, i, "Type", cellFormat));
+                sheet.setColumnView(4, 30);
+                sheet.addCell(new Label(4, i, "Wallet", cellFormat));
+                sheet.setColumnView(5, 40);
+                sheet.addCell(new Label(5, i, "Person", cellFormat));
+                sheet.setColumnView(6, 70);
+                sheet.addCell(new Label(6, i, "Note", cellFormat));
                 
                 i++;
-                for (Transaction transaction:transactionsExpense){
-                    sheet.addCell(new Label(0, i, DateUtil.convertTimeMillisToDate(transaction.getDate_created())));
+                for (Transaction transaction : transactionsExpense) {
+                    sheet.addCell(new Label(0, i,
+                              DateUtil.convertTimeMillisToDate(transaction.getDate_created())));
                     sheet.addCell(new Label(1, i, transaction.getCategory().getName()));
-                    sheet.addCell(new Label(2, i,"-"+ transaction.getAmount()));
-                    sheet.addCell(new Label(3, i,transaction.getType()));
+                    sheet.addCell(new Label(2, i, "-" + transaction.getAmount()));
+                    sheet.addCell(new Label(3, i, transaction.getType()));
                     sheet.addCell(new Label(4, i, transaction.getWallet().getWalletName()));
-                    if(transaction.getPerson()!=null&&!transaction.getPerson().isEmpty()){
-                        StringBuilder builder=new StringBuilder();
-                        for (Person person:transaction.getPerson()){
+                    if (transaction.getPerson() != null && !transaction.getPerson().isEmpty()) {
+                        StringBuilder builder = new StringBuilder();
+                        for (Person person : transaction.getPerson()) {
                             builder.append(person.getName());
                             builder.append(";");
                         }
                         sheet.addCell(new Label(5, i, builder.toString()));
-                    }else {
-                        sheet.addCell(new Label(5, i,""));
+                    } else {
+                        sheet.addCell(new Label(5, i, ""));
                     }
                     sheet.addCell(new Label(6, i, transaction.getNote()));
                     
-                    sumExpense+=Double.parseDouble(transaction.getAmount());
+                    sumExpense += Double.parseDouble(transaction.getAmount());
                     
                     i++;
                 }
-                for (Transaction transaction:transactionsIncome){
-                    sheet.addCell(new Label(0, i, DateUtil.convertTimeMillisToDate(transaction.getDate_created())));
+                for (Transaction transaction : transactionsIncome) {
+                    sheet.addCell(new Label(0, i,
+                              DateUtil.convertTimeMillisToDate(transaction.getDate_created())));
                     sheet.addCell(new Label(1, i, transaction.getCategory().getName()));
                     sheet.addCell(new Label(2, i, transaction.getAmount()));
                     sheet.addCell(new Label(3, i, transaction.getType()));
                     sheet.addCell(new Label(4, i, transaction.getWallet().getWalletName()));
-                    if(transaction.getPerson()!=null&&!transaction.getPerson().isEmpty()){
-                        StringBuilder builder=new StringBuilder();
-                        for (Person person:transaction.getPerson()){
+                    if (transaction.getPerson() != null && !transaction.getPerson().isEmpty()) {
+                        StringBuilder builder = new StringBuilder();
+                        for (Person person : transaction.getPerson()) {
                             builder.append(person.getName());
                             builder.append(";");
                         }
                         sheet.addCell(new Label(5, i, builder.toString()));
-                    }else {
-                        sheet.addCell(new Label(5, i,""));
+                    } else {
+                        sheet.addCell(new Label(5, i, ""));
                     }
                     sheet.addCell(new Label(6, i, transaction.getNote()));
-    
-                    sumIncome+=Double.parseDouble(transaction.getAmount());
-    
+                    
+                    sumIncome += Double.parseDouble(transaction.getAmount());
+                    
                     i++;
                 }
                 i++;
-                sheet.addCell(new Label(1, i,"Expense: "+"-"+sumExpense));
+                sheet.addCell(new Label(1, i, "Expense: " + "-" + sumExpense));
                 i++;
-                sheet.addCell(new Label(1, i,"Income: "+sumIncome));
+                sheet.addCell(new Label(1, i, "Income: " + sumIncome));
                 
                 
             } catch (RowsExceededException e) {
@@ -318,28 +328,36 @@ public class ExportExcel extends DialogFragment implements OnDateSetListener {
             mProgressDialog.dismiss();
         }
     }
-    public void getData(){
+    
+    public void getData() {
         mProgressDialog.show();
-        String startDate=String.valueOf(DateUtil.getLongAsDate(dayOfMonth,monthOfYear,year));
-        String endDate=String.valueOf(DateUtil.getLongAsDate(dayOfMonthEnd,monthOfYearEnd,yearEnd));
-        mDataRepository.getLocalTransactionByTime("",startDate,endDate,"")
-                  .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).singleOrError().subscribe(
+        String startDate = String.valueOf(DateUtil.getLongAsDate(dayOfMonth, monthOfYear, year));
+        String endDate = String
+                  .valueOf(DateUtil.getLongAsDate(dayOfMonthEnd, monthOfYearEnd, yearEnd));
+        mDataRepository.getLocalTransactionByTime("", startDate, endDate, "")
+                  .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                  .singleOrError().subscribe(
                   new Consumer<List<Transaction>>() {
                       @Override
                       public void accept(List<Transaction> transactions) throws Exception {
-                            try{
-                                if(transactions!=null&&!transactions.isEmpty()){
-                                    exportExcel(transactions);
-                                }else {
-                                    Toast.makeText(getActivity(),getActivity().getString(R.string.txt_empty_transaction),Toast.LENGTH_LONG).show();
-                                }
-                                
-                            }catch (Exception ex){
-                                Toast.makeText(getActivity(),getActivity().getString(R.string.txt_error_excel),Toast.LENGTH_LONG).show();
-                            }
+                          try {
+                              if (transactions != null && !transactions.isEmpty()) {
+                                  exportExcel(transactions);
+                              } else {
+                                  Toast.makeText(getActivity(),
+                                            getActivity().getString(R.string.txt_empty_transaction),
+                                            Toast.LENGTH_LONG).show();
+                              }
+                              
+                          } catch (Exception ex) {
+                              Toast.makeText(getActivity(),
+                                        getActivity().getString(R.string.txt_error_excel),
+                                        Toast.LENGTH_LONG).show();
+                          }
                       }
                   });
     }
+    
     public void alertDialog(String message) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
         builder1.setMessage(message);

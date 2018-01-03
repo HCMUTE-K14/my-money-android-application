@@ -24,6 +24,7 @@ public class ToolsAdapter extends RecyclerView.Adapter<ToolsAdapter.ViewHolder> 
     private Context mContext;
     private LayoutInflater mInflater;
     private ItemClickListener mItemClickListener;
+    
     public ToolsAdapter(Context context, List<ItemTool> itemTools) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = itemTools;
@@ -45,17 +46,23 @@ public class ToolsAdapter extends RecyclerView.Adapter<ToolsAdapter.ViewHolder> 
     public int getItemCount() {
         return mData.size();
     }
+    
     public void setItemClickListener(
               ItemClickListener itemClickListener) {
         mItemClickListener = itemClickListener;
     }
-    public ItemTool getItem(int id){
+    
+    public ItemTool getItem(int id) {
         return mData.get(id);
     }
+    
     public interface ItemClickListener {
+        
         void onItemClick(ItemTool itemTool);
     }
+    
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        
         @BindView(R.id.ic_tool)
         ImageView ic_tool;
         @BindView(R.id.txt_name)
@@ -66,11 +73,13 @@ public class ToolsAdapter extends RecyclerView.Adapter<ToolsAdapter.ViewHolder> 
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
-        public void bind(ItemTool itemTool){
+        
+        public void bind(ItemTool itemTool) {
             GlideImageLoader.load(mContext, DrawableUtil.getDrawable(mContext, itemTool.getImage()),
                       ic_tool);
             txt_name.setText(itemTool.getName());
         }
+        
         @Override
         public void onClick(View view) {
             if (mItemClickListener != null) {

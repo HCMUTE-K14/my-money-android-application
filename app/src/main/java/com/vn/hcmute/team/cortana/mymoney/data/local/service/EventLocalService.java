@@ -180,7 +180,7 @@ public class EventLocalService extends DbContentProvider<Event> implements
         return new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
-                for (Event event: eventList) {
+                for (Event event : eventList) {
                     updateItemEvent(event);
                 }
                 return 1;
@@ -193,13 +193,15 @@ public class EventLocalService extends DbContentProvider<Event> implements
         String whereClause = "wallet_id = ?";
         return mDatabase.delete(TABLE_NAME, whereClause, new String[]{whereClause});
     }
-    public void updateItemEvent(Event event){
+    
+    public void updateItemEvent(Event event) {
         event.setStatus("1");
         ContentValues contentValues = createContentValues(event);
         String selection = "event_id=?";
         String[] selectionArg = new String[]{event.getEventid()};
         mDatabase.update(TABLE_NAME, contentValues, selection, selectionArg);
     }
+    
     public Currencies getCurrencies(String idCurrencies) {
         return CurrencyLocalService.getInstance(mDatabaseHelper).getCurrency(idCurrencies);
     }

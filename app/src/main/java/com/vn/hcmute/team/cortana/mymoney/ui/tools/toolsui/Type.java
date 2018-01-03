@@ -5,7 +5,8 @@ package com.vn.hcmute.team.cortana.mymoney.ui.tools.toolsui;
  */
 
 public class Type {
-    public static final String CALCULATOR="calculator";
-    public static final String CONVERT_CURRENCY="convert_currency";
-    public static final String EXPORT_EXCEL="export_excel";
+    
+    public static final String CALCULATOR = "calculator";
+    public static final String CONVERT_CURRENCY = "convert_currency";
+    public static final String EXPORT_EXCEL = "export_excel";
 }

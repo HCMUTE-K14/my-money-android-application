@@ -304,6 +304,10 @@ public interface DataSource {
         
         Observable<List<DebtLoan>> getLocalDebtLoanByType(String wallet_id, String type);
         
+        Observable<List<Transaction>> getLocalTransactionByBudget(String user_id, String start,
+                  String end,
+                  String cate_id, String wallet_id);
+        
         Observable<String> addLocalDebtLoan(DebtLoan debtLoan);
         
         Observable<String> updateLocalDebtLoan(DebtLoan debtLoan);

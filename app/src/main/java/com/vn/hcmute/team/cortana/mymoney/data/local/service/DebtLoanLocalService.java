@@ -26,6 +26,7 @@ public class DebtLoanLocalService extends DbContentProvider<DebtLoan> implements
     private final String TYPE = "type";
     private final String STATUS = "status";
     private final String USER_ID = "user_id";
+    
     private DebtLoanLocalService(
               DatabaseHelper mDatabaseHelper) {
         super(mDatabaseHelper);

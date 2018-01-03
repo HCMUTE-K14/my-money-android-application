@@ -1,6 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.view.selectwallet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -8,8 +9,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import com.vn.hcmute.team.cortana.mymoney.R;
+import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.EmptyAdapter;
+import com.vn.hcmute.team.cortana.mymoney.ui.welcome.WelcomeActivity;
 import java.util.List;
 
 /**
@@ -67,6 +70,7 @@ public class SelectWalletView extends RelativeLayout {
             
             if (wallets.isEmpty()) {
                 mRecyclerView.setAdapter(mEmptyAdapter);
+                refreshApplication();
                 return;
             }
             
@@ -74,6 +78,14 @@ public class SelectWalletView extends RelativeLayout {
             mRecyclerView.setAdapter(mSelectWalletAdapter);
         }
         
+    }
+    
+    private void refreshApplication() {
+        PreferencesHelper.getInstance(mContext).putCurrentWallet(null);
+        Intent intent = new Intent(mContext, WelcomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        mContext.startActivity(intent);
     }
     
     public void setEmptyAdapter(String message) {
@@ -89,6 +101,7 @@ public class SelectWalletView extends RelativeLayout {
         mSelectWalletAdapter.removeWallet(wallet);
         if (mSelectWalletAdapter.isEmptyData()) {
             setEmptyAdapter(mContext.getString(R.string.txt_no_data));
+            refreshApplication();
         }
     }
     

@@ -45,6 +45,7 @@ public class FragmentEventRunning extends BaseFragment implements EventContract.
     private EmptyAdapter mEmptyAdapter;
     private List<Event> mEventList;
     private List<Event> mEventsStatusUpdate;
+    
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_event_running;
@@ -95,7 +96,7 @@ public class FragmentEventRunning extends BaseFragment implements EventContract.
     protected void initialize() {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         mEventList = new ArrayList<>();
-        mEventsStatusUpdate=new ArrayList<>();
+        mEventsStatusUpdate = new ArrayList<>();
         mEventPresenter.getEvent();
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -155,19 +156,21 @@ public class FragmentEventRunning extends BaseFragment implements EventContract.
         }
         checkUpdateStatus(mEventList);
     }
+    
     private void checkUpdateStatus(List<Event> eventList) {
         mEventsStatusUpdate.clear();
-        long currentMillisecond=System.currentTimeMillis();
-        for(Event event:eventList){
-            long millisecondEndEvent=Long.parseLong(event.getDate());
-            if(millisecondEndEvent<currentMillisecond){
+        long currentMillisecond = System.currentTimeMillis();
+        for (Event event : eventList) {
+            long millisecondEndEvent = Long.parseLong(event.getDate());
+            if (millisecondEndEvent < currentMillisecond) {
                 mEventsStatusUpdate.add(event);
             }
         }
-        if(mEventsStatusUpdate!=null&&mEventsStatusUpdate.size()>0){
+        if (mEventsStatusUpdate != null && mEventsStatusUpdate.size() > 0) {
             mEventPresenter.updateStatusEvent(mEventsStatusUpdate);
         }
     }
+    
     @Override
     public void onFailure(String message) {
         if (mSwipeRefreshLayout.isRefreshing()) {

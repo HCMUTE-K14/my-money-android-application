@@ -21,14 +21,15 @@ public class WelcomeActivity extends AppCompatActivity {
         startMainActivity();
         
     }
-    private void startMainActivity(){
+    
+    private void startMainActivity() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-               Intent intent=new Intent(getApplication(), MainActivity.class);
-               startActivity(intent);
-               finish();
+                Intent intent = new Intent(getApplication(), MainActivity.class);
+                startActivity(intent);
+                finish();
             }
-        },2000);
+        }, 2000);
     }
 }

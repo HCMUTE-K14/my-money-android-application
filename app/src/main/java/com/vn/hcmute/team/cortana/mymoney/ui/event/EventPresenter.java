@@ -89,7 +89,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
     
     @Override
     public void updateEvent(Event event) {
-       
+        
         BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
             
             @Override
@@ -121,20 +121,20 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
     @Override
     public void updateStatusEvent(List<Event> eventList) {
         BaseCallBack<Object> mObjectBaseCallBack = new BaseCallBack<Object>() {
-        
+            
             @Override
             public void onSuccess(Object value) {
                 getView().loading(false);
                 getView().onSuccessUpdateEvent((String) value);
-            
+                
             }
-        
+            
             @Override
             public void onFailure(Throwable throwable) {
                 getView().loading(false);
                 getView().onFailure(throwable.getMessage());
             }
-        
+            
             @Override
             public void onLoading() {
                 getView().loading(true);

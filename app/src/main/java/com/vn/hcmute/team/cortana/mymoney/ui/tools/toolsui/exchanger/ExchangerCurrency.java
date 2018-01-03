@@ -47,11 +47,13 @@ public class ExchangerCurrency extends DialogFragment {
     
     private Currencies mCurrenciesFrom;
     private Currencies mCurrenciesTo;
+    
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return super.onCreateDialog(savedInstanceState);
     }
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
               Bundle savedInstanceState) {
@@ -63,7 +65,7 @@ public class ExchangerCurrency extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    
+        
         setDefaultCurrencies();
         showCurrencies();
         edit_money_from.setRawInputType(Configuration.KEYBOARD_12KEY);
@@ -78,6 +80,7 @@ public class ExchangerCurrency extends DialogFragment {
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
     }
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 150) {
@@ -95,11 +98,11 @@ public class ExchangerCurrency extends DialogFragment {
     }
     
     @OnClick(R.id.linear_exchange)
-    public void onClickImageSync(View view){
-        if(edit_money_from.getText().toString().trim().equals("")){
+    public void onClickImageSync(View view) {
+        if (edit_money_from.getText().toString().trim().equals("")) {
             alertDialog(getString(R.string.txt_enter_money));
         }
-        if(mCurrenciesFrom.getCurCode().equals(mCurrenciesTo.getCurCode())){
+        if (mCurrenciesFrom.getCurCode().equals(mCurrenciesTo.getCurCode())) {
             txt_money.setText(edit_money_from.getText());
             return;
         }
@@ -114,61 +117,72 @@ public class ExchangerCurrency extends DialogFragment {
             alertDialog(getActivity().getString(R.string.txt_invalid_input));
         }
     }
+    
     @OnClick(R.id.linear_transfer)
-    public void onClickOK(View view){
+    public void onClickOK(View view) {
         getDialog().dismiss();
     }
+    
     @OnClick(R.id.linear_currency_from)
-    public void onClickLinearFrom(View view){
-        Intent intent=new Intent(getActivity(), CurrenciesActivity.class);
-        getActivity().startActivityForResult(intent,150);
+    public void onClickLinearFrom(View view) {
+        Intent intent = new Intent(getActivity(), CurrenciesActivity.class);
+        getActivity().startActivityForResult(intent, 150);
     }
+    
     @OnClick(R.id.linear_currency_to)
-    public void onClickTo(View view){
-        Intent intent=new Intent(getActivity(), CurrenciesActivity.class);
-        getActivity().startActivityForResult(intent,151);
+    public void onClickTo(View view) {
+        Intent intent = new Intent(getActivity(), CurrenciesActivity.class);
+        getActivity().startActivityForResult(intent, 151);
     }
+    
     @OnClick(R.id.img_switch)
-    public void onClickSwitch(View view){
+    public void onClickSwitch(View view) {
         swapCurrencies();
         showCurrencies();
     }
-    private void setDefaultCurrencies(){
-        mCurrenciesFrom=new Currencies();
+    
+    private void setDefaultCurrencies() {
+        mCurrenciesFrom = new Currencies();
         mCurrenciesFrom.setCurCode("USD");
         mCurrenciesFrom.setCurDisplayType("0");
         mCurrenciesFrom.setCurId("1");
         mCurrenciesFrom.setCurName("United States Dollar");
         mCurrenciesFrom.setCurSymbol("$");
         
-        mCurrenciesTo=new Currencies();
+        mCurrenciesTo = new Currencies();
         mCurrenciesTo.setCurCode("VND");
         mCurrenciesTo.setCurDisplayType("1");
         mCurrenciesTo.setCurId("4");
         mCurrenciesTo.setCurName("Việt Nam Đồng");
         mCurrenciesTo.setCurSymbol("₫");
     }
-    private void showCurrencies(){
+    
+    private void showCurrencies() {
         showCurrenciesFrom();
         showCurrenciesTo();
     }
-    private void showCurrenciesFrom(){
+    
+    private void showCurrenciesFrom() {
         txt_currency_from.setText(mCurrenciesFrom.getCurCode());
         String iconStringFrom = "ic_currency_" + mCurrenciesFrom.getCurCode().toLowerCase();
-        GlideImageLoader.load(getActivity(), DrawableUtil.getDrawable(getActivity(), iconStringFrom),
-                  image_from);
+        GlideImageLoader
+                  .load(getActivity(), DrawableUtil.getDrawable(getActivity(), iconStringFrom),
+                            image_from);
     }
-    private void showCurrenciesTo(){
+    
+    private void showCurrenciesTo() {
         txt_currency_to.setText(mCurrenciesTo.getCurCode());
         String iconStringTo = "ic_currency_" + mCurrenciesTo.getCurCode().toLowerCase();
         GlideImageLoader.load(getActivity(), DrawableUtil.getDrawable(getActivity(), iconStringTo),
                   image_to);
     }
-    private void swapCurrencies(){
-        Currencies currencies=mCurrenciesFrom;
-        mCurrenciesFrom=mCurrenciesTo;
-        mCurrenciesTo=currencies;
+    
+    private void swapCurrencies() {
+        Currencies currencies = mCurrenciesFrom;
+        mCurrenciesFrom = mCurrenciesTo;
+        mCurrenciesTo = currencies;
     }
+    
     public void alertDialog(String message) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
         builder1.setMessage(message);
@@ -184,5 +198,5 @@ public class ExchangerCurrency extends DialogFragment {
         alert11.show();
         
     }
-   
+    
 }

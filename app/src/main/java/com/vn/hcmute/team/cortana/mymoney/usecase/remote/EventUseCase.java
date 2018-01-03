@@ -64,13 +64,13 @@ public class EventUseCase extends UseCase<EventRequest> {
                           requestValues.getTypeRepository());
                 break;
             case Action.ACTION_UPDATE_STATUS_EVENT:
-                doUpdateStatusEvent(requestValues.getCallBack(),requestValues.getEventList(),requestValues.getTypeRepository());
+                doUpdateStatusEvent(requestValues.getCallBack(), requestValues.getEventList(),
+                          requestValues.getTypeRepository());
                 break;
             default:
                 break;
         }
     }
-    
     
     
     @Override
@@ -210,12 +210,11 @@ public class EventUseCase extends UseCase<EventRequest> {
         };
         
         if (!this.mCompositeDisposable.isDisposed()) {
-           
             
             if (typeRepository == TypeRepository.REMOTE) {
                 String userid = mDataRepository.getUserId();
                 String token = mDataRepository.getUserToken();
-    
+                
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {
                     callBack.onFailure(new UserLoginException(
                               mContext.getString(R.string.message_warning_need_login)));
@@ -250,25 +249,26 @@ public class EventUseCase extends UseCase<EventRequest> {
             
         }
     }
+    
     private void doUpdateStatusEvent(final BaseCallBack<Object> callBack, List<Event> eventList,
               TypeRepository typeRepository) {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
-            
+                
                 callBack.onSuccess(object);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
             }
         };
-    
+        
         if (!this.mCompositeDisposable.isDisposed()) {
             
             if (typeRepository == TypeRepository.REMOTE) {
-               //
+                //
             } else {
                 mDisposable = mDataRepository.updateStatusLocalEvent(eventList)
                           .subscribeOn(Schedulers.computation())
@@ -285,6 +285,7 @@ public class EventUseCase extends UseCase<EventRequest> {
             this.mCompositeDisposable.add(mDisposable);
         }
     }
+    
     private void doDeleteEvent(final BaseCallBack<Object> callBack, final String[] params,
               TypeRepository typeRepository) {
         
@@ -350,6 +351,7 @@ public class EventUseCase extends UseCase<EventRequest> {
         private String[] params;
         private TypeRepository typeRepository;
         private List<Event> mEventList;
+        
         public EventRequest(@NonNull String action, @Nullable BaseCallBack<Object> callBack,
                   @Nullable Event event, @Nullable String[] params) {
             this.action = action;
@@ -389,10 +391,11 @@ public class EventUseCase extends UseCase<EventRequest> {
         public List<Event> getEventList() {
             return mEventList;
         }
-    
+        
         public void setEventList(List<Event> eventList) {
             mEventList = eventList;
         }
+        
         public TypeRepository getTypeRepository() {
             return typeRepository;
         }

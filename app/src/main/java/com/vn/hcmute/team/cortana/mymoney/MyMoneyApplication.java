@@ -21,7 +21,6 @@ public class MyMoneyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        
         mAppComponent = DaggerApplicationComponent
                   .builder()
                   .applicationModule(new ApplicationModule(this))

@@ -39,9 +39,9 @@ public class CalculatorActivity extends BaseActivity implements DialogCallback {
     @BindView(R.id.linear_currencies_big)
     LinearLayout linear_currencies_big;
     Currencies mCurrencies;
-    private boolean mFlag=false;
+    private boolean mFlag = false;
     private DialogFragmentTransferCurrencies mDialogFragmentTransferCurrencies;
- 
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_calculator;
@@ -149,7 +149,7 @@ public class CalculatorActivity extends BaseActivity implements DialogCallback {
     
     @OnClick(R.id.check_box)
     public void onClickCheck(View view) {
-        if(mFlag){
+        if (mFlag) {
             finish();
         }
         try {
@@ -175,7 +175,7 @@ public class CalculatorActivity extends BaseActivity implements DialogCallback {
         Intent intent = getIntent();
         String goalMoney = intent.getStringExtra("goal_money");
         mCurrencies = intent.getParcelableExtra("currencies");
-        mFlag=intent.getBooleanExtra("flag",false);
+        mFlag = intent.getBooleanExtra("flag", false);
         if (goalMoney != null) {
             txt_input.setText(goalMoney);
         } else {
@@ -185,7 +185,7 @@ public class CalculatorActivity extends BaseActivity implements DialogCallback {
         if (mCurrencies != null) {
             txt_currency.setText(mCurrencies.getCurSymbol());
         }
-        if(mFlag){
+        if (mFlag) {
             linear_currencies_big.setVisibility(View.GONE);
             txt_title.setText(getString(R.string.txt_calculator));
             image_check.setImageResource(R.drawable.ic_back);
@@ -218,7 +218,7 @@ public class CalculatorActivity extends BaseActivity implements DialogCallback {
             alertDiaglog(getString(R.string.erro_negative));
             return;
         }
-        if(!mFlag){
+        if (!mFlag) {
             Intent returnIntent = new Intent();
             String amount = txt_input.getText().toString();
             returnIntent.putExtra("result_view",

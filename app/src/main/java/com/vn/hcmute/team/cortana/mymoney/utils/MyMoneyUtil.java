@@ -20,6 +20,7 @@ public class MyMoneyUtil {
                   .isHasPermission(activity,
                             PermissionHelper.Permission.READ_EXTERNAL_STORAGE);
     }
+    
     public static boolean isHasWritePermission(Activity activity) {
         return PermissionHelper
                   .isHasPermission(activity,

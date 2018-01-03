@@ -115,15 +115,15 @@ public class SavingPresenter extends BasePresenter<SavingContract.View> implemen
                       public void onSuccess(Object value) {
                           getView().loading(false);
                           getView().onSuccessUpdateSaving();
-                      
+                          
                       }
-                  
+                      
                       @Override
                       public void onFailure(Throwable throwable) {
                           getView().loading(false);
                           getView().showError(throwable.getMessage());
                       }
-                  
+                      
                       @Override
                       public void onLoading() {
                           getView().loading(true);

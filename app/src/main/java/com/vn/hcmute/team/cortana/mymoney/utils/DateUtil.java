@@ -42,6 +42,7 @@ public class DateUtil {
         
         return mDay + "/" + mMonth + "/" + mYear;
     }
+    
     public static String convertTimeMillisToMonthAnhYear(String timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(timeMillis));
@@ -103,8 +104,8 @@ public class DateUtil {
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE,0);
-        calendar.set(Calendar.SECOND,0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
         return calendar.getTimeInMillis();
     }
     
@@ -198,9 +199,9 @@ public class DateUtil {
         
         return mDates;
     }
+    
     public static String dateStringForFile() {
         Calendar calendar = Calendar.getInstance();
-        StringBuilder builder = new StringBuilder();
         SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy_hhmmss");
         return sdf.format(calendar.getTime());
     }

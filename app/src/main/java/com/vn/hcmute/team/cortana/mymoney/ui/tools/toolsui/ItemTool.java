@@ -5,9 +5,11 @@ package com.vn.hcmute.team.cortana.mymoney.ui.tools.toolsui;
  */
 
 public class ItemTool {
+    
     private String type;
     private String name;
     private String image;
+    
     public String getType() {
         return type;
     }

@@ -112,13 +112,13 @@ public class BudgetPresenter extends BasePresenter<BudgetContract.View> implemen
                 getView().loading(false);
                 getView().onSuccessUpdateBudget((String) value);
             }
-        
+            
             @Override
             public void onFailure(Throwable throwable) {
                 getView().loading(false);
                 getView().onFailure(throwable.getMessage());
             }
-        
+            
             @Override
             public void onLoading() {
                 getView().loading(false);

@@ -10,6 +10,7 @@ public class Constraints {
     
     public static final Person SOME_ONE_PERSON = new Person("some_one_id", "someone", "");
     
+    
     public class RequestCode {
         
         public static final int LOGIN_REQUEST_CODE = 1;

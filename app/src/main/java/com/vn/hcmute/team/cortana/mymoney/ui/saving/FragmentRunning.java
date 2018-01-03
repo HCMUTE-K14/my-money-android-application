@@ -45,6 +45,7 @@ public class FragmentRunning extends BaseFragment implements
     private MyRecyclerViewSavingAdapter mMyRecyclerViewSavingAdapter;
     private EmptyAdapter mEmptyAdapter;
     private List<Saving> mSavingsStatusUpdate;
+    
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_saving_running;
@@ -167,19 +168,21 @@ public class FragmentRunning extends BaseFragment implements
         }
         checkUpdateStatus(mSavingList);
     }
+    
     private void checkUpdateStatus(List<Saving> savingList) {
         mSavingsStatusUpdate.clear();
-        long currentMillisecond=System.currentTimeMillis();
-        for(Saving saving:savingList){
-            long millisecondEndSaving=Long.parseLong(saving.getDate());
-            if(millisecondEndSaving<currentMillisecond){
+        long currentMillisecond = System.currentTimeMillis();
+        for (Saving saving : savingList) {
+            long millisecondEndSaving = Long.parseLong(saving.getDate());
+            if (millisecondEndSaving < currentMillisecond) {
                 mSavingsStatusUpdate.add(saving);
             }
         }
-        if(mSavingsStatusUpdate!=null&&mSavingsStatusUpdate.size()>0){
+        if (mSavingsStatusUpdate != null && mSavingsStatusUpdate.size() > 0) {
             mSavingPresenter.updateStatusSaving(mSavingsStatusUpdate);
         }
     }
+    
     @Override
     public void showSaving() {
         
@@ -251,6 +254,6 @@ public class FragmentRunning extends BaseFragment implements
     public void init() {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         mSavingList = new ArrayList<>();
-        mSavingsStatusUpdate=new ArrayList<>();
+        mSavingsStatusUpdate = new ArrayList<>();
     }
 }

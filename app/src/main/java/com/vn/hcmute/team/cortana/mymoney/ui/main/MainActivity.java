@@ -274,6 +274,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                       .replace(R.id.container_fragment, fragment).commit();
         }
     };
+    
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -573,7 +574,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
             case R.id.navigation_item_contacts:
                 break;
             case R.id.navigation_item_tools:
-                mRunnable=runnableAttachToolsFragment;
+                mRunnable = runnableAttachToolsFragment;
                 break;
             case R.id.navigation_item_login:
                 

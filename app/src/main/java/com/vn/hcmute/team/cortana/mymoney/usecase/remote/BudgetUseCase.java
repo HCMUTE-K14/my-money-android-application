@@ -64,7 +64,8 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                           requestValues.getTypeRepository());
                 break;
             case Action.ACTION_UPDATE_STATUS_BUDGET:
-                doUpdateStatusBudget(requestValues.getCallBack(),requestValues.getBudgetList(),requestValues.getTypeRepository());
+                doUpdateStatusBudget(requestValues.getCallBack(), requestValues.getBudgetList(),
+                          requestValues.getTypeRepository());
                 break;
             default:
                 break;
@@ -250,14 +251,16 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
             
         }
     }
-    private void doUpdateStatusBudget(final  BaseCallBack<Object> callBack,List<Budget> list, TypeRepository typeRepository){
+    
+    private void doUpdateStatusBudget(final BaseCallBack<Object> callBack, List<Budget> list,
+              TypeRepository typeRepository) {
         this.mDisposableSingleObserver = new DisposableSingleObserver<Object>() {
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Object object) {
-            
+                
                 callBack.onSuccess(object);
             }
-        
+            
             @Override
             public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                 callBack.onFailure(e);
@@ -265,7 +268,7 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
         };
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.REMOTE) {
-               //
+                //
             } else {
                 mDisposable = mDataRepository.updateStatusLocalBudget(list)
                           .subscribeOn(Schedulers.computation())
@@ -280,10 +283,11 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                           .subscribeWith(this.mDisposableSingleObserver);
             }
             this.mCompositeDisposable.add(mDisposable);
-        
+            
         }
         
     }
+    
     private void doDeleteBudget(final BaseCallBack<Object> callBack, String[] params,
               TypeRepository typeRepository) {
         
@@ -394,10 +398,11 @@ public class BudgetUseCase extends UseCase<BudgetRequest> {
                   TypeRepository typeRepository) {
             this.typeRepository = typeRepository;
         }
+        
         public List<Budget> getBudgetList() {
             return mBudgetList;
         }
-    
+        
         public void setBudgetList(List<Budget> budgetList) {
             mBudgetList = budgetList;
         }

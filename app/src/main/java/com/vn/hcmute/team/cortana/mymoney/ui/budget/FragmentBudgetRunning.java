@@ -45,6 +45,7 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
     private List<Budget> mBudgetList;
     private EmptyAdapter mEmptyAdapter;
     private List<Budget> mBudgetsUpdateStatus;
+    
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_budget_running;
@@ -86,7 +87,7 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
     protected void initialize() {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         mBudgetList = new ArrayList<>();
-        mBudgetsUpdateStatus=new ArrayList<>();
+        mBudgetsUpdateStatus = new ArrayList<>();
         mBudgetPresenter.getBudget();
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -129,15 +130,15 @@ public class FragmentBudgetRunning extends BaseFragment implements BudgetContrac
     
     private void checkUpdateStatus(List<Budget> budgetList) {
         mBudgetsUpdateStatus.clear();
-        long currentMillisecond=System.currentTimeMillis();
-        for(Budget budget:budgetList){
-            String millisecond=budget.getRangeDate().split("/")[1];
-            long millisecondEndBudget=Long.parseLong(millisecond);
-            if(millisecondEndBudget<currentMillisecond){
+        long currentMillisecond = System.currentTimeMillis();
+        for (Budget budget : budgetList) {
+            String millisecond = budget.getRangeDate().split("/")[1];
+            long millisecondEndBudget = Long.parseLong(millisecond);
+            if (millisecondEndBudget < currentMillisecond) {
                 mBudgetsUpdateStatus.add(budget);
             }
         }
-        if(mBudgetsUpdateStatus!=null&&mBudgetsUpdateStatus.size()>0){
+        if (mBudgetsUpdateStatus != null && mBudgetsUpdateStatus.size() > 0) {
             mBudgetPresenter.updateStatusBudget(mBudgetsUpdateStatus);
         }
     }
