@@ -298,9 +298,11 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
             mFramentManager.beginTransaction().remove(mFragment).commitAllowingStateLoss();
         }
         if (mIsViewByCategory) {
-            mFragment = new FragmentTransactionByCategory(this.getContext(), list);
+            mFragment = new FragmentTransactionByCategory();
+            ((FragmentTransactionByCategory)mFragment).setDataTransaction(list);
         } else {
-            mFragment = new FragmentTransactionByTime(this.getContext(), list);
+            mFragment = new FragmentTransactionByTime();
+            ((FragmentTransactionByTime)mFragment).setDataTransaction(list);
         }
         mFramentManager.beginTransaction().replace(R.id.container, mFragment)
                   .commitAllowingStateLoss();

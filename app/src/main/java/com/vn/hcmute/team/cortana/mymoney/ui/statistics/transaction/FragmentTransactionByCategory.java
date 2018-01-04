@@ -1,6 +1,5 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseFragment;
-import com.vn.hcmute.team.cortana.mymoney.ui.base.ExpandableListEmptyAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects.DateObjectTransaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction.adapter.TransactionByCategoryAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction.adapter.TransactionByCategoryAdapter.ClickChildView;
@@ -42,24 +40,18 @@ public class FragmentTransactionByCategory extends BaseFragment {
     TransactionByCategoryAdapter.ClickChildView mClickChildView = new ClickChildView() {
         @Override
         public void onClickChild(DateObjectTransaction dateObjectTransaction) {
-            //            Intent intent = new Intent(FragmentTransactionByTime.this.getContext(),
-            //                      InforTransactionActivity.class);
-            //            dateObjectTransaction
-            //            intent.putExtra("transaction", transaction);
-            //            startActivity(intent);
         }
     };
-    private Context mContext;
     private List<Transaction> mTransactions;
     private TransactionByCategoryAdapter mTransactionByCategoryAdapter;
-    private ExpandableListEmptyAdapter mBaseEmptyAdapter;
     private List<Category> mCategories;
     private HashMap<Category, List<DateObjectTransaction>> mListDataChild;
     private ViewGroup mHeaderView;
-    
-    public FragmentTransactionByCategory(Context context, List<Transaction> list) {
-        this.mContext = context;
-        this.mTransactions = list;
+    private boolean flagCreatedView=false;
+    public FragmentTransactionByCategory() {
+        mCategories = new ArrayList<>();
+        mListDataChild = new HashMap<>();
+        mTransactions=new ArrayList<>();
     }
     
     @Override
@@ -84,21 +76,19 @@ public class FragmentTransactionByCategory extends BaseFragment {
     
     @Override
     protected void initialize() {
-        init();
         initHeaderExpendableListView();
         setData();
-    }
-    
-    private void init() {
-        mCategories = new ArrayList<>();
-        mListDataChild = new HashMap<>();
-    }
-    
-    public void setData(List<Transaction> transactions) {
-        mTransactions.clear();
-        mTransactions.addAll(transactions);
+        flagCreatedView=true;
         
-        setData();
+    }
+    public void setDataTransaction(List<Transaction> list){
+        mCategories.clear();
+        mListDataChild.clear();
+        mTransactions.clear();
+        mTransactions.addAll(list);
+       if(flagCreatedView){
+           setData();
+       }
     }
     
     private void initHeaderExpendableListView() {
@@ -116,7 +106,6 @@ public class FragmentTransactionByCategory extends BaseFragment {
             mEmptyView.setVisibility(View.GONE);
             mExpandableListView.setVisibility(View.VISIBLE);
             setDataAdapter();
-            
             mTransactionByCategoryAdapter = new TransactionByCategoryAdapter(getActivity(),
                       mCategories,
                       mListDataChild);

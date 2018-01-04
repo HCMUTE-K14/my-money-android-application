@@ -74,15 +74,15 @@ public class TransactionStatisticsActivity extends BaseActivity {
                       .commit();
         }
         if (mType.equals("1")) {
-            mFragmentTransactionByTime = new FragmentTransactionByTime(this,
-                      mObjectByTime.getTransactionList());
+            mFragmentTransactionByTime = new FragmentTransactionByTime();
+            mFragmentTransactionByTime.setDataTransaction(mObjectByTime.getTransactionList());
             getSupportFragmentManager().beginTransaction()
                       .replace(R.id.view_list_transaction, mFragmentTransactionByTime).commit();
             return;
         }
         if (mType.equals("2")) {
-            mFragmentTransactionByCategory = new FragmentTransactionByCategory(this,
-                      mObjectByCategory.getTransactionList());
+            mFragmentTransactionByCategory = new FragmentTransactionByCategory();
+            mFragmentTransactionByCategory.setDataTransaction(mObjectByCategory.getTransactionList());
             getSupportFragmentManager().beginTransaction()
                       .replace(R.id.view_list_transaction, mFragmentTransactionByCategory).commit();
             return;

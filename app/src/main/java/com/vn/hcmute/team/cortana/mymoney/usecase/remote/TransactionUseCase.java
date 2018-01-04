@@ -294,7 +294,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                 callBack.onFailure(e);
             }
         };
-        
+        String userid = mDataRepository.getUserId();
         String startDate = params[0];
         String endDate = params[1];
         String wallet_id = params[2];
@@ -302,7 +302,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.LOCAL) {
                 mDisposable = mDataRepository
-                          .getLocalTransactionByTime("", startDate, endDate, wallet_id)
+                          .getLocalTransactionByTime(userid, startDate, endDate, wallet_id)
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())
                           .doOnSubscribe(new Consumer<Disposable>() {
@@ -314,7 +314,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.REMOTE) {
-                String userid = mDataRepository.getUserId();
+                
                 String token = mDataRepository.getUserToken();
                 
                 if (TextUtils.isEmpty(userid) || TextUtils.isEmpty(token)) {

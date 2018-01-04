@@ -1,6 +1,5 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +51,6 @@ public class FragmentTransactionByTime extends BaseFragment {
             startActivity(intent);
         }
     };
-    private Context mContext;
     private List<Transaction> mTransactions;
     private TransactionByTimeAdapter mTransactionByTimeAdapter;
     private List<DateObjectTransaction> mListDataHeader;
@@ -60,10 +58,12 @@ public class FragmentTransactionByTime extends BaseFragment {
     private ExpandableListEmptyAdapter mBaseEmptyAdapter;
     private List<String> mDateList;
     private ViewGroup mHeaderView;
-    
-    public FragmentTransactionByTime(Context context, List<Transaction> list) {
-        this.mContext = context;
-        this.mTransactions = list;
+    private boolean flagCreatedView=false;
+    public FragmentTransactionByTime() {
+        mDateList = new ArrayList<>();
+        mListDataHeader = new ArrayList<>();
+        mListDataChild = new HashMap<>();
+        mTransactions=new ArrayList<>();
     }
     
     @Override
@@ -88,18 +88,20 @@ public class FragmentTransactionByTime extends BaseFragment {
     
     @Override
     protected void initialize() {
-        init();
-        setData();
-    }
-    
-    public void init() {
-        mDateList = new ArrayList<>();
-        mListDataHeader = new ArrayList<>();
-        mListDataChild = new HashMap<>();
-        //add header expandable view
         initHeaderExpendableListView();
+        setData();
+        flagCreatedView=true;
     }
-    
+    public void setDataTransaction(List<Transaction> list){
+        mTransactions.clear();
+        mDateList.clear();
+        mListDataHeader.clear();
+        mListDataChild.clear();
+        mTransactions.addAll(list);
+        if (flagCreatedView){
+            setData();
+        }
+    }
     private void initHeaderExpendableListView() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         mHeaderView = (ViewGroup) inflater

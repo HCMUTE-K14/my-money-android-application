@@ -133,12 +133,10 @@ public class TransactionByCategoryAdapter extends BaseExpandableListAdapter {
     public List<DateObjectTransaction> getDateObjectByCategory(Category category) {
         return mListDataChild.get(category);
     }
-    
     public interface ClickChildView {
         
         void onClickChild(DateObjectTransaction dateObjectTransaction);
     }
-    
     public class ViewGroupHoder {
         
         @BindView(R.id.image_icon_category)
@@ -162,6 +160,7 @@ public class TransactionByCategoryAdapter extends BaseExpandableListAdapter {
                       .into(image_icon_category);
             double money = 0;
             List<DateObjectTransaction> list = getDateObjectByCategory(category);
+
             for (DateObjectTransaction dateObjectTransaction : list) {
                 if (category.getType().equals(EXPENSE)) {
                     money -= Double.parseDouble(dateObjectTransaction.getMoney());

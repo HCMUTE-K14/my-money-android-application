@@ -90,8 +90,8 @@ public class TransactionSavingActivity extends BaseActivity implements Transacti
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }
-        FragmentTransactionByTime mFragmentTransactionByTime = new FragmentTransactionByTime(this,
-                  list);
+        FragmentTransactionByTime mFragmentTransactionByTime = new FragmentTransactionByTime();
+        mFragmentTransactionByTime.setDataTransaction(list);
         getSupportFragmentManager().beginTransaction()
                   .replace(R.id.view_fragment, mFragmentTransactionByTime).commit();
     }
