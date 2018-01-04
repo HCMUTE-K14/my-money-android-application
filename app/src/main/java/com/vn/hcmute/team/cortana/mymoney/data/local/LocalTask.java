@@ -129,6 +129,9 @@ public interface LocalTask {
         Observable<List<Transaction>> getTransactionByBudget(String user_id, String start,
                   String end,
                   String cate_id, String wallet_id);
+        
+        Observable<List<Transaction>> getTransactionBySaving(final String user_id,
+                  final String saving_id);
     }
     
     interface DebtLoanTask {

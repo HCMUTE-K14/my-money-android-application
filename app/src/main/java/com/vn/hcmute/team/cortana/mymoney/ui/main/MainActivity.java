@@ -188,7 +188,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                 mCurrentFragment = fragment;
                 getSupportFragmentManager().beginTransaction()
                           .replace(R.id.container_fragment, fragment).commit();
-            }else {
+            } else {
                 ((TransactionMainFragment) mCurrentFragment).jump2ToDay();
             }
             
@@ -349,6 +349,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                               mPreferenceHelper.putCurrentWallet(mCurrentWallet);
                               
                               updateViewHeaderWithWallet(mCurrentWallet);
+                              
                           }
                           
                           @Override
@@ -363,6 +364,10 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
             request.setTypeRepository(TypeRepository.LOCAL);
             
             mWalletUseCase.subscribe(request);
+        } else if (event.getResultCode() == ResultCode.NEED_RELOAD_DATA) {
+            if (mCurrentFragment instanceof TransactionMainFragment) {
+                ((TransactionMainFragment) mCurrentFragment).getData();
+            }
         }
     }
     

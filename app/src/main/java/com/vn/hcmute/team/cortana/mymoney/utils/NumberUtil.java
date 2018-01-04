@@ -52,7 +52,7 @@ public class NumberUtil {
         
         double value = rate * realTimeCurrency.get(to);
         
-        return NumberUtil.round(value, 3);
+        return NumberUtil.round(value, 1);
     }
     
     public static String formatAmount(String number, String symbolCurrency) {

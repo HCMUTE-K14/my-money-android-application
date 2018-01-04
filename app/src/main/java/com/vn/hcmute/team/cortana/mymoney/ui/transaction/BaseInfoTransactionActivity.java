@@ -148,6 +148,7 @@ public abstract class BaseInfoTransactionActivity extends BaseActivity implement
     @OnClick(R.id.image_view_cancel)
     public void exit() {
         finish();
+        EventBus.getDefault().post(new ActivityResultEvent(ResultCode.NEED_RELOAD_DATA, null));
     }
     
     
@@ -161,6 +162,9 @@ public abstract class BaseInfoTransactionActivity extends BaseActivity implement
         Intent intent = new Intent(this, ManagerTransactionActivity.class);
         intent.putExtra("action", Action.ACTION_UPDATE_TRANSACTION);
         intent.putExtra("transaction", mTransaction);
+        if (mTransaction.getSaving() != null) {
+            intent.putExtra("saving", mTransaction.getSaving());
+        }
         startActivityForResult(intent, Constraints.RequestCode.UPDATE_TRANSACTION_REQUEST_CODE);
     }
     

@@ -38,7 +38,6 @@ import com.vn.hcmute.team.cortana.mymoney.usecase.base.TypeRepository;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.DebtLoanUseCase;
 import com.vn.hcmute.team.cortana.mymoney.usecase.remote.DebtLoanUseCase.DebtLoanRequest;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
@@ -261,8 +260,11 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
                 
                 break;
             case ResultCode.EDIT_TRANSACTION_RESULT_CODE:
+                getData();
+                break;
             case ResultCode.REMOVE_TRANSACTION_RESULT_CODE:
                 getData();
+                break;
             case ResultCode.CHANGE_WALLET_RESULT_CODE:
                 mWalletId = mPreferencesHelper.getCurrentWallet().getWalletid();
                 getData();
@@ -320,8 +322,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
         mProgressDialog.dismiss();
     }
     
-    private void getData() {
-        MyLogger.d("sss");
+    public void getData() {
         mTransactionPresenter.getTransactionByTime(mStartDate, mEndDate, mWalletId);
     }
     

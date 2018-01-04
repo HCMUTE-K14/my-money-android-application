@@ -28,7 +28,6 @@ public class InforTransactionActivity extends BaseInfoTransactionActivity {
     @Override
     protected void initializeView() {
         super.initializeView();
-        
         if (!mTransaction.getPerson().isEmpty()) {
             View listPersonView = LayoutInflater.from(this)
                       .inflate(R.layout.layout_list_person_trans, null, false);

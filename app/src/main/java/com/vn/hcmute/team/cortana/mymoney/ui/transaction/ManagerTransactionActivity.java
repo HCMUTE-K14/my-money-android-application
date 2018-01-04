@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import com.vn.hcmute.team.cortana.mymoney.R;
+import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class ManagerTransactionActivity extends BaseActivity {
     private String mAction;
     private Transaction mTransaction;
     private Fragment mFragment;
+    private Saving mSaving;
     private long mDate;
     
     private boolean isEnableUploadImage = true;
@@ -65,7 +67,7 @@ public class ManagerTransactionActivity extends BaseActivity {
         params.put("only_debt_loan_category", isLoadOnlyDebtLoanCategory);
         
         mFragment = ManagerTransactionFragment
-                  .newInstance(mAction, params, mTransaction, mDate, null);
+                  .newInstance(mAction, params, mTransaction, mDate, mSaving);
         
         attachFragment();
     }
@@ -80,6 +82,7 @@ public class ManagerTransactionActivity extends BaseActivity {
             isEnableMultipleSelectContact = intent.getBooleanExtra("multiple_select_contact", true);
             isLoadOnlyDebtLoanCategory = intent.getBooleanExtra("only_debt_loan_category", false);
             mDate = intent.getLongExtra("date", 0);
+            mSaving = intent.getParcelableExtra("saving");
         }
     }
     
