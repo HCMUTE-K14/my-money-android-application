@@ -4,7 +4,6 @@ import android.content.Context;
 import com.vn.hcmute.team.cortana.mymoney.ApplicationConfig;
 import com.vn.hcmute.team.cortana.mymoney.data.cache.PreferencesHelper;
 import com.vn.hcmute.team.cortana.mymoney.model.RealTimeCurrency;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -67,8 +66,6 @@ public class NumberUtil {
         formatter.applyPattern(ApplicationConfig.DEFAULT_AMOUNT_PATTERN);
         String format = formatter.format(amount);
         String[] arr = format.split("\\.");
-        MyLogger.d(number);
-        MyLogger.d(arr, true);
         try {
             double temp = Double.parseDouble(arr[1].trim());
             if (temp == 0.0) {

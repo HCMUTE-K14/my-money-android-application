@@ -1,5 +1,6 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.settings;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import com.vn.hcmute.team.cortana.mymoney.ApplicationConfig;
 import com.vn.hcmute.team.cortana.mymoney.R;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.settings.SettingsAdapter.SettingsListener;
+import com.vn.hcmute.team.cortana.mymoney.ui.settings.restoredatabase.RestoreDatabaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.BackupToFileDialog;
 import com.vn.hcmute.team.cortana.mymoney.ui.view.DividerItemDecoration;
 import java.util.ArrayList;
@@ -46,8 +48,8 @@ public class SettingsActivity extends BaseActivity {
         
         @Override
         public void onRestoreDatabase() {
-            Toast.makeText(SettingsActivity.this, "Restore Language", Toast.LENGTH_SHORT).show();
-            
+            Intent intent=new Intent(getApplicationContext(), RestoreDatabaseActivity.class);
+            startActivity(intent);
         }
         
         @Override

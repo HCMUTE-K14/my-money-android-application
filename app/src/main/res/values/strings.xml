@@ -3,6 +3,7 @@
   <string name="message_validate_user_login">Username or password is empty </string>
   <string name="message_validate_user_register">Username,password and email must be at least 4 character</string>
   <string name="message_permission_read_request">This app will need to read external storage to display image on your device.</string>
+  <string name="message_permission_read_write_request">This app will need to read and write external storage  on your device.</string>
   <string name="message_connect_server_error">Cannot connect to server ! Please try later</string>
   <string name="action_ok">OK</string>
   <string name="txt_gallery">Gallery</string>
@@ -363,5 +364,10 @@
   <string name="backup_file_ext">.db</string>
   <string name="message_backup_failed">Backup Failed</string>
   <string name="message_backup_successfully">Backup Successfully. File save at %1$s</string>
-
+  <string name="txt_backup_files">Backup files</string>
+  <string name="txt_alert_restore_database">You definitely want to restore database?</string>
+  <string name="txt_no_file">No file</string>
+  <string name="txt_success_restore">Database Restored successfully. Restart app!</string>
+  <string name="txt_fail_restore">Database Restored failure!</string>
+  <string name="txt_earning">Earning</string>
 </resources>

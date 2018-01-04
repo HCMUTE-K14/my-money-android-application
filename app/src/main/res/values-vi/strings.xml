@@ -3,6 +3,7 @@
   <string name="message_validate_user_login">Tên đăng nhập hoặc mật khẩu của bạn không thể để </string>
   <string name="message_validate_user_register">Tên đăng nhập, Mật khẩu và email phải có ít nhất 4 kí tự</string>
   <string name="message_permission_read_request">Ứng dụng cần quyền truy xuất dữ liệu ngoài để hiển thị hình ảnh.</string>
+  <string name="message_permission_read_write_request">Ứng dụng cần quyền truy xuất dữ liệu.</string>
   <string name="message_connect_server_error">Không thể kết nối vào server ! Vui lòng thử lại sao</string>
   <string name="action_ok">OK</string>
   <string name="txt_gallery">Thư viện</string>
@@ -336,7 +337,7 @@
   <string name="message_warning_select_end_date">Hãy chọn ngày kết thúc !!</string>
   <string name="txt_transfer_money">Chuyển tiền</string>
   <string name="message_warning_transfer_money">Bạn cần nhiều hơn một ví để thực hiện việc này</string>
-  <string name="txt_cash_book">Cashbook</string>
+  <string name="txt_cash_book">Sổ tiền</string>
   <string name="message_warning_more_than_contact">Chỉ có thể chọn 1 địa chỉ liên lạc</string>
   <string name="txt_from">Từ</string>
   <string name="txt_to">Đến</string>
@@ -345,4 +346,10 @@
   <string name="settings_backup_database">Sao lưu dữ liệu</string>
   <string name="settings_restore_database">Khôi phục dữ liệu</string>
   <string name="settings_about_me">Về chúng tôi</string>
+  <string name="txt_backup_files">Những tập tin sao lưu</string>
+  <string name="txt_alert_restore_database">Bạn chắc chắn muốn khôi phục lại dữ liệu?</string>
+  <string name="txt_no_file">Không có tập tin</string>
+  <string name="txt_success_restore">Khôi phục thành công. Khởi động lại ứng dụng!</string>
+  <string name="txt_fail_restore">Khôi phục thất bại!</string>
+  <string name="txt_earning">Thu được</string>
 </resources>

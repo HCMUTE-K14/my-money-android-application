@@ -81,7 +81,6 @@ public class BackupToFileDialog extends DialogFragment {
                 BackupToFileDialog.this.dismiss();
             }
         });
-        
         return v;
     }
     

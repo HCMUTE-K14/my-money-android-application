@@ -143,6 +143,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
         } else {
             mWalletId = currentWallet.getWalletid();
         }
+        
     }
     
     @Override
@@ -312,8 +313,6 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
     public void onFailure(String message) {
         // Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
-    
-    
     @Override
     public void loading(boolean isLoading) {
         if (isLoading) {
@@ -324,8 +323,11 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
     }
     
     private void getData() {
-        MyLogger.d("run");
         mTransactionPresenter.getTransactionByTime(mStartDate, mEndDate, mWalletId);
+    }
+    
+    public void jump2ToDay() {
+        mCalendarTransactionView.jump2ToDay();
     }
     
     public void addDebtLoan(Transaction transaction) {

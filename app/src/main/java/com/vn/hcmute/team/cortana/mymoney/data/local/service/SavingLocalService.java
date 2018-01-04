@@ -6,6 +6,7 @@ import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -235,19 +236,16 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
     
     public int takeSaving(String idWallet, String idSaving, String moneyWallet,
               String moneySaving) {
-        //wallet
-        int updateMoneyWallet = WalletLocalService.getInstance(mDatabaseHelper)
-                  .updateMoneyWallet(idWallet, moneyWallet);
-        //saving
-        ContentValues contentValuesSaving = new ContentValues();
-        contentValuesSaving.put("current_money", moneySaving);
-        int updateMoneySaving = mDatabase
-                  .update(TABLE_NAME, contentValuesSaving, "saving_id=?", new String[]{idSaving});
-        if (updateMoneyWallet > 0 && updateMoneySaving > 0) {
+        String query="UPDATE tbl_saving SET current_money=?  WHERE saving_id=?";
+        Cursor cursor= mDatabase.rawQuery(query,new String[]{moneySaving,idSaving});
+        if(cursor!=null){
             return 1;
+        }else {
+            return -1;
         }
-        return -1;
+        
     }
+    
     
     public Currencies getCurrencies(String idCurrencies) {
         return CurrencyLocalService.getInstance(mDatabaseHelper).getCurrency(idCurrencies);

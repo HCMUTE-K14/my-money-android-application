@@ -611,7 +611,12 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
                       Toast.LENGTH_SHORT).show();
             return;
         }
-        
+        String user_id = TextUtil
+                  .isEmpty(PreferencesHelper.getInstance(this.getActivity()).getUserId())
+                  ? ""
+                  : PreferencesHelper.getInstance(this.getActivity()).getUserId();
+        mCurrentTransaction
+                  .setUser_id(user_id);
         mCurrentTransaction.setAmount(mAmount);
         mCurrentTransaction.setNote(note);
         mCurrentTransaction.setCategory(category);

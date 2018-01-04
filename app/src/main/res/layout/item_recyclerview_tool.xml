@@ -15,7 +15,7 @@
       android:layout_height="32dp"
       android:layout_centerVertical="true"
       android:layout_marginLeft="5dp"
-      android:src="@drawable/icon_not_selected"/>
+      android:src="@drawable/server"/>
     <TextView
       android:id="@+id/txt_name"
       android:layout_width="wrap_content"

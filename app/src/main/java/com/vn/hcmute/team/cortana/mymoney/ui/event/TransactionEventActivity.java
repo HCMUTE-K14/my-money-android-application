@@ -94,6 +94,7 @@ public class TransactionEventActivity extends BaseActivity implements Transactio
     
     @Override
     public void onFailure(String message) {
+    
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }

@@ -160,11 +160,14 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
+                          MyLogger.d("GET_BY_EVENT_TRUE", ((List<Transaction>) value).size());
                           getView().showAllListTransaction((List<Transaction>) value);
                       }
                       
                       @Override
                       public void onFailure(Throwable throwable) {
+                          MyLogger.d("GET_BY_EVENT", "false");
+                          
                           getView().loading(false);
                           getView().onFailure(throwable.getMessage());
                       }

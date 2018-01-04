@@ -529,6 +529,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                 callBack.onFailure(e);
             }
         };
+        
         String userid = mDataRepository.getUserId();
         String event_id = params[0];
         if (!this.mCompositeDisposable.isDisposed()) {

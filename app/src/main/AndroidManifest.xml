@@ -216,7 +216,10 @@
       android:configChanges="orientation"
       android:name=".ui.settings.SettingsActivity"
       android:screenOrientation="portrait" />
-
+    <activity
+      android:configChanges="orientation"
+      android:name=".ui.settings.restoredatabase.RestoreDatabaseActivity"
+      android:screenOrientation="portrait" />
   </application>
 
 </manifest>

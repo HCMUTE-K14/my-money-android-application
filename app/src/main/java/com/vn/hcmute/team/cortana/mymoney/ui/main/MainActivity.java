@@ -61,6 +61,7 @@ import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.GlideImageLoader;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
@@ -183,10 +184,15 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         @Override
         public void run() {
             mNavigationView.getMenu().findItem(R.id.navigation_item_cashbook).setChecked(true);
-            TransactionMainFragment fragment = new TransactionMainFragment();
-            mCurrentFragment = fragment;
-            getSupportFragmentManager().beginTransaction()
-                      .replace(R.id.container_fragment, fragment).commit();
+            if (!(mCurrentFragment instanceof TransactionMainFragment)) {
+                TransactionMainFragment fragment = new TransactionMainFragment();
+                mCurrentFragment = fragment;
+                getSupportFragmentManager().beginTransaction()
+                          .replace(R.id.container_fragment, fragment).commit();
+            }else {
+                ((TransactionMainFragment) mCurrentFragment).jump2ToDay();
+            }
+            
         }
     };
     
@@ -194,10 +200,12 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         @Override
         public void run() {
             mNavigationView.getMenu().findItem(R.id.navigation_item_categories).setChecked(true);
-            CategoryMainFragment fragment = new CategoryMainFragment();
-            mCurrentFragment = fragment;
-            getSupportFragmentManager().beginTransaction()
-                      .replace(R.id.container_fragment, fragment).commit();
+            if (!(mCurrentFragment instanceof CategoryMainFragment)) {
+                CategoryMainFragment fragment = new CategoryMainFragment();
+                mCurrentFragment = fragment;
+                getSupportFragmentManager().beginTransaction()
+                          .replace(R.id.container_fragment, fragment).commit();
+            }
         }
     };
     
@@ -205,10 +213,12 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         @Override
         public void run() {
             mNavigationView.getMenu().findItem(R.id.navigation_item_saving).setChecked(true);
-            SavingMainFragment fragment = new SavingMainFragment();
-            mCurrentFragment = fragment;
-            getSupportFragmentManager().beginTransaction()
-                      .replace(R.id.container_fragment, fragment).commit();
+            if (!(mCurrentFragment instanceof SavingMainFragment)) {
+                SavingMainFragment fragment = new SavingMainFragment();
+                mCurrentFragment = fragment;
+                getSupportFragmentManager().beginTransaction()
+                          .replace(R.id.container_fragment, fragment).commit();
+            }
         }
     };
     
@@ -216,31 +226,25 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         @Override
         public void run() {
             mNavigationView.getMenu().findItem(R.id.navigation_item_events).setChecked(true);
-            EventMainFragment fragment = new EventMainFragment();
-            mCurrentFragment = fragment;
-            getSupportFragmentManager().beginTransaction()
-                      .replace(R.id.container_fragment, fragment).commit();
+            if (!(mCurrentFragment instanceof EventMainFragment)) {
+                EventMainFragment fragment = new EventMainFragment();
+                mCurrentFragment = fragment;
+                getSupportFragmentManager().beginTransaction()
+                          .replace(R.id.container_fragment, fragment).commit();
+            }
         }
     };
     
-    private Runnable runnableAttachContactFragment = new Runnable() {
-        @Override
-        public void run() {
-            mNavigationView.getMenu().findItem(R.id.navigation_item_saving).setChecked(true);
-            EventMainFragment fragment = new EventMainFragment();
-            mCurrentFragment = fragment;
-            getSupportFragmentManager().beginTransaction()
-                      .replace(R.id.container_fragment, fragment).commit();
-        }
-    };
     private Runnable runnableAttachBudgetFragment = new Runnable() {
         @Override
         public void run() {
             mNavigationView.getMenu().findItem(R.id.navigation_item_budgets).setChecked(true);
-            BudgetMainFragment fragment = new BudgetMainFragment();
-            mCurrentFragment = fragment;
-            getSupportFragmentManager().beginTransaction()
-                      .replace(R.id.container_fragment, fragment).commit();
+            if (!(mCurrentFragment instanceof BudgetMainFragment)) {
+                BudgetMainFragment fragment = new BudgetMainFragment();
+                mCurrentFragment = fragment;
+                getSupportFragmentManager().beginTransaction()
+                          .replace(R.id.container_fragment, fragment).commit();
+            }
         }
     };
     
@@ -249,20 +253,24 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
         @Override
         public void run() {
             mNavigationView.getMenu().findItem(R.id.navigation_item_debt).setChecked(true);
-            DebtsLoanMainFragment fragment = new DebtsLoanMainFragment();
-            mCurrentFragment = fragment;
-            getSupportFragmentManager().beginTransaction()
-                      .replace(R.id.container_fragment, fragment).commit();
+            if (!(mCurrentFragment instanceof DebtsLoanMainFragment)) {
+                DebtsLoanMainFragment fragment = new DebtsLoanMainFragment();
+                mCurrentFragment = fragment;
+                getSupportFragmentManager().beginTransaction()
+                          .replace(R.id.container_fragment, fragment).commit();
+            }
         }
     };
     private Runnable runnableAttachStatisticsFragment = new Runnable() {
         @Override
         public void run() {
             mNavigationView.getMenu().findItem(R.id.navigation_item_trends).setChecked(true);
-            StatisticsMainFragment fragment = new StatisticsMainFragment();
-            mCurrentFragment = fragment;
-            getSupportFragmentManager().beginTransaction()
-                      .replace(R.id.container_fragment, fragment).commit();
+            if (!(mCurrentFragment instanceof StatisticsMainFragment)) {
+                StatisticsMainFragment fragment = new StatisticsMainFragment();
+                mCurrentFragment = fragment;
+                getSupportFragmentManager().beginTransaction()
+                          .replace(R.id.container_fragment, fragment).commit();
+            }
         }
     };
     private Runnable runnableAttachToolsFragment = new Runnable() {
@@ -314,6 +322,7 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyLogger.d(this.getDatabasePath("dbo_my_money.db"));
         EventBus.getDefault().register(this);
         if (mPreferenceHelper.getCurrentUser() == null) {
             //            openLoginActivity();

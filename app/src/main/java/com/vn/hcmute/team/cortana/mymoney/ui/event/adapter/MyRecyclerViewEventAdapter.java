@@ -82,6 +82,8 @@ public class MyRecyclerViewEventAdapter extends
         TextView txt_currency;
         @BindView(R.id.image_event)
         ImageView image_event;
+        @BindView(R.id.txt_spent_earning)
+        TextView txt_spent_earning;
         
         public ViewHolder(View itemView) {
             super(itemView);
@@ -92,12 +94,16 @@ public class MyRecyclerViewEventAdapter extends
         public void bindView(Event event) {
             txt_name_event.setText(event.getName());
             txt_money.setText(NumberUtil.formatAmount(event.getMoney(), ""));
+            if(Double.parseDouble(event.getMoney())>0){
+                txt_spent_earning.setText(mContext.getString(R.string.txt_earning));
+            }else {
+                txt_spent_earning.setText(mContext.getString(R.string.spent));
+            }
             txt_currency.setText(event.getCurrencies().getCurSymbol());
             
             GlideImageLoader.load(mContext, DrawableUtil.getDrawable(mContext, event.getIcon()),
                       image_event);
         }
-        
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
