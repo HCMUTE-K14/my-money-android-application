@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.vn.hcmute.team.cortana.mymoney.ApplicationConfig;
 import com.vn.hcmute.team.cortana.mymoney.R;
+import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.ui.base.EmptyAdapter;
 import com.vn.hcmute.team.cortana.mymoney.ui.settings.restoredatabase.FilesAdapter.ItemClickListener;
 import com.vn.hcmute.team.cortana.mymoney.utils.MyMoneyUtil;
@@ -169,8 +170,7 @@ public class RestoreDatabaseActivity extends AppCompatActivity {
         try {
             File sd = Environment.getExternalStorageDirectory();
             if (sd.canWrite()) {
-                String currentDBPath = ApplicationConfig.PATH_DATABASE_APP;
-                File currentDB = new File(currentDBPath);
+                File currentDB = this.getDatabasePath(DatabaseHelper.DATABASE_NAME);
                 File backupDB = file;
             
                 if (currentDB.exists()) {

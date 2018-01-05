@@ -16,11 +16,6 @@ public class ApplicationConfig {
     public static final String DEFAULT_AMOUNT_PATTERN = "#,###.000";
     public static final String DEFAULT_DATE_PATTERN = "EEEE, dd/MM/yyyy";
     public static String STORAGE_DIRECTION;
-    public static String PATH_DATABASE_APP;
-    
-    static {
-        PATH_DATABASE_APP = "/data/user/0/com.vn.hcmute.team.cortana.mymoney/databases/dbo_my_money.db";
-    }
     
     static {
         File store = Environment.getExternalStorageDirectory();

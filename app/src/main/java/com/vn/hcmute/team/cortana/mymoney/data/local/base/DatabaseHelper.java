@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     
     public static final String TAG = DatabaseHelper.class.getSimpleName();
     
-    private static final String DATABASE_NAME = "dbo_my_money.db";
+    public static final String DATABASE_NAME = "dbo_my_money.db";
     private static final int VERSION = 1;
     
     protected static DatabaseHelper sInstance = null;
