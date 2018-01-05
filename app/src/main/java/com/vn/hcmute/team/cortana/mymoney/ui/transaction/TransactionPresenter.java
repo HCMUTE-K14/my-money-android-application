@@ -50,6 +50,7 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       @Override
                       public void onFailure(Throwable throwable) {
                           getView().loading(false);
+                          MyLogger.d(throwable.getMessage());
                           getView().onFailure(throwable.getMessage());
                       }
                       

@@ -45,7 +45,6 @@ public class FragmentTransactionByTime extends BaseFragment {
         public void onClickChild(Transaction transaction) {
             Intent intent = new Intent(FragmentTransactionByTime.this.getContext(),
                       InforTransactionActivity.class);
-            
             intent.putExtra("transaction", transaction);
             
             startActivity(intent);

@@ -130,13 +130,16 @@ public interface LocalTask {
         
         Observable<List<Transaction>> getAllTransaction(String user_id);
     
-        Observable<List<Transaction>> getTransactionBySaving(String user_id, String saving_id);
+       // Observable<List<Transaction>> getTransactionBySaving(String user_id, String saving_id);
         
         Observable<List<Transaction>> getTransactionByEvent(String user_id, String event_id);
         
         Observable<List<Transaction>> getTransactionByBudget(String user_id, String start,
                   String end,
                   String cate_id, String wallet_id);
+        
+        Observable<List<Transaction>> getTransactionBySaving(final String user_id,
+                  final String saving_id);
     }
     
     interface DebtLoanTask {

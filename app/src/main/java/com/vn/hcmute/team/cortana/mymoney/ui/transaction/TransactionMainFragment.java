@@ -262,8 +262,11 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
                 
                 break;
             case ResultCode.EDIT_TRANSACTION_RESULT_CODE:
+                getData();
+                break;
             case ResultCode.REMOVE_TRANSACTION_RESULT_CODE:
                 getData();
+                break;
             case ResultCode.CHANGE_WALLET_RESULT_CODE:
                 mWalletId = mPreferencesHelper.getCurrentWallet().getWalletid();
                 getData();
@@ -291,7 +294,6 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
     
     @Override
     public void showAllListTransaction(List<Transaction> list) {
-        MyLogger.d("dsfds",list.size());
         if (list.size() > 0) {
             mPreferencesHelper.putLastStartDateAndEndDate(mStartDate + "-" + mEndDate);
         }
@@ -321,8 +323,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
         }
         mProgressDialog.dismiss();
     }
-    
-    private void getData() {
+    public void getData() {
         mTransactionPresenter.getTransactionByTime(mStartDate, mEndDate, mWalletId);
     }
     

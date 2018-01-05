@@ -6,7 +6,7 @@ import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.Saving;
-import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
+import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -158,7 +158,15 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
         return new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
-                String whereClause = "saving_id=?";
+                String whereClause = "saving_id = ?";
+                List<Transaction> trans = TransactionLocalService.getInstance(mDatabaseHelper)
+                          .getTransactionBySaving("", saving_id).call();
+                if (trans != null) {
+                    for (Transaction tran : trans) {
+                        TransactionLocalService.getInstance(mDatabaseHelper)
+                                  .deleteTransaction(tran).call();
+                    }
+                }
                 return mDatabase.delete(TABLE_NAME, whereClause, new String[]{saving_id});
             }
         };
@@ -214,8 +222,10 @@ public class SavingLocalService extends DbContentProvider<Saving> implements
         }
         Saving saving = null;
         if (cursor.moveToNext()) {
+            
             saving = makeSingleObjectFromCursor(cursor);
         }
+        
         cursor.close();
         return saving;
     }

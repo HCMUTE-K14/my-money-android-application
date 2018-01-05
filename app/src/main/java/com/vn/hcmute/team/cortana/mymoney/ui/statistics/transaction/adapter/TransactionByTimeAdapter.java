@@ -18,6 +18,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.Objects.DateObjectTransaction;
 import com.vn.hcmute.team.cortana.mymoney.utils.DrawableUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.HashMap;
 import java.util.List;
 
@@ -194,6 +195,7 @@ public class TransactionByTimeAdapter extends BaseExpandableListAdapter {
         }
         
         private void bindView(Transaction transaction) {
+            MyLogger.d(transaction.getCategory());
             txt_category_name.setText(transaction.getCategory().getName());
             txt_note.setText(transaction.getNote());
             GlideApp.with(mContext)

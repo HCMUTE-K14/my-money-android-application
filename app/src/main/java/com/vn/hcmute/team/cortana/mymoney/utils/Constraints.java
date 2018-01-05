@@ -13,7 +13,7 @@ public class Constraints {
     public static final Category CATEGORY_OTHER_INCOME = new Category("99", "Income Other",
               "ic_category_other_income", "income", "income");
     public static final Category CATEGORY_OTHER_EXPENSE = new Category("100", "Expense Other",
-              "ic_category_other_expense", "income", "income");
+              "ic_category_other_expense", "expense", "expense");
     
     public class RequestCode {
         

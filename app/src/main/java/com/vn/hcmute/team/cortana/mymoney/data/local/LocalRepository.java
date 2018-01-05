@@ -706,6 +706,12 @@ public class LocalRepository implements LocalTask.IconTask, LocalTask.CurrencyTa
         return makeObservable(callable);
     }
     
+   /* @Override
+    public Observable<List<Transaction>> getTransactionBySaving(String user_id,
+              String saving_id) {
+        return null;
+    }*/
+    
     @Override
     public Observable<List<DebtLoan>> getDebtLoanByWalletId(String wallet_id) {
         DebtLoanLocalService debtLoanLocalService = DebtLoanLocalService

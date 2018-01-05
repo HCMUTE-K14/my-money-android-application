@@ -386,7 +386,13 @@ public class InfoBudgetActivity extends BaseActivity implements BudgetContract.V
                   (Double.parseDouble(mBudget.getMoneyExpense()) /
                    Double.parseDouble(mBudget.getMoneyGoal())) * 100);
         moneyTransaction = NumberUtil.format(moneyTransaction);
-        float restMoney = 100 - moneyTransaction;
+        float restMoney;
+        if(moneyTransaction>=100){
+            moneyTransaction=100;
+            restMoney=0;
+        }else {
+            restMoney=100 - moneyTransaction;
+        }
         
         ArrayList<PieEntry> yEntrys = new ArrayList<>();
         yEntrys.add(new PieEntry(moneyTransaction, 0));

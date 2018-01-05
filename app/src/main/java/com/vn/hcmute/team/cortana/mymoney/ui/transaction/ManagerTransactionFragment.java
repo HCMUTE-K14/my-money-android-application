@@ -563,7 +563,10 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         Date startTime = DateUtil.timeMilisecondsToDate(mCurrentTransaction.getDate_created());
         mTextViewDateStart.setText(DateUtil.formatDate(startTime));
         
-        Date endTime = DateUtil.timeMilisecondsToDate(mCurrentTransaction.getDate_end());
+        Date endTime = DateUtil.timeMilisecondsToDate(
+                  TextUtil.isEmpty(mCurrentTransaction.getDate_end())
+                            ? mCurrentTransaction.getDate_created()
+                            : mCurrentTransaction.getDate_end());
         mTextViewRemind.setText(DateUtil.formatDate(endTime));
     }
     
@@ -627,7 +630,6 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         mCurrentTransaction.setSaving(saving);
         mCurrentTransaction.setDate_end(date_end);
         mCurrentTransaction.setType(mCategory.getType());
-        
     }
     
     private boolean checkAmountBeforeAddOrUpdateTransaction() {
