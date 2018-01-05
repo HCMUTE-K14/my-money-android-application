@@ -19,6 +19,7 @@ import com.vn.hcmute.team.cortana.mymoney.ui.base.BaseActivity;
 import com.vn.hcmute.team.cortana.mymoney.ui.statistics.transaction.FragmentTransactionByTime;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionContract;
 import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionPresenter;
+import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -66,6 +67,7 @@ public class TransactionBudgetActivity extends BaseActivity implements Transacti
     
     @Override
     protected void initialize() {
+        MyLogger.d("langthangkhongnha");
         getData();
         //get list transaction by event
         final String[] arr = mBudget.getRangeDate().split("/");
@@ -91,6 +93,8 @@ public class TransactionBudgetActivity extends BaseActivity implements Transacti
     
     @Override
     public void showAllListTransaction(List<Transaction> list) {
+        MyLogger.d("langthangkhongnha");
+        MyLogger.d("something",list.size());
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }
@@ -103,6 +107,7 @@ public class TransactionBudgetActivity extends BaseActivity implements Transacti
     
     @Override
     public void onFailure(String message) {
+       MyLogger.d("FAIL",message);
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }

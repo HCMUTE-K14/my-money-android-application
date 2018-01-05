@@ -98,6 +98,8 @@ public class MyRecyclerViewBudgetAdapter extends
         }
         
         public void bindView(Budget budget) {
+            if(budget.getCategory()==null)
+                return;
             txt_budget_name.setText(budget.getCategory().getName());
             txt_range_date.setText(getRangeDate(budget.getRangeDate()));
             seek_bar_budget

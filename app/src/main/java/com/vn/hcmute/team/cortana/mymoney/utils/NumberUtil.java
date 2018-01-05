@@ -37,7 +37,9 @@ public class NumberUtil {
     }
     
     public static double exchangeMoney(Context context, String amount, String from, String to) {
-        
+        if(from.equals(to)){
+            return Double.parseDouble(amount);
+        }
         PreferencesHelper preferencesHelper = PreferencesHelper
                   .getInstance(context.getApplicationContext());
         

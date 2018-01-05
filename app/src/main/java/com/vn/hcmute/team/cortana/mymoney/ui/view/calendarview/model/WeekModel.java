@@ -18,7 +18,7 @@ public class WeekModel extends BaseModel {
         final int year = Calendar.getInstance().get(Calendar.YEAR);
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day_of_month);
-        
+        calendar.set(Calendar.MILLISECOND,0);
         startDate = calendar.getTimeInMillis();
     }
     

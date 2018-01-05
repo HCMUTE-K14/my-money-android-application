@@ -1,6 +1,7 @@
 package com.vn.hcmute.team.cortana.mymoney.ui.event.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,15 +93,22 @@ public class MyRecyclerViewEventAdapter extends
         }
         
         public void bindView(Event event) {
-            txt_name_event.setText(event.getName());
-            txt_money.setText(NumberUtil.formatAmount(event.getMoney(), ""));
-            if(Double.parseDouble(event.getMoney())>0){
+            if(Double.parseDouble(event.getMoney())<0){
+                double money=-Double.parseDouble(event.getMoney());
+                txt_name_event.setText(event.getName());
                 txt_spent_earning.setText(mContext.getString(R.string.txt_earning));
+                txt_money.setText(NumberUtil.formatAmount(String.valueOf(money), ""));
+                txt_currency.setText(event.getCurrencies().getCurSymbol());
+                txt_money.setTextColor(ContextCompat.getColor(mContext,R.color.green));
+                txt_currency.setTextColor(ContextCompat.getColor(mContext,R.color.green));
             }else {
+                txt_name_event.setText(event.getName());
+                txt_money.setText(NumberUtil.formatAmount(event.getMoney(), ""));
                 txt_spent_earning.setText(mContext.getString(R.string.spent));
+                txt_currency.setText(event.getCurrencies().getCurSymbol());
+                txt_money.setTextColor(ContextCompat.getColor(mContext,R.color.color_red));
+                txt_currency.setTextColor(ContextCompat.getColor(mContext,R.color.color_red));
             }
-            txt_currency.setText(event.getCurrencies().getCurSymbol());
-            
             GlideImageLoader.load(mContext, DrawableUtil.getDrawable(mContext, event.getIcon()),
                       image_event);
         }

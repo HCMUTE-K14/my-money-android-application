@@ -7,6 +7,7 @@ import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.data.local.service.LocalService.TransPersonLocalService;
 import com.vn.hcmute.team.cortana.mymoney.model.Budget;
 import com.vn.hcmute.team.cortana.mymoney.model.Category;
+import com.vn.hcmute.team.cortana.mymoney.model.Currencies;
 import com.vn.hcmute.team.cortana.mymoney.model.DebtLoan;
 import com.vn.hcmute.team.cortana.mymoney.model.Event;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
@@ -14,6 +15,7 @@ import com.vn.hcmute.team.cortana.mymoney.model.Saving;
 import com.vn.hcmute.team.cortana.mymoney.model.Transaction;
 import com.vn.hcmute.team.cortana.mymoney.model.Wallet;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
+import com.vn.hcmute.team.cortana.mymoney.utils.NumberUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.TextUtil;
 import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
@@ -159,7 +161,8 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 
                 callTransPerson("add", transaction);
                 updateMoneyWalletWhenAddOrDeleteTransaction("add", transaction);
-                updateBudget(transaction.getTrans_id(), transaction.getDate_created(),
+                updateBudget(transaction.getTrans_id(), transaction.getWallet().getWalletid(),
+                          transaction.getDate_created(),
                           transaction.getCategory().getId(),
                           transaction.getType(),
                           transaction.getAmount(), 0);
@@ -172,6 +175,7 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 
                 if (transaction.getEvent() != null) {
                     updateEvents(transaction.getTrans_id(), transaction.getEvent().getEventid(),
+                              transaction.getWallet().getCurrencyUnit(),
                               transaction.getType(),
                               transaction.getAmount(), 0);
                 }
@@ -194,7 +198,8 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 callTransPerson("update", transaction);
                 updateMoneyWalletWhenUpdateTransaction(transaction);
                 updateOrDeleteDebtLoanWhenUpdateTransaction("update", transaction);
-                updateBudget(transaction.getTrans_id(), transaction.getDate_created(),
+                updateBudget(transaction.getTrans_id(), transaction.getWallet().getWalletid(),
+                          transaction.getDate_created(),
                           transaction.getCategory().getId(),
                           transaction.getType(),
                           transaction.getAmount(), 1);
@@ -207,6 +212,7 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 
                 if (transaction.getEvent() != null) {
                     updateEvents(transaction.getTrans_id(), transaction.getEvent().getEventid(),
+                              transaction.getWallet().getCurrencyUnit(),
                               transaction.getType(),
                               transaction.getAmount(), 2);
                 }
@@ -228,7 +234,8 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 updateMoneyWalletWhenAddOrDeleteTransaction("delete", transaction);
                 
                 updateOrDeleteDebtLoanWhenUpdateTransaction("delete", transaction);
-                updateBudget(transaction.getTrans_id(), transaction.getDate_created(),
+                updateBudget(transaction.getTrans_id(), transaction.getWallet().getWalletid(),
+                          transaction.getDate_created(),
                           transaction.getCategory().getId(),
                           transaction.getType(),
                           transaction.getAmount(), 2);
@@ -241,6 +248,7 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 
                 if (transaction.getEvent() != null) {
                     updateEvents(transaction.getTrans_id(), transaction.getEvent().getEventid(),
+                              transaction.getWallet().getCurrencyUnit(),
                               transaction.getType(),
                               transaction.getAmount(), 1);
                 }
@@ -402,7 +410,7 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
             public List<Transaction> call() throws Exception {
                 StringBuilder query = new StringBuilder(
                           "select " + makeSelectionTransaction(getAllColumns()) +
-                          "from tbl_transaction, tbl_category " +
+                          " from tbl_transaction, tbl_category " +
                           "where tbl_transaction.wallet_id = ? and " +
                           "tbl_transaction.cate_id = tbl_category.cate_id and " +
                           "tbl_category.cate_id = ? and " +
@@ -447,32 +455,35 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
         };
     }
     
-    private void updateEvents(String trans_id, String event_id, String type, String amount,
+    private void updateEvents(String trans_id, String event_id, Currencies currenciesTran,
+              String type, String amount,
               int action) {
         try {
             Event event = EventLocalService.getInstance(mDatabaseHelper).getEventById(event_id);
-            
+            double moneyExchange = NumberUtil
+                      .exchangeMoney(mDatabaseHelper.mContext, amount, currenciesTran.getCurCode(),
+                                event.getCurrencies().getCurCode());
             if (event == null) {
                 return;
             }
-            
+            double moneyUpdate=0;
+            amount=String.valueOf(moneyExchange);
             if (action == 0) { //ADD
                 String moneyBefore = event.getMoney();
-                double moneyAfter =
+                moneyUpdate =
                           type.equals("expense") ? Double.valueOf(moneyBefore) +
                                                    Double.valueOf(amount)
                                     : Double.valueOf(moneyBefore) - Double.valueOf(amount);
-                event.setMoney(String.valueOf(moneyAfter));
+                
             } else if (action == 1) { //Remove
                 String moneyBefore = event.getMoney();
-                double moneyAfter =
+                moneyUpdate =
                           type.equals("expense") ? Double.valueOf(moneyBefore) -
                                                    Double.valueOf(amount)
                                     : Double.valueOf(moneyBefore) + Double.valueOf(amount);
-                event.setMoney(String.valueOf(moneyAfter));
+                
             } else if (action == 2) { //Update
                 Transaction transactionBeforeUpdate = this.getTransactionById(trans_id);
-                double moneyUpdate = 0;
                 if (type.equals("income") && transactionBeforeUpdate.getType().equals("income")) {
                     moneyUpdate = Double.valueOf(event.getMoney()) +
                                   Math.abs(Double.valueOf(amount) -
@@ -493,8 +504,8 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                                   (Double.valueOf(amount) +
                                    Double.valueOf(transactionBeforeUpdate.getAmount()));
                 }
-                event.setMoney(String.valueOf(moneyUpdate));
             }
+            event.setMoney(String.valueOf(moneyUpdate));
             EventLocalService.getInstance(mDatabaseHelper).updateEvent(event).call();
         } catch (Exception ex) {
         
@@ -567,14 +578,15 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
         
     }
     
-    private void updateBudget(String trans_id, String dateStart, String categoryId,
+    private void updateBudget(String trans_id, String wallet_id, String dateStart,
+              String categoryId,
               String typeTrans, String money,
               int action)
               throws Exception {
         BudgetLocalService budgetLocalService = BudgetLocalService.getInstance(mDatabaseHelper);
         
         if (action == 0 || action == 2) {
-            List<Budget> budgets = budgetLocalService.getBudgetsByCategory(categoryId);
+            List<Budget> budgets = budgetLocalService.getBudgetsByCategory(wallet_id, categoryId);
             if (budgets == null) {
                 return;
             }
@@ -602,7 +614,8 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
             Transaction transactionBeforeUpdate = this.getTransactionById(trans_id);
             if (transactionBeforeUpdate.getCategory().getId().equals(categoryId)) {
                 List<Budget> budgets = budgetLocalService
-                          .getBudgetsByCategory(transactionBeforeUpdate.getCategory().getId());
+                          .getBudgetsByCategory(transactionBeforeUpdate.getWallet().getWalletid(),
+                                    transactionBeforeUpdate.getCategory().getId());
                 
                 for (Budget budget : budgets) {
                     double dateStartBudget = Double.valueOf(budget.getRangeDate().split("/")[0]);
@@ -620,7 +633,8 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 }
             } else {
                 List<Budget> budgetsBefore = budgetLocalService
-                          .getBudgetsByCategory(transactionBeforeUpdate.getCategory().getId());
+                          .getBudgetsByCategory(transactionBeforeUpdate.getWallet().getWalletid(),
+                                    transactionBeforeUpdate.getCategory().getId());
                 if (budgetsBefore == null) {
                     return;
                 }
@@ -637,7 +651,8 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                     budget.setMoneyExpense(String.valueOf(moneyUpdate));
                     budgetLocalService.updateBudget(budget).call();
                 }
-                List<Budget> newBudgets = budgetLocalService.getBudgetsByCategory(categoryId);
+                List<Budget> newBudgets = budgetLocalService
+                          .getBudgetsByCategory(wallet_id, categoryId);
                 if (newBudgets == null) {
                     return;
                 }
@@ -657,6 +672,7 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
             }
         }
     }
+    
     private void callTransPerson(String method, Transaction transaction) {
         if (transaction.getPerson() != null && !transaction.getPerson().isEmpty()) {
             TransPersonLocalService transPersonLocalService = TransPersonService

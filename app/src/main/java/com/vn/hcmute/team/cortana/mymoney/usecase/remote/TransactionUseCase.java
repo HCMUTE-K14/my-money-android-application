@@ -583,7 +583,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                 callback.onFailure(e);
             }
         };
-        String userid = mDataRepository.getUserId();
+        String userid = mDataRepository.getUserId()==null?"":mDataRepository.getUserId();
         if (!this.mCompositeDisposable.isDisposed()) {
             if (typeRepository == TypeRepository.REMOTE) {
                 
@@ -608,7 +608,7 @@ public class TransactionUseCase extends UseCase<TransactionRequest> {
                           .singleOrError()
                           .subscribeWith(this.mDisposableSingleObserver);
             } else if (typeRepository == TypeRepository.LOCAL) {
-                //TODO: getByBudget
+                
                 mDisposable = mDataRepository.getLocalTransactionByBudget(userid, params[0],params[1],params[2],params[3])
                           .subscribeOn(Schedulers.computation())
                           .observeOn(AndroidSchedulers.mainThread())

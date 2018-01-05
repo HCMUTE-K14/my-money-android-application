@@ -24,6 +24,7 @@ public class DateModel extends BaseModel {
         
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day_of_month, 0, 0, 0);
+        calendar.set(Calendar.MILLISECOND,0);
         startDate = calendar.getTimeInMillis();
     }
     

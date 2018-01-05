@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     private static final int VERSION = 1;
     
     protected static DatabaseHelper sInstance = null;
-    private Context mContext;
+    public Context mContext;
     
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);

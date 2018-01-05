@@ -13,7 +13,6 @@ public abstract class DbContentProvider<T> {
     
     protected DatabaseHelper mDatabaseHelper;
     protected SQLiteDatabase mDatabase;
-    
     public DbContentProvider(DatabaseHelper mDatabaseHelper) {
         this.mDatabaseHelper = mDatabaseHelper;
         this.open();
