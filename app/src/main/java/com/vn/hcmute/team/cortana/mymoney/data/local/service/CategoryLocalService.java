@@ -153,6 +153,8 @@ public class CategoryLocalService extends DbContentProvider<Category> {
                     result = mDatabase.delete(TABLE_NAME, selection, selectionArg);
                 }
                 
+                mDatabase.delete("tbl_budget", "cate_id = ?", new String[]{category.getId()});
+                
                 return result;
             }
         };

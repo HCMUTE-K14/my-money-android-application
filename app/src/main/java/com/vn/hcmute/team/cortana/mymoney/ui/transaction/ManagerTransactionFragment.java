@@ -52,7 +52,6 @@ import com.vn.hcmute.team.cortana.mymoney.ui.transaction.TransactionContract.Add
 import com.vn.hcmute.team.cortana.mymoney.ui.view.CardViewActionBar;
 import com.vn.hcmute.team.cortana.mymoney.ui.wallet.MyWalletActivity;
 import com.vn.hcmute.team.cortana.mymoney.usecase.base.Action;
-import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.RequestCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.Constraints.ResultCode;
 import com.vn.hcmute.team.cortana.mymoney.utils.DateUtil;
@@ -333,11 +332,6 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     
     @Override
     public void onAddSuccessTransaction(Transaction transaction, String message) {
-        if (transaction.getPerson() == null && transaction.getPerson().isEmpty()) {
-            transaction.setPerson(new ArrayList<Person>() {{
-                add(Constraints.SOME_ONE_PERSON);
-            }});
-        }
         EventBus.getDefault().post(new ActivityResultEvent(ResultCode.ADD_TRANSACTION_RESULT_CODE,
                   transaction));
         EventBus.getDefault()
@@ -349,11 +343,7 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
     @Override
     public void onUpdateSuccessTransaction(Transaction transaction, String message) {
         Intent intent = new Intent();
-        if (transaction.getPerson() == null && transaction.getPerson().isEmpty()) {
-            transaction.setPerson(new ArrayList<Person>() {{
-                add(Constraints.SOME_ONE_PERSON);
-            }});
-        }
+
         intent.putExtra("transaction", transaction);
         EventBus.getDefault()
                   .post(new ActivityResultEvent(ResultCode.NEED_UPDATE_CURRENT_WALLET_RESULT_CODE,
@@ -586,10 +576,6 @@ public class ManagerTransactionFragment extends BaseFragment implements AddUpdat
         }
         
         String note = mEditTextNote.getText().toString().trim();
-        if (mPersonList == null || mPersonList.isEmpty()) {
-            mPersonList = new ArrayList<>();
-            mPersonList.add(Constraints.SOME_ONE_PERSON);
-        }
         List<Person> persons = mPersonList;
         Event event = mEvent;
         Saving saving = mSaving;

@@ -45,13 +45,13 @@ public class CalendarTransactionView extends RelativeLayout {
     private OnTabSelectedListener mOnTabSelectedListener = new OnTabSelectedListener() {
         @Override
         public void onTabSelected(Tab tab) {
-            MyLogger.d("TAB_POSITION", tab.getPosition());
             String key = "";
             if (!TextUtils.isEmpty(tab.getText())) {
                 key = tab.getText().toString().trim();
             }
             final String value = mModel.getData().get(key);
             if (mListener != null) {
+                MyLogger.d("DSADSA", value);
                 mListener.onClickTab(value);
             }
         }
@@ -156,8 +156,8 @@ public class CalendarTransactionView extends RelativeLayout {
         for (String key : mModel.getData().keySet()) {
             mTabLayout.addTab(mTabLayout.newTab().setText(key));
         }
-        jump2ToDay();
         mTabLayout.addOnTabSelectedListener(mOnTabSelectedListener);
+        jump2ToDay();
     }
     
     public void jump2Day(String value) {

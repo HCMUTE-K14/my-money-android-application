@@ -24,6 +24,8 @@ public class DateModel extends BaseModel {
         
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day_of_month, 0, 0, 0);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         startDate = calendar.getTimeInMillis();
     }
     
@@ -75,6 +77,7 @@ public class DateModel extends BaseModel {
             String value = String.valueOf(calendar.getTimeInMillis()) + "-" +
                            String.valueOf(
                                      calendar.getTimeInMillis() + second_of_day_minus_1_second);
+            
             map.put(key, value);
             
         }

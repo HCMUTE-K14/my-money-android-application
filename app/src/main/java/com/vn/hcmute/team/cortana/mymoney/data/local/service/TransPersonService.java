@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DatabaseHelper;
 import com.vn.hcmute.team.cortana.mymoney.data.local.base.DbContentProvider;
 import com.vn.hcmute.team.cortana.mymoney.model.Person;
+import com.vn.hcmute.team.cortana.mymoney.utils.Constraints;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +84,10 @@ public class TransPersonService extends DbContentProvider<String[]> implements
             persons.add(person);
         }
         cursor.close();
+        if (persons.isEmpty()) {
+            persons.add(Constraints.SOME_ONE_PERSON);
+        }
+        
         return persons;
     }
     
