@@ -302,10 +302,10 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
         }
         if (mIsViewByCategory) {
             mFragment = new FragmentTransactionByCategory();
-            ((FragmentTransactionByCategory)mFragment).setDataTransaction(list);
+            ((FragmentTransactionByCategory) mFragment).setDataTransaction(list);
         } else {
             mFragment = new FragmentTransactionByTime();
-            ((FragmentTransactionByTime)mFragment).setDataTransaction(list);
+            ((FragmentTransactionByTime) mFragment).setDataTransaction(list);
         }
         mFramentManager.beginTransaction().replace(R.id.container, mFragment)
                   .commitAllowingStateLoss();
@@ -315,6 +315,7 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
     public void onFailure(String message) {
         // Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
+    
     @Override
     public void loading(boolean isLoading) {
         if (isLoading) {
@@ -323,7 +324,9 @@ public class TransactionMainFragment extends BaseFragment implements Transaction
         }
         mProgressDialog.dismiss();
     }
+    
     public void getData() {
+        MyLogger.d(mStartDate + " - " + mEndDate);
         mTransactionPresenter.getTransactionByTime(mStartDate, mEndDate, mWalletId);
     }
     

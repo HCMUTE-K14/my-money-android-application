@@ -129,8 +129,8 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
-                          List<Transaction> list =(List<Transaction>) value;
-                          if(list == null){
+                          List<Transaction> list = (List<Transaction>) value;
+                          if (list == null) {
                               getView().onFailure("Cannot get transactions");
                               return;
                           }
@@ -270,19 +270,19 @@ public class TransactionPresenter extends BasePresenter<TransactionContract.View
                       @Override
                       public void onSuccess(Object value) {
                           getView().loading(false);
-                          List<Transaction> list =(List<Transaction>) value;
-                          if(list == null){
+                          List<Transaction> list = (List<Transaction>) value;
+                          if (list == null) {
                               getView().onFailure("Cannot get transactions");
-                              MyLogger.d("langthang","sdkjfds");
+                              MyLogger.d("langthang", "sdkjfds");
                               return;
                           }
-                          MyLogger.d("langthang",list.size());
+                          MyLogger.d("langthang", list.size());
                           getView().showAllListTransaction(list);
                       }
                       
                       @Override
                       public void onFailure(Throwable throwable) {
-                          MyLogger.d("langthang",throwable.getMessage());
+                          MyLogger.d("langthang", throwable.getMessage());
                           getView().loading(false);
                           getView().onFailure(throwable.getMessage());
                       }

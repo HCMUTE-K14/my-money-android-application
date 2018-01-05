@@ -21,6 +21,7 @@ import com.vn.hcmute.team.cortana.mymoney.utils.logger.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import retrofit2.http.HEAD;
 
 /**
  * Created by infamouSs on 11/17/17.
@@ -89,16 +90,15 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
     }
     
     @Override
-    protected List<Transaction> makeListObjectFromCursor(Cursor cursor) {
-        List<Transaction> transactions = new ArrayList<>();
-        
+    protected List<Transaction> makeListObjectFromCursor(final Cursor cursor) {
+        final List<Transaction> transactions = new ArrayList<>();
+        transactions.clear();
         while (cursor.moveToNext()) {
             Transaction transaction = makeSingleObjectFromCursor(cursor);
             transactions.add(transaction);
         }
         
         cursor.close();
-        
         return transactions;
     }
     
@@ -230,22 +230,21 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
             public Integer call() throws Exception {
                 String selection = "trans_id = ?";
                 String[] selectionArg = new String[]{transaction.getTrans_id()};
-                
                 updateMoneyWalletWhenAddOrDeleteTransaction("delete", transaction);
-                
+
                 updateOrDeleteDebtLoanWhenUpdateTransaction("delete", transaction);
                 updateBudget(transaction.getTrans_id(), transaction.getWallet().getWalletid(),
                           transaction.getDate_created(),
                           transaction.getCategory().getId(),
                           transaction.getType(),
                           transaction.getAmount(), 2);
-                
+
                 if (transaction.getSaving() != null) {
                     updateSaving(transaction.getTrans_id(), transaction.getSaving().getSavingid(),
                               transaction.getType(),
                               transaction.getAmount(), 1);
                 }
-                
+
                 if (transaction.getEvent() != null) {
                     updateEvents(transaction.getTrans_id(), transaction.getEvent().getEventid(),
                               transaction.getWallet().getCurrencyUnit(),
@@ -616,7 +615,9 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                 List<Budget> budgets = budgetLocalService
                           .getBudgetsByCategory(transactionBeforeUpdate.getWallet().getWalletid(),
                                     transactionBeforeUpdate.getCategory().getId());
-                
+                if (budgets == null) {
+                    return;
+                }
                 for (Budget budget : budgets) {
                     double dateStartBudget = Double.valueOf(budget.getRangeDate().split("/")[0]);
                     if (Double.valueOf(dateStart) < dateStartBudget) {
@@ -679,9 +680,7 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
                       .getInstance(mDatabaseHelper);
             for (Person person : transaction.getPerson()) {
                 String[] params = new String[]{transaction.getTrans_id(), person.getPersonid()};
-                if (person.getPersonid().equals(Constraints.SOME_ONE_PERSON.getPersonid())) {
-                    return;
-                }
+                
                 if (method.equals("add")) {
                     transPersonLocalService.add(params);
                 } else if (method.equals("update")) {
@@ -707,7 +706,7 @@ public class TransactionLocalService extends DbContentProvider<Transaction> impl
         } else if (method.equals("delete")) {
             DebtLoan debtLoan = DebtLoanLocalService.getInstance(mDatabaseHelper)
                       .getDebtLoanByTransactionId(transaction.getTrans_id());
-            if (debtLoan.getStatus() == 1) {
+            if (debtLoan != null && debtLoan.getStatus() == 1) {
                 return;
             }
             
