@@ -261,6 +261,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
     
     
+    @OnClick(R.id.btn_back)
+    public void onBack(){
+        finish();
+    }
     /*-----------------*/
     /*Task View        */
     /*-----------------*/

@@ -596,7 +596,8 @@ public class MainActivity extends BaseActivity implements WalletContract.View {
                 mDrawerLayout.closeDrawers();
                 break;
             case R.id.navigation_item_login:
-                
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
                 break;
             case R.id.navigation_item_logout:
                 

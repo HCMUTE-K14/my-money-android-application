@@ -36,21 +36,21 @@ public class CustomModel extends BaseModel {
         
         if (year_end == year_start && year_end == yearNow) {
             this.patternDate = "%s/%s - %s/%s";
-            key = String.format(this.patternDate, day_of_month_start, month_start, day_of_month_end,
-                      month_end);
+            key = String.format(this.patternDate, day_of_month_start, month_start + 1, day_of_month_end,
+                      month_end + 1);
         } else {
             if (year_start == yearNow) {
                 this.patternDate = "%s/%s - %s/%s/%s";
-                key = String.format(this.patternDate, day_of_month_start, month_start,
-                          day_of_month_end, month_end, year_end);
+                key = String.format(this.patternDate, day_of_month_start, month_start + 1,
+                          day_of_month_end, month_end + 1, year_end);
             } else if (year_end == yearNow) {
                 this.patternDate = "%s/%s/%s - %s/%s";
-                key = String.format(this.patternDate, day_of_month_start, month_start, year_start,
-                          day_of_month_end, month_end);
+                key = String.format(this.patternDate, day_of_month_start, month_start + 1, year_start,
+                          day_of_month_end, month_end + 1);
             } else if (year_start != yearNow) {
                 this.patternDate = "%s/%s/%s - %s/%s%s";
-                key = String.format(this.patternDate, day_of_month_start, month_start, year_start,
-                          day_of_month_end, month_end, year_end);
+                key = String.format(this.patternDate, day_of_month_start, month_start + 1, year_start,
+                          day_of_month_end, month_end + 1, year_end);
             }
         }
         
